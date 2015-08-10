@@ -53,7 +53,7 @@ public class Pinata : Card {
 	}
 
 	void PinataMethod () {
-		battleBoss.Dim (false);
+		gameControlUI.Dim(false);
 		for(int i = battleBoss.PeekedCards.Count-1; i > -1; i++) {
 			battleBoss.PeekedCards[i].GetComponent<Card>().Tuck();
 		}

@@ -14,6 +14,7 @@ public class GameControl : MonoBehaviour
 	public ShopControl shopBoss;
 	public EventGUI eventGUIBoss;
 	public GridControl gridBoss;
+	public GameControlUI gameControlUI;
 
 	public GameObject handObj;
 	public GameObject playBoardObj;
@@ -51,32 +52,11 @@ public class GameControl : MonoBehaviour
 	public Card TargetSquareCallback;
 	
 	//card display
-	public GUISkin GUISKIN;
-	SpriteRenderer displayCardRenderer;
-	SpriteRenderer dimmer;
-	public bool CardDisplay = false;
-	GameObject cardObjFromDeck;
-	string DisplayName;
-	string DisplayRules;
-	Texture2D DisplayRangeTexture;
-	float DisplayRangeSize;
-	Texture2D DisplayAOETexture;
-	float DisplayAOESize;
-	Sprite DisplayCard;
-	Texture2D DisplayCardIcon;
-	Texture2D DisplayRarity;
-	Texture2D DisplayIcon;
-	GUIStyle DisplayTitleFont;
-	GUIStyle DisplayTextFont;
-	
+
 	//UI data
-	bool showingDeck;
-	public bool showingDiscard;
 	public string Tooltip = "";
 
 	//UI variables
-	Vector3 originalDiscardPlacement = new Vector3(3f, 2f, 0);
-	Vector3 displayDiscardPlacement = new Vector3(3f, 6.5f, 0);
 	TextMesh playsLeftText;
 	TextMesh movesLeftText;
 	TextMesh dollarsText;
@@ -85,7 +65,7 @@ public class GameControl : MonoBehaviour
 	ButtonAnimate moveButton;
 	ButtonAnimate endTurnButton;
 	Sprite endTurn;
-	GUISkin gooeyskin;
+	public GUISkin gooeyskin;
 	#endregion
 
 
@@ -101,11 +81,9 @@ public class GameControl : MonoBehaviour
 		playButton = GameObject.Find ("play end button").GetComponent<ButtonAnimate> ();
 		moveButton = GameObject.Find ("move end button").GetComponent<ButtonAnimate> ();
 		endTurnButton = GameObject.Find ("end turn button").GetComponent<ButtonAnimate> ();
-		displayCardRenderer = GameObject.Find ("Display card").GetComponent<SpriteRenderer> ();
 		handObj = GameObject.Find ("Hand");
 		playBoardObj = GameObject.Find ("Play board");
 		playerObj = GameObject.FindGameObjectWithTag ("Player");
-		dimmer = GameObject.Find ("Dimmer").GetComponent<SpriteRenderer>();
 		shopBoss = gameObject.GetComponent<ShopControl> ();
 		player = GameObject.FindGameObjectWithTag ("Player").GetComponent<Player> ();
 		gooeyskin = (GUISkin)Resources.Load ("GUISkins/battleboss guiskin");
@@ -114,6 +92,7 @@ public class GameControl : MonoBehaviour
 		enemyLibrary = gameObject.GetComponent<EnemyLibrary>();
 		clickBoss = gameObject.GetComponent<ClickControl> ();
 		gridBoss = gameObject.GetComponent<GridControl>();
+		gameControlUI = gameObject.GetComponent<GameControlUI> ();
 
 		library.Startup ();
 		enemyLibrary.Startup();
@@ -130,16 +109,17 @@ public class GameControl : MonoBehaviour
 		MainMenu.UnlockCheck();
 	}
 
+	/// <summary>
+	/// Initializes game elements. Called from a main menu button.
+	/// </summary>
 	public void BeginGame () {
-
 
 		Deck = new List<string> ();
 		Hand = new List<GameObject> ();
 		Discard = new List<GameObject> ();
 		TargetedCards = new List<GameObject> ();
 		EnemyObjs = new List<GameObject> ();
-		GameObject discard = GameObject.FindGameObjectWithTag ("Discard");
-		discard.transform.localPosition = originalDiscardPlacement;
+		gameControlUI.SetDiscardPilePosition ();
         deckObj = GameObject.Find("Deck");
 
 
@@ -154,13 +134,11 @@ public class GameControl : MonoBehaviour
 		shopBoss.Initialize ();
 		player.ResetLife ();
 
-		//DIFFERENT IN TUTORIAL!
 		if (Tutorial.TutorialLevel == 0)
 		{
 			ShopControl.Normaldisplay = true;
 			library.SetStartingItems();
 		}
-
 
 		GameObject[] cards = GameObject.FindGameObjectsWithTag ("Card");
 		foreach(GameObject GO in cards) {
@@ -174,45 +152,6 @@ public class GameControl : MonoBehaviour
 		}
 
 		StartNewLevel ();
-	}
-	
-	void OnGUI () {
-
-	//	if(Error != "") GUI.Box (new Rect (0, 0, Screen.width, Screen.height*.03f), Error);
-
-//		if(!MainMenu.MainMenuUp && !UnlockMenu.UnlockMenuUp && !GodChoiceMenu.GodChoiceMenuUp && ) {
-//			GUI.Box (new Rect (Screen.width*.33f, Screen.height * .71f, Screen.width * .1f, Screen.height * .03f), Deck.Count.ToString(), gooeyskin.customStyles [1]);
-//		}
-//
-		if (showingDeck) {
-			string tempString = "Cards left in \nthe deck:\n";
-			GUI.Box(new Rect(0, 0, Screen.width*.2f, Screen.height*(Deck.Count+3)*.03f), tempString);
-			for(int i = 0; i < Deck.Count; i++) {
-				tempString += ((i+1) + ". " + Deck[i]);
-				while(GUI.Button(new Rect(Screen.width*.01f, Screen.height*.03f*(i+2), Screen.width*.18f, Screen.height*.028f), Deck[i])){
-					string stringCardToDraw = "prefabs/cards/" + Deck[i] + " card";
-					cardObjFromDeck = (GameObject)GameObject.Instantiate (Resources.Load (stringCardToDraw));
-					Card tempCard = cardObjFromDeck.GetComponent<Card>();
-					Display(tempCard);
-				}
-			}
-		}
-
-		if (CardDisplay) {
-			GUI.BeginGroup (new Rect (Screen.width*.25f, Screen.height*.2f, Screen.width*.5f, Screen.height*.55f), "");
-			GUI.Box (new Rect (0,0, Screen.width*.25f, Screen.height*.2f), DisplayName, DisplayTitleFont);
-			GUI.Box (new Rect (Screen.width*.3f, 0, Screen.width*.2f, Screen.height*.2f), DisplayCardIcon, DisplayTitleFont);
-			GUI.Box(new Rect(0, Screen.height*.2f, Screen.width*.5f, Screen.height*.4f), DisplayRules, DisplayTextFont); 
-			if(DisplayRangeTexture != null) GUI.DrawTexture(new Rect(Screen.width*.05f, Screen.height*.38f, Screen.width*.1f*DisplayRangeSize, Screen.width*.1f*DisplayRangeSize), DisplayRangeTexture);
-			if(DisplayAOETexture != null) GUI.DrawTexture(new Rect(Screen.width*.25f, Screen.height*.38f, Screen.width*.1f*DisplayAOESize, Screen.width*.1f*DisplayAOESize), DisplayAOETexture);
-			GUI.DrawTexture(new Rect(Screen.width*.0f, Screen.height*.44f, Screen.width*.05f, Screen.width*.05f), DisplayRarity);
-			GUI.DrawTexture(new Rect(Screen.width*.4f, Screen.height*.44f, Screen.width*.08f, Screen.width*.08f), DisplayIcon);
-			GUI.EndGroup();
-		}
-
-		if (Tooltip != "") {
-			GUI.Box(new Rect(Screen.width*.02f, Screen.height*.68f, Screen.width*.8f, Screen.height*.08f), Tooltip, gooeyskin.textArea);
-		}
 	}
 
 	#region Card related methods: Draw(), Peek(), Return()
@@ -238,7 +177,6 @@ public class GameControl : MonoBehaviour
 			Deck.Remove(cardClass);
 		}
 
-		//stringCardToDraw = "prefabs/cards/" + stringCardToDraw + " card";
 		string dummyCard = "prefabs/dummy card";
 
 		GameObject newCardObj = (GameObject)GameObject.Instantiate (Resources.Load (dummyCard));
@@ -307,14 +245,13 @@ public class GameControl : MonoBehaviour
 			GameObject newCardObj = (GameObject)GameObject.Instantiate (Resources.Load (stringCardToDraw));
 			cardClass = cardClass.Replace (" ", "");
 			cardClass = cardClass.Replace ("'", "");
-			UnityEngineInternal.APIUpdaterRuntimeServices.AddComponent(newCardObj, "Assets/scripts/Control scripts/GameControl.cs (310,4)", cardClass);
-
+			newCardObj.AddComponent(System.Type.GetType(cardClass));
 			Card newCardScript = newCardObj.GetComponent<Card>();
 			newCardScript.CardName = libraryCardName;
 			newCardScript.Initialize();
 			newCardScript.Peek(i, numberOfCards);
 			PeekedCards.Add(newCardObj);
-			dimmer.enabled = true;
+			gameControlUI.Dim ();
 		}
 
 		CallbackCard.PeekCallback ();
@@ -398,14 +335,7 @@ public class GameControl : MonoBehaviour
 			g.NewTurnCheck();
 		}
 
-		Dim (false);
-
-	//	if (player.StunnedForXTurns != 0)
-	//	{
-	//		player.StunnedForXTurns--;
-	//		Invoke("EnemyTurn", .1f);
-	//		return;
-	//	}
+		gameControlUI.Dim (false);
 
 		//DIFFERENT IN TUTORIAL!
 		if (Tutorial.TutorialLevel == 0)
@@ -521,119 +451,6 @@ public class GameControl : MonoBehaviour
 	public void ReturnToGodChoiceMenu() {
 		GodChoiceMenu.GodChoiceMenuUp = true;
 		shopBoss.Goals = new Goal[0];
-	}
-	#endregion
-
-	#region GUI methods: Display and undisplay(), Dim()
-	public void Display(Card card) {
-		if (Tutorial.TutorialLevel != 0) return;
-		dimmer.enabled = true;
-		displayCardRenderer.enabled = true;
-		DisplayName = card.CardName;
-		DisplayName.Replace ("\n", "");
-		DisplayCardIcon = Resources.Load (card.IconPath) as Texture2D;
-		DisplayRules = card.DisplayText;
-		if (card.maxRange != 0) {
-			DisplayRangeTexture = (Texture2D)Resources.Load("sprites/targeting icons/range " + card.rangeTargetType.ToString() + " " + card.minRange.ToString() + "-" + card.maxRange.ToString());
-			DisplayRangeSize = (card.maxRange*2+1)*.2f;
-		}
-		else 
-			DisplayRangeTexture = null;
-
-		if(card.aoeMaxRange != 0) {
-			DisplayAOETexture = (Texture2D)Resources.Load("sprites/targeting icons/aoe " + card.aoeTargetType.ToString() + " " + card.aoeMinRange.ToString() + "-" + card.aoeMaxRange.ToString());
-			DisplayAOESize = card.aoeMaxRange;
-		}
-		else {
-			DisplayAOETexture = null;
-		}
-
-		DisplayTitleFont = GUISKIN.customStyles[2];
-		DisplayTextFont = GUISKIN.box;
-
-		//default text color is black
-		DisplayTitleFont.normal.textColor = new Color(0,0,0);
-		DisplayTextFont.normal.textColor = new Color(0,0,0);
-		
-		int godnum = ShopControl.AllGods.IndexOf (card.God);
-
-		DisplayCard = shopBoss.GodDisplayCards [godnum];
-		DisplayIcon = shopBoss.GodIcons [godnum];
-
-		if(card.God == ShopControl.Gods.Ekcha | card.God == ShopControl.Gods.Ixchel) {
-			DisplayTitleFont.normal.textColor = new Color(1,1,1);
-			DisplayTextFont.normal.textColor = new Color(1,1,1);
-		}
-
-		switch(card.ThisRarity) {
-		case (Card.Rarity.Paper):
-			DisplayRarity = shopBoss.PaperTexture;
-			break;
-		case (Card.Rarity.Copper):
-			DisplayRarity = shopBoss.CopperTexture;
-			break;
-		case (Card.Rarity.Silver):
-			DisplayRarity = shopBoss.SilverTexture;
-			break;
-		case (Card.Rarity.Gold):
-			DisplayRarity = shopBoss.GoldTexture;
-			break;
-		}
-		displayCardRenderer.sprite = DisplayCard;
-
-		CardDisplay = true;
-	}
-	
-	public void Undisplay() {
-		//this vvv might be a bad condition to base whether or not to turn off the dimmer on. it works for now though.
-		if(CardsToTarget == 0) {
-			dimmer.enabled = false;
-		}
-		displayCardRenderer.enabled = false;
-		if(cardObjFromDeck != null) Destroy(cardObjFromDeck);
-	}
-
-	/// <summary>
-	/// Dims the screen. True = dimmer is enabled.
-	/// </summary>
-	public void Dim()
-	{
-		Dim(true);
-	}
-	public void Dim(bool TurnOn)
-	{
-		if (TurnOn)
-		{
-			dimmer.enabled = true;
-		}
-		else
-		{
-			dimmer.enabled = false;
-		}
-	}
-	#endregion
-
-	#region Show discard
-	public void FlipDiscard() {
-		GameObject discard = GameObject.FindGameObjectWithTag ("Discard");
-		
-		
-		if(!showingDiscard) {
-		    discard.transform.localPosition = displayDiscardPlacement;
-
-            for(int i = 0; i < Discard.Count; i++) {
-				Card tempcard = Discard[i].GetComponent<Card>();
-				tempcard.MoveAnimateWhileDiscarded(i, true);
-			}
-		}
-		else {
-			discard.transform.localPosition = originalDiscardPlacement;
-		}
-		showingDiscard = !showingDiscard;
-	}
-	
-	public void ShowDeck(bool TurningOn) {
-		showingDeck = TurningOn;
 	}
 	#endregion
 
@@ -757,11 +574,11 @@ public class GameControl : MonoBehaviour
 				if(cardObject != null) {
 					Card currentCard = cardObject.GetComponent<Card>();
 					if(currentCard != null) {
-					//	if(currentCard.DrawAnimating) {
-					//		currentCard.DrawAnimating = false;
-					//		cardObject.transform.localScale = new Vector3(.75f, .8f, .8f);
-					//	}
-						if(!currentCard.Discarded && !currentCard.BurnAnimating && !currentCard.Peeked && !currentCard.DiscardAnimating && !currentCard.ForcingDiscardOfThis) {
+						if(!currentCard.Discarded && 
+						   !currentCard.BurnAnimating && 
+						   !currentCard.Peeked && 
+						   !currentCard.DiscardAnimating && 
+						   !currentCard.ForcingDiscardOfThis) {
 							int i = Hand.IndexOf(cardObject);
 							if(currentCard != null) currentCard.MoveAnimate(i); 
 						}

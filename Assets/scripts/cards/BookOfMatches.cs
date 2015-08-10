@@ -15,7 +15,7 @@ public class BookOfMatches : Card {
 
 		battleBoss.CardsToTarget = 1;
 
-		battleBoss.Dim (true);
+		gameControlUI.Dim (true);
 		battleBoss.Tooltip = "Pick a card to burn.";
 		
 		base.Play ();

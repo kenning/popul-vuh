@@ -19,7 +19,7 @@ public class Shuriken : Card {
 	public override void Play () {
 		battleBoss.CardsToTarget = 1;
 
-		battleBoss.Dim (true);
+		gameControlUI.Dim(true);
 		battleBoss.Tooltip = "Pick a card to discard.";
 	}
 	

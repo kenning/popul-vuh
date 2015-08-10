@@ -16,12 +16,13 @@ public class MainMenu : MonoBehaviour {
 
 	GameControl battleBoss;
 	ShopControl shopBoss;
+	Dictionary<string, GUIStyle> styleLibrary;
 	static ClickControl clickBoss;
 
 	public static string errorText = "";
 
-	static ShopControl.Gods[] UnlockOrder = new ShopControl.Gods[] {ShopControl.Gods.Chac, ShopControl.Gods.Ikka, ShopControl.Gods.Ixchel, 
-	                                                                ShopControl.Gods.Kinich, ShopControl.Gods.Akan, ShopControl.Gods.Ekcha};
+	static ShopControl.Gods[] UnlockOrder = new ShopControl.Gods[] {ShopControl.Gods.Chac, ShopControl.Gods.Ikka, 
+		ShopControl.Gods.Ixchel, ShopControl.Gods.Kinich, ShopControl.Gods.Akan, ShopControl.Gods.Ekcha};
 	static int[] UnlockLevels = new int[6] {2, 4, 6, 8, 10, 12};
 	EncyclopediaMenu encyclopediaMenu;
 
@@ -33,6 +34,7 @@ public class MainMenu : MonoBehaviour {
 		clickBoss = gameController.GetComponent<ClickControl> ();
 		shopBoss = gameController.GetComponent<ShopControl> ();
 		encyclopediaMenu = gameController.GetComponent<EncyclopediaMenu> ();
+		styleLibrary = gameController.GetComponent<GUIStyleLibrary> ().Lib["Main menu"];
 	}
 
     //Could be called by MainMenu or by GodChoiceMenu, or by DeckAnimate. starts the game or goes to the next level.
@@ -132,7 +134,7 @@ public class MainMenu : MonoBehaviour {
 
         if (MainMenuUp | GodChoiceMenu.GodChoiceMenuUp | DeleteDataMenuUp | encyclopediaMenu.EncyclopediaMenuUp | CustomizeMenu.CustomizeMenuUp)
         {
-            GUI.Box(new Rect(0, 0, Screen.width, Screen.height), "", MAINMENUGUISKIN.box);
+            GUI.Box(new Rect(0, 0, Screen.width, Screen.height), "", styleLibrary["Black background"]);
             //string text = "Moves are not plays";
             //if (GameControl.MovesArePlays) 
             //    text = "Moves are plays";
@@ -143,10 +145,12 @@ public class MainMenu : MonoBehaviour {
         if (MainMenuUp)
         {
 
-            GUI.Box(new Rect(Screen.width * .1f, Screen.height * .05f, Screen.width * .8f, Screen.height * .15f), "Popul Vuh", MAINMENUGUISKIN.customStyles[0]);
+            GUI.Box(new Rect(Screen.width * .1f, Screen.height * .05f, Screen.width * .8f, Screen.height * .15f), 
+			        "Popul Vuh", MAINMENUGUISKIN.customStyles[0]);
 
             //Start new game
-            if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .25f, Screen.width * .6f, Screen.height * .1f), "Start new game", MAINMENUGUISKIN.button))
+            if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .25f, Screen.width * .6f, Screen.height * .1f), 
+			               "Start new game", MAINMENUGUISKIN.button))
             {
                 MainMenuUp = false;
                 Tutorial.TutorialLevel = 0;
@@ -170,21 +174,24 @@ public class MainMenu : MonoBehaviour {
             }
 
             //Unlock cards and gods
-            //		if(GUI.Button(new Rect(Screen.width*.2f, Screen.height*.4f, Screen.width*.6f, Screen.height*.1f), "Unlock cards and gods", MAINMENUGUISKIN.button)) {
+            //		if(GUI.Button(new Rect(Screen.width*.2f, Screen.height*.4f, Screen.width*.6f, Screen.height*.1f), 
+			//		  "Unlock cards and gods", MAINMENUGUISKIN.button)) {
             //			UnlockMenu tempmenu = battleBoss.gameObject.GetComponent<UnlockMenu>();
             //			tempmenu.ShowMenu();
             //			MainMenuUp = false;
             //		}
 
             //Reset unlocked data
-            if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .55f, Screen.width * .6f, Screen.height * .1f), "Reset unlocked data", MAINMENUGUISKIN.button))
+            if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .55f, Screen.width * .6f, Screen.height * .1f), 
+			               "Reset unlocked data", MAINMENUGUISKIN.button))
             {
                 DeleteDataMenuUp = true;
                 MainMenuUp = false;
             }
 
             //Customize starting deck
-            if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .7f, Screen.width * .6f, Screen.height * .1f), "Customize Starting Deck", MAINMENUGUISKIN.button))
+            if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .7f, Screen.width * .6f, Screen.height * .1f), 
+			               "Customize Starting Deck", MAINMENUGUISKIN.button))
             {
                 CustomizeMenu tempMenu = gameObject.GetComponent<CustomizeMenu>();
                 tempMenu.OpenMenu();
@@ -194,11 +201,13 @@ public class MainMenu : MonoBehaviour {
             //"New cards available!" window. 
             if (SaveData.NewCardsAvailable)
             {
-                GUI.Box(new Rect(Screen.width * .25f, Screen.height * .775f, Screen.width * .5f, Screen.height * .05f), "New cards available!", MAINMENUGUISKIN.customStyles[1]);
+                GUI.Box(new Rect(Screen.width * .25f, Screen.height * .775f, Screen.width * .5f, Screen.height * .05f), 
+				        "New cards available!", MAINMENUGUISKIN.customStyles[1]);
             }
 
             //Encyclopedia
-            if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .85f, Screen.width * .6f, Screen.height * .1f), "Encyclopedia", MAINMENUGUISKIN.button))
+            if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .85f, Screen.width * .6f, Screen.height * .1f),
+			               "Encyclopedia", MAINMENUGUISKIN.button))
             {
                 EncyclopediaMenu tempMenu = battleBoss.gameObject.GetComponent<EncyclopediaMenu>();
                 tempMenu.ShowMenu();
@@ -206,7 +215,8 @@ public class MainMenu : MonoBehaviour {
             }
 
             //Tutorial
-            if (GUI.Button(new Rect(Screen.width * .025f, Screen.height * .3f, Screen.width * .15f, Screen.height * .6f), "Tutorial", MAINMENUGUISKIN.customStyles[4]))
+            if (GUI.Button(new Rect(Screen.width * .025f, Screen.height * .3f, Screen.width * .15f, Screen.height * .6f), 
+			               "Tutorial", MAINMENUGUISKIN.customStyles[4]))
             {
                 MainMenuUp = false;
                 Tutorial.TutorialLevel = 1;
@@ -228,8 +238,10 @@ public class MainMenu : MonoBehaviour {
         #region Delete Data Menu
         if (DeleteDataMenuUp)
         {
-            GUI.Box(new Rect(Screen.width * .2f, Screen.height * .1f, Screen.width * .6f, Screen.height * .4f), "Are you sure?", MAINMENUGUISKIN.customStyles[0]);
-            if (GUI.Button(new Rect(Screen.width * .6f, Screen.height * .8f, Screen.width * .3f, Screen.height * .15f), "Yes!", MAINMENUGUISKIN.button))
+            GUI.Box(new Rect(Screen.width * .2f, Screen.height * .1f, Screen.width * .6f, Screen.height * .4f), 
+			        "Are you sure?", MAINMENUGUISKIN.customStyles[0]);
+            if (GUI.Button(new Rect(Screen.width * .6f, Screen.height * .8f, Screen.width * .3f, Screen.height * .15f), 
+			               "Yes!", MAINMENUGUISKIN.button))
             {
                 SaveData.UnlockedGods = new List<ShopControl.Gods> { ShopControl.Gods.Buluc, ShopControl.Gods.Chac };
                 SaveData.UnlockedCards = new List<LibraryCard>();
@@ -238,7 +250,8 @@ public class MainMenu : MonoBehaviour {
                 DeleteDataMenuUp = false;
                 SaveData.NewSaveFile();
             }
-            if (GUI.Button(new Rect(Screen.width * .1f, Screen.height * .8f, Screen.width * .3f, Screen.height * .15f), "Back", MAINMENUGUISKIN.button))
+            if (GUI.Button(new Rect(Screen.width * .1f, Screen.height * .8f, Screen.width * .3f, Screen.height * .15f), 
+			               "Back", MAINMENUGUISKIN.button))
             {
                 DeleteDataMenuUp = false;
                 SaveLoad.Save();
@@ -251,13 +264,17 @@ public class MainMenu : MonoBehaviour {
         #region Died Menu
         if (DiedMenuUp)
         {
-            GUI.Box(new Rect(Screen.width * .1f, Screen.height * .2f, Screen.width * .8f, Screen.height * .3f), "You died!", MAINMENUGUISKIN.customStyles[0]);
-            GUI.Box(new Rect(Screen.width * .1f, Screen.height * .55f, Screen.width * .8f, Screen.height * .15f), "Got to level " + GameControl.Level.ToString(), MAINMENUGUISKIN.customStyles[3]);
+            GUI.Box(new Rect(Screen.width * .1f, Screen.height * .2f, Screen.width * .8f, Screen.height * .3f), 
+			        "You died!", MAINMENUGUISKIN.customStyles[0]);
+            GUI.Box(new Rect(Screen.width * .1f, Screen.height * .55f, Screen.width * .8f, Screen.height * .15f), 
+			        "Got to level " + GameControl.Level.ToString(), MAINMENUGUISKIN.customStyles[3]);
             if (UnlockedText != "")
             {
-                GUI.Box(new Rect(Screen.width * .1f, Screen.height * .55f, Screen.width * .8f, Screen.height * .15f), UnlockedText, MAINMENUGUISKIN.customStyles[0]);
+                GUI.Box(new Rect(Screen.width * .1f, Screen.height * .55f, Screen.width * .8f, Screen.height * .15f), 
+				        UnlockedText, MAINMENUGUISKIN.customStyles[0]);
             }
-            if (GUI.Button(new Rect(Screen.width * .1f, Screen.height * .75f, Screen.width * .8f, Screen.height * .15f), "Return to main menu!", MAINMENUGUISKIN.button))
+            if (GUI.Button(new Rect(Screen.width * .1f, Screen.height * .75f, Screen.width * .8f, Screen.height * .15f), 
+			            "Return to main menu!", MAINMENUGUISKIN.button))
             {
                 CleanUpGameboard();
             }

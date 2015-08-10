@@ -22,11 +22,13 @@ public class Tutorial : MonoBehaviour {
     //Inserted from within Unity
     public Texture2D BulucTUTORIALFULL;
     public Texture2D BulucTUTORIALMUGSHOT;
-    public GUISkin TUTORIALGUISKIN;
+
+    public GUISkin MAINMENUGUISKIN;
     public Texture2D BLACKBOX;
 
     ClickControl clickBoss;
     GameControl battleBoss;
+	GameControlUI gameControlUI;
 
     public static bool PlayedACardLevel7 = false;
 
@@ -44,8 +46,8 @@ public class Tutorial : MonoBehaviour {
         {
             GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), BLACKBOX);
             GUI.DrawTexture(new Rect(Screen.width * .55f, Screen.height * .2f, Screen.width * .4f, Screen.height * .6f), BulucTUTORIALFULL);
-            GUI.Box(new Rect(Screen.width*.05f, Screen.height*.25f, Screen.width*.58f, Screen.height*.5f), TutorialStartMessages[TutorialLevel-1], TUTORIALGUISKIN.customStyles[3]);
-            if(GUI.Button(new Rect(Screen.width*.2f, Screen.height*.85f, Screen.width*.6f, Screen.height*.1f), "OK", TUTORIALGUISKIN.button))
+            GUI.Box(new Rect(Screen.width*.05f, Screen.height*.25f, Screen.width*.58f, Screen.height*.5f), TutorialStartMessages[TutorialLevel-1], MAINMENUGUISKIN.customStyles[3]);
+            if(GUI.Button(new Rect(Screen.width*.2f, Screen.height*.85f, Screen.width*.6f, Screen.height*.1f), "OK", MAINMENUGUISKIN.button))
             {
                 if(TutorialLevel == 1) 
                 { 
@@ -61,18 +63,18 @@ public class Tutorial : MonoBehaviour {
         {
          //   GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.width*.3f), BLACKBOX);
             GUI.DrawTexture(new Rect(Screen.width*.7f, 0, Screen.width*.3f, Screen.width*.3f), BulucTUTORIALMUGSHOT);
-            GUI.Box(new Rect(0,0,Screen.width*.78f, Screen.width*.325f), TutorialMessage, TUTORIALGUISKIN.customStyles[3]);
+            GUI.Box(new Rect(0,0,Screen.width*.78f, Screen.width*.325f), TutorialMessage, MAINMENUGUISKIN.customStyles[3]);
 
             if (TutorialLevel == 4 )
             {
-                if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .55f, Screen.width * .6f, Screen.height * .075f), "OK", TUTORIALGUISKIN.button))
+                if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .55f, Screen.width * .6f, Screen.height * .075f), "OK", MAINMENUGUISKIN.button))
                 {
                     continueTutorial();
                 }
             }
             if ((TutorialLevel == 6 && PlayedACardLevel7))
             {
-                if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .55f, Screen.width * .6f, Screen.height * .075f), "Done with the tutorial", TUTORIALGUISKIN.button))
+                if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .55f, Screen.width * .6f, Screen.height * .075f), "Done with the tutorial", MAINMENUGUISKIN.button))
                 {
                     continueTutorial();
                 }
@@ -83,15 +85,15 @@ public class Tutorial : MonoBehaviour {
         float offset = 0;
         if (TutorialLevel == 1 | TutorialLevel == 7)
             offset = Screen.height * .15f;
-        GUI.Box(new Rect(Screen.width * .6f, 0, Screen.width * .4f, Screen.height * .035f), "Tutorial level " + TutorialLevel.ToString(), TUTORIALGUISKIN.customStyles[4]);
-        if (GUI.Button(new Rect(Screen.width * .05f, Screen.height * .235f - offset, Screen.width * .4f, Screen.height * .06f), "Next topic", TUTORIALGUISKIN.customStyles[1]))
+        GUI.Box(new Rect(Screen.width * .6f, 0, Screen.width * .4f, Screen.height * .035f), "Tutorial level " + TutorialLevel.ToString(), MAINMENUGUISKIN.customStyles[4]);
+        if (GUI.Button(new Rect(Screen.width * .05f, Screen.height * .235f - offset, Screen.width * .4f, Screen.height * .06f), "Next topic", MAINMENUGUISKIN.customStyles[1]))
         {
             if (TutorialLevel == 7)
                 endTutorial();
             else
                 continueTutorial();
         }
-        if (GUI.Button(new Rect(Screen.width * .55f, Screen.height * .235f - offset, Screen.width * .4f, Screen.height * .06f), "Skip tutorial", TUTORIALGUISKIN.customStyles[1]))
+        if (GUI.Button(new Rect(Screen.width * .55f, Screen.height * .235f - offset, Screen.width * .4f, Screen.height * .06f), "Skip tutorial", MAINMENUGUISKIN.customStyles[1]))
         {
             endTutorial();
         }
@@ -158,13 +160,13 @@ public class Tutorial : MonoBehaviour {
                 Destroy(en);
             }
             clickBoss.DisallowEveryInput();
-            battleBoss.Dim();
+			gameControlUI.Dim();
         }
         if (TutorialLevel == 5)
         {
             gameObject.GetComponent<GridControl>().CancelInvoke();
 
-            battleBoss.Dim(false);
+			gameControlUI.Dim(false);
             List<string> deck = battleBoss.Deck;
             deck.Add("Wooden Pike");
             deck.Add("Wooden Pike");

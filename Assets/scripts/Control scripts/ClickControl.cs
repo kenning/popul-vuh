@@ -8,6 +8,7 @@ public class ClickControl : MonoBehaviour {
 	GridControl gridBoss;
 	ShopControl shopBoss;
 	GameObject hand;
+	GameControlUI gameControlUI;
 	ButtonAnimate playButton;
     //player script
     Player player;
@@ -55,6 +56,7 @@ public class ClickControl : MonoBehaviour {
 		battleBoss = tempGO.GetComponent<GameControl> ();
 		gridBoss = tempGO.GetComponent<GridControl>();
 		shopBoss = tempGO.GetComponent<ShopControl> ();
+		gameControlUI = tempGO.GetComponent<GameControlUI> ();
 		playerObject = GameObject.FindGameObjectWithTag ("Player");
         player = playerObject.GetComponent<Player>();
 		hand = GameObject.Find ("Hand");
@@ -80,9 +82,8 @@ public class ClickControl : MonoBehaviour {
 
 	//AllowInputUmbrella
 		if(!AllowInputUmbrella) {
-			if(battleBoss.CardDisplay) {
-				battleBoss.CardDisplay = false;
-				battleBoss.Undisplay();
+			if(gameControlUI.CardDisplay) {
+				gameControlUI.Undisplay();
 				cardHasBeenClickedOn = false;
 			}
 			if(draggingGameboard) {
@@ -97,12 +98,11 @@ public class ClickControl : MonoBehaviour {
 		}
 		
 		//////////////////////////////////////
-		/// DRAGGING AND DISPLAY -- INFOINPUT
+		/// DRAGGING AND DISPLAY -- InfoInput
 		//////////////////////////////////////
 
-		if(battleBoss.CardDisplay && !Input.GetMouseButton(0)) {
-			battleBoss.CardDisplay = false;
-			battleBoss.Undisplay();
+		if(gameControlUI.CardDisplay && !Input.GetMouseButton(0)) {
+			gameControlUI.Undisplay();
 			cardHasBeenClickedOn = false;
 		}
 
@@ -218,8 +218,8 @@ public class ClickControl : MonoBehaviour {
 					cardHasBeenClickedOn = false;
 				}
 	//AllowInfoInput
-                else if(Time.time - 0.2f > lastCardClick && !battleBoss.CardDisplay && AllowInfoInput) { 
-					battleBoss.Display(cardScriptClickedOn);
+				else if(Time.time - 0.2f > lastCardClick && !gameControlUI.CardDisplay && AllowInfoInput) { 
+					gameControlUI.Display(cardScriptClickedOn);
 					cardHasBeenClickedOn = false;
 				}
 				else if(Time.time - .1f > lastCardClick && AllowInfoInput) 
@@ -237,7 +237,7 @@ public class ClickControl : MonoBehaviour {
 
 			shopBoss.GoalCheck("Touch the screen no more than than X times");
 
-			battleBoss.ShowDeck(false);
+			gameControlUI.ShowDeck(false);
 			battleBoss.Tooltip = "";
 
 			float dist = transform.position.z - Camera.main.transform.position.z;
@@ -289,7 +289,7 @@ public class ClickControl : MonoBehaviour {
 	//AllowInfoInput
 				foreach(RaycastHit2D hit in hits) {
 					if(hit.collider.gameObject.name == "Deck" && AllowInfoInput) { 
-						battleBoss.ShowDeck(true);
+						gameControlUI.ShowDeck(true);
 						return;
 					}
 				}
@@ -353,7 +353,7 @@ public class ClickControl : MonoBehaviour {
 				foreach(RaycastHit2D hit in hits) {
 	//AllowInfoInput
 					if(hit.collider.gameObject.name == "Discard pile" && AllowInfoInput) {
-						battleBoss.FlipDiscard();
+						gameControlUI.FlipDiscard();
 						return;
 					}
 				}

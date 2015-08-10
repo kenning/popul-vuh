@@ -7,6 +7,7 @@ public class OptionControl : MonoBehaviour {
 	Card returnToThisCard;
 	GameControl battleBoss;
 	ClickControl clickBoss;
+	GameControlUI gameControlUI;
 
 
 	public List<string> options;
@@ -41,11 +42,11 @@ public class OptionControl : MonoBehaviour {
 	public void TurnOffOptions () {
 		options = new List<string> ();
 		optionYesNo = false;
-		battleBoss.Dim (false);
+		gameControlUI.Dim (false);
 	}
 
 	void BaseOptionSet() {
-		battleBoss.Dim (true);		
+		gameControlUI.Dim (true);		
 		clickBoss.DisallowEveryInput ();
 		clickBoss.AllowInfoInput = true;
 	}
@@ -55,11 +56,11 @@ public class OptionControl : MonoBehaviour {
 			GUI.BeginGroup(new Rect(Screen.width*.2f, Screen.height*.3f, Screen.width*.6f, Screen.height*.4f), gooeyskin.box);
 				if(GUI.Button(new Rect(Screen.width*.1f, Screen.height*.05f, Screen.width*4f, Screen.height*.1f), "Yes")) {
 					returnToThisCard.OptionsCalledThis(true);
-					battleBoss.Dim(false);
+					gameControlUI.Dim(false);
 				}
 				if(GUI.Button(new Rect(Screen.width*.1f, Screen.height*.25f, Screen.width*4f, Screen.height*.1f), "No")) {
 					returnToThisCard.OptionsCalledThis(false);
-					battleBoss.Dim(false);
+					gameControlUI.Dim(false);
 				}
 			GUI.EndGroup();
 		}
@@ -69,7 +70,7 @@ public class OptionControl : MonoBehaviour {
 				for(int i = 0; i < options.Count; i++) {
 					if(GUI.Button(new Rect(Screen.width*.1f, Screen.height*.1f*i, Screen.width*.4f, Screen.height*.1f), options[i], gooeyskin.button)){
 						returnToThisCard.OptionsCalledThis(i);
-						battleBoss.Dim(false);
+						gameControlUI.Dim(false);
 					}
 				}
 			GUI.EndGroup();

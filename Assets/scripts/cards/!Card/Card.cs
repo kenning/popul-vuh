@@ -18,6 +18,8 @@ public class Card : MonoBehaviour {
 	public ClickControl clickBoss;
 	public OptionControl optionBoss;
 	public EventGUI eventGUIBoss;
+	public GameControlUI gameControlUI;
+
 	public CardLibrary library;
 	public GameObject hand;
 	public GameObject discardPileObj;
@@ -208,7 +210,6 @@ public class Card : MonoBehaviour {
             else if (render.gameObject.name == "glow")
             {
                 Glow = render.gameObject.GetComponent<SpriteRenderer>();
-                Debug.Log("glow set");
             }
             else if (render.gameObject.name != "picture")
             {
@@ -368,7 +369,7 @@ public class Card : MonoBehaviour {
 	public void Select() {
 		battleBoss.DeselectCards();
 		gridBoss.DestroyAllTargetSquares();
-		battleBoss.Dim(false);
+		gameControlUI.Dim(false);
 
 		if(battleBoss.PlaysLeft > 0) { 
 			if(gameObject != null) {
@@ -582,7 +583,7 @@ public class Card : MonoBehaviour {
 	
 	public virtual void Click() {
 
-		battleBoss.Dim(false);
+		gameControlUI.Dim(false);
 
 		if(Discarded) {
 			return;
@@ -680,7 +681,7 @@ public class Card : MonoBehaviour {
 			Play();
 			DiscardOrBurnIfNotInQ();
 			clickBoss.DisallowEveryInput();
-			battleBoss.Dim();
+			gameControlUI.Dim();
 			break;
 		default:
 			Debug.Log("FUCK");
@@ -745,7 +746,7 @@ public class Card : MonoBehaviour {
 	public virtual void AfterCardTargetingCallback() {
 		battleBoss.TargetedCards = new List<GameObject>();
 		battleBoss.CardsToTarget = 0;
-		battleBoss.Dim(false);
+		gameControlUI.Dim(false);
 
 	//	i put OrganizeCards into CheckQ
 	//	Invoke("OrganizeCards", .3f);

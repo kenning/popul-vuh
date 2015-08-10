@@ -6,7 +6,8 @@ using System.IO;
 [System.Serializable]
 public static class SaveData 
 {
-    //Save data variables will be marked with a $%^ at the places you need to modify them.
+    //Save data variables will be marked with a $%^ at the places you need to modify them
+	//(they have to be modified in each place, or code will break)
 
     //$%^
 	public static List<LibraryCard> UnlockedCards = new List<LibraryCard>();
@@ -63,9 +64,7 @@ public static class SaveData
 		//Buluc
 		UnlockedCards.Add(CardLibrary.Lib["Wooden Pike"]);
 		UnlockedCards.Add(CardLibrary.Lib["Iron Macana"]);
-		//
-
-
+		//Chac
 		UnlockedCards.Add(CardLibrary.Lib["Coffee"]);
 		UnlockedCards.Add(CardLibrary.Lib["Apple"]);
 		//Kinich

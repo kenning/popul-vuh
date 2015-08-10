@@ -17,7 +17,7 @@ public class Soda : Card {
 		}
 		battleBoss.CardsToTarget = 1;
 
-		battleBoss.Dim (true);
+		gameControlUI.Dim(true);
 		battleBoss.Tooltip = "Pick a card to discard.";
 		
 		base.Play ();

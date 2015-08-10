@@ -18,7 +18,7 @@ public class FruitSmoothie : Card {
 
 		battleBoss.CardsToTarget = 2;
 
-		battleBoss.Dim (true);
+		gameControlUI.Dim(true);
 		battleBoss.Tooltip = "Pick two cards to tuck back into your deck.";
 		
 		base.Play ();

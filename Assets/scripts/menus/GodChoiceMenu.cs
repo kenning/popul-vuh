@@ -7,14 +7,11 @@ public class GodChoiceMenu : MonoBehaviour {
 	public static bool GodChoiceMenuUp = false;
 
 	public bool[] GodChoiceSelection = new bool[7];
-//	public enum Gods {Akan, Buluc, Ekcha, Ikka, Ixchel, Kinich, Chac, none};
 	ShopControl shopBoss;
-//	GameControl battleBoss;
 
 	public GUISkin GODCHOICEMENUGUISKIN;
 
 	void Start() {
-//		battleBoss = gameObject.GetComponent<GameControl> ();
 		shopBoss = gameObject.GetComponent<ShopControl> ();
 		GodChoiceSelection = new bool[] {false, false, false, false, false, false, false};
 	}
