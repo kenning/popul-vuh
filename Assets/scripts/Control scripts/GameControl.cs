@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -86,7 +86,7 @@ public class GameControl : MonoBehaviour
 		playerObj = GameObject.FindGameObjectWithTag ("Player");
 		shopBoss = gameObject.GetComponent<ShopControl> ();
 		player = GameObject.FindGameObjectWithTag ("Player").GetComponent<Player> ();
-		gooeyskin = (GUISkin)Resources.Load ("GUISkins/battleboss guiskin");
+		gooeyskin = (GUISkin)Resources.Load ("GUISkins/gameControl guiskin");
 		
 		library = gameObject.GetComponent<CardLibrary> ();
 		enemyLibrary = gameObject.GetComponent<EnemyLibrary>();

@@ -12,20 +12,20 @@ public class FruitSmoothie : Card {
 	}
 	
 	public override void Play () {
-		battleBoss.Draw ();
-		battleBoss.Draw ();
-		battleBoss.Draw ();
+		gameControl.Draw ();
+		gameControl.Draw ();
+		gameControl.Draw ();
 
-		battleBoss.CardsToTarget = 2;
+		gameControl.CardsToTarget = 2;
 
 		gameControlUI.Dim(true);
-		battleBoss.Tooltip = "Pick two cards to tuck back into your deck.";
+		gameControl.Tooltip = "Pick two cards to tuck back into your deck.";
 		
 		base.Play ();
 	}
 	
 	public override void AfterCardTargetingCallback() {
-		foreach(GameObject tempGO in battleBoss.TargetedCards){
+		foreach(GameObject tempGO in gameControl.TargetedCards){
 			Card tempCard = tempGO.GetComponent<Card>();
 			tempCard.Tuck();
 		}

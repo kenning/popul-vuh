@@ -12,18 +12,18 @@ public class Flamethrower : Card {
 	}
 	
 	public override void Play () {
-		battleBoss.CardsToTarget = 1;
+		gameControl.CardsToTarget = 1;
 
-		battleBoss.TargetSquareCallback = this;
+		gameControl.TargetSquareCallback = this;
 
 		gameControlUI.Dim(true);
-		battleBoss.Tooltip = "Pick a card to burn.";
+		gameControl.Tooltip = "Pick a card to burn.";
 		
 		base.Play ();
 	}
 	
 	public override void AfterCardTargetingCallback() {
-		foreach(GameObject tempGO in battleBoss.TargetedCards){
+		foreach(GameObject tempGO in gameControl.TargetedCards){
 			Card tempCard = tempGO.GetComponent<Card>();
 			tempCard.Burn();
 		}
@@ -33,7 +33,7 @@ public class Flamethrower : Card {
 		clickBoss.DisallowEveryInput ();
 		clickBoss.AllowInfoInput = true;
 		clickBoss.AllowSquareTargetInput = true;
-		battleBoss.TargetSquareCallback = this;
+		gameControl.TargetSquareCallback = this;
 //		ReallowUmbrellaInputAfterDiscardOrBurn ();
 
 		base.AfterCardTargetingCallback ();

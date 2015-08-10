@@ -11,7 +11,7 @@ public class SodaMachine : Card {
 	}
 	
 	public override void Play () {
-		battleBoss.Deck.Add ("Soda Cup");
+		gameControl.Deck.Add ("Soda Cup");
 
 		base.Play ();
 	}

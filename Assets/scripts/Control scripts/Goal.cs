@@ -67,18 +67,18 @@ public class Goal  {
 		}
 		// Special case
 		else if (MiniDescription ==  "Discard pile has X cards in it") {
-				GameControl battleBoss = 
+				GameControl gameControl = 
 					GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControl>();
-				ChangeScore(battleBoss.Discard.Count);
+				ChangeScore(gameControl.Discard.Count);
 		}
 		else if	(MiniDescription == "Discard pile has X cards in a row with the same God") {
-			GameControl battleBoss = 
+			GameControl gameControl = 
 				GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControl>();
 			int inARow = 1;
 			int hiScore = 0;
 			ShopControl.Gods lastGod = ShopControl.Gods.none;
-			for(int i = 0; i < battleBoss.Discard.Count; i++) {
-				Card c = battleBoss.Discard[i].GetComponent<Card>();
+			for(int i = 0; i < gameControl.Discard.Count; i++) {
+				Card c = gameControl.Discard[i].GetComponent<Card>();
 				if(lastGod != c.God) {
 					inARow = 1;
 				}

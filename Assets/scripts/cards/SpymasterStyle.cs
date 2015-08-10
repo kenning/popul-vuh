@@ -22,7 +22,7 @@ public class SpymasterStyle : Card {
 	
 	public override void EventCall(string s) {
 		if(s == "Enemy Damage") {
-			battleBoss.Draw();
+			gameControl.Draw();
 
             eventGUIBoss.AddGUIString("Draw 1!");
 		}		

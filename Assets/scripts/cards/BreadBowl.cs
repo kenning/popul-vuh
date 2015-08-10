@@ -13,20 +13,20 @@ public class BreadBowl : Card {
 	
 	public override void Play () {
 
-		battleBoss.Peek (3, this);
+		gameControl.Peek (3, this);
 
-		battleBoss.CardsToTarget = 1;
+		gameControl.CardsToTarget = 1;
 		gameControlUI.Dim (true);
-		battleBoss.Tooltip = "Pick a card to put in your hand.";
+		gameControl.Tooltip = "Pick a card to put in your hand.";
 		
 		base.Play ();
 	}
 	
 	public override void AfterCardTargetingCallback() {
 
-		foreach(GameObject tempGO in battleBoss.TargetedCards){
+		foreach(GameObject tempGO in gameControl.TargetedCards){
 			Card tempCard = tempGO.GetComponent<Card>();
-			battleBoss.DrawIntoHand(tempCard, false);
+			gameControl.DrawIntoHand(tempCard, false);
 		}
 		
 		Invoke ("OrganizeCards", .3f);

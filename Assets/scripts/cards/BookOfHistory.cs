@@ -12,17 +12,17 @@ public class BookOfHistory : Card {
 	}
 
 	public override void Play () {
-		battleBoss.CardsToTarget = 1;
+		gameControl.CardsToTarget = 1;
 
 		gameControlUI.Dim (true);
-		battleBoss.Tooltip = "Pick a card to be played twice.";
+		gameControl.Tooltip = "Pick a card to be played twice.";
 		clickBoss.AllowForfeitButtonInput = true;
 		
 		base.Play ();
 	}
 
 	public override void AfterCardTargetingCallback() {
-		foreach(GameObject tempGO in battleBoss.TargetedCards){
+		foreach(GameObject tempGO in gameControl.TargetedCards){
 			Card tempCard = tempGO.GetComponent<Card>();
 
 //			if(tempCard.CardAction == CardActionTypes.TargetCard) {

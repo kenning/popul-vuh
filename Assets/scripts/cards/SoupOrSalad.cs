@@ -19,11 +19,11 @@ public class SoupOrSalad : Card {
 
 	public override void OptionsCalledThis(int choice) {
 		if(choice == 0) {
-			battleBoss.Draw();
-			battleBoss.Draw();
+			gameControl.Draw();
+			gameControl.Draw();
 		}
 		else {
-			battleBoss.AddPlays(2);
+			gameControl.AddPlays(2);
 		}
 
 		Invoke ("OrganizeCards", 1f);

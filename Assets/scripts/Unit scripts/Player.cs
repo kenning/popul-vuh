@@ -8,7 +8,7 @@ public class Player : MonoBehaviour {
 	public int currentHealth = 3;
 	int punchDamage = 1;
 	public int StunnedForXTurns = 0;
-	GameControl battleBoss;
+	GameControl gameControl;
 	ShopControl shopBoss;
 	GridControl gridBoss;
 	//public Texture2D Heart;
@@ -21,7 +21,7 @@ public class Player : MonoBehaviour {
 	
 	void Start () {
 		GameObject boss = GameObject.FindGameObjectWithTag ("GameController");
-		battleBoss = boss.GetComponent<GameControl> ();
+		gameControl = boss.GetComponent<GameControl> ();
 		shopBoss = boss.GetComponent<ShopControl>();
 		gridBoss = boss.GetComponent<GridControl>();
 		playerGU = gameObject.GetComponent<GridUnit>();
@@ -40,13 +40,13 @@ public class Player : MonoBehaviour {
         playerGU.PokeTowards(playerGU.AdjacentPosition(enemyGU));
 
         enemy.GetComponent<Enemy> ().GetPunched (punchDamage);
-		battleBoss.AddPlays(-1);
+		gameControl.AddPlays(-1);
 
     //triggers
 		EventControl.EventCheck ("Punch");
 		shopBoss.GoalCheck ("Punch X times");
 		if (Tutorial.TutorialLevel != 0)
-			battleBoss.gameObject.GetComponent<Tutorial>().TutorialTrigger(3);
+			gameControl.gameObject.GetComponent<Tutorial>().TutorialTrigger(3);
 
 		QControl.CheckQ ();
 	}
@@ -56,8 +56,8 @@ public class Player : MonoBehaviour {
 		List<Card> Armors = new List<Card> ();
 		List<Card> SuccessfulArmors = new List<Card> ();
 
-		for(int i = 0; i < battleBoss.Hand.Count; i++) {
-			Card tempCard = battleBoss.Hand[i].GetComponent<Card>();
+		for(int i = 0; i < gameControl.Hand.Count; i++) {
+			Card tempCard = gameControl.Hand[i].GetComponent<Card>();
 			if(tempCard.CardAction == Card.CardActionTypes.Armor | tempCard.ArmorWithSecondaryAbility) 
 				Armors.Add(tempCard);
 		}
@@ -97,10 +97,10 @@ public class Player : MonoBehaviour {
 
 	internal void MoveClick(string direction)
 	{
-		bool canMove = battleBoss.MovesLeft > 0;
+		bool canMove = gameControl.MovesLeft > 0;
 		if (GameControl.MovesArePlays)
 		{
-			canMove = battleBoss.PlaysLeft > 0;
+			canMove = gameControl.PlaysLeft > 0;
 		}
 
 		if (canMove)
@@ -115,7 +115,7 @@ public class Player : MonoBehaviour {
 			}
 
 			thisGU.GridMove(direction);
-			battleBoss.AddMoves(-1);
+			gameControl.AddMoves(-1);
 			shopBoss.GoalCheck("Move X times in one turn");
 			shopBoss.GoalCheck("Don't move X turns in a row");
 			shopBoss.GoalCheck("Don't deal damage or move X turns in a row");
@@ -123,7 +123,7 @@ public class Player : MonoBehaviour {
 			gridBoss.DestroyAllTargetSquares();
 			if (Tutorial.TutorialLevel != 0)
 			{
-				battleBoss.gameObject.GetComponent<Tutorial>().TutorialTrigger(2);
+				gameControl.gameObject.GetComponent<Tutorial>().TutorialTrigger(2);
 			}
 		}
 		else

@@ -9,17 +9,16 @@ public class OptionControl : MonoBehaviour {
 	ClickControl clickBoss;
 	GameControlUI gameControlUI;
 
-
 	public List<string> options;
 	public bool optionYesNo = false;
 
-	GUISkin gooeyskin;
+	GUIStyleLibrary styleLibrary;
 	
 	void Awake () {
-		GameObject tempGO = GameObject.FindGameObjectWithTag ("GameController");
-		battleBoss = tempGO.GetComponent<GameControl> ();
-		clickBoss = tempGO.GetComponent<ClickControl> ();
-		gooeyskin = (GUISkin)Resources.Load ("GUISkins/options guiskin");
+		battleBoss = gameObject.GetComponent<GameControl> ();
+		clickBoss = gameObject.GetComponent<ClickControl> ();
+		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
+		gameControlUI = gameObject.GetComponent<GameControlUI> ();
 	}
 
 	public void SetYesNoOption (Card ReturnCard) {
@@ -53,7 +52,8 @@ public class OptionControl : MonoBehaviour {
 
 	void OnGUI () {
 		if(optionYesNo) {
-			GUI.BeginGroup(new Rect(Screen.width*.2f, Screen.height*.3f, Screen.width*.6f, Screen.height*.4f), gooeyskin.box);
+			GUI.BeginGroup(new Rect(Screen.width*.2f, Screen.height*.3f, Screen.width*.6f, Screen.height*.4f), 
+			               styleLibrary.OptionControlStyles.Box);
 				if(GUI.Button(new Rect(Screen.width*.1f, Screen.height*.05f, Screen.width*4f, Screen.height*.1f), "Yes")) {
 					returnToThisCard.OptionsCalledThis(true);
 					gameControlUI.Dim(false);
@@ -66,9 +66,10 @@ public class OptionControl : MonoBehaviour {
 		}
 		if(options.Count > 1) {
 			//when i have internet, this needs to be a scrollview
-			GUI.BeginGroup(new Rect(Screen.width*.2f, Screen.height*.3f, Screen.width*.6f, Screen.height*.4f), gooeyskin.box);
+			GUI.BeginGroup(new Rect(Screen.width*.2f, Screen.height*.3f, Screen.width*.6f, Screen.height*.4f), styleLibrary.OptionControlStyles.Box);
 				for(int i = 0; i < options.Count; i++) {
-					if(GUI.Button(new Rect(Screen.width*.1f, Screen.height*.1f*i, Screen.width*.4f, Screen.height*.1f), options[i], gooeyskin.button)){
+				if(GUI.Button(new Rect(Screen.width*.1f, Screen.height*.1f*i, Screen.width*.4f, Screen.height*.1f), 
+				              options[i], styleLibrary.OptionControlStyles.Button)){
 						returnToThisCard.OptionsCalledThis(i);
 						gameControlUI.Dim(false);
 					}

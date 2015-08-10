@@ -4,17 +4,17 @@ using System.Collections;
 public class Obstacle : MonoBehaviour {
 
     public string tooltip;
-    public GameControl battleBoss;
+    public GameControl gameControl;
     public bool Walkable;
 
     public virtual void Start()
     {
-        battleBoss = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControl>();
+        gameControl = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControl>();
     }
 
     public void ShowTooltip()
     {
-        battleBoss.Tooltip = tooltip;
+        gameControl.Tooltip = tooltip;
     }
 
     public virtual void StepIn() { }

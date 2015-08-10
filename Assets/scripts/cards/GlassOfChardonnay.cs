@@ -13,14 +13,14 @@ public class GlassOfChardonnay : Card {
 	}
 	
 	public override void Play () {
-		battleBoss.CardsToTarget = 1;
+		gameControl.CardsToTarget = 1;
 
 		gameControlUI.Dim(true);
-		battleBoss.Tooltip =  ("Please select a discarded card to tuck back into your deck.");
+		gameControl.Tooltip =  ("Please select a discarded card to tuck back into your deck.");
 	}
 	
 	public override void AfterCardTargetingCallback() {
-		foreach(GameObject tempGO in battleBoss.TargetedCards){
+		foreach(GameObject tempGO in gameControl.TargetedCards){
 			tempGO.GetComponent<Card>().Tuck();
 		}
 		
@@ -30,7 +30,7 @@ public class GlassOfChardonnay : Card {
 		clickBoss.DisallowEveryInput ();
 		clickBoss.AllowInfoInput = true;
 		clickBoss.AllowSquareTargetInput = true;
-		battleBoss.TargetSquareCallback = this;
+		gameControl.TargetSquareCallback = this;
 
 		base.AfterCardTargetingCallback ();
 	}

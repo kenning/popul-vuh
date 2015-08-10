@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class ObstacleLibrary : MonoBehaviour {
 
-   // GameControl battleBoss;
+   // GameControl gameControl;
     public enum LevelTypes { Empty, Rocks, FewRocks, ScorpionRiver, BloodRiver, PusRiver, CrushBallcourt, Crossroad, CalabashTree, BatHouse };
     public static LevelTypes[] AllLevelTypes = new LevelTypes[] { LevelTypes.Empty, LevelTypes.Rocks, LevelTypes.FewRocks, LevelTypes.ScorpionRiver, 
                       LevelTypes.BloodRiver, LevelTypes.PusRiver, LevelTypes.CrushBallcourt, LevelTypes.Crossroad, LevelTypes.CalabashTree, 

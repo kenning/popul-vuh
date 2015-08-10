@@ -13,26 +13,26 @@ public class Goulash : Card {
 	}
 	
 	public override void Play () {
-		battleBoss.CardsToTarget = 1;
+		gameControl.CardsToTarget = 1;
 
 		gameControlUI.Dim(true);
-		battleBoss.Tooltip = "Pick a card to discard.";
+		gameControl.Tooltip = "Pick a card to discard.";
 
 		base.Play ();
 	}
 	
 	public override void AfterCardTargetingCallback() {
-		foreach(GameObject tempGO in battleBoss.TargetedCards){
+		foreach(GameObject tempGO in gameControl.TargetedCards){
 			Card tempCard = tempGO.GetComponent<Card>();
 			if(tempCard.ThisRarity == Rarity.Paper) {
-				battleBoss.Draw();
-				battleBoss.Draw();
-				battleBoss.Draw();
-				battleBoss.AddPlays(1);
+				gameControl.Draw();
+				gameControl.Draw();
+				gameControl.Draw();
+				gameControl.AddPlays(1);
 			}
 			else {
-				battleBoss.Draw();
-				battleBoss.AddPlays(3);
+				gameControl.Draw();
+				gameControl.AddPlays(3);
 			}
 			tempCard.DiscardAnimate();
 		}

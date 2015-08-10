@@ -14,20 +14,20 @@ public class BeerBatterFries : Card {
 
 	public override void Play () {
 
-		battleBoss.AddPlays (1);
-		battleBoss.Draw ();
+		gameControl.AddPlays (1);
+		gameControl.Draw ();
 
-		battleBoss.CardsToTarget = 1;
-		battleBoss.CardsToTargetAreDiscarded = true;
+		gameControl.CardsToTarget = 1;
+		gameControl.CardsToTargetAreDiscarded = true;
 
 		gameControlUI.Dim (true);
-		battleBoss.Tooltip =  ("Please select a discarded card to tuck back into your deck.");
+		gameControl.Tooltip =  ("Please select a discarded card to tuck back into your deck.");
 		
 		base.Play ();
 	}
 	
 	public override void AfterCardTargetingCallback() {
-		foreach(GameObject tempGO in battleBoss.TargetedCards){
+		foreach(GameObject tempGO in gameControl.TargetedCards){
 			tempGO.GetComponent<Card>().Tuck();
 		}
 		

@@ -17,17 +17,17 @@ public class Shuriken : Card {
 	}
 	
 	public override void Play () {
-		battleBoss.CardsToTarget = 1;
+		gameControl.CardsToTarget = 1;
 
 		gameControlUI.Dim(true);
-		battleBoss.Tooltip = "Pick a card to discard.";
+		gameControl.Tooltip = "Pick a card to discard.";
 	}
 	
 	public override void AfterCardTargetingCallback() {
 
 		Card.Rarity discardRarity = Rarity.Paper;
 
-		foreach(GameObject tempGO in battleBoss.TargetedCards){
+		foreach(GameObject tempGO in gameControl.TargetedCards){
 			Card c = tempGO.GetComponent<Card>();
 			discardRarity = c.ThisRarity;
 			c.DiscardAnimate();
@@ -50,7 +50,7 @@ public class Shuriken : Card {
 		clickBoss.DisallowEveryInput ();
 		clickBoss.AllowInfoInput = true;
 		clickBoss.AllowSquareTargetInput = true;
-		battleBoss.TargetSquareCallback = this;
+		gameControl.TargetSquareCallback = this;
 
 		QControl.AddToQ (this, QControl.QMethodType.FreeSpecial);
 

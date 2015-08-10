@@ -12,8 +12,8 @@ public class ShepherdsPie : Card {
 	
 	public override void Play ()
 	{
-		battleBoss.Draw();
-		battleBoss.Draw();
+		gameControl.Draw();
+		gameControl.Draw();
 
 		base.Play ();
 	}

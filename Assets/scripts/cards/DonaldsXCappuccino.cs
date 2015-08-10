@@ -19,7 +19,7 @@ public class DonaldsXCappuccino : Card {
 
 	public override void OptionsCalledThis(int choice) {
 		if(choice == 0) {
-			battleBoss.AddPlays(2);
+			gameControl.AddPlays(2);
 		}
 		else {
 			GameObject[] Cards = GameObject.FindGameObjectsWithTag("Card");
@@ -27,11 +27,11 @@ public class DonaldsXCappuccino : Card {
 				Card c = Cards[i].GetComponent<Card>();
 				c.Tuck();
 			}
-			battleBoss.Draw();
-			battleBoss.Draw();
-			battleBoss.Draw();
-			battleBoss.Draw();
-			battleBoss.Draw();
+			gameControl.Draw();
+			gameControl.Draw();
+			gameControl.Draw();
+			gameControl.Draw();
+			gameControl.Draw();
 		}
 
 		base.OptionsCalledThis (choice);

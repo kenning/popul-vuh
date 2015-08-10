@@ -12,7 +12,7 @@ public class Card : MonoBehaviour {
 	public bool Selected;
 	public bool Peeked;
 
-	public GameControl battleBoss;
+	public GameControl gameControl;
 	public GridControl gridBoss;
 	public ShopControl shopBoss;
 	public ClickControl clickBoss;
@@ -99,13 +99,14 @@ public class Card : MonoBehaviour {
 
 	public virtual void Initialize() {
 		GameObject boss = GameObject.FindGameObjectWithTag("GameController");
-		battleBoss = boss.GetComponent<GameControl>();
+		gameControl = boss.GetComponent<GameControl>();
 		gridBoss = boss.GetComponent<GridControl>();
 		shopBoss = boss.GetComponent<ShopControl>();
 		clickBoss = boss.GetComponent<ClickControl>();
 		optionBoss = boss.GetComponent<OptionControl>();
 		eventGUIBoss = boss.GetComponent<EventGUI>();
 		library =  boss.GetComponent<CardLibrary>();
+		gameControlUI = boss.GetComponent<GameControlUI> ();
 		PlayButton = GameObject.Find("play end button").GetComponent<ButtonAnimate>();
 		hand = GameObject.Find("Hand");
 		discardPileObj = GameObject.Find("Discard pile");
@@ -113,7 +114,7 @@ public class Card : MonoBehaviour {
 		meshrenderers = GetComponentsInChildren<MeshRenderer>();
 		SRenderers = gameObject.GetComponentsInChildren<SpriteRenderer>();
 
-		gooeyskin =(GUISkin)Resources.Load("GUISkins/battleboss guiskin");
+		gooeyskin =(GUISkin)Resources.Load("GUISkins/gameControl guiskin");
 
 		LibraryCard tempLibraryCard = CardLibrary.Lib[CardName];
 		name = CardName;
@@ -137,7 +138,7 @@ public class Card : MonoBehaviour {
 
 		CardBackSprite = Resources.Load("sprites/cards/real pixel card back") as Sprite;
 			
-		battleBoss.Hand.Add(gameObject);
+		gameControl.Hand.Add(gameObject);
 
 		TextMesh[] textMeshes = gameObject.GetComponentsInChildren<TextMesh>();
 		foreach(TextMesh text in textMeshes) {
@@ -229,12 +230,12 @@ public class Card : MonoBehaviour {
 	//////////////////////////////////////
 
 	public virtual void OnGUI() {
-		if(Selected && Tooltip != "" && battleBoss.Tooltip == ""){
+		if(Selected && Tooltip != "" && gameControl.Tooltip == ""){
 			GUI.Box(new Rect(Screen.width * .02f, Screen.height * .68f, Screen.width * .8f, Screen.height * .08f), Tooltip, gooeyskin.textArea);
 		}
-		if(battleBoss.CardsToTarget != 0 && Tooltip == "") {
+		if(gameControl.CardsToTarget != 0 && Tooltip == "") {
 			GUI.Box(new Rect(Screen.width*.02f, Screen.height*.72f, Screen.width*.8f, Screen.height*.04f), 
-					"Please select " + battleBoss.CardsToTarget.ToString() + " cards", gooeyskin.textArea);
+					"Please select " + gameControl.CardsToTarget.ToString() + " cards", gooeyskin.textArea);
 		}
 	}
 
@@ -367,11 +368,11 @@ public class Card : MonoBehaviour {
 
 	//select, deselect
 	public void Select() {
-		battleBoss.DeselectCards();
+		gameControl.DeselectCards();
 		gridBoss.DestroyAllTargetSquares();
 		gameControlUI.Dim(false);
 
-		if(battleBoss.PlaysLeft > 0) { 
+		if(gameControl.PlaysLeft > 0) { 
 			if(gameObject != null) {
 				transform.Translate(new Vector3(0f, .25f, 0f));
 				Selected = true;
@@ -400,7 +401,7 @@ public class Card : MonoBehaviour {
 	}
 	//draw 
 	public void DrawAnimate(int position) {
-		gameObject.transform.parent = battleBoss.handObj.transform;
+		gameObject.transform.parent = gameControl.handObj.transform;
 		gameObject.transform.localPosition = new Vector3(-2.7f, .5f, 0);
 
 		DrawAnimating = true;
@@ -452,7 +453,7 @@ public class Card : MonoBehaviour {
 	}
 	public void ShuffleMoveAnimate(Transform Deck) {
 		DeckTransform = Deck;
-		transform.parent = battleBoss.handObj.transform;
+		transform.parent = gameControl.handObj.transform;
 //		Animating = true;
 		DrawStartTime = Time.time;
 		ShuffleAnimating = true;
@@ -468,8 +469,8 @@ public class Card : MonoBehaviour {
 
 		if(DiscardWhenPlayed | ForcingDiscardOfThis) {
 			Discarded = true;
-			battleBoss.Hand.Remove(gameObject);
-			battleBoss.Discard.Add(gameObject);
+			gameControl.Hand.Remove(gameObject);
+			gameControl.Discard.Add(gameObject);
 		}
 	}
 	public void FinishDiscard() {
@@ -477,14 +478,14 @@ public class Card : MonoBehaviour {
 		Deselect();
 		if(DiscardWhenPlayed | ForcingDiscardOfThis) {
 	//		Discarded = true;
-	//		battleBoss.Hand.Remove(gameObject);
-	//		battleBoss.Discard.Add(gameObject);
+	//		gameControl.Hand.Remove(gameObject);
+	//		gameControl.Discard.Add(gameObject);
 			Animating = false;
 			BurnAnimating = false;
 			DrawAnimating = false;
 			ShuffleAnimating = false;
 
-			int index = battleBoss.Discard.IndexOf(gameObject);
+			int index = gameControl.Discard.IndexOf(gameObject);
 
 			transform.parent = discardPileObj.transform;
 			transform.localPosition = new Vector3(0,(index+1) * -.2f, 0);
@@ -524,19 +525,19 @@ public class Card : MonoBehaviour {
 		Animating = true;
 		DrawStartTime = Time.time;
 
-		if(battleBoss.Hand.Contains(gameObject)) 
-			battleBoss.Hand.Remove(gameObject);
-		if (battleBoss.Discard.Contains (gameObject)) 
-			battleBoss.Discard.Remove(gameObject);
-		if(battleBoss.PeekedCards.Contains(gameObject)) 
-			battleBoss.PeekedCards.Remove(gameObject);
+		if(gameControl.Hand.Contains(gameObject)) 
+			gameControl.Hand.Remove(gameObject);
+		if (gameControl.Discard.Contains (gameObject)) 
+			gameControl.Discard.Remove(gameObject);
+		if(gameControl.PeekedCards.Contains(gameObject)) 
+			gameControl.PeekedCards.Remove(gameObject);
 
 		Invoke("FinishTuck", .25f);
 	}
 	public void FinishTuck(){
 		string tempString = CardName;
 		tempString.Replace("\n", " ");
-		battleBoss.Deck.Add(tempString);
+		gameControl.Deck.Add(tempString);
 		Destroy(gameObject);
 
 		clickBoss.AllowEveryInput();
@@ -547,7 +548,7 @@ public class Card : MonoBehaviour {
 		clickBoss.DisallowEveryInput();
 		if(Selected)
 			Deselect();
-		battleBoss.Hand.Remove(gameObject);
+		gameControl.Hand.Remove(gameObject);
 		DrawStartTime = Time.time;
 		BurnAnimating = true;
 	}
@@ -596,10 +597,10 @@ public class Card : MonoBehaviour {
 
 		if(Selected) {
 			//Extreme corner case, this prevents Target Card cards from being played without valid targets
-			if(CardAction == CardActionTypes.TargetCard && ((CardsToTargetWillBeDiscarded && battleBoss.Discard.Count < 1) | 
-															(!CardsToTargetWillBeDiscarded && battleBoss.Hand.Count < 2)    ) ) {
+			if(CardAction == CardActionTypes.TargetCard && ((CardsToTargetWillBeDiscarded && gameControl.Discard.Count < 1) | 
+															(!CardsToTargetWillBeDiscarded && gameControl.Hand.Count < 2)    ) ) {
 				Debug.Log("yeah!!!!");
-				battleBoss.Tooltip = "You can't play this card right now, because it can't target a card.";
+				gameControl.Tooltip = "You can't play this card right now, because it can't target a card.";
 				return;
 			}
 
@@ -615,7 +616,7 @@ public class Card : MonoBehaviour {
 	public virtual void Activate() { Activate(false); }
 	public virtual void Activate(bool FreePlay) {
 		if(!FreePlay && CardAction != CardActionTypes.TargetGridSquare)
-			battleBoss.AddPlays(-1);
+			gameControl.AddPlays(-1);
 
 		clickBoss.DisallowEveryInput();
 
@@ -644,12 +645,12 @@ public class Card : MonoBehaviour {
 			clickBoss.AllowEveryInput();
 			break;
 		case CardActionTypes.TargetCard:
-			if((CardsToTargetWillBePeeked && battleBoss.PeekedCards.Count < CardsToTarget) |
-			   (CardsToTargetWillBeDiscarded && battleBoss.Discard.Count < CardsToTarget) |
-			   (!CardsToTargetWillBeDiscarded && battleBoss.Hand.Count < CardsToTarget)) {
+			if((CardsToTargetWillBePeeked && gameControl.PeekedCards.Count < CardsToTarget) |
+			   (CardsToTargetWillBeDiscarded && gameControl.Discard.Count < CardsToTarget) |
+			   (!CardsToTargetWillBeDiscarded && gameControl.Hand.Count < CardsToTarget)) {
 				Tooltip = "Not enough cards to target!";
 				DiscardOrBurnIfNotInQ();
-				battleBoss.AnimateCardsToCorrectPosition();
+				gameControl.AnimateCardsToCorrectPosition();
 				return;
 			}
 
@@ -662,20 +663,20 @@ public class Card : MonoBehaviour {
 			clickBoss.AllowInfoInput = true;
 
 			if(CardsToTargetWillBeDiscarded) 
-				battleBoss.CardsToTargetAreDiscarded = true;
+				gameControl.CardsToTargetAreDiscarded = true;
 			else 
-				battleBoss.CardsToTargetAreDiscarded = false;
+				gameControl.CardsToTargetAreDiscarded = false;
 
 			if(CardsToTargetWillBePeeked) 
-				battleBoss.CardsToTargetArePeeked = true;
+				gameControl.CardsToTargetArePeeked = true;
 			else
-				battleBoss.CardsToTargetArePeeked = false;
+				gameControl.CardsToTargetArePeeked = false;
 
-			battleBoss.TargetCardCallback = this;
+			gameControl.TargetCardCallback = this;
 			
 			Play();
 			DiscardOrBurnIfNotInQ();
-			battleBoss.AnimateCardsToCorrectPosition();
+			gameControl.AnimateCardsToCorrectPosition();
 			break;
 		case CardActionTypes.Options:
 			Play();
@@ -691,8 +692,8 @@ public class Card : MonoBehaviour {
 	public void EnterTargetingMode() {
 		Select();
 		gridBoss.EnterTargetingMode(rangeTargetType, minRange, maxRange);
-		battleBoss.TargetSquareCallback = this;
-		battleBoss.Tooltip = "Please select a square.";
+		gameControl.TargetSquareCallback = this;
+		gameControl.Tooltip = "Please select a square.";
 		
 		clickBoss.AllowInputUmbrella = true;
 		clickBoss.AllowSquareTargetInput = true;
@@ -744,8 +745,8 @@ public class Card : MonoBehaviour {
 	/// 
 
 	public virtual void AfterCardTargetingCallback() {
-		battleBoss.TargetedCards = new List<GameObject>();
-		battleBoss.CardsToTarget = 0;
+		gameControl.TargetedCards = new List<GameObject>();
+		gameControl.CardsToTarget = 0;
 		gameControlUI.Dim(false);
 
 	//	i put OrganizeCards into CheckQ
@@ -779,7 +780,7 @@ public class Card : MonoBehaviour {
 		if(!FreeTargetSquare) {
 			DiscardOrBurnIfNotInQ();
 			
-			battleBoss.AddPlays(-1);
+			gameControl.AddPlays(-1);
 
 			clickBoss.DisallowEveryInput();
 		}
@@ -866,15 +867,15 @@ public class Card : MonoBehaviour {
 		}
 	}
 	//public void OrganizeCards() {
-	//	battleBoss.AnimateCardsToCorrectPosition();
-	//	battleBoss.CheckDeckCount ();
+	//	gameControl.AnimateCardsToCorrectPosition();
+	//	gameControl.CheckDeckCount ();
 	//}
 	public int HandIndex() {
-		if(battleBoss == null) {
-			battleBoss = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControl>();
+		if(gameControl == null) {
+			gameControl = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControl>();
 		}
-		for(int i = 0; i < battleBoss.Hand.Count; i++) {
-			if(battleBoss.Hand[i] == gameObject) {
+		for(int i = 0; i < gameControl.Hand.Count; i++) {
+			if(gameControl.Hand[i] == gameObject) {
 				return i;
 			}
 		}

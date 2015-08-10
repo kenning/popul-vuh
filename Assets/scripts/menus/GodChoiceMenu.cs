@@ -9,10 +9,11 @@ public class GodChoiceMenu : MonoBehaviour {
 	public bool[] GodChoiceSelection = new bool[7];
 	ShopControl shopBoss;
 
-	public GUISkin GODCHOICEMENUGUISKIN;
+	GUIStyleLibrary styleLibrary;
 
 	void Start() {
 		shopBoss = gameObject.GetComponent<ShopControl> ();
+		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
 		GodChoiceSelection = new bool[] {false, false, false, false, false, false, false};
 	}
 
@@ -26,21 +27,25 @@ public class GodChoiceMenu : MonoBehaviour {
 				int thisGodNumber = ShopControl.AllGods.IndexOf(SaveData.UnlockedGods[i]);
 				GodChoiceSelection[thisGodNumber] = 
 					GUI.Toggle(new Rect(Screen.width*.1f, Screen.height*.1f*i, Screen.width*.6f, Screen.height*.1f), 
-					           GodChoiceSelection[thisGodNumber], SaveData.UnlockedGods[i].ToString(), GODCHOICEMENUGUISKIN.toggle);
-				GUI.Box(new Rect(Screen.width*.15f, Screen.height*.1f*i + Screen.height*.06f, Screen.width*.6f, Screen.height*.030f), ShopControl.GodDescriptions[thisGodNumber], GODCHOICEMENUGUISKIN.textField);
+					           GodChoiceSelection[thisGodNumber], SaveData.UnlockedGods[i].ToString(), styleLibrary.GodChoiceStyles.GodChoiceToggle);
+				GUI.Box(new Rect(Screen.width*.15f, Screen.height*.1f*i + Screen.height*.06f, Screen.width*.6f, Screen.height*.030f), 
+				        ShopControl.GodDescriptions[thisGodNumber], styleLibrary.GodChoiceStyles.GodChoiceToggleText);
 				if(GodChoiceSelection[ShopControl.AllGods.IndexOf(SaveData.UnlockedGods[i])]) {
-					GUI.Box(new Rect(Screen.width*.75f, Screen.height*.1f*i, Screen.width*.2f, Screen.height*.1f), shopBoss.GodIcons[thisGodNumber]);
+					GUI.Box(new Rect(Screen.width*.75f, Screen.height*.1f*i, Screen.width*.2f, Screen.height*.1f), 
+					        shopBoss.GodIcons[thisGodNumber]);
 				}
 			}
 
 			if(!MainMenu.InGame) {
-				if(GUI.Button(new Rect(Screen.width*.1f, Screen.height*.8f, Screen.width*.3f, Screen.height*.15f), "Back", GODCHOICEMENUGUISKIN.button)) {
+				if(GUI.Button(new Rect(Screen.width*.1f, Screen.height*.8f, Screen.width*.3f, Screen.height*.15f), 
+				              "Back", styleLibrary.GodChoiceStyles.BackButton)) {
 					GodChoiceMenuUp = false;
 					SaveLoad.Save();
 					MainMenu.MainMenuUp = true;
 				}
 			}
-			if(GUI.Button(new Rect(Screen.width*.6f, Screen.height*.8f, Screen.width*.3f, Screen.height*.15f), "Start", GODCHOICEMENUGUISKIN.customStyles[0])) {
+			if(GUI.Button(new Rect(Screen.width*.6f, Screen.height*.8f, Screen.width*.3f, Screen.height*.15f), 
+			              "Start", styleLibrary.GodChoiceStyles.Title)) {
 				if(GoalLibrary.NumberOfGoalsPossible(GodChoiceSelection) > 3) {
 					GodChoiceMenuUp = false;
 					gameObject.GetComponent<MainMenu>().BeginButton();

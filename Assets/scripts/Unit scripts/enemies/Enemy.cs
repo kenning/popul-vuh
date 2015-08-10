@@ -336,19 +336,18 @@ public class Enemy : MonoBehaviour {
 			GridUnit GU = eGO.GetComponent<GridUnit>();
 			EnemyUnits.Add(GU);
 		}
+
+		// Do I need to do this? 
 		GameObject[] obstacleGOs = GameObject.FindGameObjectsWithTag("obstacle");
-	//	foreach (GameObject oGO in obstacleGOs)
-	//	{
-	//		GridUnit GU = oGO.GetComponent<GridUnit>();
-	//		EnemyUnits.Add(GU);
-	//	}
+		foreach (GameObject oGO in obstacleGOs) {
+			GridUnit GU = oGO.GetComponent<GridUnit>();
+			EnemyUnits.Add(GU);
+		}
 	}
 
 	public virtual void GoToMax()
 	{
-		//		CurrentMoves = MaxMoves;
 		CurrentPlays = MaxPlays;
-		//		movesText.text = CurrentMoves.ToString ();
 		playsText.text = CurrentPlays.ToString();
 	}
 
@@ -364,8 +363,10 @@ public class Enemy : MonoBehaviour {
 				(   diff[0] == 1    && diff[1] == 0     && direction == "right") |
 				(   diff[0] == 0     && diff[1] == -1     && direction == "down") |
 				(   diff[0] == 0     && diff[1] == 1    && direction == "up") |
-				(thisGU.xPosition > gridSize && direction == "right") | (thisGU.xPosition < -gridSize && direction == "left") |
-				(thisGU.yPosition > gridSize && direction == "up") | (thisGU.yPosition < -gridSize && direction == "down"))
+					(thisGU.xPosition > gridSize && direction == "right") | 
+			    	(thisGU.xPosition < -gridSize && direction == "left") |
+					(thisGU.yPosition > gridSize && direction == "up") | 
+			    	(thisGU.yPosition < -gridSize && direction == "down")	)
 			{
 					return false;
 			}

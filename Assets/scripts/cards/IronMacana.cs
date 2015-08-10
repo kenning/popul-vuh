@@ -15,7 +15,7 @@ public class IronMacana : Card {
         if (Tutorial.TutorialLevel != 0)
         {
             Select();
-            battleBoss.gameObject.GetComponent<Tutorial>().TutorialMessage = "You tapped the wrong card. It's OK, I know they look the same.\n\nSelect the pike and then tap on the enemy.";
+            gameControl.gameObject.GetComponent<Tutorial>().TutorialMessage = "You tapped the wrong card. It's OK, I know they look the same.\n\nSelect the pike and then tap on the enemy.";
         }
         else
         {

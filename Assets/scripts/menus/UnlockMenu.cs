@@ -17,7 +17,7 @@ public class UnlockMenu : MonoBehaviour {
 	}
 
 	public void ShowMenu() {
-		UnlockMenuUp = true;
+//		UnlockMenuUp = true;
 //		FindUnlockBaseCost ();
 	}
 

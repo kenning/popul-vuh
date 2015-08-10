@@ -11,9 +11,9 @@ public class BurntCoffee : Card {
 	}
 	
 	public override void Play () {
-		battleBoss.CardsToTarget = 1;
+		gameControl.CardsToTarget = 1;
 
-		battleBoss.Tooltip =  "Pick a card to burn.";
+		gameControl.Tooltip =  "Pick a card to burn.";
 		
 		gameControlUI.Dim (true);
 
@@ -21,12 +21,12 @@ public class BurntCoffee : Card {
 	}
 	
 	public override void AfterCardTargetingCallback() {
-		foreach(GameObject tempGO in battleBoss.TargetedCards){
+		foreach(GameObject tempGO in gameControl.TargetedCards){
 			Card tempCard = tempGO.GetComponent<Card>();
 			tempCard.Burn();
 		}
 		
-		battleBoss.AddPlays (2);
+		gameControl.AddPlays (2);
 
 //		ReallowEveryInputAfterDiscardOrBurn ();
 

@@ -14,7 +14,7 @@ public class WoodenPike : Card {
     {
         if (Tutorial.TutorialLevel != 0)
         {
-            battleBoss.gameObject.GetComponent<Tutorial>().TutorialMessage = "Now that it's selected, click on the square with the enemy.";
+            gameControl.gameObject.GetComponent<Tutorial>().TutorialMessage = "Now that it's selected, click on the square with the enemy.";
         }
 
         base.Activate();

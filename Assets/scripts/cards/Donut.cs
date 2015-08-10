@@ -11,24 +11,24 @@ public class Donut : Card {
 	}
 	
 	public override void Play () {
-		battleBoss.Draw ();
+		gameControl.Draw ();
 
-		battleBoss.CardsToTarget = 1;
+		gameControl.CardsToTarget = 1;
 
 		gameControlUI.Dim(true);
-		battleBoss.Tooltip = "Pick a card to discard.";
+		gameControl.Tooltip = "Pick a card to discard.";
 		
 		base.Play ();
 	}
 	
 	public override void AfterCardTargetingCallback() {
-		foreach(GameObject tempGO in battleBoss.TargetedCards){
+		foreach(GameObject tempGO in gameControl.TargetedCards){
 			Card tempCard = tempGO.GetComponent<Card>();
 			tempCard.DiscardAnimate();
 		}
 		
-		battleBoss.AddPlays (1);
-		battleBoss.AddMoves (2);
+		gameControl.AddPlays (1);
+		gameControl.AddMoves (2);
 		
 		base.AfterCardTargetingCallback ();
 	}

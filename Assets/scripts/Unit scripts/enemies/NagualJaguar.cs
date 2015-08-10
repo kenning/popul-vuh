@@ -6,6 +6,6 @@ public class NagualJaguar : Enemy {
     {
         AnimateAttack();
         //THIS SHIT BROKE
-        //battleBoss.Invoke("TransformPlayer", .3f);
+        //gameControl.Invoke("TransformPlayer", .3f);
     }
 }

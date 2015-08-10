@@ -11,7 +11,7 @@ public class DragonWhiskey : Card {
 	
 	public override void Play () {
 		//haven't touched anything below this comment yet
-		battleBoss.CardsToTarget = 1;
+		gameControl.CardsToTarget = 1;
 
 		gameControlUI.Dim(true);
 		
@@ -19,8 +19,8 @@ public class DragonWhiskey : Card {
 	}
 	
 	public override void AfterCardTargetingCallback() {
-		foreach(GameObject tempGO in battleBoss.TargetedCards){
-			battleBoss.Return(tempGO);
+		foreach(GameObject tempGO in gameControl.TargetedCards){
+			gameControl.Return(tempGO);
 		}
 		
 //		ReallowUmbrellaInputAfterDiscardOrBurn();

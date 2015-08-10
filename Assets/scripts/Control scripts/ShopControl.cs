@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class ShopControl : MonoBehaviour {
 
-	public GameControl battleBoss;
+	public GameControl gameControl;
 	public ClickControl clickBoss;
 	public CardLibrary library;
 	ClickBlocker clickBlocker;
@@ -60,7 +60,7 @@ public class ShopControl : MonoBehaviour {
     string AddedToCollText = "You can add cards in your collection to your starting deck next time you play!";
 	
     public void Initialize () {
-		battleBoss = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameControl>();
+		gameControl = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameControl>();
 		clickBoss =  GameObject.FindGameObjectWithTag ("GameController").GetComponent<ClickControl>();
 		library =  GameObject.FindGameObjectWithTag ("GameController").GetComponent<CardLibrary>();
 		clickBlocker = GameObject.Find ("moving click blocker").GetComponent<ClickBlocker> ();
@@ -202,16 +202,16 @@ public class ShopControl : MonoBehaviour {
                     {
                         willUnlock = "Buying this card will add it to your collection!";
                     }
-                    if (battleBoss.Dollars >= thisCard.Cost)
+                    if (gameControl.Dollars >= thisCard.Cost)
                     {
 
                         if (GUI.Button(new Rect(0, 0, cardWidth*.8f, cardHeight), willUnlock, SHOPSKIN.customStyles[3]))
                         {
-                            if (battleBoss.Dollars >= thisCard.Cost)
+                            if (gameControl.Dollars >= thisCard.Cost)
                             {
                                 string tempString = thisCard.CardName.ToString();
-                                battleBoss.Deck.Add(tempString);
-                                battleBoss.AddDollars(-thisCard.Cost);
+                                gameControl.Deck.Add(tempString);
+                                gameControl.AddDollars(-thisCard.Cost);
                                 CardsToBuyFrom[i].RemoveAt(j);
 
 
@@ -252,13 +252,13 @@ public class ShopControl : MonoBehaviour {
             }
 
         //Dollar count box
-			GUI.Box(new Rect(Screen.width*.7f, Screen.height*.88f, Screen.width*.2f, Screen.height*.1f), battleBoss.Dollars.ToString(), SHOPSKIN.button);
+			GUI.Box(new Rect(Screen.width*.7f, Screen.height*.88f, Screen.width*.2f, Screen.height*.1f), gameControl.Dollars.ToString(), SHOPSKIN.button);
 
         //Go to next level button
 			if(GUI.Button(new Rect(Screen.width*.2f, Screen.height*.88f, Screen.width*.4f, Screen.height*.1f), "Go to next level", SHOPSKIN.button)) {
 				shopGUI = false;
-				battleBoss.CollectAnimate();
-                battleBoss.Tooltip = "Shuffling together your deck and discard...";
+				gameControl.CollectAnimate();
+                gameControl.Tooltip = "Shuffling together your deck and discard...";
                 AddedToCollText = "You can add cards in your collection to your starting deck next time you play!";
                 shufflin = true; //this bool prevents the normal goal display while shuffle animating.
 			}
@@ -350,13 +350,13 @@ public class ShopControl : MonoBehaviour {
 				CardsToBuyFrom[i].Add(tempLC);
 			}
 
-			if(finalScores[i] == 1) battleBoss.AddDollars(1);
+			if(finalScores[i] == 1) gameControl.AddDollars(1);
 			if(finalScores[i] >= 2) CardsToBuyFrom[i].Add(library.PullCardFromPack(Goals[i].God, Card.Rarity.Silver));
-			if(finalScores[i] == 2) battleBoss.AddDollars(2);
+			if(finalScores[i] == 2) gameControl.AddDollars(2);
 			if(finalScores[i] >= 3) CardsToBuyFrom[i].Add(library.PullCardFromPack(Goals[i].God, Card.Rarity.Gold));
-			if(finalScores[i] == 3) battleBoss.AddDollars(3);
+			if(finalScores[i] == 3) gameControl.AddDollars(3);
 			if(finalScores[i] >= 4) CardsToBuyFrom[i].Add(library.PullCardFromPack(Goals[i].God, Card.Rarity.Gold));
-			if(finalScores[i] == 4) battleBoss.AddDollars(5);
+			if(finalScores[i] == 4) gameControl.AddDollars(5);
 		}
 
 		shopGUI = true;

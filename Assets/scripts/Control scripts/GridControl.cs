@@ -17,7 +17,7 @@ public class GridControl : MonoBehaviour {
     ObstacleLibrary obstacleL;
 
     GridUnit player;
-    //GameControl battleBoss;
+    //GameControl gameControl;
 
     public enum TargetTypes {none, diamond, cross, square, diagonal}; 
 
@@ -30,7 +30,7 @@ public class GridControl : MonoBehaviour {
         FindAllGridUnits ();
         enemyL = gameObject.GetComponent<EnemyLibrary>();
         obstacleL = gameObject.GetComponent<ObstacleLibrary>();
-        //battleBoss = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameControl> ();
+        //gameControl = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameControl> ();
     }
 
     //public method, very convenient. called by gamecontrol

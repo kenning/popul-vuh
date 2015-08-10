@@ -16,11 +16,13 @@ public class EncyclopediaMenu : MonoBehaviour {
 	string[] TabStrings = new string[] {"Gods", "Goals", "Cards", "Enemies"};
 	List<string> UnlockedCardNames = new List<string>();
 	
-
 	ShopControl shopBoss;
 
-	public GUISkin ENCYCLOPEDIASKIN;
-	//public GUISkin ENCYCLOPEDIASKIN2;
+	GUIStyleLibrary styleLibrary;
+
+	void Start() {
+		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
+	}
 
 	void OnGUI() {
 		GUI.depth = 0;
@@ -30,14 +32,15 @@ public class EncyclopediaMenu : MonoBehaviour {
 
 		GUI.BeginGroup(new Rect(Screen.width*.1f, Screen.height*.05f, Screen.width*.8f, Screen.height*.9f), "");
 
-		if(GUI.Button(new Rect(0, Screen.height*.8f, Screen.width*.8f, Screen.height*.1f), "Go back", ENCYCLOPEDIASKIN.button)) {
+		if(GUI.Button(new Rect(0, Screen.height*.8f, Screen.width*.8f, Screen.height*.1f), 
+		              "Go back", styleLibrary.EncyclopediaStyles.BackButton)) {
 			EncyclopediaMenuUp = false;
 			MainMenu.MainMenuUp = true;
 		}
 
 		for(int i = 0; i < TabStrings.Length; i++) {
-			GUIStyle buttonStyle = ENCYCLOPEDIASKIN.customStyles[1];
-			if(Tabs[i]) buttonStyle = ENCYCLOPEDIASKIN.customStyles[2];
+			GUIStyle buttonStyle = styleLibrary.EncyclopediaStyles.TabOff;
+			if(Tabs[i]) buttonStyle = styleLibrary.EncyclopediaStyles.TabOn;
 			if(GUI.Button(new Rect(Screen.width*(.2f*i), 0, Screen.width*.2f, Screen.height*.1f), TabStrings[i], buttonStyle)) {
 				shownGoals = new List<Goal>();
 				selectedGoal = -1;
@@ -47,14 +50,6 @@ public class EncyclopediaMenu : MonoBehaviour {
 					if(i == j) Tabs[j] = true;
 					else Tabs[j] = false;
 				}
-//				Tabs[0] = false;
-//				Tabs[1] = false;
-//				Tabs[3] = false;
-//				Tabs[2] = false;
-//				if(i == 0) Tabs[0] = true;
-//				if(i == 1) Tabs[1] = true;
-//				if(i == 2) Tabs[2] = true;
-//				if(i == 3) Tabs[3] = true;
 				if(shopBoss == null) shopBoss = gameObject.GetComponent<ShopControl>();
 				SelectedGod = -1;
 				scrollPos = Vector2.zero;
@@ -63,14 +58,16 @@ public class EncyclopediaMenu : MonoBehaviour {
 
 		if(!Tabs[2] && !Tabs[3] && !Tabs[1] && !Tabs[0]) {
 			//Intro menu
-			GUI.Box(new Rect(Screen.width*.1f, Screen.height*.2f, Screen.width*.6f, Screen.height*.4f), "Pick a tab to learn more", ENCYCLOPEDIASKIN.customStyles[5]);
+			GUI.Box(new Rect(Screen.width*.1f, Screen.height*.2f, Screen.width*.6f, Screen.height*.4f), 
+			        "Pick a tab to learn more", styleLibrary.EncyclopediaStyles.InfoBox);
 		}
 		else if(Tabs[2] | Tabs[1] | Tabs[0]) {
 				//God tabs
 			for(int i = 0; i < ShopControl.AllGods.Count; i++) {
-				GUIStyle godIconStyle = ENCYCLOPEDIASKIN.customStyles[1];
-				if(SelectedGod == i) godIconStyle = ENCYCLOPEDIASKIN.customStyles[2];
-				if(GUI.Button(new Rect(Screen.width*.8f/7*i, Screen.height*.1f, Screen.width*.8f/7, Screen.height*.1f), shopBoss.GodIcons[i], godIconStyle)){
+				GUIStyle godIconStyle = styleLibrary.EncyclopediaStyles.TabOff;
+				if(SelectedGod == i) godIconStyle = styleLibrary.EncyclopediaStyles.TabOn;
+				if(GUI.Button(new Rect(Screen.width*.8f/7*i, Screen.height*.1f, Screen.width*.8f/7, Screen.height*.1f), 
+				              shopBoss.GodIcons[i], godIconStyle)){
 					SelectedGod = i;
 					selectedCard = -1;
 					FindGoals();
@@ -79,20 +76,25 @@ public class EncyclopediaMenu : MonoBehaviour {
 			}
 
 			if(SelectedGod == -1) {
-				GUI.Box(new Rect(Screen.width*.1f, Screen.height*.2f, Screen.width*.6f, Screen.height*.4f), "Pick a God to learn more", ENCYCLOPEDIASKIN.customStyles[5]);
+				GUI.Box(new Rect(Screen.width*.1f, Screen.height*.2f, Screen.width*.6f, Screen.height*.4f), 
+				        "Pick a God to learn more", styleLibrary.EncyclopediaStyles.InfoBox);
 				GUI.EndGroup ();
 				return;
 			}
 
 			if(Tabs[0]) {
 				string godName = ShopControl.AllGods[SelectedGod].ToString();
-				GUI.DrawTexture(new Rect(0,Screen.height*.2f,Screen.width*.3f, Screen.height*.4f), shopBoss.GodFullTextures[SelectedGod]);
-				GUI.Box(new Rect(Screen.width*.4f, Screen.height*.2f, Screen.width*.4f, Screen.height*.4f), ShopControl.GodDescriptions[SelectedGod]);
-				if(GUI.Button(new Rect(0, Screen.height*.7f, Screen.width*.4f, Screen.height*.1f), "Go to " + godName + "'s Goals")) {
+				GUI.DrawTexture(new Rect(0,Screen.height*.2f,Screen.width*.3f, Screen.height*.4f), 
+				                shopBoss.GodFullTextures[SelectedGod]);
+				GUI.Box(new Rect(Screen.width*.4f, Screen.height*.2f, Screen.width*.4f, Screen.height*.4f), 
+				        ShopControl.GodDescriptions[SelectedGod]);
+				if(GUI.Button(new Rect(0, Screen.height*.7f, Screen.width*.4f, Screen.height*.1f), 
+				              "Go to " + godName + "'s Goals")) {
 					Tabs[0] = false;
 					Tabs[1] = true;
 				}
-				if(GUI.Button(new Rect(Screen.width*.4f, Screen.height*.7f, Screen.width*.4f, Screen.height*.1f), "Go to " + godName + "'s cards")) {
+				if(GUI.Button(new Rect(Screen.width*.4f, Screen.height*.7f, Screen.width*.4f, Screen.height*.1f), 
+				              "Go to " + godName + "'s cards")) {
 					Tabs[0] = false;
 					Tabs[2] = true;
 				}
@@ -105,20 +107,25 @@ public class EncyclopediaMenu : MonoBehaviour {
 				scrollPos = GUI.BeginScrollView(new Rect(Screen.width*.6f, Screen.height*.2f, Screen.width*.4f, Screen.height*.6f), scrollPos, 
 				                new Rect(Screen.width*.6f, Screen.height*.2f, Screen.width*.2f, Screen.height*.1f*shownGoals.Count));
 				for(int i = 0; i < shownGoals.Count; i++) {
-					if(GUI.Button(new Rect(Screen.width*.6f,Screen.height*.1f*(i+2), Screen.width*.18f, Screen.height*.1f), shownGoals[i].MiniDescription, ENCYCLOPEDIASKIN.customStyles[8])){
+					if(GUI.Button(new Rect(Screen.width*.6f,Screen.height*.1f*(i+2), Screen.width*.18f, Screen.height*.1f), 
+					              shownGoals[i].MiniDescription, styleLibrary.EncyclopediaStyles.SubTab)){
 						selectedGoal = i;
 					}
 				}
 				GUI.EndScrollView();
 				
 				if(selectedGoal == -1) {
-					GUI.Box(new Rect(0, Screen.height*.2f, Screen.width*.6f, Screen.height*.4f), "Pick a goal to learn more", ENCYCLOPEDIASKIN.customStyles[5]);
+					GUI.Box(new Rect(0, Screen.height*.2f, Screen.width*.6f, Screen.height*.4f), 
+					        "Pick a goal to learn more", styleLibrary.EncyclopediaStyles.InfoBox);
 				}
 				else {
-					GUI.Box(new Rect(Screen.width*.1f, Screen.height*.2f, Screen.width*.4f, Screen.height*.2f), shownGoals[selectedGoal].MiniDescription);
-					GUI.Box(new Rect(0, Screen.height*.45f, Screen.width*.3f, Screen.height*.3f), "High score info goes here");
+					GUI.Box(new Rect(Screen.width*.1f, Screen.height*.2f, Screen.width*.4f, Screen.height*.2f), 
+					        shownGoals[selectedGoal].MiniDescription);
+					GUI.Box(new Rect(0, Screen.height*.45f, Screen.width*.3f, Screen.height*.3f), 
+					        "High score info goes here");
 						//put high scores here
-					GUI.Box(new Rect(Screen.width*.3f,Screen.height*.45f, Screen.width*.3f, Screen.height*.3f), "High score info goes here");
+					GUI.Box(new Rect(Screen.width*.3f,Screen.height*.45f, Screen.width*.3f, Screen.height*.3f), 
+					        "High score info goes here");
 						//put all time high score here, i guess
 				}
 			}
@@ -132,23 +139,29 @@ public class EncyclopediaMenu : MonoBehaviour {
 				for(int i = 0; i < shownCards.Count; i++) {
 					if(UnlockedCardNames.Contains(shownCards[i].CardName)) {
 
-						if(GUI.Button(new Rect(Screen.width*.6f,Screen.height*.1f*(i+2), Screen.width*.17f, Screen.height*.1f), shownCards[i].DisplayName, ENCYCLOPEDIASKIN.customStyles[8])){
+						GUIStyle CardTabStyle = styleLibrary.EncyclopediaStyles.TabOff;
+						if(selectedCard == i) CardTabStyle = styleLibrary.EncyclopediaStyles.TabOn;
+						if(GUI.Button(new Rect(Screen.width*.6f,Screen.height*.1f*(i+2), Screen.width*.17f, Screen.height*.1f), 
+						              shownCards[i].DisplayName, CardTabStyle)){
 							selectedCard = i;
 						}
 					}
 					else {
-						GUI.Box(new Rect(Screen.width*.6f,Screen.height*.1f*(i+2), Screen.width*.17f, Screen.height*.1f), "???", ENCYCLOPEDIASKIN.customStyles[2]);
+						GUI.Box(new Rect(Screen.width*.6f,Screen.height*.1f*(i+2), Screen.width*.17f, Screen.height*.1f), 
+						        "???", styleLibrary.EncyclopediaStyles.TabOff);
 					}
 				}
 				GUI.EndScrollView();
 
 				if(selectedCard == -1) {
-					GUI.Box(new Rect(0, Screen.height*.2f, Screen.width*.6f, Screen.height*.4f), "Pick a card to learn more", ENCYCLOPEDIASKIN.customStyles[5]);
+					GUI.Box(new Rect(0, Screen.height*.2f, Screen.width*.6f, Screen.height*.4f), 
+					        "Pick a card to learn more", styleLibrary.EncyclopediaStyles.InfoBox);
 				}
 				else {
-					GUI.DrawTexture(new Rect(Screen.width*.0f, Screen.height*.2f, Screen.width*.6f, Screen.height*.6f), shopBoss.CardTextures[SelectedGod]);
-					GUIStyle cardNameStyle = new GUIStyle(ENCYCLOPEDIASKIN.customStyles[6]);
-					GUIStyle cardTextStyle = new GUIStyle(ENCYCLOPEDIASKIN.customStyles[7]);
+					GUI.DrawTexture(new Rect(Screen.width*.0f, Screen.height*.2f, Screen.width*.6f, Screen.height*.6f), 
+					                shopBoss.CardTextures[SelectedGod]);
+					GUIStyle cardNameStyle = new GUIStyle(styleLibrary.EncyclopediaStyles.CardNameStyle);
+					GUIStyle cardTextStyle = new GUIStyle(styleLibrary.EncyclopediaStyles.CardTextStyle);
 					if(shownCards[selectedCard].God == ShopControl.Gods.Akan | shownCards[selectedCard].God == ShopControl.Gods.Buluc |
 					   shownCards[selectedCard].God == ShopControl.Gods.Ikka | shownCards[selectedCard].God == ShopControl.Gods.Kinich | 
 					   shownCards[selectedCard].God == ShopControl.Gods.Chac) {
@@ -158,12 +171,15 @@ public class EncyclopediaMenu : MonoBehaviour {
 						cardNameStyle.normal.textColor = Color.white;
 						cardTextStyle.normal.textColor = Color.white;
 					}
-                    GUI.Box(new Rect(Screen.width*.0f, Screen.height*.2f, Screen.width*.3f, Screen.height*.2f), shownCards[selectedCard].DisplayName, cardNameStyle);
+                    GUI.Box(new Rect(Screen.width*.0f, Screen.height*.2f, Screen.width*.3f, Screen.height*.2f), 
+					        shownCards[selectedCard].DisplayName, cardNameStyle);
 					Texture2D icon = Resources.Load("sprites/card icons/" + shownCards[selectedCard].IconPath) as Texture2D;
 					GUI.Box(new Rect(Screen.width*.325f, Screen.height*.225f, Screen.width*.25f, Screen.height*.15f), icon, GUIStyle.none);
-					GUI.Box(new Rect(Screen.width*.025f, Screen.height*.5f, Screen.width*.55f, Screen.height*.3f), shownCards[selectedCard].DisplayText, cardTextStyle);
+					GUI.Box(new Rect(Screen.width*.025f, Screen.height*.5f, Screen.width*.55f, Screen.height*.3f), 
+					        shownCards[selectedCard].DisplayText, cardTextStyle);
 					//make this look like display()
-					GUI.DrawTexture(new Rect(Screen.width*.45f, Screen.height*.7f, Screen.width*.1f, Screen.width*.1f), shopBoss.GodIcons[SelectedGod]);
+					GUI.DrawTexture(new Rect(Screen.width*.45f, Screen.height*.7f, Screen.width*.1f, Screen.width*.1f), 
+					                shopBoss.GodIcons[SelectedGod]);
 					Card.Rarity rarity = shownCards[selectedCard].ThisRarity;
 					Texture2D rarityTexture = shopBoss.PaperTexture;
 					if(rarity == Card.Rarity.Copper) rarityTexture = shopBoss.CopperTexture;
@@ -174,7 +190,8 @@ public class EncyclopediaMenu : MonoBehaviour {
 			}
 		}
 		else if (Tabs[3]) {
-			GUI.Box(new Rect(Screen.width*.05f, Screen.height*.0f, Screen.width*.7f, Screen.height*.8f), "I'm gonna do this later because i'm lazy", ENCYCLOPEDIASKIN.customStyles[5]);
+			GUI.Box(new Rect(Screen.width*.05f, Screen.height*.0f, Screen.width*.7f, Screen.height*.8f), 
+			        "I'm gonna do this later because i'm lazy", styleLibrary.EncyclopediaStyles.InfoBox);
 		}
 		GUI.EndGroup ();
 	}

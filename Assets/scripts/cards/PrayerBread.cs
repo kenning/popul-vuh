@@ -12,8 +12,8 @@ public class PrayerBread : Card {
 	
 	public override void Play ()
 	{
-		battleBoss.AddDollars (1);
-		battleBoss.Draw ();
+		gameControl.AddDollars (1);
+		gameControl.Draw ();
 
 		base.Play ();
 	}

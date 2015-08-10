@@ -40,7 +40,6 @@ public class EventGUI : MonoBehaviour {
     //the method setguieventmessages, which actually makes them appear.
     void SetGUIString(int place, string guistring)
     {
-        Debug.Log("setguistring");
         GUIStrings[place] = guistring;
         GUIStartTimes[place] = Time.time;
         SetGUIEventMessages();

@@ -11,12 +11,12 @@ public class Apple : Card {
 	}
 	
 	public override void Play () {
-		battleBoss.Draw ();
+		gameControl.Draw ();
 
         if (Tutorial.TutorialLevel != 0)
         {
             Tutorial.PlayedACardLevel7 = true;
-            battleBoss.gameObject.GetComponent<Tutorial>().TutorialMessage = "That's Chac's card, Apple. It draws you a card.";
+            gameControl.gameObject.GetComponent<Tutorial>().TutorialMessage = "That's Chac's card, Apple. It draws you a card.";
         }
 
 		base.Play ();

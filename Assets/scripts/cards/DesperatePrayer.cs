@@ -13,9 +13,9 @@ public class DesperatePrayer : Card {
 	
 	public override void Play () {
 
-		if (battleBoss.Dollars == 0)
-						battleBoss.AddDollars (5);
-		else battleBoss.AddDollars(1);
+		if (gameControl.Dollars == 0)
+						gameControl.AddDollars (5);
+		else gameControl.AddDollars(1);
 
 		base.Play ();
 	}

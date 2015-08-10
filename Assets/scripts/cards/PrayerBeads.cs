@@ -11,7 +11,7 @@ public class PrayerBeads : Card {
 	
 	public override void Play () {
 
-		battleBoss.AddPlays (1);
+		gameControl.AddPlays (1);
 		EventControl.AddToTriggerList (this);
 
 		base.Play ();
@@ -19,7 +19,7 @@ public class PrayerBeads : Card {
 	
 	public override void EventCall(string s) {
 		if(s == "Burn") {
-			battleBoss.AddDollars(3);
+			gameControl.AddDollars(3);
 
             eventGUIBoss.AddGUIString("+$3!");
 		}

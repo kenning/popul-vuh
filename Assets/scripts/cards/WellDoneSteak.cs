@@ -11,11 +11,11 @@ public class WellDoneSteak : Card {
 	}
 	
 	public override void Play () {
-		battleBoss.CardsToTarget = 1;
+		gameControl.CardsToTarget = 1;
 
-		battleBoss.TargetSquareCallback = this;
+		gameControl.TargetSquareCallback = this;
 		
-		battleBoss.Tooltip =  ("Please select a card to burn.");
+		gameControl.Tooltip =  ("Please select a card to burn.");
 		
 		gameControlUI.Dim(true);
 		
@@ -23,14 +23,14 @@ public class WellDoneSteak : Card {
 	}
 	
 	public override void AfterCardTargetingCallback() {
-		foreach(GameObject tempGO in battleBoss.TargetedCards){
+		foreach(GameObject tempGO in gameControl.TargetedCards){
 			Card tempCard = tempGO.GetComponent<Card>();
 			tempCard.Burn();
 		}
 		
-		battleBoss.Draw ();
-		battleBoss.Draw ();
-		battleBoss.AddPlays (1);
+		gameControl.Draw ();
+		gameControl.Draw ();
+		gameControl.AddPlays (1);
 
 		base.AfterCardTargetingCallback ();
 	}

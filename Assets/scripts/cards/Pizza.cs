@@ -12,14 +12,14 @@ public class Pizza : Card {
 	
 	public override void Play () {
 
-		battleBoss.AddPlays (2);
+		gameControl.AddPlays (2);
 
-		for(int i = 0; i < battleBoss.Hand.Count; i++) {
-			if(battleBoss.Hand[i].GetComponent<Card>().God == ShopControl.Gods.Chac) {
+		for(int i = 0; i < gameControl.Hand.Count; i++) {
+			if(gameControl.Hand[i].GetComponent<Card>().God == ShopControl.Gods.Chac) {
 				break;
 			}
-			battleBoss.Draw();
-			battleBoss.Draw();
+			gameControl.Draw();
+			gameControl.Draw();
 		}
 			
 		base.Play ();

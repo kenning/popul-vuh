@@ -11,11 +11,11 @@ public class RitualPyre : Card {
 	}
 	
 	public override void Play () {
-		battleBoss.CardsToTarget = 1;
+		gameControl.CardsToTarget = 1;
 
-		battleBoss.TargetSquareCallback = this;
+		gameControl.TargetSquareCallback = this;
 
-		battleBoss.Tooltip = "Pick a card to burn.";
+		gameControl.Tooltip = "Pick a card to burn.";
 
 		gameControlUI.Dim(true);
 		
@@ -23,12 +23,12 @@ public class RitualPyre : Card {
 	}
 	
 	public override void AfterCardTargetingCallback() {
-		foreach(GameObject tempGO in battleBoss.TargetedCards){
+		foreach(GameObject tempGO in gameControl.TargetedCards){
 			Card tempCard = tempGO.GetComponent<Card>();
 			tempCard.Burn();
 		}
 
-		battleBoss.AddDollars (3);
+		gameControl.AddDollars (3);
 
 		base.AfterCardTargetingCallback ();
 	}
