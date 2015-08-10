@@ -14,9 +14,9 @@ public class BookOfHistory : Card {
 	public override void Play () {
 		gameControl.CardsToTarget = 1;
 
-		gameControlUI.Dim (true);
+		GameControlGUI.Dim (true);
 		gameControl.Tooltip = "Pick a card to be played twice.";
-		clickBoss.AllowForfeitButtonInput = true;
+		clickControl.AllowForfeitButtonInput = true;
 		
 		base.Play ();
 	}

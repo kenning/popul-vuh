@@ -14,7 +14,7 @@ public class FairyTequila : Card {
 	public override void Play () {
 		gameControl.CardsToTarget = 1;
 
-		gameControlUI.Dim(true);
+		GameControlGUI.Dim(true);
 		gameControl.Tooltip =  ("Please select a discarded card to return to your hand.");
 		
 		base.Play ();

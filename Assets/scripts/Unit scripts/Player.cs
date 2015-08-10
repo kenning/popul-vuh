@@ -9,8 +9,8 @@ public class Player : MonoBehaviour {
 	int punchDamage = 1;
 	public int StunnedForXTurns = 0;
 	GameControl gameControl;
-	ShopControl shopBoss;
-	GridControl gridBoss;
+	ShopControl shopControl;
+	GridControl gridControl;
 	//public Texture2D Heart;
 	//public Texture2D EmptyHeart;
 	public Texture2D[] HPBars;
@@ -20,10 +20,10 @@ public class Player : MonoBehaviour {
 	GridUnit playerGU;
 	
 	void Start () {
-		GameObject boss = GameObject.FindGameObjectWithTag ("GameController");
-		gameControl = boss.GetComponent<GameControl> ();
-		shopBoss = boss.GetComponent<ShopControl>();
-		gridBoss = boss.GetComponent<GridControl>();
+		GameObject gameController = GameObject.FindGameObjectWithTag ("GameController");
+		gameControl = gameController.GetComponent<GameControl> ();
+		shopControl = gameController.GetComponent<ShopControl>();
+		gridControl = gameController.GetComponent<GridControl>();
 		playerGU = gameObject.GetComponent<GridUnit>();
 		ResetLife ();
 	}
@@ -36,7 +36,7 @@ public class Player : MonoBehaviour {
 	public void Punch(GameObject enemy) {
     //animation aspect. must happen first
         GridUnit enemyGU = enemy.GetComponent<GridUnit>();
-        gridBoss.MakeSquares(GridControl.TargetTypes.diamond, 0, 0, enemyGU.xPosition, enemyGU.yPosition, false);
+        gridControl.MakeSquares(GridControl.TargetTypes.diamond, 0, 0, enemyGU.xPosition, enemyGU.yPosition, false);
         playerGU.PokeTowards(playerGU.AdjacentPosition(enemyGU));
 
         enemy.GetComponent<Enemy> ().GetPunched (punchDamage);
@@ -44,7 +44,7 @@ public class Player : MonoBehaviour {
 
     //triggers
 		EventControl.EventCheck ("Punch");
-		shopBoss.GoalCheck ("Punch X times");
+		shopControl.GoalCheck ("Punch X times");
 		if (Tutorial.TutorialLevel != 0)
 			gameControl.gameObject.GetComponent<Tutorial>().TutorialTrigger(3);
 
@@ -74,7 +74,7 @@ public class Player : MonoBehaviour {
 			SuccessfulArmors[randomNumber].ArmorPlay
 				();
 			SuccessfulArmors[randomNumber].ArmorHasBeenUsed = true;
-			shopBoss.GoalCheck ("Protect against X attacks");
+			shopControl.GoalCheck ("Protect against X attacks");
 			return;
 		}
 
@@ -116,11 +116,11 @@ public class Player : MonoBehaviour {
 
 			thisGU.GridMove(direction);
 			gameControl.AddMoves(-1);
-			shopBoss.GoalCheck("Move X times in one turn");
-			shopBoss.GoalCheck("Don't move X turns in a row");
-			shopBoss.GoalCheck("Don't deal damage or move X turns in a row");
-			shopBoss.GoalCheck("Don't move X turns in a row");
-			gridBoss.DestroyAllTargetSquares();
+			shopControl.GoalCheck("Move X times in one turn");
+			shopControl.GoalCheck("Don't move X turns in a row");
+			shopControl.GoalCheck("Don't deal damage or move X turns in a row");
+			shopControl.GoalCheck("Don't move X turns in a row");
+			gridControl.DestroyAllTargetSquares();
 			if (Tutorial.TutorialLevel != 0)
 			{
 				gameControl.gameObject.GetComponent<Tutorial>().TutorialTrigger(2);

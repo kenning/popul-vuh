@@ -10,11 +10,11 @@ public class GameControl : MonoBehaviour
 
 	public static bool MovesArePlays = false;
 
-	public ClickControl clickBoss;
-	public ShopControl shopBoss;
-	public EventGUI eventGUIBoss;
-	public GridControl gridBoss;
-	public GameControlUI gameControlUI;
+	ClickControl clickControl;
+	ShopControl shopControl;
+	EventGUI eventGUIgameControl;
+	GridControl gridControl;
+	GameControlGUI gameControlGUI;
 
 	public GameObject handObj;
 	public GameObject playBoardObj;
@@ -84,20 +84,20 @@ public class GameControl : MonoBehaviour
 		handObj = GameObject.Find ("Hand");
 		playBoardObj = GameObject.Find ("Play board");
 		playerObj = GameObject.FindGameObjectWithTag ("Player");
-		shopBoss = gameObject.GetComponent<ShopControl> ();
+		shopControl = gameObject.GetComponent<ShopControl> ();
 		player = GameObject.FindGameObjectWithTag ("Player").GetComponent<Player> ();
 		gooeyskin = (GUISkin)Resources.Load ("GUISkins/gameControl guiskin");
 		
 		library = gameObject.GetComponent<CardLibrary> ();
 		enemyLibrary = gameObject.GetComponent<EnemyLibrary>();
-		clickBoss = gameObject.GetComponent<ClickControl> ();
-		gridBoss = gameObject.GetComponent<GridControl>();
-		gameControlUI = gameObject.GetComponent<GameControlUI> ();
+		clickControl = gameObject.GetComponent<ClickControl> ();
+		gridControl = gameObject.GetComponent<GridControl>();
+		gameControlGUI = gameObject.GetComponent<GameControlGUI> ();
 
 		library.Startup ();
 		enemyLibrary.Startup();
-		shopBoss.Initialize ();
-		shopBoss.goalExpo = false;
+		shopControl.Initialize ();
+		shopControl.goalExpo = false;
 		gameObject.GetComponent<Tutorial>().Initialize();
 
 		SaveLoad.Load ();
@@ -119,7 +119,7 @@ public class GameControl : MonoBehaviour
 		Discard = new List<GameObject> ();
 		TargetedCards = new List<GameObject> ();
 		EnemyObjs = new List<GameObject> ();
-		gameControlUI.SetDiscardPilePosition ();
+		gameControlGUI.SetDiscardPilePosition ();
         deckObj = GameObject.Find("Deck");
 
 
@@ -131,7 +131,7 @@ public class GameControl : MonoBehaviour
 		}
 		
 		library.Startup ();
-		shopBoss.Initialize ();
+		shopControl.Initialize ();
 		player.ResetLife ();
 
 		if (Tutorial.TutorialLevel == 0)
@@ -209,9 +209,9 @@ public class GameControl : MonoBehaviour
 		card.DrawAnimate (Hand.Count-1);	
 		
 		if(!invisibleDraw) { 
-			shopBoss.GoalCheck("Draw X cards in one turn");
+			shopControl.GoalCheck("Draw X cards in one turn");
 			if(card.ThisRarity == Card.Rarity.Paper) {
-				shopBoss.GoalCheck("Draw X paper cards in one turn");
+				shopControl.GoalCheck("Draw X paper cards in one turn");
 			}
 		}
 	}
@@ -251,7 +251,7 @@ public class GameControl : MonoBehaviour
 			newCardScript.Initialize();
 			newCardScript.Peek(i, numberOfCards);
 			PeekedCards.Add(newCardObj);
-			gameControlUI.Dim ();
+			gameControlGUI.Dim ();
 		}
 
 		CallbackCard.PeekCallback ();
@@ -307,9 +307,9 @@ public class GameControl : MonoBehaviour
 				numberOfGods = Level;
 			}
 
-			shopBoss.NewLevelNewGoals(numberOfGods);
+			shopControl.NewLevelNewGoals(numberOfGods);
 
-			gridBoss.LoadEnemiesAndObstacles(Level);
+			gridControl.LoadEnemiesAndObstacles(Level);
 			InvisibleDraw();
 			InvisibleDraw();
 			InvisibleDraw();
@@ -317,7 +317,7 @@ public class GameControl : MonoBehaviour
 
 		StartNewTurn();
 	
-		clickBoss.AllowInputUmbrella = false;
+		clickControl.AllowInputUmbrella = false;
 	}
 
 	/// <summary>
@@ -331,11 +331,11 @@ public class GameControl : MonoBehaviour
 
         EventControl.NewLevelReset();
 
-		foreach(Goal g in shopBoss.Goals) {
+		foreach(Goal g in shopControl.Goals) {
 			g.NewTurnCheck();
 		}
 
-		gameControlUI.Dim (false);
+		gameControlGUI.Dim (false);
 
 		//DIFFERENT IN TUTORIAL!
 		if (Tutorial.TutorialLevel == 0)
@@ -357,9 +357,9 @@ public class GameControl : MonoBehaviour
 
 			UICheck();
 
-			clickBoss.turnEndedAlready = false;
-			clickBoss.AllowEveryInput();
-			clickBoss.cardScriptClickedOn = null;
+			clickControl.turnEndedAlready = false;
+			clickControl.AllowEveryInput();
+			clickControl.cardScriptClickedOn = null;
 
 			EventControl.NewTurnReset();
 
@@ -389,7 +389,7 @@ public class GameControl : MonoBehaviour
 
         if (startingEnemyTurn)
         {
-	    	clickBoss.DisallowEveryInput ();
+	    	clickControl.DisallowEveryInput ();
         }
 
         bool turnIsOver = true;
@@ -421,12 +421,12 @@ public class GameControl : MonoBehaviour
 	#region Level finishing methods: LevelIsDone(), CollectAnimate(), ShuffleInHandAndDiscard(), ReturnToGodChoiceMenu()
 	/// makes shopping interface appears. when shopping is done, go to the next level
 	public void LevelIsDone(){
-		clickBoss.AllowInputUmbrella = false;
-		shopBoss.ProduceCards ();
+		clickControl.AllowInputUmbrella = false;
+		shopControl.ProduceCards ();
 	}
 
 	public void CollectAnimate () {
-		clickBoss.AllowInputUmbrella = false;
+		clickControl.AllowInputUmbrella = false;
 		DeckAnimate deckAnim = deckObj.GetComponent<DeckAnimate> ();
 		deckAnim.ShuffleMoveAnimate();
 	}
@@ -450,7 +450,7 @@ public class GameControl : MonoBehaviour
 
 	public void ReturnToGodChoiceMenu() {
 		GodChoiceMenu.GodChoiceMenuUp = true;
-		shopBoss.Goals = new Goal[0];
+		shopControl.Goals = new Goal[0];
 	}
 	#endregion
 

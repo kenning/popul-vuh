@@ -5,9 +5,8 @@ using System.Collections.Generic;
 public class OptionControl : MonoBehaviour {
 
 	Card returnToThisCard;
-	GameControl battleBoss;
-	ClickControl clickBoss;
-	GameControlUI gameControlUI;
+	ClickControl clickControl;
+	GameControlGUI GameControlGUI;
 
 	public List<string> options;
 	public bool optionYesNo = false;
@@ -15,10 +14,9 @@ public class OptionControl : MonoBehaviour {
 	GUIStyleLibrary styleLibrary;
 	
 	void Awake () {
-		battleBoss = gameObject.GetComponent<GameControl> ();
-		clickBoss = gameObject.GetComponent<ClickControl> ();
+		clickControl = gameObject.GetComponent<ClickControl> ();
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
-		gameControlUI = gameObject.GetComponent<GameControlUI> ();
+		GameControlGUI = gameObject.GetComponent<GameControlGUI> ();
 	}
 
 	public void SetYesNoOption (Card ReturnCard) {
@@ -41,13 +39,13 @@ public class OptionControl : MonoBehaviour {
 	public void TurnOffOptions () {
 		options = new List<string> ();
 		optionYesNo = false;
-		gameControlUI.Dim (false);
+		GameControlGUI.Dim (false);
 	}
 
 	void BaseOptionSet() {
-		gameControlUI.Dim (true);		
-		clickBoss.DisallowEveryInput ();
-		clickBoss.AllowInfoInput = true;
+		GameControlGUI.Dim (true);		
+		clickControl.DisallowEveryInput ();
+		clickControl.AllowInfoInput = true;
 	}
 
 	void OnGUI () {
@@ -56,11 +54,11 @@ public class OptionControl : MonoBehaviour {
 			               styleLibrary.OptionControlStyles.Box);
 				if(GUI.Button(new Rect(Screen.width*.1f, Screen.height*.05f, Screen.width*4f, Screen.height*.1f), "Yes")) {
 					returnToThisCard.OptionsCalledThis(true);
-					gameControlUI.Dim(false);
+					GameControlGUI.Dim(false);
 				}
 				if(GUI.Button(new Rect(Screen.width*.1f, Screen.height*.25f, Screen.width*4f, Screen.height*.1f), "No")) {
 					returnToThisCard.OptionsCalledThis(false);
-					gameControlUI.Dim(false);
+					GameControlGUI.Dim(false);
 				}
 			GUI.EndGroup();
 		}
@@ -71,7 +69,7 @@ public class OptionControl : MonoBehaviour {
 				if(GUI.Button(new Rect(Screen.width*.1f, Screen.height*.1f*i, Screen.width*.4f, Screen.height*.1f), 
 				              options[i], styleLibrary.OptionControlStyles.Button)){
 						returnToThisCard.OptionsCalledThis(i);
-						gameControlUI.Dim(false);
+						GameControlGUI.Dim(false);
 					}
 				}
 			GUI.EndGroup();

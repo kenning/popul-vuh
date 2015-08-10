@@ -29,21 +29,21 @@ public class Tutorial : MonoBehaviour {
 
 	GUIStyleLibrary styleLibrary;
 
-    ClickControl clickBoss;
-    GameControl battleBoss;
-	GameControlUI gameControlUI;
+    ClickControl clickControl;
+    GameControl gameControl;
+	GameControlGUI GameControlGUI;
 
     public static bool PlayedACardLevel7 = false;
 
 	void Start() {
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
-		gameControlUI = gameObject.GetComponent<GameControlUI> ();
+		GameControlGUI = gameObject.GetComponent<GameControlGUI> ();
 	}
 
     public void Initialize()
     {
-        clickBoss = gameObject.GetComponent<ClickControl>();
-        battleBoss = gameObject.GetComponent<GameControl>();
+        clickControl = gameObject.GetComponent<ClickControl>();
+        gameControl = gameObject.GetComponent<GameControl>();
     }
 
     public void OnGUI()
@@ -148,9 +148,9 @@ public class Tutorial : MonoBehaviour {
 
         if (TutorialLevel == 2)
         {
-            clickBoss.DisallowEveryInput();
-            clickBoss.AllowMoveInput = true;
-            clickBoss.AllowInputUmbrella = true;
+            clickControl.DisallowEveryInput();
+            clickControl.AllowMoveInput = true;
+            clickControl.AllowInputUmbrella = true;
 
             gameObject.GetComponent<GridControl>().InvokeRepeating("TutorialMovementIllustration", .4f, 1.2f);
         }
@@ -158,9 +158,9 @@ public class Tutorial : MonoBehaviour {
         {
             gameObject.GetComponent<GridControl>().CancelInvoke();
 
-            clickBoss.DisallowEveryInput();
-            clickBoss.AllowNewPlayInput = true;
-            clickBoss.AllowInputUmbrella = true;
+            clickControl.DisallowEveryInput();
+            clickControl.AllowNewPlayInput = true;
+            clickControl.AllowInputUmbrella = true;
 
             GridUnit p = GameObject.FindGameObjectWithTag("Player").GetComponent<GridUnit>();
             gameObject.GetComponent<EnemyLibrary>().LoadEnemy("Mud Warrior", p.xPosition, p.yPosition-1);
@@ -175,27 +175,27 @@ public class Tutorial : MonoBehaviour {
             {
                 Destroy(en);
             }
-            clickBoss.DisallowEveryInput();
-			gameControlUI.Dim();
+            clickControl.DisallowEveryInput();
+			GameControlGUI.Dim();
         }
         if (TutorialLevel == 5)
         {
             gameObject.GetComponent<GridControl>().CancelInvoke();
 
-			gameControlUI.Dim(false);
-            List<string> deck = battleBoss.Deck;
+			GameControlGUI.Dim(false);
+            List<string> deck = gameControl.Deck;
             deck.Add("Wooden Pike");
             deck.Add("Wooden Pike");
             deck.Add("Iron Macana");
             deck.Add("Iron Macana");
             int count = deck.Count;
-            for (int i = 0; i < count; i++) { battleBoss.Draw(); }
-            battleBoss.AddPlays(1);
+            for (int i = 0; i < count; i++) { gameControl.Draw(); }
+            gameControl.AddPlays(1);
 
-            clickBoss.DisallowEveryInput();
-            clickBoss.AllowNewPlayInput = true;
-            clickBoss.AllowInfoInput = true;
-            clickBoss.AllowInputUmbrella = true;
+            clickControl.DisallowEveryInput();
+            clickControl.AllowNewPlayInput = true;
+            clickControl.AllowInfoInput = true;
+            clickControl.AllowInputUmbrella = true;
 
             GridUnit p = GameObject.FindGameObjectWithTag("Player").GetComponent<GridUnit>();
             p.xPosition = 0;
@@ -206,23 +206,23 @@ public class Tutorial : MonoBehaviour {
         }
         if (TutorialLevel == 6)
         {
-            battleBoss.DeleteAllCards();
+            gameControl.DeleteAllCards();
 
-            List<string> deck = battleBoss.Deck;
+            List<string> deck = gameControl.Deck;
             deck.Add("Apple");
             deck.Add("Coffee");
             deck.Add("Cloth Shoes");
             deck.Add("Quick Prayer");
             int count = deck.Count;
-            for (int i = 0; i < count; i++) { battleBoss.Draw(); }
+            for (int i = 0; i < count; i++) { gameControl.Draw(); }
             deck.Add("Quick Prayer");
 
-            battleBoss.AddPlays(4);
+            gameControl.AddPlays(4);
 
-            clickBoss.DisallowEveryInput();
-            clickBoss.AllowNewPlayInput = true;
-            clickBoss.AllowInfoInput = true;
-            clickBoss.AllowInputUmbrella = true;
+            clickControl.DisallowEveryInput();
+            clickControl.AllowNewPlayInput = true;
+            clickControl.AllowInfoInput = true;
+            clickControl.AllowInputUmbrella = true;
         }
     }
 

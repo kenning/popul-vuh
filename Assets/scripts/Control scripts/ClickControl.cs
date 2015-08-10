@@ -5,10 +5,10 @@ using System.Collections.Generic;
 public class ClickControl : MonoBehaviour {
 	//Game control scripts
 	GameControl gameControl;
-	GridControl gridBoss;
-	ShopControl shopBoss;
+	GridControl gridControl;
+	ShopControl shopControl;
 	GameObject hand;
-	GameControlUI gameControlUI;
+	GameControlGUI GameControlGUI;
 	ButtonAnimate playButton;
     //player script
     Player player;
@@ -54,9 +54,9 @@ public class ClickControl : MonoBehaviour {
 	void Start(){
 		GameObject tempGO = GameObject.FindGameObjectWithTag ("GameController");
 		gameControl = tempGO.GetComponent<GameControl> ();
-		gridBoss = tempGO.GetComponent<GridControl>();
-		shopBoss = tempGO.GetComponent<ShopControl> ();
-		gameControlUI = tempGO.GetComponent<GameControlUI> ();
+		gridControl = tempGO.GetComponent<GridControl>();
+		shopControl = tempGO.GetComponent<ShopControl> ();
+		GameControlGUI = tempGO.GetComponent<GameControlGUI> ();
 		playerObject = GameObject.FindGameObjectWithTag ("Player");
         player = playerObject.GetComponent<Player>();
 		hand = GameObject.Find ("Hand");
@@ -82,8 +82,8 @@ public class ClickControl : MonoBehaviour {
 
 	//AllowInputUmbrella
 		if(!AllowInputUmbrella) {
-			if(gameControlUI.CardDisplay) {
-				gameControlUI.Undisplay();
+			if(GameControlGUI.CardDisplay) {
+				GameControlGUI.Undisplay();
 				cardHasBeenClickedOn = false;
 			}
 			if(draggingGameboard) {
@@ -101,8 +101,8 @@ public class ClickControl : MonoBehaviour {
 		/// DRAGGING AND DISPLAY -- InfoInput
 		//////////////////////////////////////
 
-		if(gameControlUI.CardDisplay && !Input.GetMouseButton(0)) {
-			gameControlUI.Undisplay();
+		if(GameControlGUI.CardDisplay && !Input.GetMouseButton(0)) {
+			GameControlGUI.Undisplay();
 			cardHasBeenClickedOn = false;
 		}
 
@@ -218,8 +218,8 @@ public class ClickControl : MonoBehaviour {
 					cardHasBeenClickedOn = false;
 				}
 	//AllowInfoInput
-				else if(Time.time - 0.2f > lastCardClick && !gameControlUI.CardDisplay && AllowInfoInput) { 
-					gameControlUI.Display(cardScriptClickedOn);
+				else if(Time.time - 0.2f > lastCardClick && !GameControlGUI.CardDisplay && AllowInfoInput) { 
+					GameControlGUI.Display(cardScriptClickedOn);
 					cardHasBeenClickedOn = false;
 				}
 				else if(Time.time - .1f > lastCardClick && AllowInfoInput) 
@@ -235,9 +235,9 @@ public class ClickControl : MonoBehaviour {
 
 		if(Input.GetMouseButtonDown(0)){
 
-			shopBoss.GoalCheck("Touch the screen no more than than X times");
+			shopControl.GoalCheck("Touch the screen no more than than X times");
 
-			gameControlUI.ShowDeck(false);
+			GameControlGUI.ShowDeck(false);
 			gameControl.Tooltip = "";
 
 			float dist = transform.position.z - Camera.main.transform.position.z;
@@ -254,7 +254,7 @@ public class ClickControl : MonoBehaviour {
 						turnEndedAlready = true;
 						gameControl.ButtonSpritesLookClicked();
 						gameControl.DeselectCards();
-						gridBoss.DestroyAllTargetSquares();
+						gridControl.DestroyAllTargetSquares();
                         if (Tutorial.TutorialLevel != 0)
                         {
                             gameControl.StartNewTurn();
@@ -289,7 +289,7 @@ public class ClickControl : MonoBehaviour {
 	//AllowInfoInput
 				foreach(RaycastHit2D hit in hits) {
 					if(hit.collider.gameObject.name == "Deck" && AllowInfoInput) { 
-						gameControlUI.ShowDeck(true);
+						GameControlGUI.ShowDeck(true);
 						return;
 					}
 				}
@@ -336,7 +336,7 @@ public class ClickControl : MonoBehaviour {
 							GridUnit tempGU = hit.collider.gameObject.GetComponent<GridUnit>();
 							Enemy tempEnemy = hit.collider.gameObject.GetComponent<Enemy>();
 							gameControl.Tooltip = tempEnemy.Tooltip;
-							gridBoss.MakeSquares(tempEnemy.AttackTargetType, tempEnemy.AttackMinRange, tempEnemy.AttackMaxRange, tempGU.xPosition, tempGU.yPosition, false);
+							gridControl.MakeSquares(tempEnemy.AttackTargetType, tempEnemy.AttackMinRange, tempEnemy.AttackMaxRange, tempGU.xPosition, tempGU.yPosition, false);
 						}
 						return;
 					}
@@ -344,7 +344,7 @@ public class ClickControl : MonoBehaviour {
 
 	//Deselect card
 				gameControl.DeselectCards();
-				gridBoss.DestroyAllTargetSquares();
+				gridControl.DestroyAllTargetSquares();
 
 				foreach(RaycastHit2D hit in hits) 
 	//return
@@ -353,7 +353,7 @@ public class ClickControl : MonoBehaviour {
 				foreach(RaycastHit2D hit in hits) {
 	//AllowInfoInput
 					if(hit.collider.gameObject.name == "Discard pile" && AllowInfoInput) {
-						gameControlUI.FlipDiscard();
+						GameControlGUI.FlipDiscard();
 						return;
 					}
 				}
@@ -361,7 +361,7 @@ public class ClickControl : MonoBehaviour {
 	//AllowInfoInput
 					if(hit.collider.gameObject.tag == "Player" && AllowInfoInput){
 						gameControl.Tooltip = "That's you!\nTap adjacent squares to move there or punch enemies.";
-						gridBoss.MakeSquares(GridControl.TargetTypes.diamond, 1, 1, false);
+						gridControl.MakeSquares(GridControl.TargetTypes.diamond, 1, 1, false);
 						return;
 					}
 				}
@@ -400,10 +400,10 @@ public class ClickControl : MonoBehaviour {
 						if(adjCheck(hit.collider.gameObject.transform.position) != "none") {
 							if(gameControl.MovesLeft > 0){
 								gameControl.AddMoves(-1);
-								shopBoss.GoalCheck("Move X times in one turn");
-								shopBoss.GoalCheck("Don't move X turns in a row");
-								shopBoss.GoalCheck("Don't deal damage or move X turns in a row");
-								shopBoss.GoalCheck("Don't move X turns in a row");
+								shopControl.GoalCheck("Move X times in one turn");
+								shopControl.GoalCheck("Don't move X turns in a row");
+								shopControl.GoalCheck("Don't deal damage or move X turns in a row");
+								shopControl.GoalCheck("Don't move X turns in a row");
 							}
 							else {
 								ButtonAnimate moveButton = GameObject.Find("move end button").GetComponent<ButtonAnimate>();

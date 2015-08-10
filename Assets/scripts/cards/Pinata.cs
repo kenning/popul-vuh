@@ -53,13 +53,13 @@ public class Pinata : Card {
 	}
 
 	void PinataMethod () {
-		gameControlUI.Dim(false);
+		GameControlGUI.Dim(false);
 		for(int i = gameControl.PeekedCards.Count-1; i > -1; i++) {
 			gameControl.PeekedCards[i].GetComponent<Card>().Tuck();
 		}
 		gameControl.Tooltip = "";
 
-		clickBoss.AllowEveryInput ();
+		clickControl.AllowEveryInput ();
 		CheckQ();
 	}
 }

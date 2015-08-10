@@ -4,19 +4,20 @@ using System.Collections.Generic;
 
 public class ShopControl : MonoBehaviour {
 
-	public GameControl gameControl;
-	public ClickControl clickBoss;
-	public CardLibrary library;
+	GameControl gameControl;
+	ClickControl clickControl;
+	CardLibrary library;
 	ClickBlocker clickBlocker;
 	GoalLibrary goalLibrary;
 	public GUISkin SHOPSKIN;
-	public GUISkin CARDDISPLAYSKIN;
+
+	GUIStyleLibrary styleLibrary;
 
 	public Goal[] Goals;
-	public bool[] GoalDisplay;
+	bool[] GoalDisplay;
 	public static bool Normaldisplay;
 
-	public List<LibraryCard>[] CardsToBuyFrom;
+	List<LibraryCard>[] CardsToBuyFrom;
 
 	string[] possibleGoals;
 
@@ -26,7 +27,8 @@ public class ShopControl : MonoBehaviour {
     public bool shufflin = false;
 
 	public enum Gods {Ikka, Ekcha, Chac, Kinich, Buluc, Ixchel, Akan, Pantheon, none};
-	public static string[] GodDescriptions	= {"Alcohols / Discard Pile", "Damage Spells", "Prayers", "Agility", "Protection", "Fire / Card Destruction", "Card draw / Food", "Card draw / Food", "Card draw / Food", "Card draw / Food"};
+	public static string[] GodDescriptions	= {"Alcohols / Discard Pile", "Damage Spells", "Prayers", "Agility", 
+		"Protection", "Fire / Card Destruction", "Card draw / Food", "Card draw / Food", "Card draw / Food", "Card draw / Food"};
 	public static List<Gods> AllGods = new List<Gods> ();
 
 	public Sprite[] GodFullSprites;
@@ -60,12 +62,13 @@ public class ShopControl : MonoBehaviour {
     string AddedToCollText = "You can add cards in your collection to your starting deck next time you play!";
 	
     public void Initialize () {
-		gameControl = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameControl>();
-		clickBoss =  GameObject.FindGameObjectWithTag ("GameController").GetComponent<ClickControl>();
-		library =  GameObject.FindGameObjectWithTag ("GameController").GetComponent<CardLibrary>();
-		clickBlocker = GameObject.Find ("moving click blocker").GetComponent<ClickBlocker> ();
+		gameControl = gameObject.GetComponent<GameControl>();
+		clickControl =  gameObject.GetComponent<ClickControl>();
+		library =  gameObject.GetComponent<CardLibrary>();
+		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
 		goalLibrary = gameObject.GetComponent<GoalLibrary> ();
 		goalLibrary.Startup ();
+		clickBlocker = GameObject.Find ("moving click blocker").GetComponent<ClickBlocker> ();
 
 		Goals = new Goal[0];
 
@@ -91,13 +94,16 @@ public class ShopControl : MonoBehaviour {
 			GUI.BeginGroup(new Rect(0,0,Screen.width,Screen.height), "", SHOPSKIN.customStyles[0]);
 
 			for(int i = 0; i < Goals.Length; i++) {
-				GUI.Box(new Rect(Screen.width*.1f, Screen.height*(.1f + i*.2f), Screen.width*.2f, Screen.height*.18f), (Texture2D)Goals[i].GodTexture, GUIStyle.none);
-				GUI.Box(new Rect(Screen.width*.3f, Screen.height*(.1f + i*.2f), Screen.width*.6f, Screen.height*.18f), Goals[i].GodString + Goals[i].Description, SHOPSKIN.box);
+				GUI.Box(new Rect(Screen.width*.1f, Screen.height*(.1f + i*.2f), Screen.width*.2f, Screen.height*.18f), 
+				        (Texture2D)Goals[i].GodTexture, GUIStyle.none);
+				GUI.Box(new Rect(Screen.width*.3f, Screen.height*(.1f + i*.2f), Screen.width*.6f, Screen.height*.18f), 
+				        Goals[i].GodString + Goals[i].Description, SHOPSKIN.box);
 			}
 
-			if(GUI.Button(new Rect(Screen.width*.2f, Screen.height*.8f, Screen.width*.6f, Screen.height*.1f), "Got it!", SHOPSKIN.button)) {
+			if(GUI.Button(new Rect(Screen.width*.2f, Screen.height*.8f, Screen.width*.6f, Screen.height*.1f), 
+			              "Got it!", SHOPSKIN.button)) {
 				goalExpo = false;
-				clickBoss.Invoke("AllowEveryInput", .1f);
+				clickControl.Invoke("AllowEveryInput", .1f);
 				SetGoalGUI();
 			}
 
@@ -140,7 +146,8 @@ public class ShopControl : MonoBehaviour {
 							thisStyle = SHOPSKIN.customStyles[4];
 						}
 					}
-					if(grade != "Nothing! +$0") GUI.Box(new Rect(0, Screen.height*.105f, Screen.width*.3f, Screen.height*.05f), grade, thisStyle);
+					if(grade != "Nothing! +$0") GUI.Box(new Rect(0, Screen.height*.105f, Screen.width*.3f, Screen.height*.05f), 
+				                                    grade, thisStyle);
 				GUI.EndGroup();
 
             //cards to buy
@@ -157,11 +164,11 @@ public class ShopControl : MonoBehaviour {
 					backgroundStyle.normal.background = CardTextures[AllGods.IndexOf(thisCard.God)];
                     GUI.BeginGroup(new Rect(cardWidth*i, (j+1f)*cardHeight, cardWidth*.8f, cardHeight), "", backgroundStyle);
 
-					GUIStyle cardNameStyle = new GUIStyle(CARDDISPLAYSKIN.customStyles[6]);
-					cardNameStyle.fontSize = 14;
+					GUIStyle cardNameStyle = new GUIStyle(styleLibrary.ShopStyles.DisplayTitle);
+					cardNameStyle.fontSize = styleLibrary.ShopStyles.DisplayTitleFontSize;
 					cardNameStyle.alignment = TextAnchor.UpperLeft;
-					GUIStyle cardTextStyle = new GUIStyle(CARDDISPLAYSKIN.customStyles[7]);
-					cardTextStyle.fontSize = 10;
+					GUIStyle cardTextStyle = new GUIStyle(styleLibrary.ShopStyles.DisplayText);
+					cardTextStyle.fontSize = styleLibrary.ShopStyles.DisplayTextFontSize;
 					cardTextStyle.alignment = TextAnchor.UpperLeft;
 					
 					if(thisCard.God == ShopControl.Gods.Akan | thisCard.God == ShopControl.Gods.Buluc |
@@ -218,7 +225,8 @@ public class ShopControl : MonoBehaviour {
 
                                 if (!SaveData.UnlockedCards.Contains(thisCard) && SaveData.UnlockedGods.Contains(thisCard.God))
                                 {
-                                    AddedToCollText = "Added " + thisCard.God.ToString() + "'s card " + tempString + " to your collection!\n" + AddedToCollText;
+                                    AddedToCollText = "Added " + thisCard.God.ToString() + "'s card " + tempString + 
+													  " to your collection!\n" + AddedToCollText;
                                     //Don't just add it! call the method 
                                     SaveData.AddCardToUnlocked(thisCard);
                                     SaveLoad.Save();
@@ -231,7 +239,8 @@ public class ShopControl : MonoBehaviour {
                         }
                     }
                     GUI.EndGroup();
-                    GUI.Box(new Rect(cardWidth * i + cardWidth * .8f, (j + 1f) * cardHeight, cardWidth * .2f, cardHeight), "$\n" + thisCard.Cost.ToString(), costBox);
+                    GUI.Box(new Rect(cardWidth * i + cardWidth * .8f, (j + 1f) * cardHeight, cardWidth * .2f, cardHeight), 
+					        "$\n" + thisCard.Cost.ToString(), costBox);
 				}
                 
                 //this is to limit the fading to this element only
@@ -248,14 +257,17 @@ public class ShopControl : MonoBehaviour {
         //"You added x to your collection" box
             if (AddedToCollText != "You can add cards in your collection to your starting deck next time you play!")
             {
-                GUI.Box(new Rect(Screen.width * .1f, Screen.height * .7f, Screen.width * .8f, Screen.height * .15f), AddedToCollText, SHOPSKIN.customStyles[2]);
+                GUI.Box(new Rect(Screen.width * .1f, Screen.height * .7f, Screen.width * .8f, Screen.height * .15f), 
+				        AddedToCollText, SHOPSKIN.customStyles[2]);
             }
 
         //Dollar count box
-			GUI.Box(new Rect(Screen.width*.7f, Screen.height*.88f, Screen.width*.2f, Screen.height*.1f), gameControl.Dollars.ToString(), SHOPSKIN.button);
+			GUI.Box(new Rect(Screen.width*.7f, Screen.height*.88f, Screen.width*.2f, Screen.height*.1f), 
+			        gameControl.Dollars.ToString(), SHOPSKIN.button);
 
         //Go to next level button
-			if(GUI.Button(new Rect(Screen.width*.2f, Screen.height*.88f, Screen.width*.4f, Screen.height*.1f), "Go to next level", SHOPSKIN.button)) {
+			if(GUI.Button(new Rect(Screen.width*.2f, Screen.height*.88f, Screen.width*.4f, Screen.height*.1f), 
+			              "Go to next level", SHOPSKIN.button)) {
 				shopGUI = false;
 				gameControl.CollectAnimate();
                 gameControl.Tooltip = "Shuffling together your deck and discard...";
@@ -271,9 +283,12 @@ public class ShopControl : MonoBehaviour {
 				GUI.Box(new Rect(Screen.width*i*.333333f, 0, Screen.width*.11111f, Screen.height*.05f), Goals[i].GodIcon, SHOPSKIN.textArea);
 
 				if(GoalDisplay[i]){
-					GUI.Box(new Rect(Screen.width*(i*.333333f),Screen.height*.05f, Screen.width*.333333f, Screen.height*.15f), Goals[i].GodString + Goals[i].Description, SHOPSKIN.textArea);
-					GUI.Box(new Rect(Screen.width*(i*.333333f + .11111f), 0, Screen.width*.22222f, Screen.height*.05f), Goals[i].CurrentScore.ToString(), SHOPSKIN.textArea);
-					GUI.Box(new Rect(Screen.width*(i*.333333f + .22222f), Screen.height*.2f, Screen.width*.11111f, Screen.height*.1f), STOPLIGHTTEXTURE, SHOPSKIN.textArea);
+					GUI.Box(new Rect(Screen.width*(i*.333333f),Screen.height*.05f, Screen.width*.333333f, Screen.height*.15f), 
+					        Goals[i].GodString + Goals[i].Description, SHOPSKIN.textArea);
+					GUI.Box(new Rect(Screen.width*(i*.333333f + .11111f), 0, Screen.width*.22222f, Screen.height*.05f), 
+					        Goals[i].CurrentScore.ToString(), SHOPSKIN.textArea);
+					GUI.Box(new Rect(Screen.width*(i*.333333f + .22222f), Screen.height*.2f, Screen.width*.11111f, Screen.height*.1f), 
+					        STOPLIGHTTEXTURE, SHOPSKIN.textArea);
 					string tempString = "";
 					for(int j = 0; j < Goals[i].GoalScore.Length; j++){
 
@@ -292,8 +307,10 @@ public class ShopControl : MonoBehaviour {
 							if(j+1 != Goals[i].GoalScore.Length) tempString += "\n";
 						}
 					}
-					GUI.Box(new Rect(Screen.width*(i*.333333f), Screen.height*.2f, Screen.width*.13333333333f, Screen.height*.1f), "Best score:\n" + Goals[i].HighScore.ToString(), SHOPSKIN.textArea);
-					GUI.Box(new Rect(Screen.width*(i*.333333f + .13333333333f), Screen.height*.2f, Screen.width*.1f, Screen.height*.1f), tempString, SHOPSKIN.textArea);
+					GUI.Box(new Rect(Screen.width*(i*.333333f), Screen.height*.2f, Screen.width*.13333333333f, Screen.height*.1f), 
+					        "Best score:\n" + Goals[i].HighScore.ToString(), SHOPSKIN.textArea);
+					GUI.Box(new Rect(Screen.width*(i*.333333f + .13333333333f), Screen.height*.2f, Screen.width*.1f, Screen.height*.1f), 
+					        tempString, SHOPSKIN.textArea);
 
 					if(GUI.Button(new Rect(Screen.width*(i*.333333f),0, Screen.width*.333333f, Screen.height*.3f), "", SHOPSKIN.customStyles[1])) {
 						GoalDisplay = new bool[] {false, false, false};
@@ -360,7 +377,7 @@ public class ShopControl : MonoBehaviour {
 		}
 
 		shopGUI = true;
-		clickBoss.DisallowEveryInput ();
+		clickControl.DisallowEveryInput ();
 	}
 
 	int[] FinalScores () {
@@ -418,7 +435,7 @@ public class ShopControl : MonoBehaviour {
 
 		SetGoalGUI ();
 		goalExpo = true;
-		clickBoss.DisallowEveryInput ();
+		clickControl.DisallowEveryInput ();
 
 	}
 }

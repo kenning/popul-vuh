@@ -15,7 +15,7 @@ public class GlassOfChardonnay : Card {
 	public override void Play () {
 		gameControl.CardsToTarget = 1;
 
-		gameControlUI.Dim(true);
+		GameControlGUI.Dim(true);
 		gameControl.Tooltip =  ("Please select a discarded card to tuck back into your deck.");
 	}
 	
@@ -24,22 +24,22 @@ public class GlassOfChardonnay : Card {
 			tempGO.GetComponent<Card>().Tuck();
 		}
 		
-		gridBoss.EnterTargetingMode(rangeTargetType, minRange, maxRange);
+		gridControl.EnterTargetingMode(rangeTargetType, minRange, maxRange);
 
 		//these must be done manually because after targeting a card, you must finish the card action by attacking.
-		clickBoss.DisallowEveryInput ();
-		clickBoss.AllowInfoInput = true;
-		clickBoss.AllowSquareTargetInput = true;
+		clickControl.DisallowEveryInput ();
+		clickControl.AllowInfoInput = true;
+		clickControl.AllowSquareTargetInput = true;
 		gameControl.TargetSquareCallback = this;
 
 		base.AfterCardTargetingCallback ();
 	}
 
 	public override void TargetSquareCalledThis (int x, int y) {
-		gridBoss.DestroyAllTargetSquares();
+		gridControl.DestroyAllTargetSquares();
 		
 		FindAndAffectUnits(x, y);
-		gridBoss.MakeSquares (aoeTargetType, aoeMinRange, aoeMaxRange, x, y, false);
+		gridControl.MakeSquares (aoeTargetType, aoeMinRange, aoeMaxRange, x, y, false);
 	}
 
 	public override void Affect (GridUnit targetedUnit) {

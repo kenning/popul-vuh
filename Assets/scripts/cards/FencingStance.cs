@@ -24,7 +24,7 @@ public class FencingStance : Card {
 		if(s == "Punch") {
 			gameControl.AddMoves(2);
             Debug.Log("got there");
-			eventGUIBoss.AddGUIString("Move +2!");
+			eventGUIControl.AddGUIString("Move +2!");
 		}
 	}
 }

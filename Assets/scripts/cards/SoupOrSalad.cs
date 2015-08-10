@@ -12,7 +12,7 @@ public class SoupOrSalad : Card {
 
 	public override void Play () {
 		string[] options = new string[] {"+2 cards", "+2 plays"};
-		optionBoss.SetOptions (options, this);
+		optionControl.SetOptions (options, this);
 
 		base.Play ();
 	}

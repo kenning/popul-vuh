@@ -12,7 +12,7 @@ public class DonaldsXCappuccino : Card {
 
 	public override void Play () {
 		string[] options = new string[] {"+2 plays", "Tuck all cards in your hand and deck, then draw 5"};
-		optionBoss.SetOptions (options, this);
+		optionControl.SetOptions (options, this);
 
 		base.Play ();
 	}

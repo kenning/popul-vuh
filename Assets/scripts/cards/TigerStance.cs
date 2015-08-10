@@ -25,7 +25,7 @@ public class TigerStance : Card {
 			gameControl.AddMoves(1);
 			gameControl.AddPlays(1);
 
-            eventGUIBoss.AddGUIString("Move +1! Play +1!");
+			eventGUIControl.AddGUIString("Move +1! Play +1!");
 		}		
 	}
 }

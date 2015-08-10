@@ -16,7 +16,7 @@ public class Flamethrower : Card {
 
 		gameControl.TargetSquareCallback = this;
 
-		gameControlUI.Dim(true);
+		GameControlGUI.Dim(true);
 		gameControl.Tooltip = "Pick a card to burn.";
 		
 		base.Play ();
@@ -28,11 +28,11 @@ public class Flamethrower : Card {
 			tempCard.Burn();
 		}
 
-		gridBoss.EnterTargetingMode (rangeTargetType, minRange, maxRange);
+		gridControl.EnterTargetingMode (rangeTargetType, minRange, maxRange);
 
-		clickBoss.DisallowEveryInput ();
-		clickBoss.AllowInfoInput = true;
-		clickBoss.AllowSquareTargetInput = true;
+		clickControl.DisallowEveryInput ();
+		clickControl.AllowInfoInput = true;
+		clickControl.AllowSquareTargetInput = true;
 		gameControl.TargetSquareCallback = this;
 //		ReallowUmbrellaInputAfterDiscardOrBurn ();
 
@@ -44,12 +44,12 @@ public class Flamethrower : Card {
 	}
 
 	public override void TargetSquareCalledThis (int x, int y) {
-		gridBoss.DestroyAllTargetSquares();
+		gridControl.DestroyAllTargetSquares();
 		
 		FindAndAffectUnits(x, y);
-		gridBoss.MakeSquares (aoeTargetType, aoeMinRange, aoeMaxRange, x, y, false);
+		gridControl.MakeSquares (aoeTargetType, aoeMinRange, aoeMaxRange, x, y, false);
 		
-		clickBoss.DisallowEveryInput ();
+		clickControl.DisallowEveryInput ();
 //		ReallowEveryInputAfterDiscardOrBurn ();
 	}
 }

@@ -13,12 +13,13 @@ public class Card : MonoBehaviour {
 	public bool Peeked;
 
 	public GameControl gameControl;
-	public GridControl gridBoss;
-	public ShopControl shopBoss;
-	public ClickControl clickBoss;
-	public OptionControl optionBoss;
-	public EventGUI eventGUIBoss;
-	public GameControlUI gameControlUI;
+	public GridControl gridControl;
+	public ShopControl shopControl;
+	public ClickControl clickControl;
+	public OptionControl optionControl;
+	public EventGUI eventGUIControl;
+	public GameControlGUI GameControlGUI;
+	public GUIStyleLibrary styleLibrary;
 
 	public CardLibrary library;
 	public GameObject hand;
@@ -47,7 +48,6 @@ public class Card : MonoBehaviour {
 	public Vector3 DiscardEndPosition;
 	public enum CardActionTypes { Armor, NoTarget, NoTargetNoInput, NoTargetGridSquare, TargetGridSquare, TargetCard, Options };
 	public enum Rarity { Paper, Copper, Silver, Gold, Platinum };
-	public GUISkin gooeyskin;
 	public ButtonAnimate PlayButton;
 	public SpriteRenderer[] SRenderers;
 	public MeshRenderer[] meshrenderers;
@@ -98,23 +98,20 @@ public class Card : MonoBehaviour {
 	//////////////////////////////////////
 
 	public virtual void Initialize() {
-		GameObject boss = GameObject.FindGameObjectWithTag("GameController");
-		gameControl = boss.GetComponent<GameControl>();
-		gridBoss = boss.GetComponent<GridControl>();
-		shopBoss = boss.GetComponent<ShopControl>();
-		clickBoss = boss.GetComponent<ClickControl>();
-		optionBoss = boss.GetComponent<OptionControl>();
-		eventGUIBoss = boss.GetComponent<EventGUI>();
-		library =  boss.GetComponent<CardLibrary>();
-		gameControlUI = boss.GetComponent<GameControlUI> ();
+		GameObject gameController = GameObject.FindGameObjectWithTag("GameController");
+		gameControl = gameController.GetComponent<GameControl>();
+		gridControl = gameController.GetComponent<GridControl>();
+		shopControl = gameController.GetComponent<ShopControl>();
+		clickControl = gameController.GetComponent<ClickControl>();
+		optionControl = gameController.GetComponent<OptionControl>();
+		library =  gameController.GetComponent<CardLibrary>();
+		GameControlGUI = gameController.GetComponent<GameControlGUI> ();
 		PlayButton = GameObject.Find("play end button").GetComponent<ButtonAnimate>();
 		hand = GameObject.Find("Hand");
 		discardPileObj = GameObject.Find("Discard pile");
 		playerObj = GameObject.FindGameObjectWithTag("Player");
 		meshrenderers = GetComponentsInChildren<MeshRenderer>();
 		SRenderers = gameObject.GetComponentsInChildren<SpriteRenderer>();
-
-		gooeyskin =(GUISkin)Resources.Load("GUISkins/gameControl guiskin");
 
 		LibraryCard tempLibraryCard = CardLibrary.Lib[CardName];
 		name = CardName;
@@ -159,10 +156,7 @@ public class Card : MonoBehaviour {
 		CardText[] cardTexts = gameObject.GetComponentsInChildren<CardText>();
 		SpriteRenderer[] renders = gameObject.GetComponentsInChildren<SpriteRenderer>();	
 		foreach(SpriteRenderer render in renders) {
-			if (render.gameObject.tag == "cardback")
-			{
-
-			}
+			if (render.gameObject.tag == "cardback") { continue; }
 			else if (render.gameObject.name == "picture")
 			{
 				if (IconPath != "")
@@ -173,78 +167,71 @@ public class Card : MonoBehaviour {
 			}
 			else if (render.gameObject.name == "rarity")
 			{
-				//this is for the stuff on the card. the card itself should be behind all this!
-
 				switch (tempLibraryCard.ThisRarity)
 				{
 					case Card.Rarity.Gold:
-						render.sprite = shopBoss.Gold;
+						render.sprite = shopControl.Gold;
 						Cost = 10;
 						break;
 					case Card.Rarity.Silver:
-						render.sprite = shopBoss.Silver;
+						render.sprite = shopControl.Silver;
 						Cost = 6;
 						break;
 					case Card.Rarity.Copper:
-						render.sprite = shopBoss.Copper;
+						render.sprite = shopControl.Copper;
 						Cost = 3;
 						break;
 					case Card.Rarity.Paper:
-						render.sprite = shopBoss.Paper;
+						render.sprite = shopControl.Paper;
 						Cost = 0;
 						break;
 				}
 			}
 			else if (render.gameObject.name == "god icon")
 			{
-				//this is for the stuff on the card. the card itself should be behind all this!
-
 				int godnum = ShopControl.AllGods.IndexOf(tempLibraryCard.God);
 
-				render.sprite = shopBoss.SpriteGodIcons[godnum];
+				render.sprite = shopControl.SpriteGodIcons[godnum];
 			}
 			else if (render.gameObject.name == "shine animation")
 			{
 				ShineAnim = render.gameObject.GetComponent<ShineAnimation>();
 			}
-            else if (render.gameObject.name == "shine animation 2") { }
+			else if (render.gameObject.name == "shine animation 2") { continue; }
             else if (render.gameObject.name == "glow")
             {
                 Glow = render.gameObject.GetComponent<SpriteRenderer>();
             }
             else if (render.gameObject.name != "picture")
             {
-                //this is for the stuff on the card. the card itself should be behind all this!
-
                 int godnum = 3;
                 godnum = ShopControl.AllGods.IndexOf(tempLibraryCard.God);
 
-                render.sprite = shopBoss.GodSmallCards[godnum];
+                render.sprite = shopControl.GodSmallCards[godnum];
             }
 		}
         foreach (CardText cardText in cardTexts) cardText.Initialize(101 - HandIndex() * 2);
     }
 	
 	//////////////////////////////////////
-	/// ONGUI
+	/// Card specific tooltip
 	//////////////////////////////////////
 
 	public virtual void OnGUI() {
 		if(Selected && Tooltip != "" && gameControl.Tooltip == ""){
-			GUI.Box(new Rect(Screen.width * .02f, Screen.height * .68f, Screen.width * .8f, Screen.height * .08f), Tooltip, gooeyskin.textArea);
+			GUI.Box(new Rect(Screen.width * .02f, Screen.height * .68f, Screen.width * .8f, Screen.height * .08f), 
+			        Tooltip, styleLibrary.CardStyles.Tooltip);
 		}
 		if(gameControl.CardsToTarget != 0 && Tooltip == "") {
 			GUI.Box(new Rect(Screen.width*.02f, Screen.height*.72f, Screen.width*.8f, Screen.height*.04f), 
-					"Please select " + gameControl.CardsToTarget.ToString() + " cards", gooeyskin.textArea);
+			        "Please select " + gameControl.CardsToTarget.ToString() + " cards", styleLibrary.CardStyles.Tooltip);
 		}
 	}
 
 	//Update: just for animations
 	public virtual void Update() {
-		//this section is messy as hell because shuffleanimating should be a separate path but instead takes alternate routes within animating. 
 		if(ShuffleAnimating) {
 			if(Time.time > DrawStartTime + .48f) {
-				//this ends the animation
 				Animating = false;
 				DrawAnimating = false;	
 				ShuffleAnimating = false;
@@ -361,16 +348,14 @@ public class Card : MonoBehaviour {
 	}
 
 	//////////////////////////////////////
-	/// METHODS FOR SELECTING, TARGET, UNTARGET, DRAWING, DISCARDING, 
-	/// TUCKING, BURNING, PEEKING CARDS--THESE ARE UNIVERSAL, AND
-	/// INCORPORATE ANIMATIONS AS WELL AS GAME LOGIC CHANGES
+	/// Universal card methods that incorporate animations as well as game logic
 	//////////////////////////////////////
 
 	//select, deselect
 	public void Select() {
 		gameControl.DeselectCards();
-		gridBoss.DestroyAllTargetSquares();
-		gameControlUI.Dim(false);
+		gridControl.DestroyAllTargetSquares();
+		GameControlGUI.Dim(false);
 
 		if(gameControl.PlaysLeft > 0) { 
 			if(gameObject != null) {
@@ -390,9 +375,7 @@ public class Card : MonoBehaviour {
 	}
 	//target, untarget
 	public void Target() {
-//		if(CardsToTarget > 1) {
-			transform.Translate(new Vector3(0f, .25f, 0f));
-//		}
+		transform.Translate(new Vector3(0f, .25f, 0f));
 		Targeted = true;
 	}
 	public void Untarget() {
@@ -510,8 +493,8 @@ public class Card : MonoBehaviour {
 
 		ForcingDiscardOfThis = false;
 		
-		shopBoss.GoalCheck("Discard pile has X cards in it");
-		shopBoss.GoalCheck("Discard pile has X cards in a row with the same God");
+		shopControl.GoalCheck("Discard pile has X cards in it");
+		shopControl.GoalCheck("Discard pile has X cards in a row with the same God");
 
 		//	i put OrganizeCards into CheckQ
 		//	Invoke("OrganizeCards", .3f);
@@ -520,7 +503,7 @@ public class Card : MonoBehaviour {
 	public virtual void Tuck() {
 		Debug.Log("Placing this card back into the deck");
 
-		clickBoss.DisallowEveryInput();
+		clickControl.DisallowEveryInput();
 		DrawEndPosition = new Vector3(-2.7f, 3f, 0);
 		Animating = true;
 		DrawStartTime = Time.time;
@@ -540,12 +523,12 @@ public class Card : MonoBehaviour {
 		gameControl.Deck.Add(tempString);
 		Destroy(gameObject);
 
-		clickBoss.AllowEveryInput();
+		clickControl.AllowEveryInput();
 	}
 
 	public virtual void Burn() {
 		EventControl.EventCheck("Burn");
-		clickBoss.DisallowEveryInput();
+		clickControl.DisallowEveryInput();
 		if(Selected)
 			Deselect();
 		gameControl.Hand.Remove(gameObject);
@@ -584,7 +567,7 @@ public class Card : MonoBehaviour {
 	
 	public virtual void Click() {
 
-		gameControlUI.Dim(false);
+		GameControlGUI.Dim(false);
 
 		if(Discarded) {
 			return;
@@ -618,7 +601,7 @@ public class Card : MonoBehaviour {
 		if(!FreePlay && CardAction != CardActionTypes.TargetGridSquare)
 			gameControl.AddPlays(-1);
 
-		clickBoss.DisallowEveryInput();
+		clickControl.DisallowEveryInput();
 
 		switch(CardAction) {
 		case CardActionTypes.Armor:
@@ -626,7 +609,7 @@ public class Card : MonoBehaviour {
 		case CardActionTypes.NoTarget:
 			Play();
 			DiscardOrBurnIfNotInQ();
-			clickBoss.AllowInputUmbrella = false;
+			clickControl.AllowInputUmbrella = false;
 			CheckQ();
 			break;
 		case CardActionTypes.NoTargetNoInput:
@@ -636,13 +619,13 @@ public class Card : MonoBehaviour {
 		case CardActionTypes.NoTargetGridSquare:
 			Play();
 			DiscardOrBurnIfNotInQ();
-			clickBoss.AllowInputUmbrella = false;
-			gridBoss.MakeSquares(aoeTargetType, aoeMinRange, aoeMaxRange, false);
+			clickControl.AllowInputUmbrella = false;
+			gridControl.MakeSquares(aoeTargetType, aoeMinRange, aoeMaxRange, false);
 			CheckQ();
 			break;
 		case CardActionTypes.TargetGridSquare:
 			EnterTargetingMode();
-			clickBoss.AllowEveryInput();
+			clickControl.AllowEveryInput();
 			break;
 		case CardActionTypes.TargetCard:
 			if((CardsToTargetWillBePeeked && gameControl.PeekedCards.Count < CardsToTarget) |
@@ -655,12 +638,12 @@ public class Card : MonoBehaviour {
 			}
 
 			//VVV by default, the cards to target are not discarded or peeked, but you can change that in the Play()
-			clickBoss.AllowInputUmbrella = false;
+			clickControl.AllowInputUmbrella = false;
 			ReallowUmbrellaInputAfterDiscardOrBurn();
 
-			clickBoss.DisallowEveryInput();
-			clickBoss.AllowCardTargetInput = true;
-			clickBoss.AllowInfoInput = true;
+			clickControl.DisallowEveryInput();
+			clickControl.AllowCardTargetInput = true;
+			clickControl.AllowInfoInput = true;
 
 			if(CardsToTargetWillBeDiscarded) 
 				gameControl.CardsToTargetAreDiscarded = true;
@@ -681,8 +664,8 @@ public class Card : MonoBehaviour {
 		case CardActionTypes.Options:
 			Play();
 			DiscardOrBurnIfNotInQ();
-			clickBoss.DisallowEveryInput();
-			gameControlUI.Dim();
+			clickControl.DisallowEveryInput();
+			GameControlGUI.Dim();
 			break;
 		default:
 			Debug.Log("FUCK");
@@ -691,24 +674,24 @@ public class Card : MonoBehaviour {
 	}
 	public void EnterTargetingMode() {
 		Select();
-		gridBoss.EnterTargetingMode(rangeTargetType, minRange, maxRange);
+		gridControl.EnterTargetingMode(rangeTargetType, minRange, maxRange);
 		gameControl.TargetSquareCallback = this;
 		gameControl.Tooltip = "Please select a square.";
 		
-		clickBoss.AllowInputUmbrella = true;
-		clickBoss.AllowSquareTargetInput = true;
-		clickBoss.AllowInfoInput = true;
+		clickControl.AllowInputUmbrella = true;
+		clickControl.AllowSquareTargetInput = true;
+		clickControl.AllowInfoInput = true;
 	}
 
 	public virtual void Play() {
-		shopBoss.GoalCheck("Play X cards in one turn");
+		shopControl.GoalCheck("Play X cards in one turn");
 		
 		if(ThisRarity == Rarity.Paper) {
-			shopBoss.GoalCheck("Play X paper cards in one turn");
+			shopControl.GoalCheck("Play X paper cards in one turn");
 		}
 		
-		shopBoss.GoalCheck("Play less than X cards total");
-		shopBoss.GoalCheck("Don't play a card X turns in a row");
+		shopControl.GoalCheck("Play less than X cards total");
+		shopControl.GoalCheck("Don't play a card X turns in a row");
 	}
 	public virtual void ArmorPlay() {
 		DiscardOrBurnIfNotInQ();
@@ -726,7 +709,7 @@ public class Card : MonoBehaviour {
 	}
 
 	public void ReallowUmbrellaInputAfterDiscardOrBurn() {
-		clickBoss.Invoke("ChangeUmbrellaInputAllowToTrue", .53f);
+		clickControl.Invoke("ChangeUmbrellaInputAllowToTrue", .53f);
 	}
 
 	///
@@ -747,7 +730,7 @@ public class Card : MonoBehaviour {
 	public virtual void AfterCardTargetingCallback() {
 		gameControl.TargetedCards = new List<GameObject>();
 		gameControl.CardsToTarget = 0;
-		gameControlUI.Dim(false);
+		GameControlGUI.Dim(false);
 
 	//	i put OrganizeCards into CheckQ
 	//	Invoke("OrganizeCards", .3f);
@@ -756,21 +739,21 @@ public class Card : MonoBehaviour {
 	//GiveOptions method. First you Play(), which sends options to OptionControl, then you pick an option, then it calls this method
 	public virtual void OptionsCalledThis(bool ResponseIsYes) {
 
-		optionBoss.TurnOffOptions();
+		optionControl.TurnOffOptions();
 
 		//	i put OrganizeCards into CheckQ
 		//	Invoke("OrganizeCards", .3f);
-		clickBoss.AllowEveryInput();
+		clickControl.AllowEveryInput();
 		CheckQ();
 	}
 	public virtual void OptionsCalledThis(int Choice) {
 
-		optionBoss.TurnOffOptions();
+		optionControl.TurnOffOptions();
 		
 		//	i put OrganizeCards into CheckQ
 		//	Invoke("OrganizeCards", .3f);
 
-		clickBoss.AllowEveryInput();
+		clickControl.AllowEveryInput();
 		
 		CheckQ();
 	}
@@ -782,13 +765,13 @@ public class Card : MonoBehaviour {
 			
 			gameControl.AddPlays(-1);
 
-			clickBoss.DisallowEveryInput();
+			clickControl.DisallowEveryInput();
 		}
 
-		gridBoss.DestroyAllTargetSquares();
+		gridControl.DestroyAllTargetSquares();
 	
 		FindAndAffectUnits(x, y);
-		gridBoss.MakeSquares(aoeTargetType, aoeMinRange, aoeMaxRange, x, y, false);
+		gridControl.MakeSquares(aoeTargetType, aoeMinRange, aoeMaxRange, x, y, false);
 
 	//	Play();
 		
@@ -803,26 +786,26 @@ public class Card : MonoBehaviour {
 	/// <param name="clickedY">Clicked y.</param>
 	public void FindAndAffectUnits(int clickedX, int clickedY){
 
-		gridBoss.FindAllGridUnits();
+		gridControl.FindAllGridUnits();
 			
-		for(int i = gridBoss.gridUnits.Count-1; i > -1; i--) {
+		for(int i = gridControl.gridUnits.Count-1; i > -1; i--) {
 			if(aoeTargetType == GridControl.TargetTypes.diamond) {
-				int distance =(Mathf.Abs(clickedX - gridBoss.gridUnits[i].xPosition) + Mathf.Abs(clickedY - gridBoss.gridUnits[i].yPosition));
+				int distance =(Mathf.Abs(clickedX - gridControl.gridUnits[i].xPosition) + Mathf.Abs(clickedY - gridControl.gridUnits[i].yPosition));
 				if(distance >= aoeMinRange && distance <= aoeMaxRange){
-					Affect(gridBoss.gridUnits[i]);
+					Affect(gridControl.gridUnits[i]);
 				}
 			}
 			else if(aoeTargetType == GridControl.TargetTypes.none) {
-				if(clickedX == gridBoss.gridUnits[i].xPosition && clickedY == gridBoss.gridUnits[i].yPosition) {
-					Affect(gridBoss.gridUnits[i]);
+				if(clickedX == gridControl.gridUnits[i].xPosition && clickedY == gridControl.gridUnits[i].yPosition) {
+					Affect(gridControl.gridUnits[i]);
 				}
 			}
 			else if(aoeTargetType == GridControl.TargetTypes.square) {
-				int xDifference = Mathf.Abs(clickedX - gridBoss.gridUnits[i].xPosition);
-				int yDifference = Mathf.Abs(clickedY - gridBoss.gridUnits[i].yPosition);
+				int xDifference = Mathf.Abs(clickedX - gridControl.gridUnits[i].xPosition);
+				int yDifference = Mathf.Abs(clickedY - gridControl.gridUnits[i].yPosition);
 				if(xDifference >= aoeMinRange && xDifference <= aoeMaxRange && 
 				   yDifference >= aoeMinRange && yDifference <= aoeMaxRange) {
-					Affect(gridBoss.gridUnits[i]);
+					Affect(gridControl.gridUnits[i]);
 				}
 			}
 			else 
@@ -856,6 +839,7 @@ public class Card : MonoBehaviour {
 			enemy.TakeDamage(damageTaken);
 		}
 	}
+
 	public void BasicStunEffect(GridUnit gridUnit) {
 		if(gridUnit.gameObject.tag == "Player") {
 			Player player = gridUnit.gameObject.GetComponent<Player>();
@@ -866,10 +850,7 @@ public class Card : MonoBehaviour {
 			enemy.StunnedForXTurns++;
 		}
 	}
-	//public void OrganizeCards() {
-	//	gameControl.AnimateCardsToCorrectPosition();
-	//	gameControl.CheckDeckCount ();
-	//}
+
 	public int HandIndex() {
 		if(gameControl == null) {
 			gameControl = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControl>();
