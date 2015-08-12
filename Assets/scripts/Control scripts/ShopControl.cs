@@ -72,7 +72,7 @@ public class ShopControl : MonoBehaviour {
 		for(int i = 0; i < Goals.Length; i++) {
 
 			if(finalScores[i] >= 1) { 
-				LibraryCard tempLC = library.PullCardFromPack(Goals[i].God, Card.Rarity.Copper);
+				LibraryCard tempLC = library.PullCardFromPack(Goals[i].God, Card.Rarity.Bronze);
 				CardsToBuyFrom[i].Add(tempLC);
 			}
 
