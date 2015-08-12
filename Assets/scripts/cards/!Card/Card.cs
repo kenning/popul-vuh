@@ -47,7 +47,7 @@ public class Card : MonoBehaviour {
 	public Vector3 DrawEndPosition;
 	public Vector3 DiscardEndPosition;
 	public enum CardActionTypes { Armor, NoTarget, NoTargetNoInput, NoTargetGridSquare, TargetGridSquare, TargetCard, Options };
-	public enum Rarity { Paper, Copper, Silver, Gold, Platinum };
+	public enum Rarity { Paper, Bronze, Silver, Gold, Platinum };
 	public ButtonAnimate PlayButton;
 	public SpriteRenderer[] SRenderers;
 	public MeshRenderer[] meshrenderers;
@@ -177,8 +177,8 @@ public class Card : MonoBehaviour {
 						render.sprite = shopControl.Silver;
 						Cost = 6;
 						break;
-					case Card.Rarity.Copper:
-						render.sprite = shopControl.Copper;
+					case Card.Rarity.Bronze:
+						render.sprite = shopControl.Bronze;
 						Cost = 3;
 						break;
 					case Card.Rarity.Paper:

@@ -28,7 +28,7 @@ public class Pinata : Card {
 
 		foreach(GameObject go in gameControl.PeekedCards) {
 			Card card = go.GetComponent<Card>();
-			if(card.ThisRarity == Rarity.Copper) {
+			if(card.ThisRarity == Rarity.Bronze) {
 				gameControl.Draw();
 				gameControl.Draw();
 				TooltipMessage += "+2 cards! ";

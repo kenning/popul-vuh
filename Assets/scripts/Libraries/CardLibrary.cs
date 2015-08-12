@@ -45,7 +45,7 @@ public class CardLibrary : MonoBehaviour {
 		Lib.Add ("Spin Kick", new LibraryCard ("Spin Kick", 
 		                                       "quake-stomp",
 		                                       ShopControl.Gods.Ikka, 
-		                                       Card.Rarity.Copper, 
+		                                       Card.Rarity.Bronze, 
 		                                       "To play, tap the card again", 
 		                                       "Deals 1 damage to all adjacent squares",
 		                                       "AOE around \nplayer", 
@@ -82,7 +82,7 @@ public class CardLibrary : MonoBehaviour {
         Lib.Add("Nunchucks", new LibraryCard("Nunchucks",
 		                                     "bolas",
 		                                     ShopControl.Gods.Ikka,
-		                                     Card.Rarity.Copper,
+		                                     Card.Rarity.Bronze,
 		                                     "To play, select a square",
 		                                     "Deals 1 damage. If you have another copy of this card in your hand, gain 1 play.",
 		                                     "1 damage\nThis in hand =>\n+1 play",
@@ -121,7 +121,7 @@ public class CardLibrary : MonoBehaviour {
 		                                          "Prayer \nBread",
 		                                		   "food/sliced-bread",
 		                                          ShopControl.Gods.Ekcha,
-		                                          Card.Rarity.Copper,
+		                                          Card.Rarity.Bronze,
 		                                          "To play, tap the card again",
 		                                          "Gain $1 favor with the Gods and draw 1 card",
 		                                          "+$1\nDraw 1",
@@ -175,7 +175,7 @@ public class CardLibrary : MonoBehaviour {
 		                                          "Prayer \nBeads", 
 		                                          "wavy-chains",
 		                                          ShopControl.Gods.Ekcha,
-		                                          Card.Rarity.Copper,
+		                                          Card.Rarity.Bronze,
 		                                          "To play, tap the card again",
 		                                          "Gain 1 play. Every time you burn an item this turn, gain $3",
 		                                          "+1 Play\nTrigger: \nBurn: +$3",
@@ -205,7 +205,7 @@ public class CardLibrary : MonoBehaviour {
 		                                        "Iron \nShirt", 
 		                      		             "chain-mail",
 		                                          ShopControl.Gods.Ixchel,
-		                                          Card.Rarity.Copper,
+		                                          Card.Rarity.Bronze,
 		                                          "This card will discard itself to prevent damage done to you",
 		                                     	  "Protect 2 Range 1: This card will protect you from 2 damage done at a maximum of 1 range",
 		                                          "Protect 2\nRange 1",
@@ -215,7 +215,7 @@ public class CardLibrary : MonoBehaviour {
 		                                        "Wood \nShield", 
 		                      		             "round-shield",
 		                                          ShopControl.Gods.Ixchel,
-		                                          Card.Rarity.Copper,
+		                                          Card.Rarity.Bronze,
 		                                          "This card will discard itself to prevent damage done to you",
 		                                          "Protect 1 Range 2-3: This card will protect you from 1 damage from 2-3 squares away",
 		                                          "Protect 1 \nRange 2-3",
@@ -267,7 +267,7 @@ public class CardLibrary : MonoBehaviour {
 		Lib.Add("Iron Pike", (new LibraryCard("Iron Pike", 
 		                                      "barbed-spear",
 		                                      ShopControl.Gods.Buluc, 
-		                                      Card.Rarity.Copper, 
+		                                      Card.Rarity.Bronze, 
 		                                      "To play, select a square", 
 		                                      "Deals 2 damage to a target", 
 		                                      "Cross, \n2 damage", 
@@ -296,10 +296,10 @@ public class CardLibrary : MonoBehaviour {
 		Lib.Add("Shuriken", new LibraryCard ("Shuriken",
 		                      		         "shuriken",
 		                                     ShopControl.Gods.Buluc,
-		                                     Card.Rarity.Copper,
+		                                     Card.Rarity.Bronze,
 		                                     "To play, select a square",
 		                                     "Discard a card.\nIf the discarded card is paper, x = 1.\n" +
-		                                     "If copper, x = 2. \nIf Silver, x=3.\nIf gold, x=4.\nThen deals X damage at X range. ",
+		                                     "If Bronze, x = 2. \nIf Silver, x=3.\nIf gold, x=4.\nThen deals X damage at X range. ",
 		                                     "Discard 1:\nRarity damage at\nRarity range",
 		                                     Card.CardActionTypes.TargetCard));
 		//Chac
@@ -324,7 +324,7 @@ public class CardLibrary : MonoBehaviour {
 		                                        "Bread \nBowl",
 		                                        "food/sliced-bread",
 		                                        ShopControl.Gods.Chac,
-		                                        Card.Rarity.Copper,
+		                                        Card.Rarity.Bronze,
 		                                        "To play, tap the card again",
 		                                        "Peek at 3 cards from your deck and pick one to put in your hand.",
 		                                        "Peek 3, \nDraw 1 of them",
@@ -351,7 +351,7 @@ public class CardLibrary : MonoBehaviour {
         //Lib.Add("Banana", new LibraryCard("Banana",
         //                                   "food/carrot",
         //                                  ShopControl.Gods.Chac,
-        //                                  Card.Rarity.Copper,
+        //                                  Card.Rarity.Bronze,
         //                                  "To play, select a square",
         //                                  "Draw 1, then throw the peel at an enemy, stunning it",
         //                                  "Draw 1,\nstun 1 enemy",
@@ -360,7 +360,7 @@ public class CardLibrary : MonoBehaviour {
 		Lib.Add("Corn Dog", new LibraryCard("Corn Dog",
 		                                   "food/chicken-leg",
 		                                    ShopControl.Gods.Chac,
-		                                    Card.Rarity.Copper,
+		                                    Card.Rarity.Bronze,
 		                                    "To play, tap the card again",
 		                                    "Draw 2, then discard 2.\n+1 play",
 		                                    "Draw 2,\ndiscard 2.\n+1 play",
@@ -385,7 +385,7 @@ public class CardLibrary : MonoBehaviour {
 		Lib.Add ("Pizza", new LibraryCard ("Pizza",
 		                                   "food/pizza-cutter",
 		                                 ShopControl.Gods.Chac,
-		                                 Card.Rarity.Copper,
+		                                 Card.Rarity.Bronze,
 		                                 "To play, tap the card again",
 		                                 "+2 plays. If you have no Chac cards in hand, +2 cards.",
 		                                 "+2 plays\nNo Chac in hand =>\n  +2 cards",
@@ -411,7 +411,7 @@ public class CardLibrary : MonoBehaviour {
 		                                          "Shepherd's \nPie",
 		                                			"food/pie-slice",
 		                                            ShopControl.Gods.Chac,
-		                                            Card.Rarity.Copper,
+		                                            Card.Rarity.Bronze,
 		                                            "To play, tap the card again",
 		                                            "+2 cards",
 		                                            "+2 cards",
@@ -420,7 +420,7 @@ public class CardLibrary : MonoBehaviour {
 		                                "Soda",
 		                                "boiling-bubbles",
 		                                ShopControl.Gods.Chac,
-		                                Card.Rarity.Copper,
+		                                Card.Rarity.Bronze,
 		                                "To play, tap the card again",
 		                                "Discard a card, then draw a card, and gain 1 play and 1 move.",
 		                                "Discard 1:\nDraw 1\n+1 play \n+1 Move",
@@ -448,9 +448,9 @@ public class CardLibrary : MonoBehaviour {
 		                                   ShopControl.Gods.Chac,
 		                                   Card.Rarity.Silver,
 		                                   "To play, tap the card again",
-		                                   "Peek at the top two cards of your library. For each card that is paper, copper, silver or gold, " +
+		                                   "Peek at the top two cards of your library. For each card that is paper, Bronze, silver or gold, " +
 		                                    	"gain \n   +1$, \n   +2 cards, \n   +2 plays or \n   +$2, \nrespectively.",
-		                                   "Peek 2\n  Paper => +$1\n  Copper => +2 cards\n  Silver => +2 plays\n  Gold => +$2",
+		                                   "Peek 2\n  Paper => +$1\n  Bronze => +2 cards\n  Silver => +2 plays\n  Gold => +$2",
 		                                   Card.CardActionTypes.NoTargetNoInput));
 		//Kinich
 			//Start unlocked
@@ -458,7 +458,7 @@ public class CardLibrary : MonoBehaviour {
 		                                           "Book Of \nMatches",
 		                      		             "match-head",
 		                                             ShopControl.Gods.Kinich,
-		                                             Card.Rarity.Copper,
+		                                             Card.Rarity.Bronze,
 		                                             "To play, tap the card again",
 		                                             "Burn 1 card in your hand, permanently removing it from your deck.",
 		                                             "Burn 1 in hand",
@@ -477,7 +477,7 @@ public class CardLibrary : MonoBehaviour {
 		                                         "Birthday \nCake",
 		                                         "food/cake-slice",
 		                                         ShopControl.Gods.Kinich,
-		                                         Card.Rarity.Copper,
+		                                         Card.Rarity.Bronze,
 		                                         "To play, tap the card again",
 		                                         "Draw 3. If you burn this card, gain $10",
 		                                         "Draw 3\nIf burn => \n+$10",
@@ -486,7 +486,7 @@ public class CardLibrary : MonoBehaviour {
 		                                            "Charcoal \nShoes", 
 		                                            "leather-boot",
 		                                            ShopControl.Gods.Kinich,
-		                                            Card.Rarity.Copper,
+		                                            Card.Rarity.Bronze,
 		                                            "To play, tap the card again", 
 		                                            "Burn 1 card in your hand to gain 1 move",
 		                                            "Burn 1 in hand: \n+1 Move",
@@ -494,7 +494,7 @@ public class CardLibrary : MonoBehaviour {
 		Lib.Add ("Cheese", new LibraryCard ("Cheese",
 		                                  "food/cheese-wedge",
 		                                  ShopControl.Gods.Kinich,
-		                                  Card.Rarity.Copper,
+		                                  Card.Rarity.Bronze,
 		                                  "To play, tap the card again",
 		                                  "Burn a card in your hand. Get another copy of Cheese in your deck. \nIf you burn this card, draw 1 and gain 1 play.",
 		                                  "Burn 1: \nGet another Cheese \nIf burn => \nDraw 1, +1 Play",
@@ -503,7 +503,7 @@ public class CardLibrary : MonoBehaviour {
 		                                                   "Chocolate \nSurprise Egg",
 		                                                   "food/big-egg",
 		                                                   ShopControl.Gods.Kinich,
-		                                                   Card.Rarity.Copper,
+		                                                   Card.Rarity.Bronze,
 		                                                   "To play, tap the card again",
 		                                                   "Draw 1, +1 Play, +$1. If you burn this card, you get a new card called Phoenix Fireball.",
 		                                                   "Draw 1, +1 Play, +$1\nIf burn => \n+Phoenix Fireball",
@@ -542,7 +542,7 @@ public class CardLibrary : MonoBehaviour {
 		                                                 "Glass Of \nChardonnay",
 		                                                 "food/wine-glass",
 		                                                 ShopControl.Gods.Akan,  
-		                                                 Card.Rarity.Copper,
+		                                                 Card.Rarity.Bronze,
 		                                                 "To play, tap the card again",
 		                                                 "Tuck 1 from the discard pile back into your deck, then deal 1 damage at a range",
 		                                                 "Tuck 1 discard; \n1 damage,\nRange 2",
@@ -604,7 +604,7 @@ public class CardLibrary : MonoBehaviour {
 		                                         "Soda \nCup",
 		                                         "glass-shot",
 		                                         ShopControl.Gods.none,
-		                                         Card.Rarity.Copper,
+		                                         Card.Rarity.Bronze,
 		                                         "To play, tap the card again",
 		                                         "Draw 2 cards and gain 2 plays. This card burns itself when played.",
 		                                         "+2 cards \n+2 plays \n Burns self",
@@ -629,7 +629,7 @@ public class CardLibrary : MonoBehaviour {
 		else {
 			// => this goal is from the pantheon and the card reward is random.
 			foreach(LibraryCard LC in allCards) {
-				if(LC.ThisRarity == Card.Rarity.Silver | LC.ThisRarity == Card.Rarity.Copper) {
+				if(LC.ThisRarity == Card.Rarity.Silver | LC.ThisRarity == Card.Rarity.Bronze) {
 					tempList.Add(LC);
 				}
 			}
@@ -698,7 +698,7 @@ public class LibraryCard {
 		case Card.Rarity.Paper:
 			Cost = 0;
 			break;
-		case Card.Rarity.Copper:
+		case Card.Rarity.Bronze:
 			Cost = 2;
 			break;
 		case Card.Rarity.Silver:

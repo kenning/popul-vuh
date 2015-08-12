@@ -153,17 +153,30 @@ public class GUIStyleLibrary : MonoBehaviour {
 
 	public class ShopStyleLibrary {
 		public GUIStyle TransparentBackground;
+		public GUIStyle GoalExpoBox;
+		public GUIStyle GotItButton;
 
 		public GUIStyle DisplayTitle;
 		public GUIStyle DisplayText;
 		public int DisplayTitleFontSize = 14;
 		public int DisplayTextFontSize = 10;
 
-		public ShopStyleLibrary (GUISkin shopSkin, GUISkin mainSkin) {
-			TransparentBackground = shopSkin.customStyles[0];
+		public GUIStyle ShopGoalDefault;
+		public GUIStyle ShopGoalGold;
+		public GUIStyle ShopGoalSilver;
+		public GUIStyle ShopGoalBronze;
 
+		public ShopStyleLibrary (GUISkin shopSkin, GUISkin mainSkin) {
 			DisplayTitle = mainSkin.customStyles[6];
 			DisplayText = mainSkin.customStyles[7];
+
+			TransparentBackground = shopSkin.customStyles[0];
+			GoalExpoBox = shopSkin.box;
+			GotItButton = shopSkin.button;
+			ShopGoalDefault = shopSkin.customStyles[2];
+			ShopGoalGold = shopSkin.customStyles[6];
+			ShopGoalSilver = shopSkin.customStyles[5];
+			ShopGoalBronze = shopSkin.customStyles[4];
 		}
 	}
 }

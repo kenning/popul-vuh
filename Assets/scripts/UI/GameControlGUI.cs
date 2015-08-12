@@ -124,8 +124,8 @@ public class GameControlGUI : MonoBehaviour {
 		case (Card.Rarity.Paper):
 			DisplayRarity = shopControl.PaperTexture;
 			break;
-		case (Card.Rarity.Copper):
-			DisplayRarity = shopControl.CopperTexture;
+		case (Card.Rarity.Bronze):
+			DisplayRarity = shopControl.BronzeTexture;
 			break;
 		case (Card.Rarity.Silver):
 			DisplayRarity = shopControl.SilverTexture;

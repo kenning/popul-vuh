@@ -35,7 +35,7 @@ public class Shuriken : Card {
 
 		if (discardRarity == Rarity.Paper)
 			x = 1;
-		if (discardRarity == Rarity.Copper)
+		if (discardRarity == Rarity.Bronze)
 			x = 2;
 		if (discardRarity == Rarity.Silver)
 			x = 3;

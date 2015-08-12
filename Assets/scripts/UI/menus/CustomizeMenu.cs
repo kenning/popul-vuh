@@ -15,7 +15,7 @@ public class CustomizeMenu : MonoBehaviour {
 	List<LibraryCard>[] allCards = new List<LibraryCard>[0];
 	Vector2 scrollPos = new Vector2();
 	string goldSpotTaken = "";
-	string copperSpotTaken = "";
+	string BronzeSpotTaken = "";
 	string silverSpotTaken = "";
 	int longestLength = 0;
 
@@ -56,7 +56,7 @@ public class CustomizeMenu : MonoBehaviour {
 			for(int j = 0; j < allCards[i].Count; j++) {
 				LibraryCard thisCard = allCards[i][j];
 				Texture2D Rarity = shopControl.PaperTexture;
-				if(thisCard.ThisRarity == Card.Rarity.Copper)  Rarity = shopControl.CopperTexture;
+				if(thisCard.ThisRarity == Card.Rarity.Bronze)  Rarity = shopControl.BronzeTexture;
 				else if(thisCard.ThisRarity == Card.Rarity.Silver)  Rarity = shopControl.SilverTexture;
 				else if(thisCard.ThisRarity == Card.Rarity.Gold)  Rarity = shopControl.GoldTexture;
 
@@ -90,7 +90,7 @@ public class CustomizeMenu : MonoBehaviour {
 					}
 				}
 					//if this isn't in your starting deck, show a CardToggleAdd button, 
-						//which adds it to your starting deck if you haven't added your copper or silver card
+						//which adds it to your starting deck if you haven't added your Bronze or silver card
 				else {
 					if(GUI.Button(new Rect(seventh*i, Screen.height*.1f*(j+1), seventh, Screen.height*.1f), 
 					              name, styleLibrary.CustomizeStyles.CardToggleAdd)) {
@@ -123,17 +123,17 @@ public class CustomizeMenu : MonoBehaviour {
 		GUI.EndScrollView ();
 
 		GUI.BeginGroup (new Rect (Screen.width*.35f, Screen.height * .6f, Screen.width * .4f, Screen.height * .3f), "");
-        if (copperSpotTaken != "")
+        if (BronzeSpotTaken != "")
         {
             if (GUI.Button(new Rect(0, 0, Screen.width * .4f, Screen.height * .1f), 
-			               new GUIContent("Your added Copper card is " + copperSpotTaken + " ", shopControl.CopperTexture), 
+			               new GUIContent("Your added Bronze card is " + BronzeSpotTaken + " ", shopControl.BronzeTexture), 
 			               styleLibrary.CustomizeStyles.RarityToggleOn))
-                selectedCard = CardLibrary.Lib[copperSpotTaken];
+                selectedCard = CardLibrary.Lib[BronzeSpotTaken];
         }
         else
         {
             GUI.Box(new Rect(0, 0, Screen.width * .4f, Screen.height * .1f), 
-			        new GUIContent("You haven't chosen a copper card to add to your deck."), styleLibrary.CustomizeStyles.RarityToggleOff);
+			        new GUIContent("You haven't chosen a Bronze card to add to your deck."), styleLibrary.CustomizeStyles.RarityToggleOff);
         }
         if (silverSpotTaken != "")
         {
@@ -194,7 +194,7 @@ public class CustomizeMenu : MonoBehaviour {
 			                shopControl.GodIcons[selectedGod]);
 			Card.Rarity rarity = selectedCard.ThisRarity;
 			Texture2D rarityTexture = shopControl.PaperTexture;
-			if(rarity == Card.Rarity.Copper) rarityTexture = shopControl.CopperTexture;
+			if(rarity == Card.Rarity.Bronze) rarityTexture = shopControl.BronzeTexture;
 			else if(rarity == Card.Rarity.Silver) rarityTexture = shopControl.SilverTexture;
 			else if(rarity == Card.Rarity.Gold) rarityTexture = shopControl.GoldTexture;
 			GUI.DrawTexture(new Rect(Screen.width*.025f, Screen.height*.25f, Screen.width*.05f, Screen.width*.05f), rarityTexture);
@@ -260,13 +260,13 @@ public class CustomizeMenu : MonoBehaviour {
 
 		goldSpotTaken = "";
 		silverSpotTaken = "";
-		copperSpotTaken = "";
+		BronzeSpotTaken = "";
 		
 		for(int k = 0; k < SaveData.StartingDeckCards.Count; k++) {
 			if(SaveData.StartingDeckCards[k].ThisRarity == Card.Rarity.Paper) 
 				continue;
-			else if(SaveData.StartingDeckCards[k].ThisRarity == Card.Rarity.Copper)
-				copperSpotTaken = SaveData.StartingDeckCards[k].CardName;
+			else if(SaveData.StartingDeckCards[k].ThisRarity == Card.Rarity.Bronze)
+				BronzeSpotTaken = SaveData.StartingDeckCards[k].CardName;
 			else if(SaveData.StartingDeckCards[k].ThisRarity == Card.Rarity.Silver) 
 				silverSpotTaken = SaveData.StartingDeckCards[k].CardName;
 			else if(SaveData.StartingDeckCards[k].ThisRarity == Card.Rarity.Gold) 

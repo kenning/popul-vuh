@@ -182,7 +182,7 @@ public class EncyclopediaMenu : MonoBehaviour {
 					                shopControl.GodIcons[SelectedGod]);
 					Card.Rarity rarity = shownCards[selectedCard].ThisRarity;
 					Texture2D rarityTexture = shopControl.PaperTexture;
-					if(rarity == Card.Rarity.Copper) rarityTexture = shopControl.CopperTexture;
+					if(rarity == Card.Rarity.Bronze) rarityTexture = shopControl.BronzeTexture;
 					else if(rarity == Card.Rarity.Silver) rarityTexture = shopControl.SilverTexture;
 					else if(rarity == Card.Rarity.Gold) rarityTexture = shopControl.GoldTexture;
 					GUI.DrawTexture(new Rect(Screen.width*.05f, Screen.height*.7f, Screen.width*.1f, Screen.width*.1f), rarityTexture);
