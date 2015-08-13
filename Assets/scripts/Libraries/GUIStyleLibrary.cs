@@ -137,6 +137,8 @@ public class GUIStyleLibrary : MonoBehaviour {
 		public GUIStyle StartButton;
 		public GUIStyle InfoBox;
 		public GUIStyle NextLevelButton;
+		public int DoneFontSize = 18;
+		public int FirstDialogueFontSize = 20;
 
 		public TutorialStyleLibrary (GUISkin skin) {
 			DialogueBox = skin.customStyles[3];

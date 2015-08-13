@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class Tutorial : MonoBehaviour {
 
     //progress variables. tutorial level goes from 1-6.
-    public static int TutorialLevel;
+	public static int TutorialLevel = 0;
 
     public string TutorialMessage = "";
     string[] TutorialStartMessages = new string[] {
@@ -55,8 +55,10 @@ public class Tutorial : MonoBehaviour {
             GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), BLACKBOX);
             GUI.DrawTexture(new Rect(Screen.width * .55f, Screen.height * .2f, Screen.width * .4f, Screen.height * .6f), 
 			                BulucTUTORIALFULL);
+			GUIStyle dialogueStyle = new GUIStyle(styleLibrary.TutorialStyles.DialogueBox);
+			if(TutorialLevel == 1) dialogueStyle.fontSize = styleLibrary.TutorialStyles.FirstDialogueFontSize;
             GUI.Box(new Rect(Screen.width*.05f, Screen.height*.25f, Screen.width*.58f, Screen.height*.5f), 
-			        TutorialStartMessages[TutorialLevel-1], styleLibrary.TutorialStyles.DialogueBox);
+			        TutorialStartMessages[TutorialLevel-1], dialogueStyle);
             if(GUI.Button(new Rect(Screen.width*.2f, Screen.height*.85f, Screen.width*.6f, Screen.height*.1f), 
 			              "OK", styleLibrary.TutorialStyles.StartButton))
             {
@@ -74,20 +76,24 @@ public class Tutorial : MonoBehaviour {
         {
          //   GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.width*.3f), BLACKBOX);
             GUI.DrawTexture(new Rect(Screen.width*.7f, 0, Screen.width*.3f, Screen.width*.3f), BulucTUTORIALMUGSHOT);
-            GUI.Box(new Rect(0,0,Screen.width*.78f, Screen.width*.325f), TutorialMessage, styleLibrary.TutorialStyles.DialogueBox);
+            GUI.Box(new Rect(Screen.height*.03f, Screen.width*.025f, Screen.width*.75f, Screen.width*.3f), TutorialMessage, styleLibrary.TutorialStyles.DialogueBox);
 
             if (TutorialLevel == 4 )
             {
+				GUIStyle OKStyle = new GUIStyle(styleLibrary.TutorialStyles.NextLevelButton);
+				OKStyle.fontSize = styleLibrary.TutorialStyles.DoneFontSize;
                 if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .55f, Screen.width * .6f, Screen.height * .075f), 
-				               "OK", styleLibrary.TutorialStyles.StartButton))
+				               "OK", OKStyle))
                 {
                     continueTutorial();
                 }
             }
             if ((TutorialLevel == 6 && PlayedACardLevel7))
             {
+				GUIStyle DoneStyle = new GUIStyle(styleLibrary.TutorialStyles.NextLevelButton);
+				DoneStyle.fontSize = styleLibrary.TutorialStyles.DoneFontSize;
                 if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .55f, Screen.width * .6f, Screen.height * .075f), 
-				               "Done with the tutorial", styleLibrary.TutorialStyles.StartButton))
+				               "I'm done with the tutorial", styleLibrary.TutorialStyles.NextLevelButton))
                 {
                     continueTutorial();
                 }
@@ -95,24 +101,27 @@ public class Tutorial : MonoBehaviour {
         }
 
         #region always on buttons
-        float offset = 0;
-        if (TutorialLevel == 1 | TutorialLevel == 7)
-            offset = Screen.height * .15f;
-        GUI.Box(new Rect(Screen.width * .6f, 0, Screen.width * .4f, Screen.height * .035f), 
-		        "Tutorial level " + TutorialLevel.ToString(), styleLibrary.TutorialStyles.InfoBox);
-        if (GUI.Button(new Rect(Screen.width * .05f, Screen.height * .235f - offset, Screen.width * .4f, Screen.height * .06f), 
-		               "Next topic", styleLibrary.TutorialStyles.NextLevelButton))
-        {
-            if (TutorialLevel == 7)
-                endTutorial();
-            else
-                continueTutorial();
-        }
-        if (GUI.Button(new Rect(Screen.width * .55f, Screen.height * .235f - offset, Screen.width * .4f, Screen.height * .06f), 
-		               "Skip tutorial", styleLibrary.TutorialStyles.NextLevelButton))
-        {
-            endTutorial();
-        }
+        if (TutorialLevel != 1 && TutorialLevel != 7) {
+	        GUI.Box(new Rect(Screen.width * .6f, 0, Screen.width * .4f, Screen.height * .035f), 
+			        "Tutorial level " + TutorialLevel.ToString(), styleLibrary.TutorialStyles.InfoBox);
+	        if (GUI.Button(new Rect(Screen.width * .05f, Screen.height * .235f, Screen.width * .4f, Screen.height * .06f), 
+			               "Skip this tutorial level", styleLibrary.TutorialStyles.NextLevelButton))
+	        {
+	        	continueTutorial();
+	        }
+	        if (GUI.Button(new Rect(Screen.width * .55f, Screen.height * .235f, Screen.width * .4f, Screen.height * .06f), 
+			               "Skip whole tutorial", styleLibrary.TutorialStyles.NextLevelButton))
+	        {
+	            endTutorial();
+	        }
+		}
+		if(TutorialLevel == 1) {
+			if (GUI.Button(new Rect(Screen.width * .3f, Screen.height * .1f, Screen.width * .4f, Screen.height * .08f), 
+			               "Skip tutorial", styleLibrary.TutorialStyles.NextLevelButton))
+			{
+				endTutorial();
+			}
+		}
         #endregion
 
     }

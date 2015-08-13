@@ -216,7 +216,7 @@ public class MainMenu : MonoBehaviour {
             }
 
             GUI.BeginGroup(new Rect(Screen.width * .825f, Screen.height * .3f, Screen.width * .15f, Screen.height * .6f));
-			GUI.Box(new Rect(0, Screen.height * .0f, Screen.width * .15f, Screen.height * .2f), "Next Unlock:", styleLibrary.MainStyles.Sidebar);
+			GUI.Box(new Rect(0, Screen.height * .0f, Screen.width * .15f, Screen.height * .2f), "Next God to unlock:", styleLibrary.MainStyles.Sidebar);
             GUI.Box(new Rect(0, Screen.height * .2f, Screen.width * .15f, Screen.height * .2f), new GUIContent("\n" + NextGodToUnlock.ToString(),
 			        shopControlGUI.GodFullTextures[ShopControl.AllGods.IndexOf(NextGodToUnlock)]), styleLibrary.MainStyles.Sidebar);
             GUI.Box(new Rect(0, Screen.height * .4f, Screen.width * .15f, Screen.height * .2f),

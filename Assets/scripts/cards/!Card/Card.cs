@@ -108,6 +108,7 @@ public class Card : MonoBehaviour {
 		library =  gameController.GetComponent<CardLibrary>();
 		gameControlGUI = gameController.GetComponent<GameControlGUI> ();
 		shopControlGUI = gameController.GetComponent<ShopControlGUI> ();
+		styleLibrary = gameController.GetComponent<GUIStyleLibrary> ();
 		PlayButton = GameObject.Find("play end button").GetComponent<ButtonAnimate>();
 		hand = GameObject.Find("Hand");
 		discardPileObj = GameObject.Find("Discard pile");
