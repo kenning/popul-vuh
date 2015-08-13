@@ -9,7 +9,9 @@ public class ShopControlGUI : MonoBehaviour {
 	ClickControl clickControl;
 	GUIStyleLibrary styleLibrary;
 	bool goalExpo = false;
-
+	bool normaldisplay = false;
+	bool shopGUI = false;
+	
 	public Sprite[] GodFullSprites;
 	public Texture2D[] GodFullTextures;
 	public Sprite[] SpriteGodIcons;
@@ -27,12 +29,15 @@ public class ShopControlGUI : MonoBehaviour {
 	public Texture2D SilverTexture;
 	public Texture2D GoldTexture;
 	public Texture2D STOPLIGHTTEXTURE;
+
+	Goal[] Goals;
+	bool[] GoalDisplay;
 	
 	public float shopGUITime = 0f;
 	float cardWidth = Screen.width*.3f;
 	float cardHeight = Screen.height*.16f;
-	bool shopGUI = false;
-    public bool shufflin = false;
+
+	ClickBlocker clickBlocker;
 	
 	string AddedToCollText = "You can add cards in your collection to your starting deck next time you play!";
 
@@ -41,8 +46,11 @@ public class ShopControlGUI : MonoBehaviour {
 		shopControl = gameObject.GetComponent<ShopControl> ();
 		clickControl = gameObject.GetComponent<ClickControl> ();
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
+		clickBlocker = GameObject.Find ("moving click blocker").GetComponent<ClickBlocker> ();
 		
 		goalExpo = false;
+
+		Goals = shopControl.Goals;
 	}
 
 	public void SetGodPicture (Goal goal) {
@@ -56,9 +64,37 @@ public class ShopControlGUI : MonoBehaviour {
 		goal.GodIcon = GodIcons [godNumber];
 	}
 
+	public void NewLevelNewGoals (int numberOfGods) {
+		GoalDisplay = new bool[numberOfGods];
+		goalExpo = true;
+
+		for(int i = 0; i < 3; i++) {
+			string clickBlockerName = "click blocker " + (i+1).ToString();
+			BoxCollider2D tempClickBlockerCollider = GameObject.Find(clickBlockerName).GetComponent<BoxCollider2D>();
+			tempClickBlockerCollider.enabled = (i < numberOfGods);
+		}
+	}
+
+	public void ResetTime() {
+		shopGUITime = Time.time;
+	}
+
+	public void TurnOnShopGUI() {
+		shopGUI = true;
+	}
+
+	public void TurnOnNormalGUI ()
+	{
+		normaldisplay = true;
+	}
+	
+	public void TurnOffShopControlGUIs() {
+		goalExpo = false;
+		shopGUI = false;
+		normaldisplay = false;
+	}
+
 	void OnGUI () {
-		Goal[] Goals = shopControl.Goals;
-		
 		#region Initial goal interface
 		if(goalExpo) {
 			GUI.BeginGroup(new Rect(0,0,Screen.width,Screen.height), "", styleLibrary.ShopStyles.TransparentBackground);
@@ -74,7 +110,7 @@ public class ShopControlGUI : MonoBehaviour {
 			              "Got it!", styleLibrary.ShopStyles.GotItButton)) {
 				goalExpo = false;
 				clickControl.Invoke("AllowEveryInput", .1f);
-				shopControl.SetGoalGUI();
+				shopControl.SetGoalGUIVariables();
 			}
 			
 			GUI.EndGroup();
@@ -89,7 +125,7 @@ public class ShopControlGUI : MonoBehaviour {
 				GUI.BeginGroup(new Rect(cardWidth*i, 0, cardWidth, cardHeight));
 				GUI.Box(new Rect(0,0,Screen.width*.3f, Screen.height*.1f), (Texture2D)Goals[i].GodTexture);
 				string grade = "Nothing! +$0";
-				GUIStyle thisStyle = styleLibrary.ShopStyles.ShopGoalDefault;
+				GUIStyle thisStyle = styleLibrary.ShopStyles.ShopBox;
 				if(Goals[i].HigherScoreIsGood) {
 					if(Goals[i].HighScore >= Goals[i].GoalScore[2]) {
 						grade = "Gold! +$3";
@@ -179,7 +215,8 @@ public class ShopControlGUI : MonoBehaviour {
 					if (gameControl.Dollars >= thisCard.Cost)
 					{
 						
-						if (GUI.Button(new Rect(0, 0, cardWidth*.8f, cardHeight), willUnlock, SHOPSKIN.customStyles[3]))
+						if (GUI.Button(new Rect(0, 0, cardWidth*.8f, cardHeight), 
+						               willUnlock, styleLibrary.ShopStyles.ShopHoverOverlay))
 						{
 							if (gameControl.Dollars >= thisCard.Cost)
 							{
@@ -187,8 +224,6 @@ public class ShopControlGUI : MonoBehaviour {
 								gameControl.Deck.Add(tempString);
 								gameControl.AddDollars(-thisCard.Cost);
 								shopControl.CardsToBuyFrom[i].RemoveAt(j);
-								
-								
 								
 								if (!SaveData.UnlockedCards.Contains(thisCard) && SaveData.UnlockedGods.Contains(thisCard.God))
 								{
@@ -225,74 +260,74 @@ public class ShopControlGUI : MonoBehaviour {
 			if (AddedToCollText != "You can add cards in your collection to your starting deck next time you play!")
 			{
 				GUI.Box(new Rect(Screen.width * .1f, Screen.height * .7f, Screen.width * .8f, Screen.height * .15f), 
-				        AddedToCollText, SHOPSKIN.customStyles[2]);
+				        AddedToCollText, styleLibrary.ShopStyles.ShopBox);
 			}
 			
 			//Dollar count box
 			GUI.Box(new Rect(Screen.width*.7f, Screen.height*.88f, Screen.width*.2f, Screen.height*.1f), 
-			        gameControl.Dollars.ToString(), SHOPSKIN.button);
+			        gameControl.Dollars.ToString(), styleLibrary.ShopStyles.GotItButton);
 			
 			//Go to next level button
 			if(GUI.Button(new Rect(Screen.width*.2f, Screen.height*.88f, Screen.width*.4f, Screen.height*.1f), 
-			              "Go to next level", SHOPSKIN.button)) {
+			              "Go to next level", styleLibrary.ShopStyles.GotItButton)) {
 				shopGUI = false;
 				gameControl.CollectAnimate();
 				gameControl.Tooltip = "Shuffling together your deck and discard...";
 				AddedToCollText = "You can add cards in your collection to your starting deck next time you play!";
-				shufflin = true; //this bool prevents the normal goal display while shuffle animating.
+				TurnOffShopControlGUIs(); //this bool prevents the normal goal display while shuffle animating.
 			}
 		}
 		#endregion
 		
 		#region Normal gui interface (clickable boxes on top that show the 3 goals)
-		else if (Normaldisplay && !shufflin) {
+		else if (normaldisplay) {
 			for(int i = 0; i < Goals.Length; i++) {
-				GUI.Box(new Rect(Screen.width*i*.333333f, 0, Screen.width*.11111f, Screen.height*.05f), Goals[i].GodIcon, SHOPSKIN.textArea);
+				GUI.Box(new Rect(Screen.width*i*.333333f, 0, Screen.width*.11111f, Screen.height*.05f), 
+				        Goals[i].GodIcon, styleLibrary.ShopStyles.InGameGoalBox);
 				
 				if(GoalDisplay[i]){
 					GUI.Box(new Rect(Screen.width*(i*.333333f),Screen.height*.05f, Screen.width*.333333f, Screen.height*.15f), 
-					        Goals[i].GodString + Goals[i].Description, SHOPSKIN.textArea);
+					        Goals[i].GodString + Goals[i].Description, styleLibrary.ShopStyles.InGameGoalBox);
 					GUI.Box(new Rect(Screen.width*(i*.333333f + .11111f), 0, Screen.width*.22222f, Screen.height*.05f), 
-					        Goals[i].CurrentScore.ToString(), SHOPSKIN.textArea);
+					        Goals[i].CurrentScore.ToString(), styleLibrary.ShopStyles.InGameGoalBox);
 					GUI.Box(new Rect(Screen.width*(i*.333333f + .22222f), Screen.height*.2f, Screen.width*.11111f, Screen.height*.1f), 
-					        STOPLIGHTTEXTURE, SHOPSKIN.textArea);
+					        STOPLIGHTTEXTURE, styleLibrary.ShopStyles.InGameGoalBox);
 					string tempString = "";
 					for(int j = 0; j < Goals[i].GoalScore.Length; j++){
 						
 						if(Goals[i].HigherScoreIsGood) {
 							if(Goals[i].HighScore >= Goals[i].GoalScore[j]) tempString += "X " + Goals[i].GoalScore[j].ToString();
 							else tempString += "  " + Goals[i].GoalScore[j].ToString();
-							//this is for hiding platinum goals VVVV
-							//if(j+2 == Goals[i].GoalScore.Length) break;
 							if(j+1 != Goals[i].GoalScore.Length) tempString += "\n";
 						}
 						else {
 							if(Goals[i].HighScore <= Goals[i].GoalScore[j]) tempString += "X " + Goals[i].GoalScore[j].ToString();
 							else tempString += "  " + Goals[i].GoalScore[j].ToString();
-							//for hiding platinum goals
-							//if(j+2 == Goals[i].GoalScore.Length) break;
 							if(j+1 != Goals[i].GoalScore.Length) tempString += "\n";
 						}
 					}
 					GUI.Box(new Rect(Screen.width*(i*.333333f), Screen.height*.2f, Screen.width*.13333333333f, Screen.height*.1f), 
-					        "Best score:\n" + Goals[i].HighScore.ToString(), SHOPSKIN.textArea);
+					        "Best score:\n" + Goals[i].HighScore.ToString(), styleLibrary.ShopStyles.InGameGoalBox);
 					GUI.Box(new Rect(Screen.width*(i*.333333f + .13333333333f), Screen.height*.2f, Screen.width*.1f, Screen.height*.1f), 
-					        tempString, SHOPSKIN.textArea);
+					        tempString, styleLibrary.ShopStyles.InGameGoalBox);
 					
-					if(GUI.Button(new Rect(Screen.width*(i*.333333f),0, Screen.width*.333333f, Screen.height*.3f), "", SHOPSKIN.customStyles[1])) {
+					if(GUI.Button(new Rect(Screen.width*(i*.333333f),0, Screen.width*.333333f, Screen.height*.3f), 
+					              "", styleLibrary.ShopStyles.InGameGoalBoxHoverOverlay)) {
 						GoalDisplay = new bool[] {false, false, false};
 						clickBlocker.MoveToSpot(-1);
 					}
 				}
 				else {
-					GUI.Box(new Rect(Screen.width*(i*.333333f),Screen.height*.05f, Screen.width*.333333f, Screen.height*.075f), Goals[i].MiniDescription, SHOPSKIN.textArea);
-					GUI.Box(new Rect(Screen.width*(i*.333333f + .11111f),0, Screen.width*.22222f, Screen.height*.05f), Goals[i].DisplayScore, SHOPSKIN.textArea);
+					GUI.Box(new Rect(Screen.width*(i*.333333f),Screen.height*.05f, Screen.width*.333333f, Screen.height*.075f), 
+					        Goals[i].MiniDescription, styleLibrary.ShopStyles.InGameGoalBox);
+					GUI.Box(new Rect(Screen.width*(i*.333333f + .11111f),0, Screen.width*.22222f, Screen.height*.05f), 
+					        Goals[i].DisplayScore, styleLibrary.ShopStyles.InGameGoalBox);
 				}
-				if(GUI.Button(new Rect(Screen.width*(i*.333333f),0, Screen.width*.333333f, Screen.height*.125f), "", SHOPSKIN.customStyles[1])){
+				if(GUI.Button(new Rect(Screen.width*(i*.333333f),0, Screen.width*.333333f, Screen.height*.125f), 
+				              "", styleLibrary.ShopStyles.InGameGoalBoxHoverOverlay)){
 					GoalDisplay = new bool[]{false, false, false};
 					GoalDisplay[i] = true;
 					clickBlocker.MoveToSpot(i);
-					//bigger shit and then a button at the bottom that closes it
 				}
 			}
 		}

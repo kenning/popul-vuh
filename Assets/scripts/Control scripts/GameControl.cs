@@ -97,7 +97,6 @@ public class GameControl : MonoBehaviour
 		library.Startup ();
 		enemyLibrary.Startup();
 		shopControl.Initialize ();
-		shopControl.goalExpo = false;
 		gameObject.GetComponent<Tutorial>().Initialize();
 
 		SaveLoad.Load ();
@@ -136,7 +135,8 @@ public class GameControl : MonoBehaviour
 
 		if (Tutorial.TutorialLevel == 0)
 		{
-			ShopControl.Normaldisplay = true;
+			//should this really be set to true?
+//			normaldisplay = true;
 			library.SetStartingItems();
 		}
 

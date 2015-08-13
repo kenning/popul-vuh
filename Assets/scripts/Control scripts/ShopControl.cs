@@ -11,11 +11,8 @@ public class ShopControl : MonoBehaviour {
 
 	CardLibrary library;
 	GoalLibrary goalLibrary;
-	ClickBlocker clickBlocker;
 
 	public Goal[] Goals;
-	bool[] GoalDisplay;
-	public static bool Normaldisplay;
 
 	public List<LibraryCard>[] CardsToBuyFrom;
 
@@ -35,7 +32,6 @@ public class ShopControl : MonoBehaviour {
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
 		goalLibrary = gameObject.GetComponent<GoalLibrary> ();
 		goalLibrary.Startup ();
-		clickBlocker = GameObject.Find ("moving click blocker").GetComponent<ClickBlocker> ();
 
 		Goals = new Goal[0];
 
@@ -52,16 +48,16 @@ public class ShopControl : MonoBehaviour {
 		}
 	}
     
-    public void SetGoalGUI() {
+    public void SetGoalGUIVariables() {
 		for(int i = 0; i < Goals.Length; i++) {
 			Goals[i].SetDisplayScore();
 		}
-		shopControlGUI.shopGUITime = Time.time;
+		shopControlGUI.ResetTime ();
 	}
 
 	public void ProduceCards () {
 
-		SetGoalGUI ();
+		SetGoalGUIVariables ();
 
 		CardsToBuyFrom = new List<LibraryCard>[Goals.Length];
 		for(int i = 0; i < CardsToBuyFrom.Length; i++) {
@@ -85,7 +81,7 @@ public class ShopControl : MonoBehaviour {
 			if(finalScores[i] == 4) gameControl.AddDollars(5);
 		}
 
-		shopGUI = true;
+		shopControlGUI.TurnOnShopGUI ();
 		clickControl.DisallowEveryInput ();
 	}
 
@@ -116,34 +112,18 @@ public class ShopControl : MonoBehaviour {
 
 	public void NewLevelNewGoals(int numberOfGods) {
 
-		for(int i = 0; i < 3; i++) {
-			string clickBlockerName = "click blocker " + (i+1).ToString();
-			BoxCollider2D tempClickBlockerCollider = GameObject.Find(clickBlockerName).GetComponent<BoxCollider2D>();
-			tempClickBlockerCollider.enabled = (i < numberOfGods);
-		}
-
-	//	BoxCollider2D[] clickBlockers = new BoxCollider2D[numberOfGods];
-	//	for(int i = 0; i < clickBlockers.Length; i++) {
-	//		Debug.Log("this happens, right?");
-	//		string clickBlockerName = "click blocker " + (i+1).ToString();
-	//		clickBlockers[i] = new BoxCollider2D();
-	//		clickBlockers[i] = GameObject.Find(clickBlockerName).GetComponent<BoxCollider2D>();
-	//		clickBlockers[i].enabled = true;
-	//	}
-
-		GoalDisplay = new bool[numberOfGods];
+		shopControlGUI.NewLevelNewGoals (numberOfGods);
 
 		Goals = new Goal[numberOfGods];
 		Goals = goalLibrary.InitializeGoals (numberOfGods);
 
 		foreach(Goal g in Goals) {
 			g.SetGodString();
-			SetGodPicture(g);
+			shopControlGUI.SetGodPicture(g);
 			g.ResetTheScore();
 		}
 
-		SetGoalGUI ();
-		goalExpo = true;
+		SetGoalGUIVariables ();
 		clickControl.DisallowEveryInput ();
 
 	}

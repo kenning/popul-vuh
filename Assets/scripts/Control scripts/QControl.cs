@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public static class QControl {
+public class QControl : MonoBehaviour {
 
 	public enum QMethodType {Activate, FreeActivate, Option, Special, FreeSpecial, Discard};
 	static Queue<Card> CardQ;

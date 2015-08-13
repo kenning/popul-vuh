@@ -5,6 +5,7 @@ public class GameControlGUI : MonoBehaviour {
     
 	GameControl gameControl;
 	ShopControl shopControl;
+	ShopControlGUI shopControlGUI;
 	
 	string DisplayName;
 	string DisplayRules;
@@ -35,6 +36,7 @@ public class GameControlGUI : MonoBehaviour {
 		gameControl = gameObject.GetComponent<GameControl> ();
 		shopControl = gameObject.GetComponent<ShopControl> ();
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
+		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
 		displayCardRenderer = GameObject.Find ("Display card").GetComponent<SpriteRenderer> ();
 		dimmer = GameObject.Find ("Dimmer").GetComponent<SpriteRenderer>();
 	}
@@ -112,8 +114,8 @@ public class GameControlGUI : MonoBehaviour {
 		
 		int godnum = ShopControl.AllGods.IndexOf (card.God);
 		
-		DisplayCard = shopControl.GodDisplayCards [godnum];
-		DisplayIcon = shopControl.GodIcons [godnum];
+		DisplayCard = shopControlGUI.GodDisplayCards [godnum];
+		DisplayIcon = shopControlGUI.GodIcons [godnum];
 		
 		if(card.God == ShopControl.Gods.Ekcha | card.God == ShopControl.Gods.Ixchel) {
 			DisplayTitleStyle.normal.textColor = new Color(1,1,1);
@@ -122,16 +124,16 @@ public class GameControlGUI : MonoBehaviour {
 		
 		switch(card.ThisRarity) {
 		case (Card.Rarity.Paper):
-			DisplayRarity = shopControl.PaperTexture;
+			DisplayRarity = shopControlGUI.PaperTexture;
 			break;
 		case (Card.Rarity.Bronze):
-			DisplayRarity = shopControl.BronzeTexture;
+			DisplayRarity = shopControlGUI.BronzeTexture;
 			break;
 		case (Card.Rarity.Silver):
-			DisplayRarity = shopControl.SilverTexture;
+			DisplayRarity = shopControlGUI.SilverTexture;
 			break;
 		case (Card.Rarity.Gold):
-			DisplayRarity = shopControl.GoldTexture;
+			DisplayRarity = shopControlGUI.GoldTexture;
 			break;
 		}
 		displayCardRenderer.sprite = DisplayCard;

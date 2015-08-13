@@ -15,7 +15,7 @@ public class Cheese : Card {
 
 		gameControl.CardsToTarget = 1;
 
-		GameControlGUI.Dim();
+		gameControlGUI.Dim();
 		gameControl.Tooltip = "Pick a card to burn.";
 
 		base.Play ();

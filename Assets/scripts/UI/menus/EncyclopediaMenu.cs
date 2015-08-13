@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 public class EncyclopediaMenu : MonoBehaviour {
 
+	ShopControl shopControl;
+	ShopControlGUI shopControlGUI;
+	GUIStyleLibrary styleLibrary;
+
 	public bool EncyclopediaMenuUp = false;
 	bool[] Tabs = {false, false, false, false};
 	int SelectedGod;
@@ -16,11 +20,9 @@ public class EncyclopediaMenu : MonoBehaviour {
 	string[] TabStrings = new string[] {"Gods", "Goals", "Cards", "Enemies"};
 	List<string> UnlockedCardNames = new List<string>();
 	
-	ShopControl shopControl;
-
-	GUIStyleLibrary styleLibrary;
-
 	void Start() {
+		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
+		shopControl = gameObject.GetComponent<ShopControl> ();
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
 	}
 
@@ -67,7 +69,7 @@ public class EncyclopediaMenu : MonoBehaviour {
 				GUIStyle godIconStyle = styleLibrary.EncyclopediaStyles.TabOff;
 				if(SelectedGod == i) godIconStyle = styleLibrary.EncyclopediaStyles.TabOn;
 				if(GUI.Button(new Rect(Screen.width*.8f/7*i, Screen.height*.1f, Screen.width*.8f/7, Screen.height*.1f), 
-				              shopControl.GodIcons[i], godIconStyle)){
+				              shopControlGUI.GodIcons[i], godIconStyle)){
 					SelectedGod = i;
 					selectedCard = -1;
 					FindGoals();
@@ -85,7 +87,7 @@ public class EncyclopediaMenu : MonoBehaviour {
 			if(Tabs[0]) {
 				string godName = ShopControl.AllGods[SelectedGod].ToString();
 				GUI.DrawTexture(new Rect(0,Screen.height*.2f,Screen.width*.3f, Screen.height*.4f), 
-				                shopControl.GodFullTextures[SelectedGod]);
+				                shopControlGUI.GodFullTextures[SelectedGod]);
 				GUI.Box(new Rect(Screen.width*.4f, Screen.height*.2f, Screen.width*.4f, Screen.height*.4f), 
 				        ShopControl.GodDescriptions[SelectedGod]);
 				if(GUI.Button(new Rect(0, Screen.height*.7f, Screen.width*.4f, Screen.height*.1f), 
@@ -159,7 +161,7 @@ public class EncyclopediaMenu : MonoBehaviour {
 				}
 				else {
 					GUI.DrawTexture(new Rect(Screen.width*.0f, Screen.height*.2f, Screen.width*.6f, Screen.height*.6f), 
-					                shopControl.CardTextures[SelectedGod]);
+					                shopControlGUI.CardTextures[SelectedGod]);
 					GUIStyle cardNameStyle = new GUIStyle(styleLibrary.EncyclopediaStyles.CardNameStyle);
 					GUIStyle cardTextStyle = new GUIStyle(styleLibrary.EncyclopediaStyles.CardTextStyle);
 					if(shownCards[selectedCard].God == ShopControl.Gods.Akan | shownCards[selectedCard].God == ShopControl.Gods.Buluc |
@@ -179,12 +181,12 @@ public class EncyclopediaMenu : MonoBehaviour {
 					        shownCards[selectedCard].DisplayText, cardTextStyle);
 					//make this look like display()
 					GUI.DrawTexture(new Rect(Screen.width*.45f, Screen.height*.7f, Screen.width*.1f, Screen.width*.1f), 
-					                shopControl.GodIcons[SelectedGod]);
+					                shopControlGUI.GodIcons[SelectedGod]);
 					Card.Rarity rarity = shownCards[selectedCard].ThisRarity;
-					Texture2D rarityTexture = shopControl.PaperTexture;
-					if(rarity == Card.Rarity.Bronze) rarityTexture = shopControl.BronzeTexture;
-					else if(rarity == Card.Rarity.Silver) rarityTexture = shopControl.SilverTexture;
-					else if(rarity == Card.Rarity.Gold) rarityTexture = shopControl.GoldTexture;
+					Texture2D rarityTexture = shopControlGUI.PaperTexture;
+					if(rarity == Card.Rarity.Bronze) rarityTexture = shopControlGUI.BronzeTexture;
+					else if(rarity == Card.Rarity.Silver) rarityTexture = shopControlGUI.SilverTexture;
+					else if(rarity == Card.Rarity.Gold) rarityTexture = shopControlGUI.GoldTexture;
 					GUI.DrawTexture(new Rect(Screen.width*.05f, Screen.height*.7f, Screen.width*.1f, Screen.width*.1f), rarityTexture);
 				}
 			}

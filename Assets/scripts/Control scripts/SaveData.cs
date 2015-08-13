@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 
 [System.Serializable]
-public static class SaveData 
+public class SaveData 
 {
     //Save data variables will be marked with a $%^ at the places you need to modify them
 	//(they have to be modified in each place, or code will break)

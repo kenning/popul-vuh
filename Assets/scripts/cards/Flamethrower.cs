@@ -16,7 +16,7 @@ public class Flamethrower : Card {
 
 		gameControl.TargetSquareCallback = this;
 
-		GameControlGUI.Dim(true);
+		gameControlGUI.Dim(true);
 		gameControl.Tooltip = "Pick a card to burn.";
 		
 		base.Play ();

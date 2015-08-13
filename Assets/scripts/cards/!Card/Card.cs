@@ -18,7 +18,8 @@ public class Card : MonoBehaviour {
 	public ClickControl clickControl;
 	public OptionControl optionControl;
 	public EventGUI eventGUIControl;
-	public GameControlGUI GameControlGUI;
+	public GameControlGUI gameControlGUI;
+	public ShopControlGUI shopControlGUI;
 	public GUIStyleLibrary styleLibrary;
 
 	public CardLibrary library;
@@ -105,7 +106,7 @@ public class Card : MonoBehaviour {
 		clickControl = gameController.GetComponent<ClickControl>();
 		optionControl = gameController.GetComponent<OptionControl>();
 		library =  gameController.GetComponent<CardLibrary>();
-		GameControlGUI = gameController.GetComponent<GameControlGUI> ();
+		gameControlGUI = gameController.GetComponent<GameControlGUI> ();
 		PlayButton = GameObject.Find("play end button").GetComponent<ButtonAnimate>();
 		hand = GameObject.Find("Hand");
 		discardPileObj = GameObject.Find("Discard pile");
@@ -170,19 +171,19 @@ public class Card : MonoBehaviour {
 				switch (tempLibraryCard.ThisRarity)
 				{
 					case Card.Rarity.Gold:
-						render.sprite = shopControl.Gold;
+						render.sprite = shopControlGUI.Gold;
 						Cost = 10;
 						break;
 					case Card.Rarity.Silver:
-						render.sprite = shopControl.Silver;
+						render.sprite = shopControlGUI.Silver;
 						Cost = 6;
 						break;
 					case Card.Rarity.Bronze:
-						render.sprite = shopControl.Bronze;
+						render.sprite = shopControlGUI.Bronze;
 						Cost = 3;
 						break;
 					case Card.Rarity.Paper:
-						render.sprite = shopControl.Paper;
+						render.sprite = shopControlGUI.Paper;
 						Cost = 0;
 						break;
 				}
@@ -191,7 +192,7 @@ public class Card : MonoBehaviour {
 			{
 				int godnum = ShopControl.AllGods.IndexOf(tempLibraryCard.God);
 
-				render.sprite = shopControl.SpriteGodIcons[godnum];
+				render.sprite = shopControlGUI.SpriteGodIcons[godnum];
 			}
 			else if (render.gameObject.name == "shine animation")
 			{
@@ -207,7 +208,7 @@ public class Card : MonoBehaviour {
                 int godnum = 3;
                 godnum = ShopControl.AllGods.IndexOf(tempLibraryCard.God);
 
-                render.sprite = shopControl.GodSmallCards[godnum];
+				render.sprite = shopControlGUI.GodSmallCards[godnum];
             }
 		}
         foreach (CardText cardText in cardTexts) cardText.Initialize(101 - HandIndex() * 2);
@@ -355,7 +356,7 @@ public class Card : MonoBehaviour {
 	public void Select() {
 		gameControl.DeselectCards();
 		gridControl.DestroyAllTargetSquares();
-		GameControlGUI.Dim(false);
+		gameControlGUI.Dim(false);
 
 		if(gameControl.PlaysLeft > 0) { 
 			if(gameObject != null) {
@@ -567,7 +568,7 @@ public class Card : MonoBehaviour {
 	
 	public virtual void Click() {
 
-		GameControlGUI.Dim(false);
+		gameControlGUI.Dim(false);
 
 		if(Discarded) {
 			return;
@@ -665,7 +666,7 @@ public class Card : MonoBehaviour {
 			Play();
 			DiscardOrBurnIfNotInQ();
 			clickControl.DisallowEveryInput();
-			GameControlGUI.Dim();
+			gameControlGUI.Dim();
 			break;
 		default:
 			Debug.Log("FUCK");
@@ -730,7 +731,7 @@ public class Card : MonoBehaviour {
 	public virtual void AfterCardTargetingCallback() {
 		gameControl.TargetedCards = new List<GameObject>();
 		gameControl.CardsToTarget = 0;
-		GameControlGUI.Dim(false);
+		gameControlGUI.Dim(false);
 
 	//	i put OrganizeCards into CheckQ
 	//	Invoke("OrganizeCards", .3f);

@@ -14,10 +14,11 @@ public class MainMenu : MonoBehaviour {
 	static int NextUnlockLevel = 0;
     static string UnlockedText;
 
+	static ClickControl clickControl;
 	GameControl gameControl;
 	ShopControl shopControl;
 	GUIStyleLibrary styleLibrary;
-	static ClickControl clickControl;
+	static ShopControlGUI shopControlGUI;
 
 	public static string errorText = "";
 
@@ -30,6 +31,7 @@ public class MainMenu : MonoBehaviour {
 		gameControl = gameObject.GetComponent<GameControl> ();
 		clickControl = gameObject.GetComponent<ClickControl> ();
 		shopControl = gameObject.GetComponent<ShopControl> ();
+		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
 		encyclopediaMenu = gameObject.GetComponent<EncyclopediaMenu> ();
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
 	}
@@ -88,7 +90,7 @@ public class MainMenu : MonoBehaviour {
         MainMenu.MainMenuUp = true;
         MainMenu.InGame = false;
         DiedMenuUp = false;
-        ShopControl.Normaldisplay = false;
+        shopControlGUI.TurnOffShopControlGUIs();
         UnlockedText = "";
         UnlockCheck();
 
@@ -216,7 +218,7 @@ public class MainMenu : MonoBehaviour {
             GUI.BeginGroup(new Rect(Screen.width * .825f, Screen.height * .3f, Screen.width * .15f, Screen.height * .6f));
 			GUI.Box(new Rect(0, Screen.height * .0f, Screen.width * .15f, Screen.height * .2f), "Next Unlock:", styleLibrary.MainStyles.Sidebar);
             GUI.Box(new Rect(0, Screen.height * .2f, Screen.width * .15f, Screen.height * .2f), new GUIContent("\n" + NextGodToUnlock.ToString(),
-                shopControl.GodFullTextures[ShopControl.AllGods.IndexOf(NextGodToUnlock)]), styleLibrary.MainStyles.Sidebar);
+			        shopControlGUI.GodFullTextures[ShopControl.AllGods.IndexOf(NextGodToUnlock)]), styleLibrary.MainStyles.Sidebar);
             GUI.Box(new Rect(0, Screen.height * .4f, Screen.width * .15f, Screen.height * .2f),
 			        "Unlocked at level " + NextUnlockLevel.ToString(), styleLibrary.MainStyles.Sidebar);
             GUI.EndGroup();

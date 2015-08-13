@@ -17,7 +17,7 @@ public class Soda : Card {
 		}
 		gameControl.CardsToTarget = 1;
 
-		GameControlGUI.Dim(true);
+		gameControlGUI.Dim(true);
 		gameControl.Tooltip = "Pick a card to discard.";
 		
 		base.Play ();

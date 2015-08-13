@@ -45,7 +45,7 @@ public class DeckAnimate : MonoBehaviour {
 				cardUnderDeck.transform.parent = gameObject.transform;
 				cardUnderDeck.transform.localPosition = Vector3.zero;
 
-                gameControl.gameObject.GetComponent<ShopControl>().shufflin = false;
+                gameControl.gameObject.GetComponent<ShopControlGUI>().TurnOnNormalGUI();
                 gameControl.Tooltip = "";
 
 				//VVV actually really important part. this is where the new level starts!

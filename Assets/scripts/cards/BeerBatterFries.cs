@@ -20,7 +20,7 @@ public class BeerBatterFries : Card {
 		gameControl.CardsToTarget = 1;
 		gameControl.CardsToTargetAreDiscarded = true;
 
-		GameControlGUI.Dim (true);
+		gameControlGUI.Dim (true);
 		gameControl.Tooltip =  ("Please select a discarded card to tuck back into your deck.");
 		
 		base.Play ();

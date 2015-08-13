@@ -7,6 +7,7 @@ public class GUIStyleLibrary : MonoBehaviour {
 	public GUISkin MAINMENUGUISKIN;
 	public GUISkin OPTIONGUISKIN;
 	public GUISkin GAMECONTROLGUISKIN;
+	public GUISkin SHOPSKIN;
 
 	public MainMenuStyleLibrary MainStyles;
 	public EncyclopediaMenuStyleLibrary EncyclopediaStyles;
@@ -28,6 +29,7 @@ public class GUIStyleLibrary : MonoBehaviour {
 		GameControlGUIStyles = new GameControlGUIStyleLibrary (GAMECONTROLGUISKIN);
 		TutorialStyles = new TutorialStyleLibrary (MAINMENUGUISKIN);
 		CardStyles = new CardStyleLibrary (GAMECONTROLGUISKIN);
+		ShopStyles = new ShopStyleLibrary (SHOPSKIN, MAINMENUGUISKIN);
 	}
 
 	public class MainMenuStyleLibrary {
@@ -88,10 +90,11 @@ public class GUIStyleLibrary : MonoBehaviour {
 		public GUIStyle CardToggleOff;
 		public GUIStyle RarityToggleOn;
 		public GUIStyle RarityToggleOff;
+		public GUIStyle InstructionInfoBox;
 
+		// Card displaying GUI
 		public GUIStyle CardNameStyle;
 		public GUIStyle CardTextStyle;
-		public GUIStyle InstructionInfoBox;
 		public int CustomizeCardNameFontSize = 16;
 		public int CustomizeCardTextFontSize = 13;
 
@@ -152,31 +155,42 @@ public class GUIStyleLibrary : MonoBehaviour {
 	}
 
 	public class ShopStyleLibrary {
+		// Goal exposition GUI
 		public GUIStyle TransparentBackground;
 		public GUIStyle GoalExpoBox;
 		public GUIStyle GotItButton;
 
+		// Cards to buy GUI
+			// Card miniature display
 		public GUIStyle DisplayTitle;
 		public GUIStyle DisplayText;
 		public int DisplayTitleFontSize = 14;
 		public int DisplayTextFontSize = 10;
-
-		public GUIStyle ShopGoalDefault;
+		public GUIStyle ShopBox;
 		public GUIStyle ShopGoalGold;
 		public GUIStyle ShopGoalSilver;
 		public GUIStyle ShopGoalBronze;
+		public GUIStyle ShopHoverOverlay;
+
+		// In game goal GUI (shows three goals along top of screen)
+		public GUIStyle InGameGoalBox;
+		public GUIStyle InGameGoalBoxHoverOverlay;
 
 		public ShopStyleLibrary (GUISkin shopSkin, GUISkin mainSkin) {
-			DisplayTitle = mainSkin.customStyles[6];
-			DisplayText = mainSkin.customStyles[7];
-
 			TransparentBackground = shopSkin.customStyles[0];
 			GoalExpoBox = shopSkin.box;
 			GotItButton = shopSkin.button;
-			ShopGoalDefault = shopSkin.customStyles[2];
+			
+			DisplayTitle = mainSkin.customStyles[6];
+			DisplayText = mainSkin.customStyles[7];
+			ShopBox = shopSkin.customStyles[2];
 			ShopGoalGold = shopSkin.customStyles[6];
 			ShopGoalSilver = shopSkin.customStyles[5];
 			ShopGoalBronze = shopSkin.customStyles[4];
+			ShopHoverOverlay = shopSkin.customStyles[3];
+
+			InGameGoalBox = shopSkin.textArea;
+			InGameGoalBoxHoverOverlay = shopSkin.customStyles[1];
 		}
 	}
 }

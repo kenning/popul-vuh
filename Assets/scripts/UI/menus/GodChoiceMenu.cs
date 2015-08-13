@@ -8,11 +8,13 @@ public class GodChoiceMenu : MonoBehaviour {
 
 	public bool[] GodChoiceSelection = new bool[7];
 	ShopControl shopControl;
+	ShopControlGUI shopControlGUI;
 
 	GUIStyleLibrary styleLibrary;
 
 	void Start() {
 		shopControl = gameObject.GetComponent<ShopControl> ();
+		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
 		GodChoiceSelection = new bool[] {false, false, false, false, false, false, false};
 	}
@@ -32,7 +34,7 @@ public class GodChoiceMenu : MonoBehaviour {
 				        ShopControl.GodDescriptions[thisGodNumber], styleLibrary.GodChoiceStyles.GodChoiceToggleText);
 				if(GodChoiceSelection[ShopControl.AllGods.IndexOf(SaveData.UnlockedGods[i])]) {
 					GUI.Box(new Rect(Screen.width*.75f, Screen.height*.1f*i, Screen.width*.2f, Screen.height*.1f), 
-					        shopControl.GodIcons[thisGodNumber]);
+					        shopControlGUI.GodIcons[thisGodNumber]);
 				}
 			}
 

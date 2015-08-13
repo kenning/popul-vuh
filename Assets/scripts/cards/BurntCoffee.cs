@@ -15,7 +15,7 @@ public class BurntCoffee : Card {
 
 		gameControl.Tooltip =  "Pick a card to burn.";
 		
-		GameControlGUI.Dim (true);
+		gameControlGUI.Dim (true);
 
 		base.Play ();
 	}

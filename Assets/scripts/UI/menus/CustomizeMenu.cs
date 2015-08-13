@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 public class CustomizeMenu : MonoBehaviour {
 
+	ShopControl shopControl;
+	ShopControlGUI shopControlGUI;
+	GUIStyleLibrary styleLibrary;
+
 	public static bool CustomizeMenuUp = false;
 
 	float seventh = Screen.width * .8f / 7;
@@ -19,12 +23,9 @@ public class CustomizeMenu : MonoBehaviour {
 	string silverSpotTaken = "";
 	int longestLength = 0;
 
-	GUIStyleLibrary styleLibrary;
-
-	ShopControl shopControl;
-
 	void Start () {
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
+		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
 	}
 
 	void OnGUI () {
@@ -43,9 +44,9 @@ public class CustomizeMenu : MonoBehaviour {
 
 		for(int i = 0; i < ShopControl.AllGods.Count-2; i++) {
 			if(SaveData.UnlockedGods.Contains(ShopControl.AllGods[i])) {
-				GUI.Box(new Rect(seventh*i, 0f, seventh, Screen.height*.1f), new GUIContent(shopControl.GodIcons[i]), GUIStyle.none);
+				GUI.Box(new Rect(seventh*i, 0f, seventh, Screen.height*.1f), new GUIContent(shopControlGUI.GodIcons[i]), GUIStyle.none);
 			} else {
-				GUI.Box(new Rect(seventh*i, 0f, seventh, Screen.height*.1f), new GUIContent(shopControl.GodIcons[7]), GUIStyle.none);
+				GUI.Box(new Rect(seventh*i, 0f, seventh, Screen.height*.1f), new GUIContent(shopControlGUI.GodIcons[7]), GUIStyle.none);
 			}
 		}
 		
@@ -55,10 +56,10 @@ public class CustomizeMenu : MonoBehaviour {
 
 			for(int j = 0; j < allCards[i].Count; j++) {
 				LibraryCard thisCard = allCards[i][j];
-				Texture2D Rarity = shopControl.PaperTexture;
-				if(thisCard.ThisRarity == Card.Rarity.Bronze)  Rarity = shopControl.BronzeTexture;
-				else if(thisCard.ThisRarity == Card.Rarity.Silver)  Rarity = shopControl.SilverTexture;
-				else if(thisCard.ThisRarity == Card.Rarity.Gold)  Rarity = shopControl.GoldTexture;
+				Texture2D Rarity = shopControlGUI.PaperTexture;
+				if(thisCard.ThisRarity == Card.Rarity.Bronze)  Rarity = shopControlGUI.BronzeTexture;
+				else if(thisCard.ThisRarity == Card.Rarity.Silver)  Rarity = shopControlGUI.SilverTexture;
+				else if(thisCard.ThisRarity == Card.Rarity.Gold)  Rarity = shopControlGUI.GoldTexture;
 
 				GUIContent name = new GUIContent(thisCard.CardName, Rarity);
 					//if this isn't unlocked, don't display it....
@@ -126,7 +127,7 @@ public class CustomizeMenu : MonoBehaviour {
         if (BronzeSpotTaken != "")
         {
             if (GUI.Button(new Rect(0, 0, Screen.width * .4f, Screen.height * .1f), 
-			               new GUIContent("Your added Bronze card is " + BronzeSpotTaken + " ", shopControl.BronzeTexture), 
+			               new GUIContent("Your added Bronze card is " + BronzeSpotTaken + " ", shopControlGUI.BronzeTexture), 
 			               styleLibrary.CustomizeStyles.RarityToggleOn))
                 selectedCard = CardLibrary.Lib[BronzeSpotTaken];
         }
@@ -138,7 +139,7 @@ public class CustomizeMenu : MonoBehaviour {
         if (silverSpotTaken != "")
         {
             if (GUI.Button(new Rect(0, Screen.height * .1f, Screen.width * .4f, Screen.height * .1f), 
-			               new GUIContent("Your added Silver card is " + silverSpotTaken + " ", shopControl.SilverTexture), 
+			               new GUIContent("Your added Silver card is " + silverSpotTaken + " ", shopControlGUI.SilverTexture), 
 			               styleLibrary.CustomizeStyles.RarityToggleOn))
                 selectedCard = CardLibrary.Lib[silverSpotTaken];
         }
@@ -150,7 +151,7 @@ public class CustomizeMenu : MonoBehaviour {
         if (goldSpotTaken != "")
         {
             if (GUI.Button(new Rect(0, Screen.height * .2f, Screen.width * .4f, Screen.height * .1f), 
-			               new GUIContent("Your added Gold card is " + goldSpotTaken + " ", shopControl.GoldTexture), 
+			               new GUIContent("Your added Gold card is " + goldSpotTaken + " ", shopControlGUI.GoldTexture), 
 			               styleLibrary.CustomizeStyles.RarityToggleOn))
                 selectedCard = CardLibrary.Lib[goldSpotTaken];
         }
@@ -163,10 +164,10 @@ public class CustomizeMenu : MonoBehaviour {
 
 		if(selectedCard.CardName != null) {
 			GUI.BeginGroup (new Rect (Screen.width * 0f, Screen.height * .6f, Screen.width * .3f, Screen.height * .3f), "");
-            if (shopControl.CardTextures[selectedGod] != null)
+			if (shopControlGUI.CardTextures[selectedGod] != null)
             {
     			GUI.DrawTexture(new Rect(Screen.width*.0f, Screen.height*.0f, Screen.width*.3f, Screen.height*.3f), 
-				                shopControl.CardTextures[selectedGod]);
+				                shopControlGUI.CardTextures[selectedGod]);
             }
 			GUIStyle cardNameStyle = new GUIStyle(styleLibrary.CustomizeStyles.CardNameStyle);
 			cardNameStyle.fontSize = styleLibrary.CustomizeStyles.CustomizeCardNameFontSize;
@@ -191,12 +192,12 @@ public class CustomizeMenu : MonoBehaviour {
 			GUI.Box(new Rect(Screen.width*.025f, Screen.height*.1f, Screen.width*.25f, Screen.height*.15f), 
 			        selectedCard.DisplayText, cardTextStyle);
 			GUI.DrawTexture(new Rect(Screen.width*.225f, Screen.height*.25f, Screen.width*.05f, Screen.width*.05f), 
-			                shopControl.GodIcons[selectedGod]);
+			                shopControlGUI.GodIcons[selectedGod]);
 			Card.Rarity rarity = selectedCard.ThisRarity;
-			Texture2D rarityTexture = shopControl.PaperTexture;
-			if(rarity == Card.Rarity.Bronze) rarityTexture = shopControl.BronzeTexture;
-			else if(rarity == Card.Rarity.Silver) rarityTexture = shopControl.SilverTexture;
-			else if(rarity == Card.Rarity.Gold) rarityTexture = shopControl.GoldTexture;
+			Texture2D rarityTexture = shopControlGUI.PaperTexture;
+			if(rarity == Card.Rarity.Bronze) rarityTexture = shopControlGUI.BronzeTexture;
+			else if(rarity == Card.Rarity.Silver) rarityTexture = shopControlGUI.SilverTexture;
+			else if(rarity == Card.Rarity.Gold) rarityTexture = shopControlGUI.GoldTexture;
 			GUI.DrawTexture(new Rect(Screen.width*.025f, Screen.height*.25f, Screen.width*.05f, Screen.width*.05f), rarityTexture);
 			GUI.EndGroup ();
 		}

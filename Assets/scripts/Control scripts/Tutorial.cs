@@ -31,13 +31,13 @@ public class Tutorial : MonoBehaviour {
 
     ClickControl clickControl;
     GameControl gameControl;
-	GameControlGUI GameControlGUI;
+	GameControlGUI gameControlGUI;
 
     public static bool PlayedACardLevel7 = false;
 
 	void Start() {
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
-		GameControlGUI = gameObject.GetComponent<GameControlGUI> ();
+		gameControlGUI = gameObject.GetComponent<GameControlGUI> ();
 	}
 
     public void Initialize()
@@ -176,13 +176,13 @@ public class Tutorial : MonoBehaviour {
                 Destroy(en);
             }
             clickControl.DisallowEveryInput();
-			GameControlGUI.Dim();
+			gameControlGUI.Dim();
         }
         if (TutorialLevel == 5)
         {
             gameObject.GetComponent<GridControl>().CancelInvoke();
 
-			GameControlGUI.Dim(false);
+			gameControlGUI.Dim(false);
             List<string> deck = gameControl.Deck;
             deck.Add("Wooden Pike");
             deck.Add("Wooden Pike");

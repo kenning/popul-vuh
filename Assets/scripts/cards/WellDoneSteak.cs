@@ -17,7 +17,7 @@ public class WellDoneSteak : Card {
 		
 		gameControl.Tooltip =  ("Please select a card to burn.");
 		
-		GameControlGUI.Dim(true);
+		gameControlGUI.Dim(true);
 		
 		base.Play ();
 	}

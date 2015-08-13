@@ -6,7 +6,7 @@ public class OptionControl : MonoBehaviour {
 
 	Card returnToThisCard;
 	ClickControl clickControl;
-	GameControlGUI GameControlGUI;
+	GameControlGUI gameControlGUI;
 
 	public List<string> options;
 	public bool optionYesNo = false;
@@ -16,7 +16,7 @@ public class OptionControl : MonoBehaviour {
 	void Awake () {
 		clickControl = gameObject.GetComponent<ClickControl> ();
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
-		GameControlGUI = gameObject.GetComponent<GameControlGUI> ();
+		gameControlGUI = gameObject.GetComponent<GameControlGUI> ();
 	}
 
 	public void SetYesNoOption (Card ReturnCard) {
@@ -39,11 +39,11 @@ public class OptionControl : MonoBehaviour {
 	public void TurnOffOptions () {
 		options = new List<string> ();
 		optionYesNo = false;
-		GameControlGUI.Dim (false);
+		gameControlGUI.Dim (false);
 	}
 
 	void BaseOptionSet() {
-		GameControlGUI.Dim (true);		
+		gameControlGUI.Dim (true);		
 		clickControl.DisallowEveryInput ();
 		clickControl.AllowInfoInput = true;
 	}
@@ -54,11 +54,11 @@ public class OptionControl : MonoBehaviour {
 			               styleLibrary.OptionControlStyles.Box);
 				if(GUI.Button(new Rect(Screen.width*.1f, Screen.height*.05f, Screen.width*4f, Screen.height*.1f), "Yes")) {
 					returnToThisCard.OptionsCalledThis(true);
-					GameControlGUI.Dim(false);
+					gameControlGUI.Dim(false);
 				}
 				if(GUI.Button(new Rect(Screen.width*.1f, Screen.height*.25f, Screen.width*4f, Screen.height*.1f), "No")) {
 					returnToThisCard.OptionsCalledThis(false);
-					GameControlGUI.Dim(false);
+					gameControlGUI.Dim(false);
 				}
 			GUI.EndGroup();
 		}
@@ -69,7 +69,7 @@ public class OptionControl : MonoBehaviour {
 				if(GUI.Button(new Rect(Screen.width*.1f, Screen.height*.1f*i, Screen.width*.4f, Screen.height*.1f), 
 				              options[i], styleLibrary.OptionControlStyles.Button)){
 						returnToThisCard.OptionsCalledThis(i);
-						GameControlGUI.Dim(false);
+						gameControlGUI.Dim(false);
 					}
 				}
 			GUI.EndGroup();
