@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class EventControl {
+public class EventControl : ScriptableObject {
 
 	static List<Card> TriggerList;
 	//keyword == "Enemy Death"

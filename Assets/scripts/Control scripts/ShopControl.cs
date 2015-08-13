@@ -19,7 +19,7 @@ public class ShopControl : MonoBehaviour {
 	string[] possibleGoals;
 
 	//Phases
-	public enum Gods {Ikka, Ekcha, Chac, Kinich, Buluc, Ixchel, Akan, Pantheon, none};
+	public enum Gods {Akan, Buluc, Chac, Ekcha, Ikka, Ixchel, Kinich, Pantheon, none};
 	public static string[] GodDescriptions	= {"Alcohols / Discard Pile", "Damage Spells", "Prayers", "Agility", 
 		"Protection", "Fire / Card Destruction", "Card draw / Food", "Card draw / Food", "Card draw / Food", "Card draw / Food"};
 	public static List<Gods> AllGods = new List<Gods> ();
@@ -31,6 +31,7 @@ public class ShopControl : MonoBehaviour {
 		library =  gameObject.GetComponent<CardLibrary>();
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
 		goalLibrary = gameObject.GetComponent<GoalLibrary> ();
+		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
 		goalLibrary.Startup ();
 
 		Goals = new Goal[0];
