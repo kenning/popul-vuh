@@ -21,7 +21,7 @@ public class GameControlGUI : MonoBehaviour {
 	bool showingDeck;
 	
 	SpriteRenderer displayCardRenderer;
-	SpriteRenderer dimmer;
+	DimAnimate dimmer;
 	public bool CardDisplay = false;
 	GameObject cardObjFromDeck;
 
@@ -36,7 +36,7 @@ public class GameControlGUI : MonoBehaviour {
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
 		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
 		displayCardRenderer = GameObject.Find ("Display card").GetComponent<SpriteRenderer> ();
-		dimmer = GameObject.Find ("Dimmer").GetComponent<SpriteRenderer>();
+		dimmer = GameObject.Find ("Dimmer").GetComponent<DimAnimate>();
 	}
 
 
@@ -80,7 +80,7 @@ public class GameControlGUI : MonoBehaviour {
 	public void Display(Card card) {
 		CardDisplay = true;
 		if (Tutorial.TutorialLevel != 0) return;
-		dimmer.enabled = true;
+		dimmer.Dim ();
 		displayCardRenderer.enabled = true;
 		DisplayName = card.CardName;
 		DisplayName.Replace ("\n", "");
@@ -143,7 +143,7 @@ public class GameControlGUI : MonoBehaviour {
 		CardDisplay = false;
 		//this vvv might be a bad condition to base whether or not to turn off the dimmer on. it works for now though.
 		if(gameControl.CardsToTarget == 0) {
-			dimmer.enabled = false;
+			dimmer.Undim();
 		}
 		displayCardRenderer.enabled = false;
 		if(cardObjFromDeck != null) Destroy(cardObjFromDeck);
@@ -157,11 +157,11 @@ public class GameControlGUI : MonoBehaviour {
 	{
 		if (TurnOn)
 		{
-			dimmer.enabled = true;
+			dimmer.Dim();
 		}
 		else
 		{
-			dimmer.enabled = false;
+			dimmer.Undim();
 		}
 	}
 
@@ -183,8 +183,8 @@ public class GameControlGUI : MonoBehaviour {
 			discard.transform.localPosition = displayDiscardPlacement;
 			
 			for(int i = 0; i < gameControl.Discard.Count; i++) {
-				Card tempcard = gameControl.Discard[i].GetComponent<Card>();
-				tempcard.MoveAnimateWhileDiscarded(i, true);
+				CardUI tempcardui = gameControl.Discard[i].GetComponent<CardUI>();
+				tempcardui.MoveAnimateWhileDiscarded(i, true);
 			}
 		}
 		else {

@@ -26,7 +26,7 @@ public class CornDog : Card {
 	public override void AfterCardTargetingCallback() {
 		foreach(GameObject tempGO in gameControl.TargetedCards){
 			Card tempCard = tempGO.GetComponent<Card>();
-			tempCard.cardUI.DiscardAnimate();
+			tempCard.Discard();
 		}
 
 		base.AfterCardTargetingCallback ();

@@ -206,7 +206,7 @@ public class GameControl : MonoBehaviour
 		Draw (true);
 	}
 	public void DrawIntoHand(Card card, bool invisibleDraw) {
-		card.DrawAnimate (Hand.Count-1);	
+		card.cardUI.DrawAnimate (Hand.Count-1);	
 		
 		if(!invisibleDraw) { 
 			shopControl.GoalCheck("Draw X cards in one turn");
@@ -279,7 +279,7 @@ public class GameControl : MonoBehaviour
 		ReturnCardObj.transform.parent = handObj.transform;
 		//ReturnCardObj.transform.position = new Vector3 (2.7f, -4.8f, 0);
 
-		card.MoveAnimate (Hand.Count-1);			
+		card.cardUI.MoveAnimate (Hand.Count-1);			
 	}
 	#endregion
 
@@ -574,14 +574,7 @@ public class GameControl : MonoBehaviour
 				if(cardObject != null) {
 					Card currentCard = cardObject.GetComponent<Card>();
 					if(currentCard != null) {
-						if(!currentCard.Discarded && 
-						   !currentCard.BurnAnimating && 
-						   !currentCard.Peeked && 
-						   !currentCard.DiscardAnimating && 
-						   !currentCard.ForcingDiscardOfThis) {
-							int i = Hand.IndexOf(cardObject);
-							if(currentCard != null) currentCard.MoveAnimate(i); 
-						}
+						currentCard.cardUI.TryToMoveAnimate();
 					}
 				}
 			}

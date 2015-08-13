@@ -188,8 +188,17 @@ public class CardUI : MonoBehaviour {
 		transform.localPosition = new Vector3(position + -1f, 1f, 0);
 	}
 
-	public void DiscardAnimateIfNotAlready() {
-		if(!DiscardAnimating) DiscardAnimate();
+	public void TryToMoveAnimate () {
+		if(!card.Discarded && 
+		   !BurnAnimating && 
+		   !card.Peeked && 
+		   !DiscardAnimating && 
+		   !card.ForcingDiscardOfThis) {
+			
+			int i = gameControl.Hand.IndexOf(gameObject);
+			if(card != null) MoveAnimate(i); 
+		}
+
 	}
 
 	//////////////////////////////////////
@@ -211,11 +220,12 @@ public class CardUI : MonoBehaviour {
 	/// delete this header later and move initialize to the top
 	//////////////////////////////////////
 
-	public void Intialize (GameObject gameController) {
+	public void Initialize (GameObject gameController) {
 		card = gameObject.GetComponent<Card> ();
 		
 		gameControl = gameController.GetComponent<GameControl> ();
 		shopControlGUI = gameController.GetComponent<ShopControlGUI> ();
+		styleLibrary = gameController.GetComponent<GUIStyleLibrary> ();
 		
 		PlayButton = GameObject.Find("play end button").GetComponent<ButtonAnimate>();
 		meshrenderers = GetComponentsInChildren<MeshRenderer>();

@@ -30,7 +30,7 @@ public class Shuriken : Card {
 		foreach(GameObject tempGO in gameControl.TargetedCards){
 			Card c = tempGO.GetComponent<Card>();
 			discardRarity = c.ThisRarity;
-			c.cardUI.DiscardAnimate();
+			c.Discard();
 		}
 
 		if (discardRarity == Rarity.Paper)

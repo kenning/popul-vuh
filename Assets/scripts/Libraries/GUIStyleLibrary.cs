@@ -161,6 +161,7 @@ public class GUIStyleLibrary : MonoBehaviour {
 		public GUIStyle TransparentBackground;
 		public GUIStyle GoalExpoBox;
 		public GUIStyle GotItButton;
+		public GUIStyle SmallerButton;
 
 		// Cards to buy GUI
 			// Card miniature display
@@ -182,6 +183,7 @@ public class GUIStyleLibrary : MonoBehaviour {
 			TransparentBackground = shopSkin.customStyles[0];
 			GoalExpoBox = shopSkin.box;
 			GotItButton = shopSkin.button;
+			SmallerButton = mainSkin.customStyles[1];
 			
 			DisplayTitle = mainSkin.customStyles[6];
 			DisplayText = mainSkin.customStyles[7];

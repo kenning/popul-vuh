@@ -34,7 +34,7 @@ public class Goulash : Card {
 				gameControl.Draw();
 				gameControl.AddPlays(3);
 			}
-			tempCard.cardUI.DiscardAnimate();
+			tempCard.Discard();
 		}
 		
 		base.AfterCardTargetingCallback ();

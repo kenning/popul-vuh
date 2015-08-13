@@ -67,7 +67,7 @@ public class DeckAnimate : MonoBehaviour {
 		//leads to Shuffle()
 		GameObject[] handObjs = GameObject.FindGameObjectsWithTag ("Card");
 		foreach(GameObject handObj in handObjs) {
-			handObj.GetComponent<Card>().ShuffleMoveAnimate(transform);
+			handObj.GetComponent<CardUI>().ShuffleMoveAnimate(transform);
 		}
 	}
 	void Shuffle () {

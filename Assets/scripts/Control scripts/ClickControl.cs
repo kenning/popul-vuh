@@ -224,7 +224,7 @@ public class ClickControl : MonoBehaviour {
 				}
 				else if(Time.time - .1f > lastCardClick && AllowInfoInput) 
                 {
-                    cardScriptClickedOn.ShineAnimate();
+                    cardScriptClickedOn.cardUI.ShineAnimate();
                 }
 			}
 		}
@@ -298,7 +298,7 @@ public class ClickControl : MonoBehaviour {
 					if(hit.collider.gameObject.tag == "Card") {
 						cardScriptClickedOn = hit.collider.gameObject.GetComponent<Card>();
 						cardHasBeenClickedOn = true;
-                        cardScriptClickedOn.GlowAnimate(true);
+                        cardScriptClickedOn.cardUI.GlowAnimate(true);
 
 						lastCardClick = Time.time;
 						dragOrigin = Input.mousePosition;

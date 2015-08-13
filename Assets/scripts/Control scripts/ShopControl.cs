@@ -110,9 +110,6 @@ public class ShopControl : MonoBehaviour {
 	}
 
 	public void NewLevelNewGoals(int numberOfGods) {
-
-		shopControlGUI.NewLevelNewGoals (numberOfGods);
-
 		Goals = new Goal[numberOfGods];
 		Goals = goalLibrary.InitializeGoals (numberOfGods);
 
@@ -125,5 +122,6 @@ public class ShopControl : MonoBehaviour {
 		SetGoalGUIVariables ();
 		clickControl.DisallowEveryInput ();
 
+		shopControlGUI.NewLevelNewGoals (numberOfGods);
 	}
 }

@@ -108,8 +108,8 @@ public class Card : MonoBehaviour {
 		ThisRarity = tempLibraryCard.ThisRarity;
 		CardAction = tempLibraryCard.CardAction;
 		God = tempLibraryCard.God;
-		TitleFontSize = 14;
-		SmallFontSize = 10;
+		TitleFontSize = 40;
+		SmallFontSize = 35;
 
 		gameControl.Hand.Add(gameObject);
 
@@ -129,13 +129,13 @@ public class Card : MonoBehaviour {
 			break;
 		}
 
+		cardUI.Initialize (gameController);
     }
 
 	//////////////////////////////////////
 	/// Universal card methods
 	//////////////////////////////////////
 
-	//select, deselect
 	public void Select() {
 		gameControl.DeselectCards();
 		gridControl.DestroyAllTargetSquares();
@@ -153,52 +153,62 @@ public class Card : MonoBehaviour {
 			}
 		}
 	}
+
 	public void Deselect() {
 		if (Selected) cardUI.UntargetAnimate ();
 		Selected = false;
 	}
-	//target, untarget
+
 	public void Target() {
-		cardUI.TargetAnimate ();
 		Targeted = true;
+		cardUI.TargetAnimate ();
 	}
+
 	public void Untarget() {
-		cardUI.UntargetAnimate ();
 		Targeted = false;
+		cardUI.UntargetAnimate ();
 	}
 
 	public void Discard() {
-		cardUI.DiscardAnimate ();
-
-		if(DiscardWhenPlayed | ForcingDiscardOfThis) {
+		if (Discarded) {
+			Debug.LogError ("Trying to discard a card which is already marked as discarded. Bug?");
+			return;
+		}
+		bool actuallyDiscarding = DiscardWhenPlayed | ForcingDiscardOfThis;
+		if(actuallyDiscarding) {
 			Discarded = true;
 			gameControl.Hand.Remove(gameObject);
 			gameControl.Discard.Add(gameObject);
 		}
-	}
-	public void FinishDiscard() {
-		cardUI.FinishDiscardAnimate (DiscardWhenPlayed | ForcingDiscardOfThis);
 
+		cardUI.DiscardAnimate ();
+	}
+
+	public void FinishDiscard() {
 		Deselect();
 		ForcingDiscardOfThis = false;
-		
+
+		bool actuallyDiscarding = DiscardWhenPlayed | ForcingDiscardOfThis;
+		cardUI.FinishDiscardAnimate (actuallyDiscarding);
+
 		shopControl.GoalCheck("Discard pile has X cards in it");
 		shopControl.GoalCheck("Discard pile has X cards in a row with the same God");
 	}
 
 	public virtual void Tuck() {
-		cardUI.TuckAnimate ();
-
-		clickControl.DisallowEveryInput();
 		if(gameControl.Hand.Contains(gameObject)) 
 			gameControl.Hand.Remove(gameObject);
 		if (gameControl.Discard.Contains (gameObject)) 
 			gameControl.Discard.Remove(gameObject);
 		if(gameControl.PeekedCards.Contains(gameObject)) 
 			gameControl.PeekedCards.Remove(gameObject);
+		
+		cardUI.TuckAnimate ();
 
+		clickControl.DisallowEveryInput();
 		Invoke("FinishTuck", .25f);
 	}
+
 	public void FinishTuck(){
 		string tempString = CardName;
 		tempString.Replace("\n", " ");
@@ -209,22 +219,23 @@ public class Card : MonoBehaviour {
 	}
 
 	public virtual void Burn() {
-		cardUI.BurnAnimate ();
-
 		clickControl.DisallowEveryInput();
 		if(Selected) Deselect();
 		gameControl.Hand.Remove(gameObject);
+
+		cardUI.BurnAnimate ();
 
 		EventControl.EventCheck("Burn");
 	}
 
 	public void Peek(int position, int maxPositions) {
-		cardUI.PeekAnimate (position, maxPositions);
-
 		Peeked = true;
+
+		cardUI.PeekAnimate (position, maxPositions);
 	}
 
 	public virtual void PeekCallback() {
+		// This gets overwritten by inheriting cards
 		Debug.Log ("peeked!");
 	}
 
@@ -339,6 +350,7 @@ public class Card : MonoBehaviour {
 			break;
 		}
 	}
+
 	public void EnterTargetingMode() {
 		Select();
 		gridControl.EnterTargetingMode(rangeTargetType, minRange, maxRange);
@@ -360,10 +372,12 @@ public class Card : MonoBehaviour {
 		shopControl.GoalCheck("Play less than X cards total");
 		shopControl.GoalCheck("Don't play a card X turns in a row");
 	}
+
 	public virtual void ArmorPlay() {
 		DiscardOrBurnIfNotInQ();
 		Play();
 	}
+
 	public void DiscardOrBurnIfNotInQ(){
 		if(!QControl.QContains(this)) {
 			if(BurnsSelfWhenPlayed)
@@ -371,11 +385,10 @@ public class Card : MonoBehaviour {
 		}
 
 		if(!BurnsSelfWhenPlayed && !Discarded) {
-			cardUI.DiscardAnimateIfNotAlready();
+			Discard();
 		}
 	}
 
-	
 	//////////////////////////////////////
 	/// QCall methods
 	//////////////////////////////////////
@@ -465,10 +478,10 @@ public class Card : MonoBehaviour {
 				}
 			}
 			else 
-				Debug.Log("the card should have a rangeTargetType!");
+				Debug.LogError("the card should have a rangeTargetType!");
 		}
 	}
-	public virtual void Affect(GridUnit x) { Debug.Log("Card parentclass's Affect() was called. Bad!"); }
+	public virtual void Affect(GridUnit x) { Debug.LogError("Card parentclass's Affect() was called. Bad!"); }
 
 	//////////////////////////////////////
 	/// Utilities

@@ -174,7 +174,6 @@ public class GridControl : MonoBehaviour {
             endList.Add(new int[] { player.xPosition + 1, player.yPosition });
             endList.Add(new int[] { player.xPosition - 1, player.yPosition });
         }
-        Debug.Log("endlist is " + endList.Count + " long");
         emptyPoints = FindEmptySpots(IgnoreEnemies);
         pointsToVisit = new Queue<Point>();
 

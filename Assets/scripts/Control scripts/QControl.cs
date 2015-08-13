@@ -64,7 +64,7 @@ public static class QControl {
 			deQCard.SpecialQCall();
 			break;
 		case QMethodType.Discard:
-			deQCard.DiscardAnimate();
+			deQCard.Discard();
 			break;
 		}
 	}

@@ -8,9 +8,9 @@ public class ShopControlGUI : MonoBehaviour {
 	GameControl gameControl;
 	ClickControl clickControl;
 	GUIStyleLibrary styleLibrary;
-	bool goalExpo = false;
-	bool normaldisplay = false;
-	bool shopGUI = false;
+	public bool goalExpo = false;
+	public bool normaldisplay = false;
+	public bool shopGUI = false;
 	
 	public Sprite[] GodFullSprites;
 	public Texture2D[] GodFullTextures;
@@ -49,8 +49,6 @@ public class ShopControlGUI : MonoBehaviour {
 		clickBlocker = GameObject.Find ("moving click blocker").GetComponent<ClickBlocker> ();
 		
 		goalExpo = false;
-
-		Goals = shopControl.Goals;
 	}
 
 	public void SetGodPicture (Goal goal) {
@@ -65,6 +63,8 @@ public class ShopControlGUI : MonoBehaviour {
 	}
 
 	public void NewLevelNewGoals (int numberOfGods) {
+		Debug.Log ("hi");
+		Goals = shopControl.Goals;
 		GoalDisplay = new bool[numberOfGods];
 		goalExpo = true;
 
@@ -266,11 +266,13 @@ public class ShopControlGUI : MonoBehaviour {
 			
 			//Dollar count box
 			GUI.Box(new Rect(Screen.width*.7f, Screen.height*.88f, Screen.width*.2f, Screen.height*.1f), 
-			        gameControl.Dollars.ToString(), styleLibrary.ShopStyles.GotItButton);
+			        "$" + gameControl.Dollars.ToString(), styleLibrary.ShopStyles.GotItButton);
 			
 			//Go to next level button
+			GUIStyle GoToNextLevelStyle = new GUIStyle(styleLibrary.ShopStyles.SmallerButton);
+			GoToNextLevelStyle.fontSize = 20;
 			if(GUI.Button(new Rect(Screen.width*.2f, Screen.height*.88f, Screen.width*.4f, Screen.height*.1f), 
-			              "Go to next level", styleLibrary.ShopStyles.GotItButton)) {
+			              "Go to next level", GoToNextLevelStyle)) {
 				shopGUI = false;
 				gameControl.CollectAnimate();
 				gameControl.Tooltip = "Shuffling together your deck and discard...";

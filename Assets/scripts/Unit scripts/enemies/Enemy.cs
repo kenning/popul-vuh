@@ -269,15 +269,15 @@ public class Enemy : MonoBehaviour {
 		List<Card> SelectableCards = new List<Card> ();
 		for (int i = 0; i < gameControl.Hand.Count; i++) {
 			Card tempCard = gameControl.Hand[i].GetComponent<Card>();
-			if(!tempCard.DrawAnimating) {
+//			if(!tempCard.DrawAnimating) {
 				SelectableCards.Add (tempCard);
-			}
+//			}
 		}
 
 		int randomNumber = Random.Range(0, SelectableCards.Count);
 		if(SelectableCards[randomNumber] != null) {
 			SelectableCards[randomNumber].ForcingDiscardOfThis = true;
-			SelectableCards[randomNumber].DiscardAnimate();
+			SelectableCards[randomNumber].Discard();
 		}
 	}
 #endregion
