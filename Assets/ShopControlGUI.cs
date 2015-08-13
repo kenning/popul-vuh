@@ -111,6 +111,7 @@ public class ShopControlGUI : MonoBehaviour {
 				goalExpo = false;
 				clickControl.Invoke("AllowEveryInput", .1f);
 				shopControl.SetGoalGUIVariables();
+				TurnOnNormalGUI();
 			}
 			
 			GUI.EndGroup();

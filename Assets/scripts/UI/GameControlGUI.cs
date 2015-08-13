@@ -4,7 +4,6 @@ using System.Collections;
 public class GameControlGUI : MonoBehaviour {
     
 	GameControl gameControl;
-	ShopControl shopControl;
 	ShopControlGUI shopControlGUI;
 	
 	string DisplayName;
@@ -34,7 +33,6 @@ public class GameControlGUI : MonoBehaviour {
 
 	void Start() {
 		gameControl = gameObject.GetComponent<GameControl> ();
-		shopControl = gameObject.GetComponent<ShopControl> ();
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
 		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
 		displayCardRenderer = GameObject.Find ("Display card").GetComponent<SpriteRenderer> ();

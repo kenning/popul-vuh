@@ -70,7 +70,7 @@ public class ObstacleLibrary : MonoBehaviour {
     }
     void LoadObstacleSet(string ObstacleSetName)
     {
-
+		// Should be a huge prefab instead of individual tiles.
     }
     #endregion
 }

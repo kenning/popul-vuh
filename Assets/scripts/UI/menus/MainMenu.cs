@@ -16,7 +16,6 @@ public class MainMenu : MonoBehaviour {
 
 	static ClickControl clickControl;
 	GameControl gameControl;
-	ShopControl shopControl;
 	GUIStyleLibrary styleLibrary;
 	static ShopControlGUI shopControlGUI;
 
@@ -30,7 +29,6 @@ public class MainMenu : MonoBehaviour {
 	void Start() {
 		gameControl = gameObject.GetComponent<GameControl> ();
 		clickControl = gameObject.GetComponent<ClickControl> ();
-		shopControl = gameObject.GetComponent<ShopControl> ();
 		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
 		encyclopediaMenu = gameObject.GetComponent<EncyclopediaMenu> ();
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
@@ -168,13 +166,12 @@ public class MainMenu : MonoBehaviour {
                 }
             }
 
-            //Unlock cards and gods
-            //		if(GUI.Button(new Rect(Screen.width*.2f, Screen.height*.4f, Screen.width*.6f, Screen.height*.1f), 
-			//		  "Unlock cards and gods", styleLibrary.MainStyles.Button)) {
-            //			UnlockMenu tempmenu = gameControl.gameObject.GetComponent<UnlockMenu>();
-            //			tempmenu.ShowMenu();
-            //			MainMenuUp = false;
-            //		}
+			if(GUI.Button(new Rect(Screen.width*.2f, Screen.height*.4f, Screen.width*.6f, Screen.height*.1f), 
+			  "Tutorial", styleLibrary.MainStyles.Button)) {
+				MainMenuUp = false;
+				Tutorial.TutorialLevel = 1;
+				BeginButton();
+			}
 
             if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .55f, Screen.width * .6f, Screen.height * .1f), 
 			               "Reset unlocked data", styleLibrary.MainStyles.Button))
@@ -206,13 +203,11 @@ public class MainMenu : MonoBehaviour {
 				        "New cards available!", styleLibrary.MainStyles.Sidebar);
             }
 
-            //Tutorial
+			GUIContent CardsUnlocked = new GUIContent("You have unlocked \n" + SaveData.UnlockedCards.Count + "/" + CardLibrary.Lib.Count + "\ncards");
             if (GUI.Button(new Rect(Screen.width * .025f, Screen.height * .3f, Screen.width * .15f, Screen.height * .6f), 
-			               "Tutorial", styleLibrary.MainStyles.Sidebar))
+			               CardsUnlocked, styleLibrary.MainStyles.Sidebar))
             {
-                MainMenuUp = false;
-                Tutorial.TutorialLevel = 1;
-                BeginButton();
+
             }
 
             GUI.BeginGroup(new Rect(Screen.width * .825f, Screen.height * .3f, Screen.width * .15f, Screen.height * .6f));
@@ -220,7 +215,7 @@ public class MainMenu : MonoBehaviour {
             GUI.Box(new Rect(0, Screen.height * .2f, Screen.width * .15f, Screen.height * .2f), new GUIContent("\n" + NextGodToUnlock.ToString(),
 			        shopControlGUI.GodFullTextures[ShopControl.AllGods.IndexOf(NextGodToUnlock)]), styleLibrary.MainStyles.Sidebar);
             GUI.Box(new Rect(0, Screen.height * .4f, Screen.width * .15f, Screen.height * .2f),
-			        "Unlocked at level " + NextUnlockLevel.ToString(), styleLibrary.MainStyles.Sidebar);
+			        NextGodToUnlock.ToString() + " will be unlocked when you reach level " + NextUnlockLevel.ToString(), styleLibrary.MainStyles.Sidebar);
             GUI.EndGroup();
 
         }

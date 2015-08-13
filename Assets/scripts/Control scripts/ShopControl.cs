@@ -7,7 +7,6 @@ public class ShopControl : MonoBehaviour {
 	GameControl gameControl;
 	ClickControl clickControl;
 	ShopControlGUI shopControlGUI;
-	GUIStyleLibrary styleLibrary;
 
 	CardLibrary library;
 	GoalLibrary goalLibrary;
@@ -29,7 +28,6 @@ public class ShopControl : MonoBehaviour {
 		gameControl = gameObject.GetComponent<GameControl>();
 		clickControl =  gameObject.GetComponent<ClickControl>();
 		library =  gameObject.GetComponent<CardLibrary>();
-		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
 		goalLibrary = gameObject.GetComponent<GoalLibrary> ();
 		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
 		goalLibrary.Startup ();

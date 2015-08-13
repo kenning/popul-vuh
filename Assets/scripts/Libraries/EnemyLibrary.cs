@@ -52,6 +52,11 @@ public class EnemyLibrary : MonoBehaviour {
 		Point xycoord = GridControl.PossibleSpawnPoints[RandomNumber];
 		GridControl.PossibleSpawnPoints.RemoveAt(RandomNumber);
 
+		if (xycoord.x > 3) xycoord.x = 3;
+		if (xycoord.x < -3) xycoord.x = -3;
+		if (xycoord.y > 3) xycoord.y = 3;
+		if (xycoord.y < -3) xycoord.y = -3;
+
 		LoadEnemy(EnemyName, xycoord.x, xycoord.y);
 	}
 	#endregion
