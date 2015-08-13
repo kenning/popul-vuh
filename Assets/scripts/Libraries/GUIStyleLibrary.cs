@@ -151,9 +151,6 @@ public class GUIStyleLibrary : MonoBehaviour {
 	public class CardStyleLibrary {
 		public GUIStyle Tooltip;
 
-		public int TitleFontSize = 45;
-		public int SmallFontSize = 45;
-
 		public CardStyleLibrary (GUISkin gameControlSkin) {
 			Tooltip = gameControlSkin.textArea;
 		}

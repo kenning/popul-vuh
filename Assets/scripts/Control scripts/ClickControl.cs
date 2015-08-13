@@ -74,9 +74,9 @@ public class ClickControl : MonoBehaviour {
 		}
 
         if(cardScriptClickedOn != null) {
-            if (cardScriptClickedOn.Glow.enabled && !Input.GetMouseButton(0))
+            if (!Input.GetMouseButton(0))
             {
-                cardScriptClickedOn.GlowAnimate(false);
+				cardScriptClickedOn.cardUI.GlowAnimate(false);
             } 
         }
 

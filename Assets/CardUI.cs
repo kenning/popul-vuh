@@ -4,22 +4,237 @@ using System.Collections;
 public class CardUI : MonoBehaviour {
 
 	Card card;
+	GameControl gameControl;
+	GUIStyleLibrary styleLibrary;
+	ShopControlGUI shopControlGUI;
 
-	// Update is called once per frame
-	public void Intialize () {
+	//Animation variables
+	GameObject discardPileObj;
+
+	bool Animating = false;
+	bool DrawAnimating = false;
+	bool DiscardAnimating = false;
+	bool BurnAnimating = false; 
+	bool ShuffleAnimating = false;
+	Transform DeckTransform;
+	GameObject CardBackObject;
+	Sprite CardBackSprite;
+	float DrawStartTime;
+	float MoveUpStartTime;
+	Vector3 StartPosition;
+	Vector3 HighestPoint;
+	bool BehindPlayBoard = false;
+	Vector3 DrawEndPosition;
+	Vector3 DiscardEndPosition;
+	ButtonAnimate PlayButton;
+	SpriteRenderer[] SRenderers;
+	MeshRenderer[] meshrenderers;
+	ShineAnimation ShineAnim;
+	SpriteRenderer Glow;
+
+	//////////////////////////////////////
+	/// Universal card methods: animation components
+	//////////////////////////////////////
+
+	public void TargetAnimate() {
+		transform.Translate(new Vector3(0f, .25f, 0f));
+	}
+
+	public void UntargetAnimate() {
+		transform.Translate(new Vector3(0f, -.25f, 0f));
+	}
+
+	public void ShineAnimate()
+	{
+		ShineAnim.Animate();
+	}
+	
+	public void GlowAnimate(bool turnOn)
+	{
+		if(Glow.enabled != turnOn) Glow.enabled = turnOn;
+	}
+
+	public void ErrorAnimate() {
+		PlayButton.ErrorAnimation();
+	}
+
+	public void DrawAnimate(int position) {
+		gameObject.transform.parent = gameControl.handObj.transform;
+		gameObject.transform.localPosition = new Vector3(-2.7f, .5f, 0);
+		
+		DrawAnimating = true;
+		CardBackObject =(GameObject)GameObject.Instantiate(Resources.Load("prefabs/Drawn card prefab"));
+		CardBackObject.transform.parent = gameObject.transform;
+		CardBackObject.transform.localPosition = new Vector3(0, 0, 0);
+		CardBackObject.transform.localScale = new Vector3(2.9f, 2.8f, 2f);
+		SpriteRenderer CardBackSR = CardBackObject.GetComponent<SpriteRenderer>();
+		CardBackSR.sortingLayerID = 0;
+		CardBackSR.sortingOrder = 4;
+		
+		MoveAnimate(position);
+	}
+	
+	public void MoveAnimate(int position) {
+		
+		int index = card.HandIndex();
+		
+		foreach(MeshRenderer meshrenderer in meshrenderers){
+			meshrenderer.sortingLayerName = "Card";
+			meshrenderer.sortingOrder = 101-index*2;
+		}
+		
+		foreach(SpriteRenderer SRenderer in SRenderers) {
+			if(SRenderer.gameObject.name == "rarity" | SRenderer.gameObject.name == "god icon" | SRenderer.gameObject.name == "picture") {
+				SRenderer.sortingOrder = 101-index*2;
+			}
+			//this catches the card background VVV
+			else if (SRenderer.gameObject.name == "glow" | SRenderer.gameObject.name == "shine animation")
+			{
+				//it's already at sorting order 3000. don't do anything
+			}
+			else {
+				SRenderer.sortingOrder = 100-index*2;
+			}
+		}
+		DrawEndPosition = new Vector3((position)*1.55f - 1f, .1f, 0);
+		Animating = true;
+		DrawStartTime = Time.time;
+	}
+
+	public void MoveAnimateWhileDiscarded(int position, bool expand ) {
+		if(expand) {
+			DrawEndPosition = new Vector3(0f,(position) * -.2f + -.5f, 0);
+		} else {
+			DrawEndPosition = new Vector3(0f,(position) * -.5f + -.5f, 0);
+		}
+		Animating = true;
+		DrawStartTime = Time.time;
+	}
+
+	public void ShuffleMoveAnimate(Transform Deck) {
+		DeckTransform = Deck;
+		transform.parent = gameControl.handObj.transform;
+		DrawStartTime = Time.time;
+		ShuffleAnimating = true;
+	}
+
+	public void DiscardAnimate() {
+		MoveUpStartTime = Time.time;
+		DiscardAnimating = true;
+		StartPosition = transform.localPosition;
+		HighestPoint = StartPosition;
+		HighestPoint.y = StartPosition.y + 2f;
+	}
+
+	public void FinishDiscardAnimate(bool ActuallyDiscarding) {
+		DiscardAnimating = false;
+		if(ActuallyDiscarding) {
+			Animating = false;
+			BurnAnimating = false;
+			DrawAnimating = false;
+			ShuffleAnimating = false;
+			
+			int index = gameControl.Discard.IndexOf(gameObject);
+			
+			transform.parent = discardPileObj.transform;
+			transform.localPosition = new Vector3(0,(index+1) * -.2f, 0);
+			
+			SpriteRenderer[] SRenderers = gameObject.GetComponentsInChildren<SpriteRenderer>();
+			foreach(SpriteRenderer SRenderer in SRenderers) {
+				if(SRenderer.gameObject.name == "rarity" | SRenderer.gameObject.name == "glow" | SRenderer.gameObject.name == "god icon" | SRenderer.gameObject.name == "picture") {
+					SRenderer.sortingLayerName = "Card";
+					SRenderer.sortingOrder = 101+index*2;
+				}
+				else {
+					SRenderer.sortingLayerName = "Card";
+					SRenderer.sortingOrder = 100+index*2;
+				}
+			}
+			MeshRenderer[] meshes = gameObject.GetComponentsInChildren<MeshRenderer>();
+			foreach(MeshRenderer mesh in meshes) {
+				mesh.sortingLayerName = "Card";
+				mesh.sortingOrder = 101+index*2;
+			}
+		}
+	}
+
+	public void TuckAnimate() {
+		DrawEndPosition = new Vector3(-2.7f, 3f, 0);
+		Animating = true;
+		DrawStartTime = Time.time;
+	}
+
+	public void BurnAnimate() {
+		DrawStartTime = Time.time;
+		BurnAnimating = true;
+	}
+
+	public void PeekAnimate(int position, int maxPositions) {
+		foreach(MeshRenderer meshrenderer in meshrenderers){
+			meshrenderer.sortingLayerName = "Card";
+			meshrenderer.sortingOrder = 101-position*2;
+		}
+		
+		foreach(SpriteRenderer SRenderer in SRenderers) {
+			if(SRenderer.gameObject.name == "rarity" | SRenderer.gameObject.name == "glow" | SRenderer.gameObject.name == "god icon" | SRenderer.gameObject.name == "picture") {
+				SRenderer.sortingOrder = 101-position*2;
+			}
+			//this catches the card background VVV
+			else {
+				SRenderer.sortingOrder = 100-position*2;
+			}
+		}
+		
+		transform.localPosition = new Vector3(position + -1f, 1f, 0);
+	}
+
+	public void DiscardAnimateIfNotAlready() {
+		if(!DiscardAnimating) DiscardAnimate();
+	}
+
+	//////////////////////////////////////
+	/// OnGUI: Only for tooltip
+	//////////////////////////////////////
+	
+	public virtual void OnGUI() {
+		if(card.Selected && card.Tooltip != "" && gameControl.Tooltip == ""){
+			GUI.Box(new Rect(Screen.width * .02f, Screen.height * .68f, Screen.width * .8f, Screen.height * .08f), 
+			        card.Tooltip, styleLibrary.CardStyles.Tooltip);
+		}
+		if(gameControl.CardsToTarget != 0 && card.Tooltip == "") {
+			GUI.Box(new Rect(Screen.width*.02f, Screen.height*.72f, Screen.width*.8f, Screen.height*.04f), 
+			        "Please ` " + gameControl.CardsToTarget.ToString() + " cards", styleLibrary.CardStyles.Tooltip);
+		}
+	}
+
+	//////////////////////////////////////
+	/// delete this header later and move initialize to the top
+	//////////////////////////////////////
+
+	public void Intialize (GameObject gameController) {
 		card = gameObject.GetComponent<Card> ();
+		
+		gameControl = gameController.GetComponent<GameControl> ();
+		shopControlGUI = gameController.GetComponent<ShopControlGUI> ();
+		
+		PlayButton = GameObject.Find("play end button").GetComponent<ButtonAnimate>();
+		meshrenderers = GetComponentsInChildren<MeshRenderer>();
+		SRenderers = gameObject.GetComponentsInChildren<SpriteRenderer>();
+		CardBackSprite = Resources.Load("sprites/cards/real pixel card back") as Sprite;
+		discardPileObj = GameObject.Find("Discard pile");
+		
 		TextMesh[] textMeshes = gameObject.GetComponentsInChildren<TextMesh>();
 		foreach(TextMesh text in textMeshes) {
 			if(text.gameObject.name == "name text") {
-				text.fontSize = TitleFontSize;
-				text.text = DisplayName;
+				text.fontSize = card.TitleFontSize;
+				text.text = card.DisplayName;
 			}
 			else {
-				text.fontSize = SmallFontSize;
-				text.text = MiniDisplayText;
+				text.fontSize = card.SmallFontSize;
+				text.text = card.MiniDisplayText;
 			}
 			
-			if(God == ShopControl.Gods.Ekcha | God == ShopControl.Gods.Ixchel) {
+			if(card.God == ShopControl.Gods.Ekcha | card.God == ShopControl.Gods.Ixchel) {
 				text.color = new Color(1, 1, 1);
 			}
 		}
@@ -30,37 +245,32 @@ public class CardUI : MonoBehaviour {
 			if (render.gameObject.tag == "cardback") { continue; }
 			else if (render.gameObject.name == "picture")
 			{
-				if (IconPath != "")
+				if (card.IconPath != "")
 				{
-					tempSprite = Resources.Load<Sprite>(IconPath);
-					render.sprite = Resources.Load<Sprite>(IconPath);
+					render.sprite = Resources.Load<Sprite>(card.IconPath);
 				}
 			}
 			else if (render.gameObject.name == "rarity")
 			{
-				switch (tempLibraryCard.ThisRarity)
+				switch (card.ThisRarity)
 				{
 				case Card.Rarity.Gold:
 					render.sprite = shopControlGUI.Gold;
-					Cost = 10;
 					break;
 				case Card.Rarity.Silver:
 					render.sprite = shopControlGUI.Silver;
-					Cost = 6;
 					break;
 				case Card.Rarity.Bronze:
 					render.sprite = shopControlGUI.Bronze;
-					Cost = 3;
 					break;
 				case Card.Rarity.Paper:
 					render.sprite = shopControlGUI.Paper;
-					Cost = 0;
 					break;
 				}
 			}
 			else if (render.gameObject.name == "god icon")
 			{
-				int godnum = ShopControl.AllGods.IndexOf(tempLibraryCard.God);
+				int godnum = ShopControl.AllGods.IndexOf(card.God);
 				
 				render.sprite = shopControlGUI.SpriteGodIcons[godnum];
 			}
@@ -76,28 +286,14 @@ public class CardUI : MonoBehaviour {
 			else if (render.gameObject.name != "picture")
 			{
 				int godnum = 3;
-				godnum = ShopControl.AllGods.IndexOf(tempLibraryCard.God);
+				godnum = ShopControl.AllGods.IndexOf(card.God);
 				
 				render.sprite = shopControlGUI.GodSmallCards[godnum];
 			}
 		}
-		foreach (CardText cardText in cardTexts) cardText.Initialize(101 - HandIndex() * 2);
+		foreach (CardText cardText in cardTexts) cardText.Initialize(101 - card.HandIndex() * 2);
 	}
 
-	//////////////////////////////////////
-	/// Card specific tooltip
-	//////////////////////////////////////
-	
-	public virtual void OnGUI() {
-		if(Selected && Tooltip != "" && gameControl.Tooltip == ""){
-			GUI.Box(new Rect(Screen.width * .02f, Screen.height * .68f, Screen.width * .8f, Screen.height * .08f), 
-			        Tooltip, styleLibrary.CardStyles.Tooltip);
-		}
-		if(gameControl.CardsToTarget != 0 && Tooltip == "") {
-			GUI.Box(new Rect(Screen.width*.02f, Screen.height*.72f, Screen.width*.8f, Screen.height*.04f), 
-			        "Please select " + gameControl.CardsToTarget.ToString() + " cards", styleLibrary.CardStyles.Tooltip);
-		}
-	}
 	
 	//////////////////////////////////////
 	/// Update: just for animations
@@ -126,7 +322,7 @@ public class CardUI : MonoBehaviour {
 				return;
 			}
 			else if(( MoveUpStartTime + .5f > Time.time ) &&(Time.time > MoveUpStartTime + .25f)) {  
-				if(!BehindPlayBoard &&(DiscardWhenPlayed | ForcingDiscardOfThis)){ 
+				if(!BehindPlayBoard &&(card.DiscardWhenPlayed | card.ForcingDiscardOfThis)){ 
 					SpriteRenderer[] spriterenderererers = GetComponentsInChildren<SpriteRenderer>();
 					foreach(SpriteRenderer sr in spriterenderererers) {
 						sr.sortingLayerName = "Field background";
@@ -154,8 +350,7 @@ public class CardUI : MonoBehaviour {
 				return;
 			}
 			else if( Time.time > MoveUpStartTime + .5f ) {
-				ForcingDiscardOfThis = false;
-				FinishDiscard();
+				card.FinishDiscard();
 				return;
 			}
 		}
@@ -192,7 +387,7 @@ public class CardUI : MonoBehaviour {
 				SRenderer.color = new Color(1f, 1f, 1f, 1-fade*2);
 			}
 			if(DrawStartTime + .5f < Time.time) {
-				DestroyThisGameObject();
+				card.DestroyThisGameObject();
 			}
 		}
 		else if(Animating) {
@@ -203,7 +398,7 @@ public class CardUI : MonoBehaviour {
 				DrawAnimating = false;	
 				ShuffleAnimating = false;
 				transform.localPosition = DrawEndPosition;
-				if(!Discarded) {
+				if(!card.Discarded) {
 					transform.localScale = new Vector3(.82f, .85f, 0);
 				}
 				

@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 public class Card : MonoBehaviour {
 
-	public Sprite tempSprite;
+	public enum CardActionTypes { Armor, NoTarget, NoTargetNoInput, NoTargetGridSquare, TargetGridSquare, TargetCard, Options };
+	public enum Rarity { Paper, Bronze, Silver, Gold, Platinum };
 
-	//VERY IMPORTANT BOOL
 	public bool Discarded;
 	public bool Targeted;
 	public bool Selected;
@@ -26,34 +26,11 @@ public class Card : MonoBehaviour {
 
 	public CardLibrary library;
 	public GameObject hand;
-	public GameObject discardPileObj;
 	public GameObject playerObj;
 
 	public int CardsToTarget = 0;
 	public bool CardsToTargetWillBeDiscarded = false;
 	public bool CardsToTargetWillBePeeked = false;
-
-	//Animation variables
-	public bool Animating = false;
-	public bool DrawAnimating = false;
-	public bool DiscardAnimating = false;
-	public bool BurnAnimating = false; 
-	public bool ShuffleAnimating = false;
-	public Transform DeckTransform;
-	public GameObject CardBackObject;
-	public Sprite CardBackSprite;
-	public float DrawStartTime;
-	public float MoveUpStartTime;
-	public Vector3 StartPosition;
-	public Vector3 HighestPoint;
-	public bool BehindPlayBoard = false;
-	public Vector3 DrawEndPosition;
-	public Vector3 DiscardEndPosition;
-	public enum CardActionTypes { Armor, NoTarget, NoTargetNoInput, NoTargetGridSquare, TargetGridSquare, TargetCard, Options };
-	public enum Rarity { Paper, Bronze, Silver, Gold, Platinum };
-	public ButtonAnimate PlayButton;
-	public SpriteRenderer[] SRenderers;
-	public MeshRenderer[] meshrenderers;
 
 	//Card-specific variables, to be set in the Start() function before calling base.Start()
 	public string CardName;
@@ -72,10 +49,11 @@ public class Card : MonoBehaviour {
 	public Rarity ThisRarity;
 	public CardActionTypes CardAction;
 	public ShopControl.Gods God;
-
 	public bool DiscardWhenPlayed = true;
 	public bool BurnsSelfWhenPlayed = false;
 	public int Cost;
+	public int TitleFontSize;
+	public int SmallFontSize;
 
 	public bool ForcingDiscardOfThis = false;
 	public bool FreeTargetSquare = false;
@@ -90,9 +68,6 @@ public class Card : MonoBehaviour {
 	public bool TriggerResetsOnNewTurn = true;
 
 	public string TriggerMessage = "";
-
-	public ShineAnimation ShineAnim;
-    public SpriteRenderer Glow;
 
 	//////////////////////////////////////
 	/// INITIALIZE METHOD -- CALLED BY PEEK() AND DRAW()
@@ -111,16 +86,12 @@ public class Card : MonoBehaviour {
 		shopControlGUI = gameController.GetComponent<ShopControlGUI> ();
 		styleLibrary = gameController.GetComponent<GUIStyleLibrary> ();
 		cardUI = gameObject.GetComponent<CardUI> ();
-		PlayButton = GameObject.Find("play end button").GetComponent<ButtonAnimate>();
 		hand = GameObject.Find("Hand");
-		discardPileObj = GameObject.Find("Discard pile");
 		playerObj = GameObject.FindGameObjectWithTag("Player");
-		meshrenderers = GetComponentsInChildren<MeshRenderer>();
-		SRenderers = gameObject.GetComponentsInChildren<SpriteRenderer>();
 
+		// Initialize card variables
 		LibraryCard tempLibraryCard = CardLibrary.Lib[CardName];
 		name = CardName;
-
 		CardName = tempLibraryCard.CardName;
 		DisplayName = tempLibraryCard.DisplayName;
 		IconPath = "sprites/card icons/" + tempLibraryCard.IconPath;
@@ -137,14 +108,31 @@ public class Card : MonoBehaviour {
 		ThisRarity = tempLibraryCard.ThisRarity;
 		CardAction = tempLibraryCard.CardAction;
 		God = tempLibraryCard.God;
+		TitleFontSize = 14;
+		SmallFontSize = 10;
 
-		CardBackSprite = Resources.Load("sprites/cards/real pixel card back") as Sprite;
-			
 		gameControl.Hand.Add(gameObject);
+
+		switch (ThisRarity)
+		{
+		case Card.Rarity.Gold:
+			Cost = 10;
+			break;
+		case Card.Rarity.Silver:
+			Cost = 6;
+			break;
+		case Card.Rarity.Bronze:
+			Cost = 3;
+			break;
+		case Card.Rarity.Paper:
+			Cost = 0;
+			break;
+		}
+
     }
 
 	//////////////////////////////////////
-	/// Universal card methods that incorporate animations as well as game logic
+	/// Universal card methods
 	//////////////////////////////////////
 
 	//select, deselect
@@ -155,96 +143,32 @@ public class Card : MonoBehaviour {
 
 		if(gameControl.PlaysLeft > 0) { 
 			if(gameObject != null) {
-				transform.Translate(new Vector3(0f, .25f, 0f));
+				cardUI.TargetAnimate();
 				Selected = true;
 			}
 		}
 		else {
 			if(CardAction != CardActionTypes.Armor && CardAction != CardActionTypes.TargetGridSquare) {
-				PlayButton.ErrorAnimation();
+				cardUI.ErrorAnimate();
 			}
 		}
 	}
 	public void Deselect() {
-		if(Selected) transform.Translate(new Vector3(0f, -.25f, 0f));
+		if (Selected) cardUI.UntargetAnimate ();
 		Selected = false;
 	}
 	//target, untarget
 	public void Target() {
-		transform.Translate(new Vector3(0f, .25f, 0f));
+		cardUI.TargetAnimate ();
 		Targeted = true;
 	}
 	public void Untarget() {
-		transform.Translate(new Vector3(0f, -.25f, 0f));
+		cardUI.UntargetAnimate ();
 		Targeted = false;
 	}
-	//draw 
-	public void DrawAnimate(int position) {
-		gameObject.transform.parent = gameControl.handObj.transform;
-		gameObject.transform.localPosition = new Vector3(-2.7f, .5f, 0);
 
-		DrawAnimating = true;
-		CardBackObject =(GameObject)GameObject.Instantiate(Resources.Load("prefabs/Drawn card prefab"));
-		CardBackObject.transform.parent = gameObject.transform;
-		CardBackObject.transform.localPosition = new Vector3(0, 0, 0);
-		CardBackObject.transform.localScale = new Vector3(2.9f, 2.8f, 2f);
-		SpriteRenderer CardBackSR = CardBackObject.GetComponent<SpriteRenderer>();
-		CardBackSR.sortingLayerID = 0;
-		CardBackSR.sortingOrder = 4;
-
-		MoveAnimate(position);
-	}
-
-	public void MoveAnimate(int position) {
-
-		int index = HandIndex();
-		
-		foreach(MeshRenderer meshrenderer in meshrenderers){
-			meshrenderer.sortingLayerName = "Card";
-			meshrenderer.sortingOrder = 101-index*2;
-		}
-
-		foreach(SpriteRenderer SRenderer in SRenderers) {
-			if(SRenderer.gameObject.name == "rarity" | SRenderer.gameObject.name == "god icon" | SRenderer.gameObject.name == "picture") {
-				SRenderer.sortingOrder = 101-index*2;
-			}
-			//this catches the card background VVV
-            else if (SRenderer.gameObject.name == "glow" | SRenderer.gameObject.name == "shine animation")
-			{
-				//it's already at sorting order 3000. don't do anything
-			}
-			else {
-				SRenderer.sortingOrder = 100-index*2;
-			}
-		}
-		DrawEndPosition = new Vector3((position)*1.55f - 1f, .1f, 0);
-		Animating = true;
-		DrawStartTime = Time.time;
-	}
-	public void MoveAnimateWhileDiscarded(int position, bool expand ) {
-		if(expand) {
-			DrawEndPosition = new Vector3(0f,(position) * -.2f + -.5f, 0);
-		} else {
-			DrawEndPosition = new Vector3(0f,(position) * -.5f + -.5f, 0);
-		}
-		Animating = true;
-		DrawStartTime = Time.time;
-	}
-	public void ShuffleMoveAnimate(Transform Deck) {
-		DeckTransform = Deck;
-		transform.parent = gameControl.handObj.transform;
-//		Animating = true;
-		DrawStartTime = Time.time;
-		ShuffleAnimating = true;
-
-	}
-
-	public void DiscardAnimate() {
-		MoveUpStartTime = Time.time;
-		DiscardAnimating = true;
-		StartPosition = transform.localPosition;
-		HighestPoint = StartPosition;
-		HighestPoint.y = StartPosition.y + 2f;
+	public void Discard() {
+		cardUI.DiscardAnimate ();
 
 		if(DiscardWhenPlayed | ForcingDiscardOfThis) {
 			Discarded = true;
@@ -253,37 +177,9 @@ public class Card : MonoBehaviour {
 		}
 	}
 	public void FinishDiscard() {
-		DiscardAnimating = false;
+		cardUI.FinishDiscardAnimate (DiscardWhenPlayed | ForcingDiscardOfThis);
+
 		Deselect();
-		if(DiscardWhenPlayed | ForcingDiscardOfThis) {
-			Animating = false;
-			BurnAnimating = false;
-			DrawAnimating = false;
-			ShuffleAnimating = false;
-
-			int index = gameControl.Discard.IndexOf(gameObject);
-
-			transform.parent = discardPileObj.transform;
-			transform.localPosition = new Vector3(0,(index+1) * -.2f, 0);
-
-			SpriteRenderer[] SRenderers = gameObject.GetComponentsInChildren<SpriteRenderer>();
-			foreach(SpriteRenderer SRenderer in SRenderers) {
-				if(SRenderer.gameObject.name == "rarity" | SRenderer.gameObject.name == "glow" | SRenderer.gameObject.name == "god icon" | SRenderer.gameObject.name == "picture") {
-                    SRenderer.sortingLayerName = "Card";
-					SRenderer.sortingOrder = 101+index*2;
-				}
-				else {
-                    SRenderer.sortingLayerName = "Card";
-					SRenderer.sortingOrder = 100+index*2;
-				}
-			}
-			MeshRenderer[] meshes = gameObject.GetComponentsInChildren<MeshRenderer>();
-			foreach(MeshRenderer mesh in meshes) {
-                mesh.sortingLayerName = "Card";
-				mesh.sortingOrder = 101+index*2;
-			}
-		}
-
 		ForcingDiscardOfThis = false;
 		
 		shopControl.GoalCheck("Discard pile has X cards in it");
@@ -291,13 +187,9 @@ public class Card : MonoBehaviour {
 	}
 
 	public virtual void Tuck() {
-		Debug.Log("Placing this card back into the deck");
+		cardUI.TuckAnimate ();
 
 		clickControl.DisallowEveryInput();
-		DrawEndPosition = new Vector3(-2.7f, 3f, 0);
-		Animating = true;
-		DrawStartTime = Time.time;
-
 		if(gameControl.Hand.Contains(gameObject)) 
 			gameControl.Hand.Remove(gameObject);
 		if (gameControl.Discard.Contains (gameObject)) 
@@ -317,34 +209,19 @@ public class Card : MonoBehaviour {
 	}
 
 	public virtual void Burn() {
-		EventControl.EventCheck("Burn");
+		cardUI.BurnAnimate ();
+
 		clickControl.DisallowEveryInput();
-		if(Selected)
-			Deselect();
+		if(Selected) Deselect();
 		gameControl.Hand.Remove(gameObject);
-		DrawStartTime = Time.time;
-		BurnAnimating = true;
+
+		EventControl.EventCheck("Burn");
 	}
 
 	public void Peek(int position, int maxPositions) {
+		cardUI.PeekAnimate (position, maxPositions);
+
 		Peeked = true;
-
-		foreach(MeshRenderer meshrenderer in meshrenderers){
-			meshrenderer.sortingLayerName = "Card";
-			meshrenderer.sortingOrder = 101-position*2;
-		}
-		
-		foreach(SpriteRenderer SRenderer in SRenderers) {
-			if(SRenderer.gameObject.name == "rarity" | SRenderer.gameObject.name == "glow" | SRenderer.gameObject.name == "god icon" | SRenderer.gameObject.name == "picture") {
-				SRenderer.sortingOrder = 101-position*2;
-			}
-			//this catches the card background VVV
-			else {
-				SRenderer.sortingOrder = 100-position*2;
-			}
-		}
-
-		transform.localPosition = new Vector3(position + -1f, 1f, 0);
 	}
 
 	public virtual void PeekCallback() {
@@ -372,7 +249,6 @@ public class Card : MonoBehaviour {
 			//Extreme corner case, this prevents Target Card cards from being played without valid targets
 			if(CardAction == CardActionTypes.TargetCard && ((CardsToTargetWillBeDiscarded && gameControl.Discard.Count < 1) | 
 															(!CardsToTargetWillBeDiscarded && gameControl.Hand.Count < 2)    ) ) {
-				Debug.Log("yeah!!!!");
 				gameControl.Tooltip = "You can't play this card right now, because it can't target a card.";
 				return;
 			}
@@ -427,9 +303,10 @@ public class Card : MonoBehaviour {
 				return;
 			}
 
-			//VVV by default, the cards to target are not discarded or peeked, but you can change that in the Play()
 			clickControl.AllowInputUmbrella = false;
-			ReallowUmbrellaInputAfterDiscardOrBurn();
+
+			// Reallows input after discard or burn
+			clickControl.Invoke("ChangeUmbrellaInputAllowToTrue", .53f);
 
 			clickControl.DisallowEveryInput();
 			clickControl.AllowCardTargetInput = true;
@@ -458,7 +335,7 @@ public class Card : MonoBehaviour {
 			gameControlGUI.Dim();
 			break;
 		default:
-			Debug.Log("FUCK");
+			Debug.Log("Bug!");
 			break;
 		}
 	}
@@ -493,13 +370,21 @@ public class Card : MonoBehaviour {
 				Burn();
 		}
 
-		if(!BurnsSelfWhenPlayed && !Discarded && !DiscardAnimating) {
-				DiscardAnimate();
+		if(!BurnsSelfWhenPlayed && !Discarded) {
+			cardUI.DiscardAnimateIfNotAlready();
 		}
 	}
 
-	public void ReallowUmbrellaInputAfterDiscardOrBurn() {
-		clickControl.Invoke("ChangeUmbrellaInputAllowToTrue", .53f);
+	
+	//////////////////////////////////////
+	/// QCall methods
+	//////////////////////////////////////
+	
+	public virtual void OptionQCall() {
+		Debug.Log("Default OptionQCall method called!");
+	}
+	public virtual void SpecialQCall() {
+		Debug.Log("Default SpecialQCall method called!");
 	}
 
 	///
@@ -512,41 +397,27 @@ public class Card : MonoBehaviour {
 	public void ActuallyCheckQ() {
 		QControl.CheckQ();
 	}
-	
-	/// 
-	/// Callback methods
-	/// 
 
 	public virtual void AfterCardTargetingCallback() {
 		gameControl.TargetedCards = new List<GameObject>();
 		gameControl.CardsToTarget = 0;
 		gameControlGUI.Dim(false);
 
-	//	i put OrganizeCards into CheckQ
-	//	Invoke("OrganizeCards", .3f);
 		CheckQ();
 	}
+
 	//GiveOptions method. First you Play(), which sends options to OptionControl, then you pick an option, then it calls this method
 	public virtual void OptionsCalledThis(bool ResponseIsYes) {
-
 		optionControl.TurnOffOptions();
-
-		//	i put OrganizeCards into CheckQ
-		//	Invoke("OrganizeCards", .3f);
 		clickControl.AllowEveryInput();
 		CheckQ();
 	}
 	public virtual void OptionsCalledThis(int Choice) {
-
 		optionControl.TurnOffOptions();
-		
-		//	i put OrganizeCards into CheckQ
-		//	Invoke("OrganizeCards", .3f);
-
 		clickControl.AllowEveryInput();
-		
 		CheckQ();
 	}
+
 	//TargetGridSquare methods. First, a bunch of targetsquares are spawned, then when one is clicked on it calls TargetSquareCalledThis which calls FindAndAffectUnits
 	//which Affects each unit in the area. Simple battle spells use this.
 	public virtual void TargetSquareCalledThis(int x, int y) {
@@ -563,17 +434,12 @@ public class Card : MonoBehaviour {
 		FindAndAffectUnits(x, y);
 		gridControl.MakeSquares(aoeTargetType, aoeMinRange, aoeMaxRange, x, y, false);
 
-	//	Play();
-		
 		CheckQ();
 	}
+
+	// This gets overwritten by some cards
 	public virtual void EventCall(string EventName) { 	}
 
-	/// <summary>
-	/// Finds the and affect units.
-	/// </summary>
-	/// <param name="clickedX">Clicked x.</param>
-	/// <param name="clickedY">Clicked y.</param>
 	public void FindAndAffectUnits(int clickedX, int clickedY){
 
 		gridControl.FindAllGridUnits();
@@ -605,18 +471,7 @@ public class Card : MonoBehaviour {
 	public virtual void Affect(GridUnit x) { Debug.Log("Card parentclass's Affect() was called. Bad!"); }
 
 	//////////////////////////////////////
-	/// QCall methods
-	//////////////////////////////////////
-
-	public virtual void OptionQCall() {
-		Debug.Log("Default OptionQCall method called!");
-	}
-	public virtual void SpecialQCall() {
-		Debug.Log("Default SpecialQCall method called!");
-	}
-
-	//////////////////////////////////////
-	/// UTILITIES--THESE ARE KEYWORDS FOR COMPLEX EFFECTS THAT MANY CARDS WILL HAVE
+	/// Utilities
 	//////////////////////////////////////
 
 	public void BasicDamageEffect(GridUnit gridUnit, int damageTaken) {
@@ -653,18 +508,8 @@ public class Card : MonoBehaviour {
 		return 555;
 	}
 
-	void DestroyThisGameObject() {
+	public void DestroyThisGameObject() {
 		EventControl.RemoveFromLists(this);
 		Destroy(gameObject);
 	}
-
-	public void ShineAnimate()
-	{
-		ShineAnim.Animate();
-	}
-
-    public void GlowAnimate(bool turnOn)
-    {
-        Glow.enabled = turnOn;
-    }
 }

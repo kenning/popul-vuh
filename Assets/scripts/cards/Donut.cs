@@ -24,7 +24,7 @@ public class Donut : Card {
 	public override void AfterCardTargetingCallback() {
 		foreach(GameObject tempGO in gameControl.TargetedCards){
 			Card tempCard = tempGO.GetComponent<Card>();
-			tempCard.DiscardAnimate();
+			tempCard.cardUI.DiscardAnimate();
 		}
 		
 		gameControl.AddPlays (1);
