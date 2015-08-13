@@ -80,7 +80,6 @@ public class GameControlGUI : MonoBehaviour {
 	public void Display(Card card) {
 		CardDisplay = true;
 		if (Tutorial.TutorialLevel != 0) return;
-		dimmer.Dim ();
 		displayCardRenderer.enabled = true;
 		DisplayName = card.CardName;
 		DisplayName.Replace ("\n", "");
@@ -143,7 +142,7 @@ public class GameControlGUI : MonoBehaviour {
 		CardDisplay = false;
 		//this vvv might be a bad condition to base whether or not to turn off the dimmer on. it works for now though.
 		if(gameControl.CardsToTarget == 0) {
-			dimmer.Undim();
+			Dim(false);
 		}
 		displayCardRenderer.enabled = false;
 		if(cardObjFromDeck != null) Destroy(cardObjFromDeck);
@@ -161,6 +160,7 @@ public class GameControlGUI : MonoBehaviour {
 		}
 		else
 		{
+			Debug.Log("undim is being called.");
 			dimmer.Undim();
 		}
 	}

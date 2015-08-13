@@ -218,7 +218,7 @@ public class ClickControl : MonoBehaviour {
 					cardHasBeenClickedOn = false;
 				}
 	//AllowInfoInput
-				else if(Time.time - 0.2f > lastCardClick && !gameControlGUI.CardDisplay && AllowInfoInput) { 
+				else if(Time.time - 0.22f > lastCardClick && !gameControlGUI.CardDisplay && AllowInfoInput) { 
 					gameControlGUI.Display(cardScriptClickedOn);
 					cardHasBeenClickedOn = false;
 				}
@@ -226,6 +226,10 @@ public class ClickControl : MonoBehaviour {
                 {
                     cardScriptClickedOn.cardUI.ShineAnimate();
                 }
+				else 
+				{
+					gameControlGUI.Dim();
+				}
 			}
 		}
 
@@ -293,7 +297,7 @@ public class ClickControl : MonoBehaviour {
 						return;
 					}
 				}
-	//n/a, because cardclicks are handled elsewhere, right? (not sure when i wrote this comment)
+	// n/a, cardclicks always happen but might not do anything
 				foreach(RaycastHit2D hit in hits){
 					if(hit.collider.gameObject.tag == "Card") {
 						cardScriptClickedOn = hit.collider.gameObject.GetComponent<Card>();
