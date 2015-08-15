@@ -6,7 +6,6 @@ public class Flamethrower : Card {
 	public override void Initialize ()
 	{
 		CardName = "Flamethrower";
-		SmallFontSize = 30;
 
 		base.Initialize ();
 	}

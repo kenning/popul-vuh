@@ -11,8 +11,6 @@ public class Shuriken : Card {
 
 		FreeTargetSquare = true;
 
-		TitleFontSize = 40;
-		SmallFontSize = 35;
 		base.Initialize ();
 	}
 	

@@ -7,7 +7,6 @@ public class GlassOfChardonnay : Card {
 	{
 		CardName = "Glass Of Chardonnay";
 		CardsToTargetWillBeDiscarded = true;
-		TitleFontSize = 35;
 
 		base.Initialize ();
 	}

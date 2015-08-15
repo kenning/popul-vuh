@@ -63,7 +63,6 @@ public class ShopControlGUI : MonoBehaviour {
 	}
 
 	public void NewLevelNewGoals (int numberOfGods) {
-		Debug.Log ("hi");
 		Goals = shopControl.Goals;
 		GoalDisplay = new bool[numberOfGods];
 		goalExpo = true;

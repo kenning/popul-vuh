@@ -6,7 +6,7 @@ public class BirthdayCake : Card {
 	public override void Initialize ()
 	{
 		CardName = "Birthday Cake";
-		TitleFontSize = 40;
+
 		base.Initialize ();
 	}
 

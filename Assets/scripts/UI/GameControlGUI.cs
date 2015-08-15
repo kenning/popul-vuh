@@ -5,7 +5,7 @@ public class GameControlGUI : MonoBehaviour {
     
 	GameControl gameControl;
 	ShopControlGUI shopControlGUI;
-	
+
 	string DisplayName;
 	string DisplayRules;
 	Texture2D DisplayRangeTexture;
@@ -20,6 +20,7 @@ public class GameControlGUI : MonoBehaviour {
 	GUIStyle DisplayTextStyle;
 	bool showingDeck;
 	
+	bool displayDim = false;
 	SpriteRenderer displayCardRenderer;
 	DimAnimate dimmer;
 	public bool CardDisplay = false;
@@ -39,6 +40,12 @@ public class GameControlGUI : MonoBehaviour {
 		dimmer = GameObject.Find ("Dimmer").GetComponent<DimAnimate>();
 	}
 
+	void Update() {
+		if (displayDim && !Input.GetMouseButton (0)) {
+			displayDim = false;
+			Dim (false);
+		}
+	}
 
 	void OnGUI () {
 		
@@ -62,10 +69,14 @@ public class GameControlGUI : MonoBehaviour {
 			GUI.Box (new Rect (0,0, Screen.width*.25f, Screen.height*.2f), DisplayName, DisplayTitleStyle);
 			GUI.Box (new Rect (Screen.width*.3f, 0, Screen.width*.2f, Screen.height*.2f), DisplayCardIcon, DisplayTitleStyle);
 			GUI.Box(new Rect(0, Screen.height*.2f, Screen.width*.5f, Screen.height*.4f), DisplayRules, DisplayTextStyle); 
-			if(DisplayRangeTexture != null) GUI.DrawTexture(new Rect(Screen.width*.05f, Screen.height*.38f, Screen.width*.1f*DisplayRangeSize, Screen.width*.1f*DisplayRangeSize), 
+			if(DisplayRangeTexture != null) {
+				GUI.DrawTexture(new Rect(Screen.width*.05f, Screen.height*.38f, Screen.width*.1f*DisplayRangeSize, Screen.width*.1f*DisplayRangeSize), 
 			                                                DisplayRangeTexture);
-			if(DisplayAOETexture != null) GUI.DrawTexture(new Rect(Screen.width*.25f, Screen.height*.38f, Screen.width*.1f*DisplayAOESize, Screen.width*.1f*DisplayAOESize), 
+			}
+			if(DisplayAOETexture != null) {
+				GUI.DrawTexture(new Rect(Screen.width*.25f, Screen.height*.38f, Screen.width*.1f*DisplayAOESize, Screen.width*.1f*DisplayAOESize), 
 			                                              DisplayAOETexture);
+			}
 			GUI.DrawTexture(new Rect(Screen.width*.0f, Screen.height*.44f, Screen.width*.05f, Screen.width*.05f), DisplayRarity);
 			GUI.DrawTexture(new Rect(Screen.width*.4f, Screen.height*.44f, Screen.width*.08f, Screen.width*.08f), DisplayIcon);
 			GUI.EndGroup();
@@ -103,7 +114,9 @@ public class GameControlGUI : MonoBehaviour {
 		}
 		
 		DisplayTitleStyle = new GUIStyle(styleLibrary.GameControlGUIStyles.DisplayTitle);
+		DisplayTitleStyle.fontSize = card.cardUI.DisplayTitleFontSize;
 		DisplayTextStyle = new GUIStyle(styleLibrary.GameControlGUIStyles.DisplayText);
+		DisplayTextStyle.fontSize = card.cardUI.DisplayRulesFontSize;
 		
 		//default text color is black
 		DisplayTitleStyle.normal.textColor = new Color(0,0,0);
@@ -148,10 +161,16 @@ public class GameControlGUI : MonoBehaviour {
 		if(cardObjFromDeck != null) Destroy(cardObjFromDeck);
 	}
 
+	public void DisplayDim() {
+		displayDim = true;
+		Dim ();
+	}
+
 	public void Dim()
 	{
 		Dim(true);
 	}
+
 	public void Dim(bool TurnOn)
 	{
 		if (TurnOn)
@@ -160,7 +179,6 @@ public class GameControlGUI : MonoBehaviour {
 		}
 		else
 		{
-			Debug.Log("undim is being called.");
 			dimmer.Undim();
 		}
 	}

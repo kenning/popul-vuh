@@ -6,7 +6,6 @@ public class Firebomb : Card {
 	public override void Initialize ()
 	{
 		CardName = "Firebomb";
-		TitleFontSize = 30;
 		BurnsSelfWhenPlayed = true;
 
 		base.Initialize ();

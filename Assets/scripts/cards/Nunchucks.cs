@@ -6,7 +6,6 @@ public class Nunchucks : Card {
 	public override void Initialize ()
 	{
 		CardName = "Nunchucks";
-		TitleFontSize = 30;
 
 		base.Initialize ();
 	}

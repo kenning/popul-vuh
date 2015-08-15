@@ -9,8 +9,6 @@ public class ChocolateSurpriseEgg : Card {
 	public override void Initialize ()
 	{
 		CardName = "Chocolate Surprise Egg";
-		TitleFontSize = 30;
-		SmallFontSize = 30;
 
 		base.Initialize ();
 	}

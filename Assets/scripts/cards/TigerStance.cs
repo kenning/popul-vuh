@@ -6,7 +6,6 @@ public class TigerStance : Card {
 	public override void Initialize ()
 	{
 		CardName = "Tiger Stance";
-		SmallFontSize = 35;
 
 		base.Initialize ();
 	}

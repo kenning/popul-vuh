@@ -30,11 +30,12 @@ public class GridControl : MonoBehaviour {
         FindAllGridUnits ();
         enemyL = gameObject.GetComponent<EnemyLibrary>();
         obstacleL = gameObject.GetComponent<ObstacleLibrary>();
+
         //gameControl = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameControl> ();
     }
 
     //public method, very convenient. called by gamecontrol
-    public void LoadEnemiesAndObstacles(int Level)
+    public void LoadEnemiesAndObstacles(int level)
     {
         PossibleSpawnPoints = FindEmptySpots(false);
 
@@ -50,10 +51,8 @@ public class GridControl : MonoBehaviour {
         PossibleSpawnPoints = FindEmptySpots(false);
 
         #region Load Enemies
-        for (int i = 0; i < Level; i++)
-        {
-            enemyL.LoadRandomEnemy();
-        }
+
+		enemyL.LoadEnemiesForLevel(level-1);
 
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (GameObject badguy in enemies)
@@ -208,27 +207,15 @@ public class GridControl : MonoBehaviour {
 
                 if (adjPoint.Visited) 
                 {
-                 //FUCK THIS
-                    //if the new path is shorter, replace it with the new path  
-                    //if (newPath.Count < emptyPoints[i].Path.Count)
-                    //{
-                    //    adjPoint.SetPath(newPath);
-                    //}
                     continue;
                 }
                 else {
                     GotThere = true;
-
     //see if it's one of the end points, and if it is, return it
                     for (int j = 0; j < endList.Count; j++)
                     {
                         if (endList[j][0] == adjPoint.x && endList[j][1] == adjPoint.y)
                         {
-                         //  string returnpath = "";
-                         //  for(int k = 0; k < newPath.Count; k++) {
-                         //      returnpath += "(" + newPath[k][0].ToString() + ", " + newPath[k][1].ToString() + "), ";
-                         //  }
-                         //  Debug.Log("returning " + returnpath);
                             return newPath;
                         }
                     }

@@ -6,7 +6,6 @@ public class Cheese : Card {
 	public override void Initialize ()
 	{
 		CardName = "Cheese";
-		SmallFontSize = 30;
 		
 		base.Initialize ();
 	}

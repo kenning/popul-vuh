@@ -9,8 +9,6 @@ public class Boomerang : Card {
 
 		DiscardWhenPlayed = false;
 
-		TitleFontSize = 30;
-
 		base.Initialize ();
 	}
 

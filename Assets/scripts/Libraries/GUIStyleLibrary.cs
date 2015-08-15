@@ -58,6 +58,12 @@ public class GUIStyleLibrary : MonoBehaviour {
 		public GUIStyle SubTab;
 		public GUIStyle CardNameStyle;
 		public GUIStyle CardTextStyle;
+		public GUIStyle NoneStyleWordWrap;
+		public GUIStyle BigText;
+		public GUIStyle NeutralButton;
+		public int GoalFontSize;
+		public int SlightlyBiggerTextFontSize;
+		public int CardButtonFontSize;
 
 		public EncyclopediaMenuStyleLibrary (GUISkin skin) {
 			BackButton = skin.button;
@@ -67,6 +73,15 @@ public class GUIStyleLibrary : MonoBehaviour {
 			SubTab = skin.customStyles[8];
 			CardNameStyle = skin.customStyles[6];
 			CardTextStyle = skin.customStyles[7];
+			NoneStyleWordWrap = new GUIStyle (skin.customStyles[11]);
+			NoneStyleWordWrap.wordWrap = true;
+			NoneStyleWordWrap.fontSize = 10;
+			BigText = new GUIStyle(skin.customStyles[11]);
+			BigText.fontSize = 50;
+			GoalFontSize = 12;
+			SlightlyBiggerTextFontSize = 18;
+			CardButtonFontSize = 15;
+			NeutralButton = skin.customStyles[12];
 		}
 	}
 

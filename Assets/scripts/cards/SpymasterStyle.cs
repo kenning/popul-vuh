@@ -6,7 +6,6 @@ public class SpymasterStyle : Card {
 	public override void Initialize ()
 	{
 		CardName = "Spymaster Style";
-		TitleFontSize = 35;
 
 		TriggerResetsOnNewTurn = false;
 

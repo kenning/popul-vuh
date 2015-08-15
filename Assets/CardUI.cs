@@ -32,6 +32,17 @@ public class CardUI : MonoBehaviour {
 	ShineAnimation ShineAnim;
 	SpriteRenderer Glow;
 
+	//Font size stuff
+	int SmallCardTitleFontSize = 40;
+	int SmallCardRulesFontSize = 35;
+	public int DisplayTitleFontSize = 35;
+	public int DisplayRulesFontSize = 25;
+	int FontVariableMaxTitleWordLength = 5;
+	int FontVariableMaxRulesLength = 25;
+	int FontVariableMaxMiniRulesLength = 15;
+	int DisplayFontVariableRulesSizeRatio = 3;
+	int SmallCardFontVariableRulesSizeRatio = 10;
+
 	//////////////////////////////////////
 	/// Universal card methods: animation components
 	//////////////////////////////////////
@@ -236,11 +247,11 @@ public class CardUI : MonoBehaviour {
 		TextMesh[] textMeshes = gameObject.GetComponentsInChildren<TextMesh>();
 		foreach(TextMesh text in textMeshes) {
 			if(text.gameObject.name == "name text") {
-				text.fontSize = card.TitleFontSize;
+				text.fontSize = SmallCardTitleFontSize;
 				text.text = card.DisplayName;
 			}
 			else {
-				text.fontSize = card.SmallFontSize;
+				text.fontSize = SmallCardRulesFontSize;
 				text.text = card.MiniDisplayText;
 			}
 			
@@ -302,6 +313,26 @@ public class CardUI : MonoBehaviour {
 			}
 		}
 		foreach (CardText cardText in cardTexts) cardText.Initialize(101 - card.HandIndex() * 2);
+
+		//Sets up font sizes
+		string[] words = card.CardName.Split (' ');
+		int longestWordLength = words [0].Length;
+		for (int i = 0; i < words.Length; i++) {
+			if(words[i].Length > longestWordLength) longestWordLength = words[i].Length;
+		}
+		if (longestWordLength > FontVariableMaxTitleWordLength) {
+			SmallCardTitleFontSize = SmallCardTitleFontSize*FontVariableMaxTitleWordLength/longestWordLength;
+			DisplayTitleFontSize = DisplayTitleFontSize*FontVariableMaxTitleWordLength/longestWordLength;
+		}
+		
+		if (card.DisplayText.Length > FontVariableMaxRulesLength) {
+			// ultimate font size = maxlength - (difference * ratio)
+			DisplayRulesFontSize = DisplayRulesFontSize -  ((card.DisplayText.Length - FontVariableMaxRulesLength) / SmallCardFontVariableRulesSizeRatio);
+		}
+		if (card.MiniDisplayText.Length > FontVariableMaxMiniRulesLength) {
+			SmallCardRulesFontSize = SmallCardRulesFontSize - ((card.DisplayText.Length - FontVariableMaxRulesLength) / DisplayFontVariableRulesSizeRatio);
+		}
+
 	}
 
 	

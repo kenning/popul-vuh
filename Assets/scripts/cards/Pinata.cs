@@ -9,7 +9,6 @@ public class Pinata : Card {
 	public override void Initialize ()
 	{
 		CardName = "Pinata";
-		SmallFontSize = 32;
 
 		base.Initialize ();
 	}

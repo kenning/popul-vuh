@@ -443,15 +443,16 @@ public class CardLibrary : MonoBehaviour {
 		                                         "Either draw 2 cards or gain 2 plays.",
 		                                         "+2 cards or\n+2 plays",
 		                                         Card.CardActionTypes.Options));
-		Lib.Add ("Pinata", new LibraryCard ("Pinata", 
-		                		             "spiked-mace",
-		                                   ShopControl.Gods.Chac,
-		                                   Card.Rarity.Silver,
-		                                   "To play, tap the card again",
-		                                   "Peek at the top two cards of your library. For each card that is paper, Bronze, silver or gold, " +
-		                                    	"gain \n   +1$, \n   +2 cards, \n   +2 plays or \n   +$2, \nrespectively.",
-		                                   "Peek 2\n  Paper => +$1\n  Bronze => +2 cards\n  Silver => +2 plays\n  Gold => +$2",
-		                                   Card.CardActionTypes.NoTargetNoInput));
+		// Peeking is currently bugged
+//		Lib.Add ("Pinata", new LibraryCard ("Pinata", 
+//		                		             "spiked-mace",
+//		                                   ShopControl.Gods.Chac,
+//		                                   Card.Rarity.Silver,
+//		                                   "To play, tap the card again",
+//		                                   "Peek at the top two cards of your library. For each card that is paper, Bronze, silver or gold, " +
+//		                                    	"gain \n   +1$, \n   +2 cards, \n   +2 plays or \n   +$2, \nrespectively.",
+//		                                   "Peek 2\n  Paper => +$1\n  Bronze => +2 cards\n  Silver => +2 plays\n  Gold => +$2",
+//		                                   Card.CardActionTypes.NoTargetNoInput));
 		//Kinich
 			//Start unlocked
 		Lib.Add("Book Of Matches", new LibraryCard("Book Of Matches",

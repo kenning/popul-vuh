@@ -52,8 +52,6 @@ public class Card : MonoBehaviour {
 	public bool DiscardWhenPlayed = true;
 	public bool BurnsSelfWhenPlayed = false;
 	public int Cost;
-	public int TitleFontSize;
-	public int SmallFontSize;
 
 	public bool ForcingDiscardOfThis = false;
 	public bool FreeTargetSquare = false;
@@ -108,8 +106,6 @@ public class Card : MonoBehaviour {
 		ThisRarity = tempLibraryCard.ThisRarity;
 		CardAction = tempLibraryCard.CardAction;
 		God = tempLibraryCard.God;
-		TitleFontSize = 40;
-		SmallFontSize = 35;
 
 		gameControl.Hand.Add(gameObject);
 

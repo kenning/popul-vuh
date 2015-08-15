@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour {
 	
 	public ShopControl shopControl;
 	public GridControl gridControl;
+//	public EnemyLibrary enemyLibrary;
 	
 	public List<GridUnit> EnemyUnits;
 	
@@ -70,6 +71,7 @@ public class Enemy : MonoBehaviour {
 		gameControl = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameControl>();
 		shopControl = gameControl.gameObject.GetComponent<ShopControl>();
 		gridControl = gameControl.gameObject.GetComponent<GridControl>();
+//		enemyLibrary = gameControl.gameObject.GetComponent<EnemyLibrary> ();
 
 		Renderer[] Renderers = gameObject.GetComponentsInChildren<Renderer> ();
 		foreach(Renderer renderer in Renderers) {
@@ -317,9 +319,12 @@ public class Enemy : MonoBehaviour {
 		GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
 		if (enemies.Length == 1 && Tutorial.TutorialLevel == 0) gameControl.Invoke("LevelIsDone", .4f);
 
-        //moves this gridunit way out of the way so other enemies can walk around it
+        // moves this gridunit way out of the way so other enemies can walk around it 
+		// (faster than going through all lists of grid units and removing it from them all)
         thisGU.xPosition = 100;
         thisGU.yPosition = 100;
+
+		SaveData.AddEnemyToDefeated (Name);
 
 		Destroy(gameObject);
 	}

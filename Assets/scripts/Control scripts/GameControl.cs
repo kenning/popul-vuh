@@ -51,8 +51,6 @@ public class GameControl : MonoBehaviour
 	//for complex cards which require you to click on a bunch of stuff
 	public Card TargetSquareCallback;
 	
-	//card display
-
 	//UI data
 	public string Tooltip = "";
 

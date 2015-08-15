@@ -6,8 +6,6 @@ public class BrokenBeerBottle : Card {
 	public override void Initialize ()
 	{
 		CardName = "Broken Beer Bottle";
-		TitleFontSize = 30;
-		SmallFontSize = 35;
 	
 		base.Initialize ();
 	}

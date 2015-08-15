@@ -5,7 +5,7 @@ public class DimAnimate : MonoBehaviour {
 
 	SpriteRenderer dimSprite;
 	float dimTime = 0f;
-	float dimLength = .35f;
+	float dimSpeed = .035f;
 	public float dimPercent = 0f;
 	public bool dimSetting = false;
 	bool dimAnimating = false;
@@ -29,8 +29,8 @@ public class DimAnimate : MonoBehaviour {
 	void Update() {
 		if(!dimAnimating) return;
 
-		if (dimPercent > 99 && dimSetting == true) {
-			dimPercent = 100;
+		if (dimPercent > 1 && dimSetting == true) {
+			dimPercent = 1;
 			dimAnimating = false;
 		}
 		if (dimPercent < 0 && dimSetting == false) {
@@ -38,8 +38,8 @@ public class DimAnimate : MonoBehaviour {
 			dimAnimating = false;
 		}
 
-		dimPercent = (Time.time - dimTime) / dimLength;
-		if(dimSetting == false) dimPercent = 1 - dimPercent;
+		if(dimSetting == true) dimPercent += dimSpeed;
+		else dimPercent -= dimSpeed;
 
 		Color newColor = new Color(1, 1, 1, dimPercent);
 

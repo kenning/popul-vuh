@@ -6,7 +6,6 @@ public class DesperatePrayer : Card {
 	public override void Initialize ()
 	{
 		CardName = "Desperate Prayer";
-		TitleFontSize = 35;
 
 		base.Initialize ();
 	}

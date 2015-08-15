@@ -6,7 +6,6 @@ public class BookOfMatches : Card {
 	public override void Initialize ()
 	{
 		CardName = "Book Of Matches";
-		TitleFontSize = 40;
 		
 		base.Initialize ();
 	}

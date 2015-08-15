@@ -6,7 +6,6 @@ public class BeerBatterFries : Card {
 	public override void Initialize ()
 	{
 		CardName = "Beer Batter Fries";
-		TitleFontSize = 30;
 		CardsToTargetWillBeDiscarded = true;
 
 		base.Initialize ();

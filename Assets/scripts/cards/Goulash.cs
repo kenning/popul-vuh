@@ -7,7 +7,6 @@ public class Goulash : Card {
 	{
 		CardName = "Goulash";
 
-		SmallFontSize = 32;
 
 		base.Initialize ();
 	}

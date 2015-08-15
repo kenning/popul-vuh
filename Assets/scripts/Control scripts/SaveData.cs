@@ -13,6 +13,7 @@ public class SaveData
 	public static List<LibraryCard> UnlockedCards = new List<LibraryCard>();
 	public static List<LibraryCard> StartingDeckCards = new List<LibraryCard>();
 	public static List<ShopControl.Gods> UnlockedGods = new List<ShopControl.Gods>();
+	public static List<string> DefeatedEnemies = new List<string> ();
 	public static bool FinishedTutorial = false;
     public static bool NewCardsAvailable = false;
 	
@@ -26,13 +27,15 @@ public class SaveData
             //$%^
 			SaveData.UnlockedGods = savedGameData.UnlockedGods;
 			SaveData.UnlockedCards = savedGameData.UnlockedCards;
+			SaveData.DefeatedEnemies = savedGameData.DefeatedEnemies;
 			SaveData.StartingDeckCards = savedGameData.StartingDeckCards;
             SaveData.FinishedTutorial = savedGameData.FinishedTutorial;
             SaveData.NewCardsAvailable = savedGameData.NewCardsAvailable;
 		}
         MainMenu.UnlockCheck();
 		Debug.Log ("Loading! unlocked gods: " + SaveData.UnlockedGods.Count.ToString () + ", " + "New cards available = " + NewCardsAvailable.ToString() + ", Finished tutorial = " + FinishedTutorial.ToString() +
-		           "\nunlocked cards: " + SaveData.UnlockedCards.Count.ToString () + ", starting deck cards: " + SaveData.StartingDeckCards.Count.ToString());
+		           "\nunlocked cards: " + SaveData.UnlockedCards.Count.ToString () + ", starting deck cards: " + SaveData.StartingDeckCards.Count.ToString() + 
+		           ", defeated enemies: " + SaveData.DefeatedEnemies.Count.ToString());
 	}
 
 	public static SavedGame current() {
@@ -40,10 +43,12 @@ public class SaveData
 		sg.UnlockedCards = SaveData.UnlockedCards;
 		sg.StartingDeckCards = SaveData.StartingDeckCards;
 		sg.UnlockedGods = SaveData.UnlockedGods;
+		sg.DefeatedEnemies = SaveData.DefeatedEnemies;
         sg.FinishedTutorial = SaveData.FinishedTutorial;
         sg.NewCardsAvailable = SaveData.NewCardsAvailable;
         Debug.Log("Saving! unlocked gods: " + SaveData.UnlockedGods.Count.ToString() + ", " + "New cards available = " + NewCardsAvailable.ToString() + ", Finished tutorial = " + FinishedTutorial.ToString() +
-		           "\nunlocked cards: " + SaveData.UnlockedCards.Count.ToString () + ", starting deck cards: " + SaveData.StartingDeckCards.Count.ToString());
+		           "\nunlocked cards: " + SaveData.UnlockedCards.Count.ToString () + ", starting deck cards: " + SaveData.StartingDeckCards.Count.ToString() + 
+		          ", defeated enemies: " + SaveData.DefeatedEnemies.Count.ToString());
 		return sg;
 	}
 
@@ -72,6 +77,8 @@ public class SaveData
 
 		UnlockedGods = new List<ShopControl.Gods>();
 		AddGodInOrderToUnlocked (ShopControl.Gods.Buluc);
+
+		DefeatedEnemies = new List<string> ();
 
 		StartingDeckCards = new List<LibraryCard> ();
 		StartingDeckCards.Add(CardLibrary.Lib["Cloth Shirt"]);
@@ -110,6 +117,12 @@ public class SaveData
         UnlockedCards.Add(card);
         NewCardsAvailable = true;
     }
+
+	public static void AddEnemyToDefeated(string enemyName) {
+		if (!DefeatedEnemies.Contains (enemyName)) {
+			DefeatedEnemies.Add(enemyName);
+		}
+	}
 }
 
 [System.Serializable]
@@ -118,6 +131,7 @@ public class SavedGame
     //$%^
 	public List<LibraryCard> UnlockedCards = new List<LibraryCard>();
 	public List<LibraryCard> StartingDeckCards = new List<LibraryCard>();
+	public List<string> DefeatedEnemies = new List<string>();
 	public List<ShopControl.Gods> UnlockedGods = new List<ShopControl.Gods>();
 	public bool FinishedTutorial = false;
     public bool NewCardsAvailable = false;

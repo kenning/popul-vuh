@@ -6,7 +6,6 @@ public class SpikedShield : Card {
 	public override void Initialize ()
 	{
 		CardName = "Spiked Shield";
-		SmallFontSize = 20;
 
 		DamageProtection = 1;
 		DamageDistanceProtectionMin = 2;

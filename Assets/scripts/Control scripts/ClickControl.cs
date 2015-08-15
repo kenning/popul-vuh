@@ -42,8 +42,7 @@ public class ClickControl : MonoBehaviour {
 	public bool AllowInfoInput = true;
 	public bool AllowForfeitButtonInput = true;
 	public bool AllowNewPlayInput = true;
-		//stab, play
-	public bool AllowMoveInput = true;
+	public bool AllowMoveInput = true; 			// punch, play cards
 	public bool AllowCardTargetInput = false;
 	public bool AllowSquareTargetInput = true;
 
@@ -60,7 +59,6 @@ public class ClickControl : MonoBehaviour {
 		playerObject = GameObject.FindGameObjectWithTag ("Player");
         player = playerObject.GetComponent<Player>();
 		hand = GameObject.Find ("Hand");
-//		discard = GameObject.Find ("Discard pile");
 		playButton = GameObject.Find ("play end button").GetComponent<ButtonAnimate> ();
 		arrows =  GameObject.FindGameObjectWithTag("Camera Arrow");
 		SideArrows = (Texture2D)Resources.Load ("sprites/ui/side arrows");
@@ -208,9 +206,7 @@ public class ClickControl : MonoBehaviour {
 			else {
 	//AllowInfoInput
 				if(Mathf.Abs(Input.mousePosition.x - dragOrigin.x) > .2f && !cardScriptClickedOn.Discarded && AllowInfoInput) {
-					draggingHand = true;
-					Cursor.SetCursor(SideArrows, Vector2.zero, CursorMode.Auto);
-					cardHasBeenClickedOn = false;
+					handDrag();
 				}
 	//AllowInfoInput
 				else if(Mathf.Abs(Input.mousePosition.y - dragOrigin.y) > .2f && cardScriptClickedOn.Discarded && AllowInfoInput) {
@@ -222,14 +218,11 @@ public class ClickControl : MonoBehaviour {
 					gameControlGUI.Display(cardScriptClickedOn);
 					cardHasBeenClickedOn = false;
 				}
-				else if(Time.time - .1f > lastCardClick && AllowInfoInput) 
+				else if(Time.time - .03f > lastCardClick && AllowInfoInput) 
                 {
                     cardScriptClickedOn.cardUI.ShineAnimate();
+					gameControlGUI.DisplayDim();
                 }
-				else 
-				{
-					gameControlGUI.Dim();
-				}
 			}
 		}
 
@@ -300,12 +293,7 @@ public class ClickControl : MonoBehaviour {
 	// n/a, cardclicks always happen but might not do anything
 				foreach(RaycastHit2D hit in hits){
 					if(hit.collider.gameObject.tag == "Card") {
-						cardScriptClickedOn = hit.collider.gameObject.GetComponent<Card>();
-						cardHasBeenClickedOn = true;
-                        cardScriptClickedOn.cardUI.GlowAnimate(true);
-
-						lastCardClick = Time.time;
-						dragOrigin = Input.mousePosition;
+						clickOnCard(hit.collider.gameObject);
 						return;
 					}
 				}
@@ -337,10 +325,8 @@ public class ClickControl : MonoBehaviour {
 						}
 	//AllowInfoInput
 						else if(AllowInfoInput) {
-							GridUnit tempGU = hit.collider.gameObject.GetComponent<GridUnit>();
-							Enemy tempEnemy = hit.collider.gameObject.GetComponent<Enemy>();
-							battleBoss.Tooltip = tempEnemy.Tooltip;
-							gridBoss.MakeSquares(tempEnemy.AttackTargetType, tempEnemy.AttackMinRange, tempEnemy.AttackMaxRange, tempGU.xPosition, tempGU.yPosition, false);
+
+							showEnemyInfo(hit.collider.gameObject);
 						}
 						return;
 					}
@@ -351,7 +337,6 @@ public class ClickControl : MonoBehaviour {
 				gridBoss.DestroyAllTargetSquares();
 
 				foreach(RaycastHit2D hit in hits) 
-	//return
 					if(hit.collider.gameObject.tag == "Play board") 
 						return;
 				foreach(RaycastHit2D hit in hits) {
@@ -374,7 +359,6 @@ public class ClickControl : MonoBehaviour {
                     if (hit.collider.gameObject.tag == "obstacle")
                     {
                         GridUnit obstacleGU = hit.collider.gameObject.GetComponent<GridUnit>();
-                        //will this work???
                         Obstacle hitObstacle = hit.collider.gameObject.transform.parent.gameObject.GetComponent<Obstacle>();
                         GridUnit playerGU = battleBoss.playerObj.GetComponent<GridUnit>();
 
@@ -438,11 +422,35 @@ public class ClickControl : MonoBehaviour {
     void gameBoardDrag()
     {
         dragOrigin = Input.mousePosition;
+		gameControlGUI.Dim (false);
         draggingGameboard = true;
         Vector3 worldPointVector = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         arrows.transform.position = new Vector3(worldPointVector.x, worldPointVector.y, 0);
         arrows.GetComponent<SpriteRenderer>().enabled = true;
     }
+
+	void handDrag() {
+		draggingHand = true;
+		gameControlGUI.Dim(false);
+		Cursor.SetCursor(SideArrows, Vector2.zero, CursorMode.Auto);
+		cardHasBeenClickedOn = false;
+	}
+
+	void showEnemyInfo(GameObject tempGO) {
+		GridUnit tempGU = tempGO.GetComponent<GridUnit>();
+		Enemy tempEnemy = tempGO.GetComponent<Enemy>();
+		battleBoss.Tooltip = tempEnemy.Tooltip;
+		gridBoss.MakeSquares(tempEnemy.AttackTargetType, tempEnemy.AttackMinRange, tempEnemy.AttackMaxRange, tempGU.xPosition, tempGU.yPosition, false);
+	}
+
+	void clickOnCard(GameObject tempGO) {
+		cardScriptClickedOn = tempGO.GetComponent<Card>();
+		cardHasBeenClickedOn = true;
+		cardScriptClickedOn.cardUI.GlowAnimate(true);
+		
+		lastCardClick = Time.time;
+		dragOrigin = Input.mousePosition;
+	}
 
 	//returns true and moves Player if you clicked on a square adjacent to Player
 	string adjCheck (Vector3 checkedObjPos){
