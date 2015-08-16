@@ -17,7 +17,7 @@ public class Shuriken : Card {
 	public override void Play () {
 		gameControl.CardsToTarget = 1;
 
-		gameControlGUI.Dim(true);
+		gameControlGUI.ForceDim();
 		gameControl.Tooltip = "Pick a card to discard.";
 	}
 	

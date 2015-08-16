@@ -102,7 +102,7 @@ public class ShopControlGUI : MonoBehaviour {
 				GUI.Box(new Rect(Screen.width*.1f, Screen.height*(.1f + i*.2f), Screen.width*.2f, Screen.height*.18f), 
 				        (Texture2D)shopControl.Goals[i].GodTexture, GUIStyle.none);
 				GUI.Box(new Rect(Screen.width*.3f, Screen.height*(.1f + i*.2f), Screen.width*.6f, Screen.height*.18f), 
-				        shopControl.Goals[i].GodString + shopControl.Goals[i].Description, styleLibrary.ShopStyles.GoalExpoBox);
+				        shopControl.Goals[i].GodString + shopControl.Goals[i].Description, styleLibrary.ShopStyles.NeutralButton);
 			}
 			
 			if(GUI.Button(new Rect(Screen.width*.2f, Screen.height*.8f, Screen.width*.6f, Screen.height*.1f), 
@@ -188,7 +188,7 @@ public class ShopControlGUI : MonoBehaviour {
 					GUI.DrawTexture(new Rect(cardWidth*.42f, cardHeight*.05f, cardWidth*.3f, cardWidth*.3f), icon);
 					
 					GUI.Box(new Rect(cardWidth*.05f,cardHeight*.05f,cardWidth*.35f, cardHeight*.3f), thisCard.CardName, cardNameStyle);
-					GUI.Box(new Rect(cardWidth*.05f,cardHeight*.4f, cardWidth*.7f, cardHeight*.5f), thisCard.DisplayText, cardTextStyle);
+					GUI.Box(new Rect(cardWidth*.05f,cardHeight*.4f, cardWidth*.7f, cardHeight*.5f), thisCard.MiniDisplayText, cardTextStyle);
 					
 					Card.Rarity rarity = thisCard.ThisRarity;
 					Texture2D rarityTexture = PaperTexture;
@@ -224,14 +224,10 @@ public class ShopControlGUI : MonoBehaviour {
 								gameControl.Deck.Add(tempString);
 								gameControl.AddDollars(-thisCard.Cost);
 								shopControl.CardsToBuyFrom[i].RemoveAt(j);
-								
-								if (!SaveData.UnlockedCards.Contains(thisCard) && SaveData.UnlockedGods.Contains(thisCard.God))
-								{
+
+								if(SaveData.TryToUnlockCard(thisCard)) {
 									AddedToCollText = "Added " + thisCard.God.ToString() + "'s card " + tempString + 
 										" to your collection!\n" + AddedToCollText;
-									//Don't just add it! call the method 
-									SaveData.AddCardToUnlocked(thisCard);
-									SaveLoad.Save();
 								}
 							}
 							else
@@ -265,7 +261,7 @@ public class ShopControlGUI : MonoBehaviour {
 			
 			//Dollar count box
 			GUI.Box(new Rect(Screen.width*.7f, Screen.height*.88f, Screen.width*.2f, Screen.height*.1f), 
-			        "$" + gameControl.Dollars.ToString(), styleLibrary.ShopStyles.GotItButton);
+			        "$" + gameControl.Dollars.ToString(), styleLibrary.ShopStyles.NeutralButton);
 			
 			//Go to next level button
 			GUIStyle GoToNextLevelStyle = new GUIStyle(styleLibrary.ShopStyles.SmallerButton);
@@ -288,11 +284,11 @@ public class ShopControlGUI : MonoBehaviour {
 				        Goals[i].GodIcon, styleLibrary.ShopStyles.InGameGoalBox);
 				
 				if(GoalDisplay[i]){
-					GUI.Box(new Rect(Screen.width*(i*.333333f),Screen.height*.05f, Screen.width*.333333f, Screen.height*.15f), 
+					GUI.Box(new Rect(Screen.width*(i*.333333f),Screen.height*.05f, Screen.width*.333333f, Screen.height*.12f), 
 					        Goals[i].GodString + Goals[i].Description, styleLibrary.ShopStyles.InGameGoalBox);
 					GUI.Box(new Rect(Screen.width*(i*.333333f + .11111f), 0, Screen.width*.22222f, Screen.height*.05f), 
 					        Goals[i].CurrentScore.ToString(), styleLibrary.ShopStyles.InGameGoalBox);
-					GUI.Box(new Rect(Screen.width*(i*.333333f + .22222f), Screen.height*.2f, Screen.width*.11111f, Screen.height*.1f), 
+					GUI.Box(new Rect(Screen.width*(i*.333333f + .22222f), Screen.height*.17f, Screen.width*.11111f, Screen.height*.1f), 
 					        STOPLIGHTTEXTURE, styleLibrary.ShopStyles.InGameGoalBox);
 					string tempString = "";
 					for(int j = 0; j < Goals[i].GoalScore.Length; j++){
@@ -308,12 +304,12 @@ public class ShopControlGUI : MonoBehaviour {
 							if(j+1 != Goals[i].GoalScore.Length) tempString += "\n";
 						}
 					}
-					GUI.Box(new Rect(Screen.width*(i*.333333f), Screen.height*.2f, Screen.width*.13333333333f, Screen.height*.1f), 
+					GUI.Box(new Rect(Screen.width*(i*.333333f), Screen.height*.17f, Screen.width*.13333333333f, Screen.height*.1f), 
 					        "Best score:\n" + Goals[i].HighScore.ToString(), styleLibrary.ShopStyles.InGameGoalBox);
-					GUI.Box(new Rect(Screen.width*(i*.333333f + .13333333333f), Screen.height*.2f, Screen.width*.1f, Screen.height*.1f), 
+					GUI.Box(new Rect(Screen.width*(i*.333333f + .13333333333f), Screen.height*.17f, Screen.width*.1f, Screen.height*.1f), 
 					        tempString, styleLibrary.ShopStyles.InGameGoalBox);
 					
-					if(GUI.Button(new Rect(Screen.width*(i*.333333f),0, Screen.width*.333333f, Screen.height*.3f), 
+					if(GUI.Button(new Rect(Screen.width*(i*.333333f),0, Screen.width*.333333f, Screen.height*.27f), 
 					              "", styleLibrary.ShopStyles.InGameGoalBoxHoverOverlay)) {
 						GoalDisplay = new bool[] {false, false, false};
 						clickBlocker.MoveToSpot(-1);

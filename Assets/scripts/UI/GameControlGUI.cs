@@ -183,6 +183,14 @@ public class GameControlGUI : MonoBehaviour {
 		}
 	}
 
+	public void ForceDim() {
+		dimmer.ForceDim ();
+	}
+
+	public void UnlockDim() {
+		dimmer.UnlockDim ();
+	}
+
 	public void ShowDeck(bool TurningOn) {
 		showingDeck = TurningOn;
 	}

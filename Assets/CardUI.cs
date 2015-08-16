@@ -18,7 +18,7 @@ public class CardUI : MonoBehaviour {
 	bool ShuffleAnimating = false;
 	Transform DeckTransform;
 	GameObject CardBackObject;
-	Sprite CardBackSprite;
+//	Sprite CardBackSprite;
 	float DrawStartTime;
 	float MoveUpStartTime;
 	Vector3 StartPosition;
@@ -241,7 +241,7 @@ public class CardUI : MonoBehaviour {
 		PlayButton = GameObject.Find("play end button").GetComponent<ButtonAnimate>();
 		meshrenderers = GetComponentsInChildren<MeshRenderer>();
 		SRenderers = gameObject.GetComponentsInChildren<SpriteRenderer>();
-		CardBackSprite = Resources.Load("sprites/cards/real pixel card back") as Sprite;
+//		CardBackSprite = Resources.Load("sprites/cards/real pixel card back") as Sprite;
 		discardPileObj = GameObject.Find("Discard pile");
 		
 		TextMesh[] textMeshes = gameObject.GetComponentsInChildren<TextMesh>();

@@ -39,6 +39,8 @@ public class MainMenu : MonoBehaviour {
     {
 		MainMenu.errorText = "";
 
+		GameObject.Find ("Dimmer").GetComponent<DimAnimate> ().UnlockDim ();
+
 		if(!InGame) {
 			gameControl.BeginGame();
 			InGame = true;
@@ -52,13 +54,13 @@ public class MainMenu : MonoBehaviour {
     {
         GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().alive = false;
 
-        Debug.Log("Died!");
-
 		DiedMenuUp = true;
 		clickControl.DisallowEveryInput ();
 		clickControl.AllowInfoInput = true;
 		clickControl.AllowInputUmbrella = true;
 		MainMenu.InGame = false;
+
+		GameObject.Find ("Dimmer").GetComponent<DimAnimate>().ForceDim();
 
         GameControl gameControl = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControl>();
         gameControl.TransformPlayer(false);
@@ -225,7 +227,7 @@ public class MainMenu : MonoBehaviour {
         if (DeleteDataMenuUp)
         {
             GUI.Box(new Rect(Screen.width * .2f, Screen.height * .1f, Screen.width * .6f, Screen.height * .4f), 
-			        "Are you sure?", styleLibrary.MainStyles.Title);
+			        "Are you sure?", styleLibrary.MainStyles.NeutralButton);
             if (GUI.Button(new Rect(Screen.width * .6f, Screen.height * .8f, Screen.width * .3f, Screen.height * .15f), 
 			               "Yes!", styleLibrary.MainStyles.Button))
             {
@@ -251,7 +253,7 @@ public class MainMenu : MonoBehaviour {
         if (DiedMenuUp)
         {
             GUI.Box(new Rect(Screen.width * .1f, Screen.height * .2f, Screen.width * .8f, Screen.height * .3f), 
-			        "You died!", styleLibrary.MainStyles.Title);
+			        "You died!", styleLibrary.MainStyles.NeutralButton);
             GUI.Box(new Rect(Screen.width * .1f, Screen.height * .55f, Screen.width * .8f, Screen.height * .15f), 
 			        "Got to level " + GameControl.Level.ToString(), styleLibrary.MainStyles.DiedAndGotToLevel);
             if (UnlockedText != "")

@@ -39,6 +39,7 @@ public class GUIStyleLibrary : MonoBehaviour {
 		public GUIStyle NewCardsAvailablePopup;
 		public GUIStyle Sidebar;
 		public GUIStyle DiedAndGotToLevel;
+		public GUIStyle NeutralButton;
 
 		public MainMenuStyleLibrary (GUISkin skin) {
 			BlackBackground = skin.box;
@@ -46,7 +47,8 @@ public class GUIStyleLibrary : MonoBehaviour {
 			Button = skin.button;
 			NewCardsAvailablePopup = skin.customStyles [9];
 			Sidebar = skin.customStyles [4];
-			DiedAndGotToLevel = skin.customStyles[3];
+			DiedAndGotToLevel = skin.customStyles[12];
+			NeutralButton = skin.customStyles[12];
 		}
 	}
 
@@ -182,13 +184,14 @@ public class GUIStyleLibrary : MonoBehaviour {
 			// Card miniature display
 		public GUIStyle DisplayTitle;
 		public GUIStyle DisplayText;
-		public int DisplayTitleFontSize = 14;
-		public int DisplayTextFontSize = 10;
+		public int DisplayTitleFontSize = 9;
+		public int DisplayTextFontSize = 9;
 		public GUIStyle ShopBox;
 		public GUIStyle ShopGoalGold;
 		public GUIStyle ShopGoalSilver;
 		public GUIStyle ShopGoalBronze;
 		public GUIStyle ShopHoverOverlay;
+		public GUIStyle NeutralButton;
 
 		// In game goal GUI (shows three goals along top of screen)
 		public GUIStyle InGameGoalBox;
@@ -207,9 +210,9 @@ public class GUIStyleLibrary : MonoBehaviour {
 			ShopGoalSilver = shopSkin.customStyles[5];
 			ShopGoalBronze = shopSkin.customStyles[4];
 			ShopHoverOverlay = shopSkin.customStyles[3];
-
 			InGameGoalBox = shopSkin.textArea;
 			InGameGoalBoxHoverOverlay = shopSkin.customStyles[1];
+			NeutralButton = shopSkin.customStyles[7];
 		}
 	}
 }

@@ -13,7 +13,7 @@ public class DragonWhiskey : Card {
 		//haven't touched anything below this comment yet
 		gameControl.CardsToTarget = 1;
 
-		gameControlGUI.Dim(true);
+		gameControlGUI.ForceDim();
 		
 		base.Play ();
 	}

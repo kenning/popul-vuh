@@ -52,7 +52,7 @@ public class Pinata : Card {
 	}
 
 	void PinataMethod () {
-		gameControlGUI.Dim(false);
+		gameControlGUI.ForceDim();
 		for(int i = gameControl.PeekedCards.Count-1; i > -1; i++) {
 			gameControl.PeekedCards[i].GetComponent<Card>().Tuck();
 		}

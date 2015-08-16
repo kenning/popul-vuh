@@ -17,7 +17,7 @@ public class RitualPyre : Card {
 
 		gameControl.Tooltip = "Pick a card to burn.";
 
-		gameControlGUI.Dim(true);
+		gameControlGUI.ForceDim();
 		
 		base.Play ();
 	}

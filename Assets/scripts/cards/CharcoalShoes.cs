@@ -15,7 +15,7 @@ public class CharcoalShoes : Card {
 
 		gameControl.Tooltip = "Pick a card to burn.";
 		
-		gameControlGUI.Dim (true);
+		gameControlGUI.ForceDim ();
 		
 		base.Play ();
 	}

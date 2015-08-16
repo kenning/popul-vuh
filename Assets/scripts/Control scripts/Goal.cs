@@ -204,7 +204,7 @@ public class Goal  {
 		if(SaveData.UnlockedGods.Contains(God)) {
 			GodString = God.ToString ();
 		} else {
-			GodString = "A God";
+			GodString = "An unknown God";
 		}
 	}
 	#endregion

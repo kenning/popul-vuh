@@ -410,6 +410,7 @@ public class Card : MonoBehaviour {
 	public virtual void AfterCardTargetingCallback() {
 		gameControl.TargetedCards = new List<GameObject>();
 		gameControl.CardsToTarget = 0;
+		gameControlGUI.UnlockDim ();
 		gameControlGUI.Dim(false);
 
 		CheckQ();

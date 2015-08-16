@@ -4,7 +4,7 @@ using System.Collections;
 public class DimAnimate : MonoBehaviour {
 
 	SpriteRenderer dimSprite;
-	float dimTime = 0f;
+	bool dimLock = false;
 	float dimSpeed = .035f;
 	public float dimPercent = 0f;
 	public bool dimSetting = false;
@@ -15,13 +15,13 @@ public class DimAnimate : MonoBehaviour {
 	}
 
 	public void Dim() {
-		dimTime = Time.time;
+		if(dimLock) return;
 		dimSetting = true;
 		dimAnimating = true;
 	}
 
 	public void Undim() {
-		dimTime = Time.time;
+		if(dimLock) return;
 		dimSetting = false;
 		dimAnimating = true;
 	}
@@ -44,5 +44,21 @@ public class DimAnimate : MonoBehaviour {
 		Color newColor = new Color(1, 1, 1, dimPercent);
 
 		dimSprite.color = newColor;
+	}
+
+	public void ForceDim() {
+		dimLock = false;
+		Dim ();
+		dimLock = true;
+	}
+
+	public void ForceUndim() {
+		dimLock = false;
+		Undim ();
+		dimLock = true;
+	}
+
+	public void UnlockDim() {
+		dimLock = false;
 	}
 }
