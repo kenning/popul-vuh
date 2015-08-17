@@ -204,7 +204,6 @@ public class GameControlGUI : MonoBehaviour {
 	public void FlipDiscard() {
 		GameObject discard = GameObject.FindGameObjectWithTag ("Discard");
 		
-		
 		if(!showingDiscard) {
 			discard.transform.localPosition = displayDiscardPlacement;
 			

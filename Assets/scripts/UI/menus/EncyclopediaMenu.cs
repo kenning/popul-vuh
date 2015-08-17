@@ -93,17 +93,19 @@ public class EncyclopediaMenu : MonoBehaviour {
 
 			if(Tabs[0]) {
 				string godName = ShopControl.AllGods[SelectedGod].ToString();
+				GUIStyle RedirectButton = styleLibrary.EncyclopediaStyles.TabOn;
+				RedirectButton.fontSize = styleLibrary.EncyclopediaStyles.RedirectButtonFontSize;
 				GUI.DrawTexture(new Rect(0,Screen.height*.2f,Screen.width*.3f, Screen.height*.4f), 
 				                shopControlGUI.GodFullTextures[SelectedGod]);
 				GUI.Box(new Rect(Screen.width*.4f, Screen.height*.2f, Screen.width*.4f, Screen.height*.4f), 
 				        ShopControl.GodDescriptions[SelectedGod], styleLibrary.EncyclopediaStyles.NeutralButton);
 				if(GUI.Button(new Rect(0, Screen.height*.65f, Screen.width*.35f, Screen.height*.1f), 
-				              "Go to " + godName + "'s Goals", styleLibrary.EncyclopediaStyles.TabOn)) {
+				              "Go to " + godName + "'s Goals", RedirectButton)) {
 					Tabs[0] = false;
 					Tabs[1] = true;
 				}
 				if(GUI.Button(new Rect(Screen.width*.45f, Screen.height*.65f, Screen.width*.35f, Screen.height*.1f), 
-				              "Go to " + godName + "'s cards", styleLibrary.EncyclopediaStyles.TabOn)) {
+				              "Go to " + godName + "'s cards", RedirectButton)) {
 					Tabs[0] = false;
 					Tabs[2] = true;
 				}
@@ -117,8 +119,8 @@ public class EncyclopediaMenu : MonoBehaviour {
 				                new Rect(Screen.width*.6f, Screen.height*.2f, Screen.width*.2f, Screen.height*(.1f*shownGoals.Count)));
 //		NoneStyleWordWrap.fontSize = 
 				for(int i = 0; i < shownGoals.Count; i++) {
-					GUIStyle goalStyle = styleLibrary.EncyclopediaStyles.TabOff;
-					if(selectedGoal == i) goalStyle = styleLibrary.EncyclopediaStyles.TabOn;
+					GUIStyle goalStyle = new GUIStyle(styleLibrary.EncyclopediaStyles.TabOff);
+					if(selectedGoal == i) goalStyle = new GUIStyle(styleLibrary.EncyclopediaStyles.TabOn);
 					goalStyle.fontSize = styleLibrary.EncyclopediaStyles.GoalFontSize;
 					if(GUI.Button(new Rect(Screen.width*.6f,Screen.height*.1f*(i+2), Screen.width*.18f, Screen.height*.1f), 
 					              shownGoals[i].MiniDescription, goalStyle)){
@@ -145,8 +147,11 @@ public class EncyclopediaMenu : MonoBehaviour {
 					GUI.DrawTexture(new Rect(Screen.width*.175f, Screen.height*.47f, Screen.width*.1f, Screen.height*.24f),
 					                shopControlGUI.STOPLIGHTTEXTURE);
 						//put high scores here
-					GUI.Box(new Rect(Screen.width*.3f,Screen.height*.45f, Screen.width*.3f, Screen.height*.3f), 
-					        "High score info goes here", styleLibrary.EncyclopediaStyles.NeutralButton);
+					if(SaveData.GoalHighScores.ContainsKey(shownGoals[selectedGoal].MiniDescription)) {
+						GUI.Box(new Rect(Screen.width*.3f,Screen.height*.45f, Screen.width*.3f, Screen.height*.3f), 
+						        "Your high score is " + SaveData.GoalHighScores[shownGoals[selectedGoal].MiniDescription].ToString(), 
+						        styleLibrary.EncyclopediaStyles.NeutralButton);
+					} 
 				}
 			}
 			else if(Tabs[2]) {
@@ -162,6 +167,7 @@ public class EncyclopediaMenu : MonoBehaviour {
 						GUIStyle CardTabStyle = styleLibrary.EncyclopediaStyles.TabOff;
 						if(selectedCard == i) CardTabStyle = styleLibrary.EncyclopediaStyles.TabOn;
 //						CardTabStyle.fontSize = 
+						// if i do this, i better make it a new guistyle...
 						if(GUI.Button(new Rect(Screen.width*.6f,Screen.height*.1f*(i+2), Screen.width*.17f, Screen.height*.1f), 
 						              shownCards[i].DisplayName, CardTabStyle)){
 							selectedCard = i;
@@ -183,6 +189,8 @@ public class EncyclopediaMenu : MonoBehaviour {
 					                shopControlGUI.CardTextures[SelectedGod]);
 					GUIStyle cardNameStyle = new GUIStyle(styleLibrary.EncyclopediaStyles.CardNameStyle);
 					GUIStyle cardTextStyle = new GUIStyle(styleLibrary.EncyclopediaStyles.CardTextStyle);
+					cardTextStyle.alignment = TextAnchor.UpperLeft;
+					cardTextStyle.fontSize = styleLibrary.EncyclopediaStyles.SlightlyBiggerTextFontSize;
 					if(shownCards[selectedCard].God == ShopControl.Gods.Akan | shownCards[selectedCard].God == ShopControl.Gods.Buluc |
 					   shownCards[selectedCard].God == ShopControl.Gods.Ikka | shownCards[selectedCard].God == ShopControl.Gods.Kinich | 
 					   shownCards[selectedCard].God == ShopControl.Gods.Chac) {
@@ -196,9 +204,8 @@ public class EncyclopediaMenu : MonoBehaviour {
 					        shownCards[selectedCard].DisplayName, cardNameStyle);
 					Texture2D icon = Resources.Load("sprites/card icons/" + shownCards[selectedCard].IconPath) as Texture2D;
 					GUI.Box(new Rect(Screen.width*.325f, Screen.height*.225f, Screen.width*.25f, Screen.height*.15f), icon, GUIStyle.none);
-					GUI.Box(new Rect(Screen.width*.025f, Screen.height*.5f, Screen.width*.55f, Screen.height*.3f), 
+					GUI.Box(new Rect(Screen.width*.045f, Screen.height*.4f, Screen.width*.53f, Screen.height*.3f), 
 					        shownCards[selectedCard].DisplayText, cardTextStyle);
-					//make this look like display()
 					GUI.DrawTexture(new Rect(Screen.width*.45f, Screen.height*.7f, Screen.width*.1f, Screen.width*.1f), 
 					                shopControlGUI.GodIcons[SelectedGod]);
 					Card.Rarity rarity = shownCards[selectedCard].ThisRarity;

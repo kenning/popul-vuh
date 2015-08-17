@@ -18,7 +18,7 @@ public class CardLibrary : MonoBehaviour {
 
         for (int i = 0; i < 20; i++)
         {
-         //   StartingItems.Add(Lib["Cloth Shoes"]);
+			StartingItems.Add(Lib["Book Of History"]);
         }
 
 		LibraryCard[] allCards = Lib.Values.ToArray();

@@ -32,6 +32,7 @@ public class ShopControlGUI : MonoBehaviour {
 
 	Goal[] Goals;
 	bool[] GoalDisplay;
+	public bool[] highScoreNotification;
 	
 	public float shopGUITime = 0f;
 	float cardWidth = Screen.width*.3f;
@@ -47,7 +48,7 @@ public class ShopControlGUI : MonoBehaviour {
 		clickControl = gameObject.GetComponent<ClickControl> ();
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
 		clickBlocker = GameObject.Find ("moving click blocker").GetComponent<ClickBlocker> ();
-		
+
 		goalExpo = false;
 	}
 
@@ -65,6 +66,8 @@ public class ShopControlGUI : MonoBehaviour {
 	public void NewLevelNewGoals (int numberOfGods) {
 		Goals = shopControl.Goals;
 		GoalDisplay = new bool[numberOfGods];
+		highScoreNotification = new bool[numberOfGods];
+
 		goalExpo = true;
 
 		for(int i = 0; i < 3; i++) {
@@ -79,6 +82,11 @@ public class ShopControlGUI : MonoBehaviour {
 	}
 
 	public void TurnOnShopGUI() {
+		for (int i = 0; i < shopControl.Goals.Length; i++) {
+			if(SaveData.CheckForHighScores(shopControl.Goals[i])) {
+				highScoreNotification[i] = true;
+			}
+		}
 		shopGUI = true;
 	}
 
@@ -137,6 +145,7 @@ public class ShopControlGUI : MonoBehaviour {
 						grade = "Bronze! +$1";
 						thisStyle = styleLibrary.ShopStyles.ShopGoalBronze;
 					}
+
 				} else {
 					if(Goals[i].HighScore <= Goals[i].GoalScore[2]) { 
 						grade = "Gold! +$3";
@@ -149,9 +158,15 @@ public class ShopControlGUI : MonoBehaviour {
 						thisStyle = styleLibrary.ShopStyles.ShopGoalBronze;
 					}
 				}
+
 				if(grade != "Nothing! +$0") GUI.Box(new Rect(0, Screen.height*.105f, Screen.width*.3f, Screen.height*.05f), 
 				                                    grade, thisStyle);
 				GUI.EndGroup();
+
+				if(highScoreNotification[i]) {
+					GUI.Box (new Rect(cardWidth*.2f, cardHeight*4.2f, cardWidth*.6f, cardHeight*.6f), 
+					         "New high score!", styleLibrary.ShopStyles.ShopGoalGold);
+				}
 				
 				//cards to buy
 				for(int j = 0; j < shopControl.CardsToBuyFrom[i].Count; j++) {

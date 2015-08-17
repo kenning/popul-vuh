@@ -63,6 +63,7 @@ public class GUIStyleLibrary : MonoBehaviour {
 		public GUIStyle NoneStyleWordWrap;
 		public GUIStyle BigText;
 		public GUIStyle NeutralButton;
+		public int RedirectButtonFontSize;
 		public int GoalFontSize;
 		public int SlightlyBiggerTextFontSize;
 		public int CardButtonFontSize;
@@ -80,9 +81,10 @@ public class GUIStyleLibrary : MonoBehaviour {
 			NoneStyleWordWrap.fontSize = 10;
 			BigText = new GUIStyle(skin.customStyles[11]);
 			BigText.fontSize = 50;
-			GoalFontSize = 12;
+			GoalFontSize = 10;
 			SlightlyBiggerTextFontSize = 18;
 			CardButtonFontSize = 15;
+			RedirectButtonFontSize = 20;
 			NeutralButton = skin.customStyles[12];
 		}
 	}

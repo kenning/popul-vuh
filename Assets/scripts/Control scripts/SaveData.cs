@@ -132,6 +132,34 @@ public class SaveData
 			DefeatedEnemies.Add(enemyName);
 		}
 	}
+
+	public static bool CheckForHighScores(Goal goal) {
+		if (!SaveData.GoalHighScores.ContainsKey(goal.MiniDescription)) {
+			if((goal.HighScore != 0) | (goal.HighScore == 0 && !goal.HigherScoreIsGood))
+			SaveData.GoalHighScores[goal.MiniDescription] = goal.HighScore;
+			
+			SaveLoad.Save();
+			return true;
+		}
+		if (goal.HigherScoreIsGood) {
+			if(SaveData.GoalHighScores[goal.MiniDescription] < goal.HighScore) {
+				Debug.Log("new high score is " + goal.HighScore);
+				SaveData.GoalHighScores[goal.MiniDescription] = goal.HighScore;
+				
+				SaveLoad.Save();
+				return true;
+			}
+		} else {
+			if(SaveData.GoalHighScores[goal.MiniDescription] > goal.HighScore) {
+				Debug.Log("new high score is " + goal.HighScore);
+				SaveData.GoalHighScores[goal.MiniDescription] = goal.HighScore;
+
+				SaveLoad.Save();
+				return true;
+			}
+		}
+		return false;
+	}
 }
 
 [System.Serializable]
@@ -142,7 +170,7 @@ public class SavedGame
 	public List<LibraryCard> StartingDeckCards = new List<LibraryCard>();
 	public List<string> DefeatedEnemies = new List<string>();
 	public List<ShopControl.Gods> UnlockedGods = new List<ShopControl.Gods>();
-	public static Dictionary<string, int> GoalHighScores = new Dictionary<string, int> ();
+	public Dictionary<string, int> GoalHighScores = new Dictionary<string, int> ();
 	public bool FinishedTutorial = false;
     public bool NewCardsAvailable = false;
 }

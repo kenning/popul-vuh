@@ -82,6 +82,7 @@ public class Card : MonoBehaviour {
 		library =  gameController.GetComponent<CardLibrary>();
 		gameControlGUI = gameController.GetComponent<GameControlGUI> ();
 		shopControlGUI = gameController.GetComponent<ShopControlGUI> ();
+		eventGUIControl = gameController.GetComponent<EventGUI> ();
 		styleLibrary = gameController.GetComponent<GUIStyleLibrary> ();
 		cardUI = gameObject.GetComponent<CardUI> ();
 		hand = GameObject.Find("Hand");
