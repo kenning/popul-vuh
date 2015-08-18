@@ -13,6 +13,7 @@ public class GodChoiceMenu : MonoBehaviour {
 	GUIStyleLibrary styleLibrary;
 
 	void Start() {
+		MonoBehaviour.useGUILayout = false;
 		shopControl = gameObject.GetComponent<ShopControl> ();
 		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();

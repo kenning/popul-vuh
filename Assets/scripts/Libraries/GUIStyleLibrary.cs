@@ -107,6 +107,7 @@ public class GUIStyleLibrary : MonoBehaviour {
 		public GUIStyle CardToggleAdd;
 		public GUIStyle CardToggleRemove;
 		public GUIStyle CardToggleOff;
+		public GUIStyle CardNeutral;
 		public GUIStyle RarityToggleOn;
 		public GUIStyle RarityToggleOff;
 		public GUIStyle InstructionInfoBox;
@@ -121,6 +122,7 @@ public class GUIStyleLibrary : MonoBehaviour {
 			CardToggleAdd = skin.customStyles[10];
 			CardToggleRemove = skin.customStyles[9];
 			CardToggleOff = skin.customStyles[2];
+			CardNeutral = skin.customStyles[12];
 			RarityToggleOn = skin.customStyles[1];
 			RarityToggleOff = skin.customStyles[2];
 			CardNameStyle = skin.customStyles[6];
@@ -207,7 +209,7 @@ public class GUIStyleLibrary : MonoBehaviour {
 			
 			DisplayTitle = mainSkin.customStyles[6];
 			DisplayText = mainSkin.customStyles[7];
-			ShopBox = shopSkin.customStyles[2];
+			ShopBox = shopSkin.customStyles[8];
 			ShopGoalGold = shopSkin.customStyles[6];
 			ShopGoalSilver = shopSkin.customStyles[5];
 			ShopGoalBronze = shopSkin.customStyles[4];

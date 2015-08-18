@@ -28,11 +28,10 @@ public class BookOfHistory : Card {
 //			if(tempCard.CardAction == CardActionTypes.TargetCard) {
 //				QControl.AddToQ(tempCard, QControl.QMethodType.Discard);
 //			}
-//
+
 			QControl.AddToQ(tempCard, QControl.QMethodType.FreeActivate);
 			QControl.AddToQ(tempCard, QControl.QMethodType.FreeActivate);
 
-			//TODO TEST THIS
 			if(tempCard.CardAction == CardActionTypes.TargetGridSquare) {
 				QControl.AddToQ(tempCard, QControl.QMethodType.Discard);
 			}

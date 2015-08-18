@@ -23,7 +23,6 @@ public class FencingStance : Card {
 	public override void EventCall(string s) {
 		if(s == "Punch") {
 			gameControl.AddMoves(2);
-            Debug.Log("got there");
 			eventGUIControl.AddGUIString("Move +2!");
 		}
 	}

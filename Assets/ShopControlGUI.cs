@@ -43,6 +43,7 @@ public class ShopControlGUI : MonoBehaviour {
 	string AddedToCollText = "You can add cards in your collection to your starting deck next time you play!";
 
 	void Start () {
+		MonoBehaviour.useGUILayout = false;
 		gameControl = gameObject.GetComponent<GameControl> ();
 		shopControl = gameObject.GetComponent<ShopControl> ();
 		clickControl = gameObject.GetComponent<ClickControl> ();
@@ -101,6 +102,12 @@ public class ShopControlGUI : MonoBehaviour {
 		normaldisplay = false;
 	}
 
+	public void UnclickGoals() {
+		for(int i = 0; i < GoalDisplay.Length; i++) {
+			GoalDisplay[i] = false;
+		}
+	}
+
 	void OnGUI () {
 		#region Initial goal interface
 		if(goalExpo) {
@@ -127,6 +134,7 @@ public class ShopControlGUI : MonoBehaviour {
 		
 		#region Shop interface
 		else if (shopGUI) {
+
 			GUI.Box(new Rect(0,0,Screen.width, Screen.height), "", styleLibrary.ShopStyles.TransparentBackground);
 			GUI.BeginGroup(new Rect(Screen.width*.05f, Screen.height*.04f, Screen.width*.9f, Screen.height*.81f));
 			for(int i = 0; i < shopControl.CardsToBuyFrom.Length; i++) {
@@ -159,7 +167,7 @@ public class ShopControlGUI : MonoBehaviour {
 					}
 				}
 
-				if(grade != "Nothing! +$0") GUI.Box(new Rect(0, Screen.height*.105f, Screen.width*.3f, Screen.height*.05f), 
+				GUI.Box(new Rect(0, Screen.height*.105f, Screen.width*.3f, Screen.height*.05f), 
 				                                    grade, thisStyle);
 				GUI.EndGroup();
 
@@ -277,7 +285,6 @@ public class ShopControlGUI : MonoBehaviour {
 			//Dollar count box
 			GUI.Box(new Rect(Screen.width*.7f, Screen.height*.88f, Screen.width*.2f, Screen.height*.1f), 
 			        "$" + gameControl.Dollars.ToString(), styleLibrary.ShopStyles.NeutralButton);
-			
 			//Go to next level button
 			GUIStyle GoToNextLevelStyle = new GUIStyle(styleLibrary.ShopStyles.SmallerButton);
 			GoToNextLevelStyle.fontSize = 20;

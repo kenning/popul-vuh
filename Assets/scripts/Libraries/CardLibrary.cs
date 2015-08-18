@@ -16,15 +16,10 @@ public class CardLibrary : MonoBehaviour {
 			StartingItems.Add(SaveData.StartingDeckCards[i]);
 		}
 
-        for (int i = 0; i < 20; i++)
-        {
-			StartingItems.Add(Lib["Book Of History"]);
-        }
-
-		LibraryCard[] allCards = Lib.Values.ToArray();
-		for(int i = 0; i < Lib.Count; i++) {
-			StartingItems.Add(allCards[i]);
-		}
+//		LibraryCard[] allCards = Lib.Values.ToArray();
+//		for(int i = 0; i < Lib.Count; i++) {
+//			StartingItems.Add(allCards[i]);
+//		}
 	}
 
     //This method is called in GameControl.Awake() along with a lot of other stuff.
@@ -67,8 +62,19 @@ public class CardLibrary : MonoBehaviour {
 		                                          Card.Rarity.Gold,
 		                                          "To play, tap the card again",
 		                                          "Gain 2 moves and 1 play, and another 2 moves every time you punch an enemy.",
-		                                          "Move +2\nTrigger:\nPunch enemy:\nMove +2",
+		                                          "Move +2 Play +1\nTrigger:\nPunch enemy:\nMove +2",
 		                                          Card.CardActionTypes.NoTarget));
+		Lib.Add("Ninja Flipout", new LibraryCard("Ninja Flipout",
+		                                         "Ninja \nFlipout",
+		                                         "x",
+		                                         ShopControl.Gods.Ikka,
+		                                         Card.Rarity.Silver,
+		                                         "To play, tap the card again",
+		                                         "Deal 1 damage in a range of X around you, where X is the number of cards " + 
+		                                         "in your hand to the right of this, max 3.",
+		                                         "Deal 1 damage \nin AOE = # cards \nto the right",
+		                                         Card.CardActionTypes.NoTargetGridSquare, 
+		                                         GridControl.TargetTypes.none, 0,0, GridControl.TargetTypes.diamond, 1, 1));
 			//Unlockable
 		Lib.Add("Boomerang", new LibraryCard("Boomerang", 
 		                                     "boomerang",
@@ -298,8 +304,8 @@ public class CardLibrary : MonoBehaviour {
 		                                     ShopControl.Gods.Buluc,
 		                                     Card.Rarity.Bronze,
 		                                     "To play, select a square",
-		                                     "Discard a card.\nIf the discarded card is paper, x = 1.\n" +
-		                                     "If Bronze, x = 2. \nIf Silver, x=3.\nIf gold, x=4.\nThen deals X damage at X range. ",
+		                                     "Discard a card.\nDeals X damage at X range.\nIf the discarded card is paper, x = 1.\n" +
+		                                     "If Bronze, x = 2. If Silver, x=3.\nIf gold, x=4.",
 		                                     "Discard 1:\nRarity damage at\nRarity range",
 		                                     Card.CardActionTypes.TargetCard));
 		//Chac
@@ -714,7 +720,7 @@ public class LibraryCard {
 		}
 		UnlockCost = Cost;
 	}
-    #region Crappy overloads
+    #region Overloads
     //overload: no displayname
 	public LibraryCard(string cardname, string iconpath, ShopControl.Gods god, Card.Rarity rarity, 
 	                   string tooltip, string displaytext, string minidisplaytext, Card.CardActionTypes cardAction,
@@ -724,12 +730,12 @@ public class LibraryCard {
 	public LibraryCard(string cardname, string iconpath, ShopControl.Gods god, Card.Rarity rarity, 
 	                   string tooltip, string displaytext, string minidisplaytext, Card.CardActionTypes cardAction,
 	                   GridControl.TargetTypes rangeTargetType, int rangeArg, GridControl.TargetTypes aoeTargetType, int aoeRangeArg) 
-	: this (cardname, cardname, iconpath, god, rarity, tooltip, displaytext, minidisplaytext, cardAction, rangeTargetType, 0, rangeArg, aoeTargetType, 0, aoeRangeArg) { }
+	: this (cardname, cardname, iconpath, god, rarity, tooltip, displaytext, minidisplaytext, cardAction, rangeTargetType, 1, rangeArg, aoeTargetType, 0, aoeRangeArg) { }
 	//overload: no rangeMin (different displayname)
 	public LibraryCard(string cardname, string displayname, string iconpath, ShopControl.Gods god, Card.Rarity rarity, 
 	                   string tooltip, string displaytext, string minidisplaytext, Card.CardActionTypes cardAction,
 	                   GridControl.TargetTypes rangeTargetType, int rangeArg, GridControl.TargetTypes aoeTargetType, int aoeRangeArg) 
-	: this (cardname, displayname, iconpath, god, rarity, tooltip, displaytext, minidisplaytext, cardAction, rangeTargetType, 0, rangeArg, aoeTargetType, 0, aoeRangeArg) { }
+	: this (cardname, displayname, iconpath, god, rarity, tooltip, displaytext, minidisplaytext, cardAction, rangeTargetType, 1, rangeArg, aoeTargetType, 0, aoeRangeArg) { }
 	//overload: no targeting squares
 	public LibraryCard(string cardname, string displayname, string iconpath, ShopControl.Gods god, Card.Rarity rarity, 
 	                   string tooltip, string displaytext, string minidisplaytext, Card.CardActionTypes cardAction) 

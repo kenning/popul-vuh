@@ -43,6 +43,10 @@ public class CardUI : MonoBehaviour {
 	int DisplayFontVariableRulesSizeRatio = 3;
 	int SmallCardFontVariableRulesSizeRatio = 10;
 
+	void Start() {
+		MonoBehaviour.useGUILayout = false;
+	}
+
 	//////////////////////////////////////
 	/// Universal card methods: animation components
 	//////////////////////////////////////

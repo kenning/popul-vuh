@@ -20,6 +20,7 @@ public class Player : MonoBehaviour {
 	GridUnit playerGU;
 	
 	void Start () {
+		MonoBehaviour.useGUILayout = false;
 		GameObject gameController = GameObject.FindGameObjectWithTag ("GameController");
 		gameControl = gameController.GetComponent<GameControl> ();
 		shopControl = gameController.GetComponent<ShopControl>();

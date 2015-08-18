@@ -9,7 +9,7 @@ public class GameControlGUI : MonoBehaviour {
 	string DisplayName;
 	string DisplayRules;
 	Texture2D DisplayRangeTexture;
-	float DisplayRangeSize;
+//	float DisplayRangeSize;
 	Texture2D DisplayAOETexture;
 	float DisplayAOESize;
 	Sprite DisplayCard;
@@ -33,6 +33,7 @@ public class GameControlGUI : MonoBehaviour {
 	GUIStyleLibrary styleLibrary;
 
 	void Start() {
+		MonoBehaviour.useGUILayout = false;
 		gameControl = gameObject.GetComponent<GameControl> ();
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
 		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
@@ -65,20 +66,22 @@ public class GameControlGUI : MonoBehaviour {
 		}
 		
 		if (CardDisplay) {
-			GUI.BeginGroup (new Rect (Screen.width*.25f, Screen.height*.2f, Screen.width*.5f, Screen.height*.55f), "");
-			GUI.Box (new Rect (0,0, Screen.width*.25f, Screen.height*.2f), DisplayName, DisplayTitleStyle);
-			GUI.Box (new Rect (Screen.width*.3f, 0, Screen.width*.2f, Screen.height*.2f), DisplayCardIcon, DisplayTitleStyle);
-			GUI.Box(new Rect(0, Screen.height*.2f, Screen.width*.5f, Screen.height*.4f), DisplayRules, DisplayTextStyle); 
+			GUI.BeginGroup (new Rect (Screen.width*.2f, Screen.height*.165f, Screen.width*.6f, Screen.height*.55f), "");
+			GUI.Box (new Rect (0,0, Screen.width*.33f, Screen.height*.2f), DisplayName, DisplayTitleStyle);
+			GUI.Box (new Rect (Screen.width*.33f, 0, Screen.width*.25f, Screen.width*.25f), DisplayCardIcon, DisplayTitleStyle);
+			GUI.Box(new Rect(0, Screen.height*.25f, Screen.width*.5f, Screen.height*.4f), DisplayRules, DisplayTextStyle); 
 			if(DisplayRangeTexture != null) {
-				GUI.DrawTexture(new Rect(Screen.width*.05f, Screen.height*.38f, Screen.width*.1f*DisplayRangeSize, Screen.width*.1f*DisplayRangeSize), 
+//				GUI.DrawTexture(new Rect(Screen.width*.05f, Screen.height*.38f, Screen.width*.1f*DisplayRangeSize, Screen.width*.1f*DisplayRangeSize), 
+				GUI.DrawTexture(new Rect(Screen.width*.15f, Screen.height*.47f, Screen.width*.08f, Screen.width*.08f), 
 			                                                DisplayRangeTexture);
 			}
 			if(DisplayAOETexture != null) {
-				GUI.DrawTexture(new Rect(Screen.width*.25f, Screen.height*.38f, Screen.width*.1f*DisplayAOESize, Screen.width*.1f*DisplayAOESize), 
+//				GUI.DrawTexture(new Rect(Screen.width*.25f, Screen.height*.38f, Screen.width*.1f*DisplayAOESize, Screen.width*.1f*DisplayAOESize), 
+				GUI.DrawTexture(new Rect(Screen.width*.25f, Screen.height*.47f, Screen.width*.08f, Screen.width*.08f), 
 			                                              DisplayAOETexture);
 			}
-			GUI.DrawTexture(new Rect(Screen.width*.0f, Screen.height*.44f, Screen.width*.05f, Screen.width*.05f), DisplayRarity);
-			GUI.DrawTexture(new Rect(Screen.width*.4f, Screen.height*.44f, Screen.width*.08f, Screen.width*.08f), DisplayIcon);
+			GUI.DrawTexture(new Rect(Screen.width*.0f, Screen.height*.47f, Screen.width*.08f, Screen.width*.08f), DisplayRarity);
+			GUI.DrawTexture(new Rect(Screen.width*.45f, Screen.height*.47f, Screen.width*.08f, Screen.width*.08f), DisplayIcon);
 			GUI.EndGroup();
 		}
 		
@@ -91,6 +94,7 @@ public class GameControlGUI : MonoBehaviour {
 	public void Display(Card card) {
 		CardDisplay = true;
 		if (Tutorial.TutorialLevel != 0) return;
+		shopControlGUI.UnclickGoals ();
 		displayCardRenderer.enabled = true;
 		DisplayName = card.CardName;
 		DisplayName.Replace ("\n", "");
@@ -99,7 +103,7 @@ public class GameControlGUI : MonoBehaviour {
 		if (card.maxRange != 0) {
 			DisplayRangeTexture = (Texture2D)Resources.Load("sprites/targeting icons/range " + card.rangeTargetType.ToString() + 
 			                                                " " + card.minRange.ToString() + "-" + card.maxRange.ToString());
-			DisplayRangeSize = (card.maxRange*2+1)*.2f;
+//			DisplayRangeSize = (card.maxRange*2+1)*.2f;
 		}
 		else 
 			DisplayRangeTexture = null;
@@ -107,7 +111,7 @@ public class GameControlGUI : MonoBehaviour {
 		if(card.aoeMaxRange != 0) {
 			DisplayAOETexture = (Texture2D)Resources.Load("sprites/targeting icons/aoe " + card.aoeTargetType.ToString() + 
 			                                              " " + card.aoeMinRange.ToString() + "-" + card.aoeMaxRange.ToString());
-			DisplayAOESize = card.aoeMaxRange;
+//			DisplayAOESize = card.aoeMaxRange;
 		}
 		else {
 			DisplayAOETexture = null;
@@ -192,6 +196,7 @@ public class GameControlGUI : MonoBehaviour {
 	}
 
 	public void ShowDeck(bool TurningOn) {
+		return;
 		showingDeck = TurningOn;
 	}
 

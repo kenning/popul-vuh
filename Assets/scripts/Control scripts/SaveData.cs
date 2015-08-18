@@ -19,6 +19,7 @@ public class SaveData
     public static bool NewCardsAvailable = false;
 	
 	public static void LoadData(SavedGame savedGameData) {
+
 		if(File.Exists(Application.persistentDataPath + "savedGames.gd")) {
 			if(savedGameData.StartingDeckCards == null) {
 				Debug.Log("Oh shit! Can't load this!");
@@ -35,8 +36,11 @@ public class SaveData
 			SaveData.GoalHighScores = savedGameData.GoalHighScores;
 		}
         MainMenu.UnlockCheck();
-		Debug.Log ("Loading! unlocked gods: " + SaveData.UnlockedGods.Count.ToString () + ", " + "New cards available = " + NewCardsAvailable.ToString() + ", Finished tutorial = " + FinishedTutorial.ToString() +
-		           "\nunlocked cards: " + SaveData.UnlockedCards.Count.ToString () + ", starting deck cards: " + SaveData.StartingDeckCards.Count.ToString() + 
+		Debug.Log ("Loading! unlocked gods: " + SaveData.UnlockedGods.Count.ToString () + 
+		           ", " + "New cards available = " + NewCardsAvailable.ToString() + 
+		           ", Finished tutorial = " + FinishedTutorial.ToString() +
+		           "\nunlocked cards: " + SaveData.UnlockedCards.Count.ToString () + 
+		           ", starting deck cards: " + SaveData.StartingDeckCards.Count.ToString() + 
 		           ", defeated enemies: " + SaveData.DefeatedEnemies.Count.ToString());
 	}
 
@@ -48,8 +52,11 @@ public class SaveData
 		sg.DefeatedEnemies = SaveData.DefeatedEnemies;
         sg.FinishedTutorial = SaveData.FinishedTutorial;
         sg.NewCardsAvailable = SaveData.NewCardsAvailable;
-        Debug.Log("Saving! unlocked gods: " + SaveData.UnlockedGods.Count.ToString() + ", " + "New cards available = " + NewCardsAvailable.ToString() + ", Finished tutorial = " + FinishedTutorial.ToString() +
-		           "\nunlocked cards: " + SaveData.UnlockedCards.Count.ToString () + ", starting deck cards: " + SaveData.StartingDeckCards.Count.ToString() + 
+        Debug.Log("Saving! unlocked gods: " + SaveData.UnlockedGods.Count.ToString() + 
+		          ", " + "New cards available = " + NewCardsAvailable.ToString() + 
+		          ", Finished tutorial = " + FinishedTutorial.ToString() +
+		          "\nunlocked cards: " + SaveData.UnlockedCards.Count.ToString () + 
+		          ", starting deck cards: " + SaveData.StartingDeckCards.Count.ToString() + 
 		          ", defeated enemies: " + SaveData.DefeatedEnemies.Count.ToString());
 		return sg;
 	}

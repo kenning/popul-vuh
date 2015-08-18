@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class GameControl : MonoBehaviour
 {
-
 	#region Variables
 	public static string Error = "";
 

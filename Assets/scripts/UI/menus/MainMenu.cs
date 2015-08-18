@@ -27,6 +27,7 @@ public class MainMenu : MonoBehaviour {
 	EncyclopediaMenu encyclopediaMenu;
 
 	void Start() {
+		MonoBehaviour.useGUILayout = false;
 		gameControl = gameObject.GetComponent<GameControl> ();
 		clickControl = gameObject.GetComponent<ClickControl> ();
 		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
@@ -43,6 +44,7 @@ public class MainMenu : MonoBehaviour {
 
 		if(!InGame) {
 			gameControl.BeginGame();
+			SaveLoad.Load();
 			InGame = true;
 		} else {
 			gameControl.StartNewLevel();
@@ -183,7 +185,7 @@ public class MainMenu : MonoBehaviour {
             }
 
             if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .7f, Screen.width * .6f, Screen.height * .1f), 
-			               "Customize Starting Deck", styleLibrary.MainStyles.Button))
+			               "Customize Deck", styleLibrary.MainStyles.Button))
             {
                 CustomizeMenu tempMenu = gameObject.GetComponent<CustomizeMenu>();
                 tempMenu.OpenMenu();

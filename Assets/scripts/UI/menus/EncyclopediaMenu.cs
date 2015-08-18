@@ -25,6 +25,7 @@ public class EncyclopediaMenu : MonoBehaviour {
 	string[] TabStrings = new string[] {"Gods", "Goals", "Cards", "Enemies"};
 	
 	void Start() {
+		MonoBehaviour.useGUILayout = false;
 		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
 		shopControl = gameObject.GetComponent<ShopControl> ();
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
@@ -164,10 +165,12 @@ public class EncyclopediaMenu : MonoBehaviour {
 				for(int i = 0; i < shownCards.Count; i++) {
 					if(UnlockedCardNames.Contains(shownCards[i].CardName)) {
 
-						GUIStyle CardTabStyle = styleLibrary.EncyclopediaStyles.TabOff;
-						if(selectedCard == i) CardTabStyle = styleLibrary.EncyclopediaStyles.TabOn;
-//						CardTabStyle.fontSize = 
-						// if i do this, i better make it a new guistyle...
+						GUIStyle CardTabStyle = new GUIStyle(styleLibrary.EncyclopediaStyles.TabOff);
+						if(selectedCard == i) CardTabStyle = new GUIStyle(styleLibrary.EncyclopediaStyles.TabOn);
+						if(shownCards[i].ThisRarity == Card.Rarity.Paper) {
+							CardTabStyle.normal = styleLibrary.EncyclopediaStyles.NeutralButton.normal;
+							CardTabStyle.active = styleLibrary.EncyclopediaStyles.NeutralButton.active;
+						}
 						if(GUI.Button(new Rect(Screen.width*.6f,Screen.height*.1f*(i+2), Screen.width*.17f, Screen.height*.1f), 
 						              shownCards[i].DisplayName, CardTabStyle)){
 							selectedCard = i;

@@ -12,6 +12,7 @@ public class UnlockMenu : MonoBehaviour {
 	public GUISkin UNLOCKMENUGUISKIN;
 
 	void Awake() {
+		MonoBehaviour.useGUILayout = false;
 //		GameObject gameController = GameObject.FindGameObjectWithTag ("GameController");
 //		shopControl = gameController.GetComponent<ShopControl>();
 	}
@@ -23,7 +24,7 @@ public class UnlockMenu : MonoBehaviour {
 
 	
 
-	void OnGUI () {
+//	void OnGUI () {
 //		if(UnlockMenuUp) {
 //
 //			GUI.depth = 0;
@@ -78,7 +79,7 @@ public class UnlockMenu : MonoBehaviour {
 //
 //			GUI.Box(new Rect(Screen.width*.55f, Screen.height*.875f, Screen.width*.35f, Screen.height*.1f), SaveData.UnlockBux.ToString() + " God£", UNLOCKMENUGUISKIN.customStyles[0]);
 //		}
-	}
+//	}
 //
 //	void FindUnlockBaseCost() {
 //		int totalUnlockedThings = 0;

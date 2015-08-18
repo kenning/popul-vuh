@@ -24,6 +24,7 @@ public class CustomizeMenu : MonoBehaviour {
 	int longestLength = 0;
 
 	void Start () {
+		MonoBehaviour.useGUILayout = false;
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
 		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
 	}
@@ -65,15 +66,20 @@ public class CustomizeMenu : MonoBehaviour {
 					//if this isn't unlocked, don't display it....
 				if(!UnlockedCardNames.Contains(thisCard.CardName) | 
 				   (thisCard.ThisRarity != Card.Rarity.Paper && !SaveData.UnlockedGods.Contains(thisCard.God))) {
+
 					if(GUI.Button(new Rect(seventh*i, Screen.height*.1f*(j+1), seventh, Screen.height*.1f),
-					             "???", styleLibrary.CustomizeStyles.CardToggleOff)) {
+					              "???", styleLibrary.CustomizeStyles.CardToggleOff)) {
 
 					}
 				} 
 					//if this is in your starting deck, show a CardToggleRemove button, which removes it
 				else if (StartingDeckCardNames.Contains(thisCard.CardName)) {
+					GUIStyle UnlockedStyle = new GUIStyle(styleLibrary.CustomizeStyles.CardToggleRemove);
+					if(thisCard.ThisRarity == Card.Rarity.Paper) {
+						UnlockedStyle.normal = styleLibrary.CustomizeStyles.CardNeutral.normal;
+					}
 					if(GUI.Button(new Rect(seventh*i, Screen.height*.1f*(j+1), seventh, Screen.height*.1f), 
-					              name, styleLibrary.CustomizeStyles.CardToggleRemove)) {
+					              name, UnlockedStyle)) {
 						selectedCard = thisCard;
 						selectedGod = i;
 
@@ -123,7 +129,7 @@ public class CustomizeMenu : MonoBehaviour {
 		}
 		GUI.EndScrollView ();
 
-		GUI.BeginGroup (new Rect (Screen.width*.35f, Screen.height * .6f, Screen.width * .4f, Screen.height * .3f), "");
+		GUI.BeginGroup (new Rect (Screen.width*.4f, Screen.height * .585f, Screen.width * .4f, Screen.height * .3f), "");
         if (BronzeSpotTaken != "")
         {
             if (GUI.Button(new Rect(0, 0, Screen.width * .4f, Screen.height * .1f), 
@@ -163,10 +169,10 @@ public class CustomizeMenu : MonoBehaviour {
 		GUI.EndGroup ();
 
 		if(selectedCard.CardName != null) {
-			GUI.BeginGroup (new Rect (Screen.width * 0f, Screen.height * .6f, Screen.width * .3f, Screen.height * .3f), "");
+			GUI.BeginGroup (new Rect (Screen.width * 0f, Screen.height * .585f, Screen.width * .35f, Screen.height * .3f), "");
 			if (shopControlGUI.CardTextures[selectedGod] != null)
             {
-    			GUI.DrawTexture(new Rect(Screen.width*.0f, Screen.height*.0f, Screen.width*.3f, Screen.height*.3f), 
+    			GUI.DrawTexture(new Rect(Screen.width*.0f, Screen.height*.0f, Screen.width*.35f, Screen.height*.3f), 
 				                shopControlGUI.CardTextures[selectedGod]);
             }
 			GUIStyle cardNameStyle = new GUIStyle(styleLibrary.CustomizeStyles.CardNameStyle);
@@ -184,14 +190,14 @@ public class CustomizeMenu : MonoBehaviour {
 				cardNameStyle.normal.textColor = Color.white;
 				cardTextStyle.normal.textColor = Color.white;
 			}
-			GUI.Box(new Rect(Screen.width*.025f, Screen.height*.025f, Screen.width*.2f, Screen.height*.1f), 
+			GUI.Box(new Rect(Screen.width*.025f, Screen.height*.025f, Screen.width*.25f, Screen.height*.1f), 
 			        selectedCard.DisplayName, cardNameStyle);
 			Texture2D icon = Resources.Load("sprites/card icons/" + selectedCard.IconPath) as Texture2D;
-			GUI.Box(new Rect(Screen.width*.175f, Screen.height*.025f, Screen.width*.1f, Screen.height*.1f), 
+			GUI.Box(new Rect(Screen.width*.21f, Screen.height*.025f, Screen.width*.11f, Screen.height*.11f), 
 			        icon, GUIStyle.none);
-			GUI.Box(new Rect(Screen.width*.025f, Screen.height*.1f, Screen.width*.25f, Screen.height*.15f), 
+			GUI.Box(new Rect(Screen.width*.025f, Screen.height*.1f, Screen.width*.3f, Screen.height*.15f), 
 			        selectedCard.DisplayText, cardTextStyle);
-			GUI.DrawTexture(new Rect(Screen.width*.225f, Screen.height*.25f, Screen.width*.05f, Screen.width*.05f), 
+			GUI.DrawTexture(new Rect(Screen.width*.275f, Screen.height*.25f, Screen.width*.05f, Screen.width*.05f), 
 			                shopControlGUI.GodIcons[selectedGod]);
 			Card.Rarity rarity = selectedCard.ThisRarity;
 			Texture2D rarityTexture = shopControlGUI.PaperTexture;
@@ -202,7 +208,7 @@ public class CustomizeMenu : MonoBehaviour {
 			GUI.EndGroup ();
 		}
 		else {
-			GUI.Box(new Rect(Screen.width*.0f,Screen.height*.6f, Screen.width*.3f, Screen.height*.3f), 
+			GUI.Box(new Rect(Screen.width*.0f,Screen.height*.585f, Screen.width*.3f, Screen.height*.3f), 
 			        "Your starting deck consists of two of every card of paper rarity.\n\n" +
 				"You can pick one unlocked card of each rarity to add to your starting deck.", styleLibrary.CustomizeStyles.InstructionInfoBox);
 		}

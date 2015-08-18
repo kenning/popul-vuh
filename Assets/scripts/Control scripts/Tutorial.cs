@@ -36,6 +36,7 @@ public class Tutorial : MonoBehaviour {
     public static bool PlayedACardLevel7 = false;
 
 	void Start() {
+		MonoBehaviour.useGUILayout = false;
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
 		gameControlGUI = gameObject.GetComponent<GameControlGUI> ();
 	}

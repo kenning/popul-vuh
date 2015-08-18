@@ -109,8 +109,8 @@ public class GoalLibrary : MonoBehaviour {
 	//Akan: graveyard interaction 
 		allGoals.Add (new Goal("Discard pile has X cards in it", "Discard pile has X cards in it", " wants you to have X cards in your discard pile.", 
 		                   ShopControl.Gods.Akan, new int[]{5, 8, 12}, true));
-		allGoals.Add (new Goal("Discard pile has X cards in a row of the same God", "Discard pile has X cards in a row of the same God", " wants you to have X cards in a row in your discard pile of the same God.", 
-		                   ShopControl.Gods.Akan, new int[]{3, 5, 7}, true));
+//		allGoals.Add (new Goal("Discard pile has X cards in a row of the same God", "Discard pile has X cards in a row of the same God", " wants you to have X cards in a row in your discard pile of the same God.", 
+//		                   ShopControl.Gods.Akan, new int[]{3, 5, 7}, true));
 		
 		/////That's all folks!
 		
