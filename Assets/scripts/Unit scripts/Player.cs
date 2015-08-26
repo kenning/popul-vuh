@@ -13,25 +13,20 @@ public class Player : MonoBehaviour {
 	GridControl gridControl;
 	//public Texture2D Heart;
 	//public Texture2D EmptyHeart;
-	public Texture2D[] HPBars;
-	public GUIStyle HPBarGUIStyle;
-	Texture2D HealthTexture;
+	public Sprite[] HPBars;
+	public SpriteRenderer HPBARRENDERER;
+
 	public bool alive = true;
 	GridUnit playerGU;
 	
 	void Start () {
-		MonoBehaviour.useGUILayout = false;
+		useGUILayout = false;
 		GameObject gameController = GameObject.FindGameObjectWithTag ("GameController");
 		gameControl = gameController.GetComponent<GameControl> ();
 		shopControl = gameController.GetComponent<ShopControl>();
 		gridControl = gameController.GetComponent<GridControl>();
 		playerGU = gameObject.GetComponent<GridUnit>();
 		ResetLife ();
-	}
-
-	void OnGUI() {
-		float hpBarWidth = Screen.width * .1f;
-		GUI.Box (new Rect (Screen.width * .02f, Screen.height * .3f, hpBarWidth, hpBarWidth * 3.666666f), "", HPBarGUIStyle);
 	}
 
 	public void Punch(GameObject enemy) {
@@ -81,8 +76,7 @@ public class Player : MonoBehaviour {
 
 		currentHealth = currentHealth - damage;
 		if (currentHealth < 0) currentHealth = 0;
-		HealthTexture = HPBars [currentHealth];
-		HPBarGUIStyle.normal.background = HealthTexture;
+		HPBARRENDERER.sprite = HPBars [currentHealth];
 
 		if (currentHealth <1) {
 			MainMenu.Die();
@@ -91,8 +85,7 @@ public class Player : MonoBehaviour {
 
 	public void ResetLife() {
 		currentHealth = maxHealth;
-		HealthTexture = HPBars [currentHealth];
-		HPBarGUIStyle.normal.background = HealthTexture;
+		HPBARRENDERER.sprite = HPBars [currentHealth];
 		alive = true;
 	}
 

@@ -33,7 +33,7 @@ public class GameControlGUI : MonoBehaviour {
 	GUIStyleLibrary styleLibrary;
 
 	void Start() {
-		MonoBehaviour.useGUILayout = false;
+		useGUILayout = false;
 		gameControl = gameObject.GetComponent<GameControl> ();
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
 		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
@@ -198,6 +198,16 @@ public class GameControlGUI : MonoBehaviour {
 	public void ShowDeck(bool TurningOn) {
 		return;
 		showingDeck = TurningOn;
+	}
+
+	public bool MoveHandPositionWhenOutOfPlace() {
+		if ((gameControl.handObj.transform.localPosition.x <= ((gameControl.Hand.Count) * -1.55f) + 3.75f)) {
+			//this is for after the exact position has gotten nailed down, purpose is to lock it to the edge. 
+			//the key numbers are: 3.95 one line above and .75 six lines above.
+			gameControl.handObj.transform.localPosition = new Vector3 (((gameControl.Hand.Count) * -1.55f) + 3.7f, 0, 0);
+			return true;
+		}
+		return false;
 	}
 
 	public void SetDiscardPilePosition ()

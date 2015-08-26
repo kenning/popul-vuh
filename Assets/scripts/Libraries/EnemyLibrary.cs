@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,7 +48,6 @@ public class EnemyLibrary : MonoBehaviour {
 
 	public void LoadEnemiesForLevel (int level) {
 		if(level > 6) level = 6;
-		Debug.Log (challengeRatingsForEachLevel.Count);
 		for(int i = 0; i < challengeRatingsForEachLevel[level].Count; i++) {
 			LoadRandomEnemyOfChallengeRating(challengeRatingsForEachLevel[level][i]);
 		}

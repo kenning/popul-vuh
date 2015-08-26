@@ -44,7 +44,7 @@ public class CardUI : MonoBehaviour {
 	int SmallCardFontVariableRulesSizeRatio = 10;
 
 	void Start() {
-		MonoBehaviour.useGUILayout = false;
+		useGUILayout = false;
 	}
 
 	//////////////////////////////////////

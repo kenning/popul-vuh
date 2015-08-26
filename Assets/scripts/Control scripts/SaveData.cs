@@ -91,18 +91,13 @@ public class SaveData
 
 		StartingDeckCards = new List<LibraryCard> ();
 		StartingDeckCards.Add(CardLibrary.Lib["Cloth Shirt"]);
-		StartingDeckCards.Add(CardLibrary.Lib["Cloth Shirt"]);
 		StartingDeckCards.Add(CardLibrary.Lib["Cloth Shoes"]);
-		StartingDeckCards.Add(CardLibrary.Lib["Cloth Shoes"]);
-		StartingDeckCards.Add(CardLibrary.Lib["Coffee"]);
 		StartingDeckCards.Add(CardLibrary.Lib["Coffee"]);
 		StartingDeckCards.Add(CardLibrary.Lib["Wooden Pike"]);
 		StartingDeckCards.Add(CardLibrary.Lib["Wooden Pike"]);
 		StartingDeckCards.Add(CardLibrary.Lib["Apple"]);
-		StartingDeckCards.Add(CardLibrary.Lib["Apple"]);
         StartingDeckCards.Add(CardLibrary.Lib["Iron Macana"]);
         StartingDeckCards.Add(CardLibrary.Lib["Iron Macana"]);
-		StartingDeckCards.Add(CardLibrary.Lib["Quick Prayer"]);
 		StartingDeckCards.Add(CardLibrary.Lib["Quick Prayer"]);
 
         MainMenu.UnlockCheck();

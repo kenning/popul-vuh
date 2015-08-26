@@ -24,7 +24,6 @@ public class CustomizeMenu : MonoBehaviour {
 	int longestLength = 0;
 
 	void Start () {
-		MonoBehaviour.useGUILayout = false;
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
 		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
 	}
@@ -255,7 +254,7 @@ public class CustomizeMenu : MonoBehaviour {
 			int appropriateGod = ShopControl.AllGods.IndexOf(bunch[i].God);
 			allCards[appropriateGod].Add(bunch[i]);
 			//VV add it again if it's paper.
-			if(bunch[i].ThisRarity == Card.Rarity.Paper)
+			if(bunch[i].CardName == "Iron Macana" || bunch[i].CardName == "Wooden Pike")
 				allCards[appropriateGod].Add(bunch[i]);
 		}
 

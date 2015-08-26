@@ -12,7 +12,7 @@ public class MainMenu : MonoBehaviour {
 
     static ShopControl.Gods NextGodToUnlock = ShopControl.Gods.Buluc;
 	static int NextUnlockLevel = 0;
-    static string UnlockedText;
+	static string UnlockedText = "";
 
 	static ClickControl clickControl;
 	GameControl gameControl;
@@ -27,7 +27,7 @@ public class MainMenu : MonoBehaviour {
 	EncyclopediaMenu encyclopediaMenu;
 
 	void Start() {
-		MonoBehaviour.useGUILayout = false;
+		useGUILayout = false;
 		gameControl = gameObject.GetComponent<GameControl> ();
 		clickControl = gameObject.GetComponent<ClickControl> ();
 		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
@@ -40,15 +40,8 @@ public class MainMenu : MonoBehaviour {
     {
 		MainMenu.errorText = "";
 
-		GameObject.Find ("Dimmer").GetComponent<DimAnimate> ().UnlockDim ();
-
-		if(!InGame) {
-			gameControl.BeginGame();
-			SaveLoad.Load();
-			InGame = true;
-		} else {
-			gameControl.StartNewLevel();
-		}
+		SaveLoad.Load();
+		gameControl.BeginGame();
 	}
 
     //Brings up the "you died" menu, which is here in MainMenu.
@@ -75,7 +68,6 @@ public class MainMenu : MonoBehaviour {
                 {
                     if (!SaveData.UnlockedGods.Contains(UnlockOrder[i]))
                     {
-                        Debug.Log("hi");
                         UnlockedText += "Unlocked " + UnlockOrder[i].ToString();
                         SaveData.UnlockedGods.Add(UnlockOrder[i]);
                     }
@@ -254,14 +246,15 @@ public class MainMenu : MonoBehaviour {
         #region Died Menu
         if (DiedMenuUp)
         {
+			GUIStyle YouDiedStyle = new GUIStyle(styleLibrary.MainStyles.NeutralButton);
+			YouDiedStyle.fontSize = 40;
             GUI.Box(new Rect(Screen.width * .1f, Screen.height * .2f, Screen.width * .8f, Screen.height * .3f), 
-			        "You died!", styleLibrary.MainStyles.NeutralButton);
-            GUI.Box(new Rect(Screen.width * .1f, Screen.height * .55f, Screen.width * .8f, Screen.height * .15f), 
-			        "Got to level " + GameControl.Level.ToString(), styleLibrary.MainStyles.DiedAndGotToLevel);
+			        "You died!", YouDiedStyle);
             if (UnlockedText != "")
             {
                 GUI.Box(new Rect(Screen.width * .1f, Screen.height * .55f, Screen.width * .8f, Screen.height * .15f), 
-				        UnlockedText, styleLibrary.MainStyles.Title);
+				        "Got to level " + GameControl.Level.ToString() + "\n" + UnlockedText, 
+				        styleLibrary.MainStyles.NeutralButton);
             }
             if (GUI.Button(new Rect(Screen.width * .1f, Screen.height * .75f, Screen.width * .8f, Screen.height * .15f), 
 			               "Return to main menu!", styleLibrary.MainStyles.Button))

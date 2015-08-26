@@ -12,7 +12,7 @@ public class UnlockMenu : MonoBehaviour {
 	public GUISkin UNLOCKMENUGUISKIN;
 
 	void Awake() {
-		MonoBehaviour.useGUILayout = false;
+		useGUILayout = false;
 //		GameObject gameController = GameObject.FindGameObjectWithTag ("GameController");
 //		shopControl = gameController.GetComponent<ShopControl>();
 	}

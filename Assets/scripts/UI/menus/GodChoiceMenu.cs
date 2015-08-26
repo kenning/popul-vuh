@@ -4,20 +4,32 @@ using System.Collections.Generic;
 
 public class GodChoiceMenu : MonoBehaviour {
 
+	// There is something bugged in this menu, and it makes the game unplayable if you have unlocked all gods.
+
 	public static bool GodChoiceMenuUp = false;
 
 	public bool[] GodChoiceSelection = new bool[7];
+	GameControl gameControl;
 	ShopControl shopControl;
 	ShopControlGUI shopControlGUI;
 
 	GUIStyleLibrary styleLibrary;
 
 	void Start() {
-		MonoBehaviour.useGUILayout = false;
+		useGUILayout = false;
+		gameControl = gameObject.GetComponent<GameControl> ();
 		shopControl = gameObject.GetComponent<ShopControl> ();
 		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
 		GodChoiceSelection = new bool[] {false, false, false, false, false, false, false};
+	}
+
+	void startGameOrGoToNextLevel() {
+		if (!MainMenu.InGame) {
+			gameControl.BeginGame ();
+		} else {
+			gameControl.StartNewLevel ();
+		}
 	}
 
 	void OnGUI () {
@@ -51,7 +63,7 @@ public class GodChoiceMenu : MonoBehaviour {
 			              "Start", styleLibrary.GodChoiceStyles.Title)) {
 				if(GoalLibrary.NumberOfGoalsPossible(GodChoiceSelection) > 3) {
 					GodChoiceMenuUp = false;
-					gameObject.GetComponent<MainMenu>().BeginButton();
+					startGameOrGoToNextLevel();
 				}
 				else {
 					MainMenu.errorText = "You must select more gods than\nthat to have enough goals to play.";

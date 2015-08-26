@@ -36,7 +36,7 @@ public class Tutorial : MonoBehaviour {
     public static bool PlayedACardLevel7 = false;
 
 	void Start() {
-		MonoBehaviour.useGUILayout = false;
+		useGUILayout = false;
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
 		gameControlGUI = gameObject.GetComponent<GameControlGUI> ();
 	}
@@ -54,7 +54,7 @@ public class Tutorial : MonoBehaviour {
         if (TutorialLevel == 1 | TutorialLevel == 7)
         {
             GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), BLACKBOX);
-            GUI.DrawTexture(new Rect(Screen.width * .55f, Screen.height * .2f, Screen.width * .4f, Screen.height * .6f), 
+            GUI.DrawTexture(new Rect(Screen.width * .4f, Screen.height * .2f, Screen.width * .55f, Screen.height * .6f), 
 			                BulucTUTORIALFULL);
 			GUIStyle dialogueStyle = new GUIStyle(styleLibrary.TutorialStyles.DialogueBox);
 			if(TutorialLevel == 1) dialogueStyle.fontSize = styleLibrary.TutorialStyles.FirstDialogueFontSize;
@@ -194,6 +194,7 @@ public class Tutorial : MonoBehaviour {
 
 			gameControlGUI.Dim(false);
             List<string> deck = gameControl.Deck;
+			deck = new List<string>();
             deck.Add("Wooden Pike");
             deck.Add("Wooden Pike");
             deck.Add("Iron Macana");
@@ -219,6 +220,7 @@ public class Tutorial : MonoBehaviour {
             gameControl.DeleteAllCards();
 
             List<string> deck = gameControl.Deck;
+			deck = new List<string>();
             deck.Add("Apple");
             deck.Add("Coffee");
             deck.Add("Cloth Shoes");

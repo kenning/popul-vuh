@@ -59,7 +59,7 @@ public class GridControl : MonoBehaviour {
         {
             Enemy en = badguy.GetComponent<Enemy>();
             if (en != null)
-                en.GoToMax();
+                en.GoToMaxPlays();
         }
 
         EnemiesFindGridUnits();

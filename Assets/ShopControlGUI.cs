@@ -40,10 +40,10 @@ public class ShopControlGUI : MonoBehaviour {
 
 	ClickBlocker clickBlocker;
 	
-	string AddedToCollText = "You can add cards in your collection to your starting deck next time you play!";
+	string AddedToCollText = "";
 
 	void Start () {
-		MonoBehaviour.useGUILayout = false;
+		useGUILayout = false;
 		gameControl = gameObject.GetComponent<GameControl> ();
 		shopControl = gameObject.GetComponent<ShopControl> ();
 		clickControl = gameObject.GetComponent<ClickControl> ();
@@ -172,8 +172,8 @@ public class ShopControlGUI : MonoBehaviour {
 				GUI.EndGroup();
 
 				if(highScoreNotification[i]) {
-					GUI.Box (new Rect(cardWidth*.2f, cardHeight*4.2f, cardWidth*.6f, cardHeight*.6f), 
-					         "New high score!", styleLibrary.ShopStyles.ShopGoalGold);
+					GUI.Box (new Rect(cardWidth*(.2f+(i)), cardHeight*4.2f, cardWidth*.6f, cardHeight*.9f), 
+					         "New high score!\n" + Goals[i].HighScore.ToString(), styleLibrary.ShopStyles.ShopGoalGold);
 				}
 				
 				//cards to buy
@@ -250,7 +250,7 @@ public class ShopControlGUI : MonoBehaviour {
 
 								if(SaveData.TryToUnlockCard(thisCard)) {
 									AddedToCollText = "Added " + thisCard.God.ToString() + "'s card " + tempString + 
-										" to your collection!\n" + AddedToCollText;
+										" to your collection!\n";
 								}
 							}
 							else
@@ -276,10 +276,11 @@ public class ShopControlGUI : MonoBehaviour {
 			GUI.EndGroup();
 			
 			//"You added x to your collection" box
-			if (AddedToCollText != "You can add cards in your collection to your starting deck next time you play!")
+			if (AddedToCollText != "")
 			{
 				GUI.Box(new Rect(Screen.width * .1f, Screen.height * .7f, Screen.width * .8f, Screen.height * .15f), 
-				        AddedToCollText, styleLibrary.ShopStyles.ShopBox);
+				        AddedToCollText + "You can add cards in your collection to your starting deck next time you play!",
+				        styleLibrary.ShopStyles.ShopBox);
 			}
 			
 			//Dollar count box
@@ -293,7 +294,7 @@ public class ShopControlGUI : MonoBehaviour {
 				shopGUI = false;
 				gameControl.CollectAnimate();
 				gameControl.Tooltip = "Shuffling together your deck and discard...";
-				AddedToCollText = "You can add cards in your collection to your starting deck next time you play!";
+				AddedToCollText = "";
 				TurnOffShopControlGUIs(); //this bool prevents the normal goal display while shuffle animating.
 			}
 		}

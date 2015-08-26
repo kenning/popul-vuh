@@ -18,7 +18,7 @@ public class QuickPrayer : Card {
         {
             Tutorial.PlayedACardLevel7 = true;
             gameControl.gameObject.GetComponent<Tutorial>().TutorialMessage = "That's Ekcha's card, Quick Prayer. You make a prayer to us Gods, which gives you " + 
-                "more favor with us. Then you can use it to buy more cards.\nYour favor is in the lower left. It's now $1.";
+                "more favor ($) with us. Then you can use it to buy more cards.";
         }
 
 		base.Play ();

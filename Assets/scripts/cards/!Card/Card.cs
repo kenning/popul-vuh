@@ -249,11 +249,14 @@ public class Card : MonoBehaviour {
 		}		
 
 		if(CardAction == CardActionTypes.TargetGridSquare) {
-			Activate();
+			Activate(false);
 			return;
 		}
-
+		
 		if(Selected) {
+			if(CardAction == CardActionTypes.Armor) {
+				return;
+			}
 			//Extreme corner case, this prevents Target Card cards from being played without valid targets
 			if(CardAction == CardActionTypes.TargetCard && ((CardsToTargetWillBeDiscarded && gameControl.Discard.Count < 1) | 
 															(!CardsToTargetWillBeDiscarded && gameControl.Hand.Count < 2)    ) ) {
@@ -270,7 +273,6 @@ public class Card : MonoBehaviour {
 
 	//VV this is almost never going to be overwritten, except in cases like DragonWhiskey where the card 
 	//has multiple steps so it runs CheckQ() at the end instead of halfway through.
-	public virtual void Activate() { Activate(false); }
 	public virtual void Activate(bool FreePlay) {
 		if(!FreePlay && CardAction != CardActionTypes.TargetGridSquare)
 			gameControl.AddPlays(-1);
@@ -279,6 +281,7 @@ public class Card : MonoBehaviour {
 
 		switch(CardAction) {
 		case CardActionTypes.Armor:
+			Debug.Log ("played armor");
 			break;
 		case CardActionTypes.NoTarget:
 			Play();
@@ -307,7 +310,6 @@ public class Card : MonoBehaviour {
 			   (!CardsToTargetWillBeDiscarded && gameControl.Hand.Count < CardsToTarget)) {
 				Tooltip = "Not enough cards to target!";
 				DiscardOrBurnIfNotInQ();
-				gameControl.AnimateCardsToCorrectPosition();
 				return;
 			}
 
@@ -334,7 +336,7 @@ public class Card : MonoBehaviour {
 			
 			Play();
 			DiscardOrBurnIfNotInQ();
-			gameControl.AnimateCardsToCorrectPosition();
+			Debug.Log("got here");
 			break;
 		case CardActionTypes.Options:
 			Play();

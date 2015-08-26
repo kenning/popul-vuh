@@ -14,7 +14,7 @@ public class OptionControl : MonoBehaviour {
 	GUIStyleLibrary styleLibrary;
 	
 	void Awake () {
-		MonoBehaviour.useGUILayout = false;
+		useGUILayout = false;
 		clickControl = gameObject.GetComponent<ClickControl> ();
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
 		gameControlGUI = gameObject.GetComponent<GameControlGUI> ();

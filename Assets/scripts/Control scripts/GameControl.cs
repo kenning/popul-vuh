@@ -109,6 +109,8 @@ public class GameControl : MonoBehaviour
 	/// Initializes game elements. Called from a main menu button.
 	/// </summary>
 	public void BeginGame () {
+		MainMenu.InGame = true;
+		GameObject.Find ("Dimmer").GetComponent<DimAnimate> ().UnlockDim ();
 
 		Deck = new List<string> ();
 		Hand = new List<GameObject> ();
@@ -117,7 +119,6 @@ public class GameControl : MonoBehaviour
 		EnemyObjs = new List<GameObject> ();
 		gameControlGUI.SetDiscardPilePosition ();
         deckObj = GameObject.Find("Deck");
-
 
 		GameObject[] EnemyObjects = GameObject.FindGameObjectsWithTag ("Enemy");
 		if(EnemyObjects.Length > 0) {
@@ -129,6 +130,7 @@ public class GameControl : MonoBehaviour
 		library.Startup ();
 		shopControl.Initialize ();
 		player.ResetLife ();
+		SetDollars (0);
 
 		if (Tutorial.TutorialLevel == 0)
 		{
@@ -157,7 +159,6 @@ public class GameControl : MonoBehaviour
 		DeselectCards ();
 
 		if(Deck.Count == 0) {
-			Debug.Log("oops no cards");
 			deckObj.GetComponent<DeckAnimate>().ErrorAnimate();
 			return;
 		}
@@ -191,7 +192,6 @@ public class GameControl : MonoBehaviour
 		DrawIntoHand (newCardScript, isInvisible);
 
 		CheckDeckCount ();
-		Invoke ("AnimateCardsToCorrectPosition", .3f);
 	}
 	public void Draw(bool isInvisible) { 
 		Draw ("", isInvisible);
@@ -312,9 +312,15 @@ public class GameControl : MonoBehaviour
 			InvisibleDraw();
 		}
 
-		StartNewTurn();
-	
+        EventControl.NewLevelReset();
+
 		clickControl.AllowInputUmbrella = false;
+
+		gameControlGUI.UnlockDim ();
+		gameControlGUI.Dim (false);
+
+		StartNewTurn();
+
 	}
 
 	/// <summary>
@@ -326,8 +332,6 @@ public class GameControl : MonoBehaviour
         if (!player.alive)
             return;
 
-        EventControl.NewLevelReset();
-
 		foreach(Goal g in shopControl.Goals) {
 			g.NewTurnCheck();
 		}
@@ -337,20 +341,7 @@ public class GameControl : MonoBehaviour
 		//DIFFERENT IN TUTORIAL!
 		if (Tutorial.TutorialLevel == 0)
 		{
-			if (HungerTurns < 2)
-				Draw();
-			if (HungerTurns > 0)
-				HungerTurns--;
-
-			if (BleedingTurns < 2)
-				SetMoves(1);
-			if (BleedingTurns > 0)
-				BleedingTurns--;
-
-			if (SwollenTurns < 2)
-				SetPlays(1);
-			if (SwollenTurns > 0)
-				SwollenTurns--;
+			NewTurnCheckWounds();
 
 			UICheck();
 
@@ -366,9 +357,36 @@ public class GameControl : MonoBehaviour
 			{
 				Enemy en = badguy.GetComponent<Enemy>();
 				if (en != null)
-					en.GoToMax();
+					en.GoToMaxPlays();
 			}
 		}
+	}
+
+	void NewTurnCheckWounds() {
+		if (HungerTurns < 2)
+			Draw();
+		if (HungerTurns > 0)
+			HungerTurns--;
+		
+		if (BleedingTurns < 2)
+			SetMoves(1);
+		if (BleedingTurns > 0)
+			BleedingTurns--;
+		
+		if (SwollenTurns < 2)
+			SetPlays(1);
+		if (SwollenTurns > 0)
+			SwollenTurns--;
+	}
+
+	void UICheck()
+	{
+		playsLeftText.text = PlaysLeft.ToString();
+		movesLeftText.text = MovesLeft.ToString();
+		moveButton.SetSprite(false);
+		playButton.SetSprite(false);
+		endTurnButton.SetSprite(false);
+		//gotta make bleeding foot, swollen hand and skull deck icons!
 	}
 
     public void EnemyTurn() { EnemyTurn(false);  }
@@ -418,7 +436,9 @@ public class GameControl : MonoBehaviour
 	#region Level finishing methods: LevelIsDone(), CollectAnimate(), ShuffleInHandAndDiscard(), ReturnToGodChoiceMenu()
 	/// makes shopping interface appears. when shopping is done, go to the next level
 	public void LevelIsDone(){
+		if(!player.alive) return;
 		clickControl.AllowInputUmbrella = false;
+		gameControlGUI.ForceDim ();
 		shopControl.ProduceCards ();
 	}
 
@@ -561,10 +581,10 @@ public class GameControl : MonoBehaviour
 		moveButton.SetSprite(true);	
 		endTurnButton.SetSprite (true);
 	}
-	
+
 	public void AnimateCardsToCorrectPosition() {
-		handObj.transform.localPosition = (new Vector3(-.712f, 0));
-		
+		gameControlGUI.MoveHandPositionWhenOutOfPlace ();
+
 		GameObject[] allCards = GameObject.FindGameObjectsWithTag("Card");
 		if (allCards != null) {
 			foreach(GameObject cardObject in allCards) {
@@ -576,6 +596,9 @@ public class GameControl : MonoBehaviour
 				}
 			}
 		}
+	}
+	public void AnimateCardsToCorrectPositionInSeconds(float seconds) {
+		Invoke ("AnimateCardsToCorrectPosition", seconds);
 	}
 
 	public void CheckDeckCount() {
@@ -602,21 +625,10 @@ public class GameControl : MonoBehaviour
 			Destroy(GO);
 		}
 	}
-
-	void UICheck()
-	{
-		playsLeftText.text = PlaysLeft.ToString();
-		movesLeftText.text = MovesLeft.ToString();
-		moveButton.SetSprite(false);
-		playButton.SetSprite(false);
-		endTurnButton.SetSprite(false);
-		//gotta make bleeding foot, swollen hand and skull deck icons!
-	}
 	#endregion
 
     public void TransformPlayer(bool TurnToJaguar)
     {
-        Debug.Log("transforming to " + TurnToJaguar.ToString() + "!");
         moveButton.UITransform(TurnToJaguar);
         playButton.UITransform(TurnToJaguar);
 

@@ -32,7 +32,7 @@ public static class QControl {
 			ClickControl clickControl = GameObject.FindGameObjectWithTag("GameController").GetComponent<ClickControl>();
 			clickControl.AllowEveryInput();
 			Debug.Log("Checked Q and allowed every input! This is where card effects terminate and EndTurnCheck() is called.");
-			gameControl.Invoke ("AnimateCardsToCorrectPosition", .05f);
+			gameControl.AnimateCardsToCorrectPositionInSeconds(.05f);
 			gameControl.CheckDeckCount();
             gameControl.EndTurnCheck();
 			return;
@@ -43,15 +43,17 @@ public static class QControl {
 
 		switch(deQMethod) {
 		case QMethodType.Activate:
-			deQCard.Activate();
+			deQCard.Activate(false);
 			break;
 		case QMethodType.FreeActivate:
 			if(deQCard.CardAction == Card.CardActionTypes.TargetGridSquare) {
 				deQCard.FreeTargetSquare = true;
-				deQCard.Activate();
-			}
-			else {
 				deQCard.Activate(true);
+			}
+			else if(deQCard.CardAction == Card.CardActionTypes.Armor) {
+				deQCard.Activate(true);
+			} else {
+				Debug.Log ("what is happening here?");
 			}
 			break;
 		case QMethodType.Option:

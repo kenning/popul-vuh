@@ -19,8 +19,19 @@ public class ShopControl : MonoBehaviour {
 
 	//Phases
 	public enum Gods {Akan, Buluc, Chac, Ekcha, Ikka, Ixchel, Kinich, Pantheon, none};
-	public static string[] GodDescriptions	= {"Alcohols / Discard Pile", "Damage Spells", "Prayers", "Agility", 
-		"Protection", "Fire / Card Destruction", "Card draw / Food", "Card draw / Food", "Card draw / Food", "Card draw / Food"};
+	public static string[] GodDescriptions	= {
+		"Acan is the God of Alcohol and one of the Gods of Death; his name means 'Belch,' " + 
+		"and his favorite drink is Balche. His fermented drinks can interact with your discarded cards.", 
+		"Buluc Chabtan is the God of war, death and human sacrifice. If you don't appease him enough, he " + 
+		"may bring you misfortune; however, if you impress him, he will provide you with destructive weapons and spells.", 
+		"Card draw / Food", 
+		"Prayers", 
+		"Agility", 
+		"Protection", 
+		"Fire / Card Destruction", 
+		"Card draw / Food", 
+		"Card draw / Food", 
+		"Card draw / Food"};
 	public static List<Gods> AllGods = new List<Gods> ();
 	
 

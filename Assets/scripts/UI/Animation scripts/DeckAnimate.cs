@@ -50,7 +50,7 @@ public class DeckAnimate : MonoBehaviour {
 
 				//VVV actually really important part. this is where the new level starts!
 				if(SaveData.UnlockedGods.Count == 7) gameControl.ReturnToGodChoiceMenu ();
-				else gameControl.gameObject.GetComponent<MainMenu>().BeginButton();
+				else gameControl.StartNewLevel();
 				return;
 			}
 			else {

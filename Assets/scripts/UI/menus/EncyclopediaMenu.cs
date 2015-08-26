@@ -25,7 +25,6 @@ public class EncyclopediaMenu : MonoBehaviour {
 	string[] TabStrings = new string[] {"Gods", "Goals", "Cards", "Enemies"};
 	
 	void Start() {
-		MonoBehaviour.useGUILayout = false;
 		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
 		shopControl = gameObject.GetComponent<ShopControl> ();
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
@@ -94,12 +93,16 @@ public class EncyclopediaMenu : MonoBehaviour {
 
 			if(Tabs[0]) {
 				string godName = ShopControl.AllGods[SelectedGod].ToString();
-				GUIStyle RedirectButton = styleLibrary.EncyclopediaStyles.TabOn;
+				GUIStyle RedirectButton = new GUIStyle(styleLibrary.EncyclopediaStyles.TabOn);
 				RedirectButton.fontSize = styleLibrary.EncyclopediaStyles.RedirectButtonFontSize;
-				GUI.DrawTexture(new Rect(0,Screen.height*.2f,Screen.width*.3f, Screen.height*.4f), 
+				GUI.DrawTexture(new Rect(0,Screen.height*.2f,Screen.width*.38f, Screen.height*.4f), 
 				                shopControlGUI.GodFullTextures[SelectedGod]);
+				GUIStyle GodDescription = new GUIStyle(styleLibrary.EncyclopediaStyles.NeutralButton);
+				GodDescription.fontSize = styleLibrary.EncyclopediaStyles.GodFontDescriptionSize;
+				GodDescription.alignment = TextAnchor.UpperLeft;
+				GodDescription.padding = new RectOffset(12, 12, 12, 12);
 				GUI.Box(new Rect(Screen.width*.4f, Screen.height*.2f, Screen.width*.4f, Screen.height*.4f), 
-				        ShopControl.GodDescriptions[SelectedGod], styleLibrary.EncyclopediaStyles.NeutralButton);
+				        ShopControl.GodDescriptions[SelectedGod], GodDescription);
 				if(GUI.Button(new Rect(0, Screen.height*.65f, Screen.width*.35f, Screen.height*.1f), 
 				              "Go to " + godName + "'s Goals", RedirectButton)) {
 					Tabs[0] = false;
@@ -147,12 +150,14 @@ public class EncyclopediaMenu : MonoBehaviour {
 					        shownGoals[selectedGoal].GoalScore[2], styleLibrary.EncyclopediaStyles.BigText);
 					GUI.DrawTexture(new Rect(Screen.width*.175f, Screen.height*.47f, Screen.width*.1f, Screen.height*.24f),
 					                shopControlGUI.STOPLIGHTTEXTURE);
-						//put high scores here
 					if(SaveData.GoalHighScores.ContainsKey(shownGoals[selectedGoal].MiniDescription)) {
 						GUI.Box(new Rect(Screen.width*.3f,Screen.height*.45f, Screen.width*.3f, Screen.height*.3f), 
 						        "Your high score is " + SaveData.GoalHighScores[shownGoals[selectedGoal].MiniDescription].ToString(), 
 						        styleLibrary.EncyclopediaStyles.NeutralButton);
-					} 
+					} else {
+						GUI.Box(new Rect(Screen.width*.3f,Screen.height*.45f, Screen.width*.3f, Screen.height*.3f), 
+						        "You don't have a high score for this goal.", 
+						        styleLibrary.EncyclopediaStyles.NeutralButton);					}
 				}
 			}
 			else if(Tabs[2]) {

@@ -350,7 +350,7 @@ public class Enemy : MonoBehaviour {
 		}
 	}
 
-	public virtual void GoToMax()
+	public virtual void GoToMaxPlays()
 	{
 		CurrentPlays = MaxPlays;
 		playsText.text = CurrentPlays.ToString();

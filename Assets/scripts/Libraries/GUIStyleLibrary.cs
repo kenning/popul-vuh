@@ -67,6 +67,7 @@ public class GUIStyleLibrary : MonoBehaviour {
 		public int GoalFontSize;
 		public int SlightlyBiggerTextFontSize;
 		public int CardButtonFontSize;
+		public int GodFontDescriptionSize;
 
 		public EncyclopediaMenuStyleLibrary (GUISkin skin) {
 			BackButton = skin.button;
@@ -85,6 +86,7 @@ public class GUIStyleLibrary : MonoBehaviour {
 			SlightlyBiggerTextFontSize = 18;
 			CardButtonFontSize = 15;
 			RedirectButtonFontSize = 20;
+			GodFontDescriptionSize = 14;
 			NeutralButton = skin.customStyles[12];
 		}
 	}
@@ -159,7 +161,7 @@ public class GUIStyleLibrary : MonoBehaviour {
 		public GUIStyle InfoBox;
 		public GUIStyle NextLevelButton;
 		public int DoneFontSize = 18;
-		public int FirstDialogueFontSize = 20;
+		public int FirstDialogueFontSize = 18;
 
 		public TutorialStyleLibrary (GUISkin skin) {
 			DialogueBox = skin.customStyles[3];
