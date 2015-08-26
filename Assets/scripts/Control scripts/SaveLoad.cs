@@ -8,7 +8,7 @@ public static class SaveLoad {
 	public static SavedGame savedGame = new SavedGame();
 
 	public static void Save() {
-//		return;
+		return;
 		savedGame = (SaveData.current());
 		EasySerializer.SerializeObjectToFile (savedGame, Application.persistentDataPath + "savedGames.gd");
 		GameControl.Error = "Saved to " + Application.persistentDataPath + "savedGames.gd";
@@ -22,7 +22,7 @@ public static class SaveLoad {
 	}
 
 	public static void Load() {
-//		return;
+		return;
 		object loadedData = EasySerializer.DeserializeObjectFromFile (Application.persistentDataPath + "savedGames.gd");
 		SaveData.LoadData ((SavedGame)loadedData);
 		GameControl.Error = "Loaded from " + Application.persistentDataPath + "savedGames.gd";
