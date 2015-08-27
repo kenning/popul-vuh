@@ -141,7 +141,7 @@ public class ClickControl : MonoBehaviour {
 		if(draggingHand && AllowInfoInput){
 			if(Input.GetMouseButton(0)){
 
-				if(gameControl.Hand.Count < 3) { 
+				if(gameControl.Hand.Count < 4) { 
 					handObj.transform.localPosition = new Vector3(((3) * -1.48f) + 3.7f, 0, 0);
 					return;
 				}
@@ -151,10 +151,10 @@ public class ClickControl : MonoBehaviour {
 					handObj.transform.localPosition = new Vector3(-.73f, 0, 0f);
 					return;
 				}
-				else if((handObj.transform.localPosition.x <= ((gameControl.Hand.Count-1) * -1.55f) + 3.75f) &&  pos.x < 0) {
+				else if((handObj.transform.localPosition.x <= ((gameControl.Hand.Count) * -1.55f) + 5.35f) &&  pos.x < 0) {
 					//this is for after the exact position has gotten nailed down, purpose is to lock it to the edge. 
 					//the key numbers are: 3.95 one line above and .75 six lines above.
-					handObj.transform.localPosition = new Vector3(((gameControl.Hand.Count-1) * -1.55f) + 3.7f, 0, 0);
+					handObj.transform.localPosition = new Vector3(((gameControl.Hand.Count) * -1.55f) + 5.3f, 0, 0);
 				} else {
 					Vector3 move = new Vector3(pos.x, 0, 0);
 					handObj.transform.Translate(move);  

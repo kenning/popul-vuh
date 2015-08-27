@@ -147,6 +147,7 @@ public class Tutorial : MonoBehaviour {
     void continueTutorial()
     {
         TutorialLevel++;
+		Debug.Log ("going to tutorial level" + TutorialLevel.ToString ());
         tutorialLevelSetup();
     }
 
@@ -193,12 +194,13 @@ public class Tutorial : MonoBehaviour {
             gameObject.GetComponent<GridControl>().CancelInvoke();
 
 			gameControlGUI.Dim(false);
-            List<string> deck = gameControl.Deck;
-			deck = new List<string>();
+			gameControl.DeleteAllCards();
+			List<string> deck = gameControl.Deck;
             deck.Add("Wooden Pike");
             deck.Add("Wooden Pike");
             deck.Add("Iron Macana");
             deck.Add("Iron Macana");
+			GameObject.Find("Hand").transform.localPosition = new Vector3(-0.7f, 0, 0);
             int count = deck.Count;
             for (int i = 0; i < count; i++) { gameControl.Draw(); }
             gameControl.AddPlays(1);
@@ -217,15 +219,22 @@ public class Tutorial : MonoBehaviour {
         }
         if (TutorialLevel == 6)
         {
-            gameControl.DeleteAllCards();
-
-            List<string> deck = gameControl.Deck;
-			deck = new List<string>();
+			GameObject en = GameObject.FindGameObjectWithTag("Enemy");
+			if (en != null)
+			{
+				Destroy(en);
+			}
+			
+			gameControl.DeleteAllCards();
+			
+			List<string> deck = gameControl.Deck;
             deck.Add("Apple");
             deck.Add("Coffee");
             deck.Add("Cloth Shoes");
             deck.Add("Quick Prayer");
             int count = deck.Count;
+			// this is ugly but it works
+			GameObject.Find("Hand").transform.localPosition = new Vector3(-0.7f, 0, 0);
             for (int i = 0; i < count; i++) { gameControl.Draw(); }
             deck.Add("Quick Prayer");
 

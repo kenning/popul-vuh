@@ -200,14 +200,19 @@ public class GameControlGUI : MonoBehaviour {
 		showingDeck = TurningOn;
 	}
 
-	public bool MoveHandPositionWhenOutOfPlace() {
-		if ((gameControl.handObj.transform.localPosition.x <= ((gameControl.Hand.Count-1) * -1.55f) + 3.75f)) {
+	public void MoveHandPositionWhenOutOfPlace() {
+		if (gameControl.Hand.Count < 5) {
+			gameControl.handObj.transform.localPosition = new Vector3(-.7f, 0, 0);
+
+			return;
+		}
+		if ((gameControl.handObj.transform.localPosition.x <= ((gameControl.Hand.Count) * -1.55f) + 5.35f)) {
 			//this is for after the exact position has gotten nailed down, purpose is to lock it to the edge. 
 			//the key numbers are: 3.95 one line above and .75 six lines above.
-			gameControl.handObj.transform.localPosition = new Vector3 (((gameControl.Hand.Count-1) * -1.55f) + 3.7f, 0, 0);
-			return true;
+			gameControl.handObj.transform.localPosition = new Vector3 (((gameControl.Hand.Count) * -1.55f) + 5.3f, 0, 0);
+			return;
 		}
-		return false;
+		return;
 	}
 
 	public void SetDiscardPilePosition ()

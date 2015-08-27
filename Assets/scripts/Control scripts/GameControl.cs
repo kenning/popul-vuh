@@ -156,6 +156,7 @@ public class GameControl : MonoBehaviour
 	#region Card related methods: Draw(), Peek(), Return()
 	#region Draw methods
 	public void Draw(string SpecificCard, bool isInvisible) {
+
 		DeselectCards ();
 
 		if(Deck.Count == 0) {

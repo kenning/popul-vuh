@@ -157,17 +157,17 @@ public class CardUI : MonoBehaviour {
 			SpriteRenderer[] SRenderers = gameObject.GetComponentsInChildren<SpriteRenderer>();
 			foreach(SpriteRenderer SRenderer in SRenderers) {
 				if(SRenderer.gameObject.name == "rarity" | SRenderer.gameObject.name == "glow" | SRenderer.gameObject.name == "god icon" | SRenderer.gameObject.name == "picture") {
-					SRenderer.sortingLayerName = "Card";
+					SRenderer.sortingLayerName = "Discard and deck";
 					SRenderer.sortingOrder = 101+index*2;
 				}
 				else {
-					SRenderer.sortingLayerName = "Card";
+					SRenderer.sortingLayerName = "Discard and deck";
 					SRenderer.sortingOrder = 100+index*2;
 				}
 			}
 			MeshRenderer[] meshes = gameObject.GetComponentsInChildren<MeshRenderer>();
 			foreach(MeshRenderer mesh in meshes) {
-				mesh.sortingLayerName = "Card";
+				mesh.sortingLayerName = "Discard and deck";
 				mesh.sortingOrder = 101+index*2;
 			}
 		}
@@ -360,12 +360,13 @@ public class CardUI : MonoBehaviour {
 			}
 		}
 		else if(DiscardAnimating) {
+			// Card is moving upwards
 			if(MoveUpStartTime + .25f > Time.time) {
 				float time =((Time.time-MoveUpStartTime));
 				transform.localPosition = Vector3.Lerp(transform.localPosition, HighestPoint, time*4);
-				
 				return;
 			}
+			// Card switches to moving downwards
 			else if(( MoveUpStartTime + .5f > Time.time ) &&(Time.time > MoveUpStartTime + .25f)) {  
 				if(!BehindPlayBoard &&(card.DiscardWhenPlayed | card.ForcingDiscardOfThis)){ 
 					SpriteRenderer[] spriterenderererers = GetComponentsInChildren<SpriteRenderer>();
@@ -387,7 +388,7 @@ public class CardUI : MonoBehaviour {
 					}
 					
 					BehindPlayBoard = true;
-					StartPosition = new Vector3(StartPosition.x, StartPosition.y-1f, StartPosition.z);
+					StartPosition = new Vector3(StartPosition.x, StartPosition.y, StartPosition.z);
 					return;
 				}
 				float time =((Time.time-MoveUpStartTime - .25f));

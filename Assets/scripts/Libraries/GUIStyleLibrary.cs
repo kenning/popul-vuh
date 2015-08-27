@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class GUIStyleLibrary : MonoBehaviour {
-
+	
 	public GUISkin MAINMENUGUISKIN;
 	public GUISkin OPTIONGUISKIN;
 	public GUISkin GAMECONTROLGUISKIN;
 	public GUISkin SHOPSKIN;
-
+	
 	public MainMenuStyleLibrary MainStyles;
 	public EncyclopediaMenuStyleLibrary EncyclopediaStyles;
 	public GodChoiceMenuStyleLibrary GodChoiceStyles;
@@ -18,7 +18,7 @@ public class GUIStyleLibrary : MonoBehaviour {
 	public TutorialStyleLibrary TutorialStyles;
 	public CardStyleLibrary CardStyles;
 	public ShopStyleLibrary ShopStyles;
-
+	
 	// Use this for initialization
 	void Start () {
 		MainStyles = new MainMenuStyleLibrary (MAINMENUGUISKIN);
@@ -31,8 +31,27 @@ public class GUIStyleLibrary : MonoBehaviour {
 		CardStyles = new CardStyleLibrary (GAMECONTROLGUISKIN);
 		ShopStyles = new ShopStyleLibrary (SHOPSKIN, MAINMENUGUISKIN);
 	}
-
-	public class MainMenuStyleLibrary {
+	
+	public class StyleLibrary {
+		public GUIStyle SizeDecorator (GUIStyle inputStyle) {
+			if (Application.platform == RuntimePlatform.IPhonePlayer) {
+				GUIStyle newStyle = new GUIStyle (inputStyle);
+				newStyle.fontSize = newStyle.fontSize * 5 / 3;
+				return newStyle;
+			} else {
+				return inputStyle;
+			}
+		}
+		public int SizeIntDecorator(int inputInt) {
+			if (Application.platform == RuntimePlatform.IPhonePlayer) {
+				return inputInt * 5 / 3;
+			} else {
+				return inputInt;
+			}
+		}
+	}
+	
+	public class MainMenuStyleLibrary : StyleLibrary {
 		public GUIStyle BlackBackground;
 		public GUIStyle Title;
 		public GUIStyle Button;
@@ -40,19 +59,19 @@ public class GUIStyleLibrary : MonoBehaviour {
 		public GUIStyle Sidebar;
 		public GUIStyle DiedAndGotToLevel;
 		public GUIStyle NeutralButton;
-
+		
 		public MainMenuStyleLibrary (GUISkin skin) {
-			BlackBackground = skin.box;
-			Title = skin.customStyles [0];
-			Button = skin.button;
-			NewCardsAvailablePopup = skin.customStyles [9];
-			Sidebar = skin.customStyles [4];
-			DiedAndGotToLevel = skin.customStyles[12];
-			NeutralButton = skin.customStyles[12];
+			BlackBackground = SizeDecorator(skin.box);
+			Title = SizeDecorator(skin.customStyles [0]);
+			Button = SizeDecorator(skin.button);
+			NewCardsAvailablePopup = SizeDecorator(skin.customStyles [9]);
+			Sidebar = SizeDecorator(skin.customStyles [4]);
+			DiedAndGotToLevel = SizeDecorator(skin.customStyles[12]);
+			NeutralButton = SizeDecorator(skin.customStyles[12]);
 		}
 	}
-
-	public class EncyclopediaMenuStyleLibrary {
+	
+	public class EncyclopediaMenuStyleLibrary : StyleLibrary {
 		public GUIStyle BackButton;
 		public GUIStyle TabOn;
 		public GUIStyle TabOff;
@@ -68,44 +87,44 @@ public class GUIStyleLibrary : MonoBehaviour {
 		public int SlightlyBiggerTextFontSize;
 		public int CardButtonFontSize;
 		public int GodFontDescriptionSize;
-
+		
 		public EncyclopediaMenuStyleLibrary (GUISkin skin) {
-			BackButton = skin.button;
-			TabOff = skin.customStyles[2];
-			TabOn = skin.customStyles[1];
-			InfoBox = skin.customStyles[5];
-			SubTab = skin.customStyles[8];
-			CardNameStyle = skin.customStyles[6];
-			CardTextStyle = skin.customStyles[7];
-			NoneStyleWordWrap = new GUIStyle (skin.customStyles[11]);
+			BackButton = SizeDecorator(skin.button);
+			TabOff = SizeDecorator(skin.customStyles[2]);
+			TabOn = SizeDecorator(skin.customStyles[1]);
+			InfoBox = SizeDecorator(skin.customStyles[5]);
+			SubTab = SizeDecorator(skin.customStyles[8]);
+			CardNameStyle = SizeDecorator(skin.customStyles[6]);
+			CardTextStyle = SizeDecorator(skin.customStyles[7]);
+			NoneStyleWordWrap = SizeDecorator(new GUIStyle (skin.customStyles[11]));
 			NoneStyleWordWrap.wordWrap = true;
-			NoneStyleWordWrap.fontSize = 10;
-			BigText = new GUIStyle(skin.customStyles[11]);
+			NoneStyleWordWrap.fontSize = (10);
+			BigText = SizeDecorator(new GUIStyle(skin.customStyles[11]));
 			BigText.fontSize = 50;
-			GoalFontSize = 10;
-			SlightlyBiggerTextFontSize = 18;
-			CardButtonFontSize = 15;
-			RedirectButtonFontSize = 20;
-			GodFontDescriptionSize = 14;
-			NeutralButton = skin.customStyles[12];
+			GoalFontSize = SizeIntDecorator(10);
+			SlightlyBiggerTextFontSize = SizeIntDecorator(18);
+			CardButtonFontSize = SizeIntDecorator(15);
+			RedirectButtonFontSize = SizeIntDecorator(20);
+			GodFontDescriptionSize = SizeIntDecorator(14);
+			NeutralButton = SizeDecorator(skin.customStyles[12]);
 		}
 	}
-
-	public class GodChoiceMenuStyleLibrary {
+	
+	public class GodChoiceMenuStyleLibrary : StyleLibrary {
 		public GUIStyle GodChoiceToggle;
 		public GUIStyle GodChoiceToggleText;
 		public GUIStyle BackButton;
 		public GUIStyle Title;
-//
+		//
 		public GodChoiceMenuStyleLibrary (GUISkin skin) {
-//			GodChoiceToggle = skin.toggle;
-//			GodChoiceToggleText = skin.textField;
-//			BackButton = skin.button;
-//			Title = skin.customStyles[0];
+			//      GodChoiceToggle = SizeDecorator(skin.toggle);
+			//      GodChoiceToggleText = SizeDecorator(skin.textField);
+			//      BackButton = SizeDecorator(skin.button);
+			//      Title = SizeDecorator(skin.customStyles[0]);
 		}
 	}
-
-	public class CustomizeStyleLibrary {
+	
+	public class CustomizeStyleLibrary : StyleLibrary {
 		public GUIStyle CardToggleAdd;
 		public GUIStyle CardToggleRemove;
 		public GUIStyle CardToggleOff;
@@ -113,112 +132,118 @@ public class GUIStyleLibrary : MonoBehaviour {
 		public GUIStyle RarityToggleOn;
 		public GUIStyle RarityToggleOff;
 		public GUIStyle InstructionInfoBox;
-
+		
 		// Card displaying GUI
 		public GUIStyle CardNameStyle;
 		public GUIStyle CardTextStyle;
-		public int CustomizeCardNameFontSize = 16;
-		public int CustomizeCardTextFontSize = 13;
-
+		public int CustomizeCardNameFontSize;
+		public int CustomizeCardTextFontSize;
+		
 		public CustomizeStyleLibrary (GUISkin skin) {
-			CardToggleAdd = skin.customStyles[10];
-			CardToggleRemove = skin.customStyles[9];
-			CardToggleOff = skin.customStyles[2];
-			CardNeutral = skin.customStyles[12];
-			RarityToggleOn = skin.customStyles[1];
-			RarityToggleOff = skin.customStyles[2];
-			CardNameStyle = skin.customStyles[6];
-			CardTextStyle = skin.customStyles[7];
-			InstructionInfoBox = skin.customStyles[4];
+			CustomizeCardNameFontSize = SizeIntDecorator(16);
+			CustomizeCardTextFontSize = SizeIntDecorator(13);
+			CardToggleAdd = SizeDecorator(skin.customStyles[10]);
+			CardToggleRemove = SizeDecorator(skin.customStyles[9]);
+			CardToggleOff = SizeDecorator(skin.customStyles[2]);
+			CardNeutral = SizeDecorator(skin.customStyles[12]);
+			RarityToggleOn = SizeDecorator(skin.customStyles[1]);
+			RarityToggleOff = SizeDecorator(skin.customStyles[2]);
+			CardNameStyle = SizeDecorator(skin.customStyles[6]);
+			CardTextStyle = SizeDecorator(skin.customStyles[7]);
+			InstructionInfoBox = SizeDecorator(skin.customStyles[4]);
 		}
 	}
-
-	public class GameControlGUIStyleLibrary {
+	
+	public class GameControlGUIStyleLibrary : StyleLibrary {
 		public GUIStyle DisplayTitle;
 		public GUIStyle DisplayText;
 		public GUIStyle TooltipBox;
-
+		
 		public GameControlGUIStyleLibrary (GUISkin gameControlSkin) {
-			DisplayTitle = gameControlSkin.customStyles[2];
-			DisplayText = gameControlSkin.box;
-			TooltipBox = gameControlSkin.textArea;
+			DisplayTitle = SizeDecorator(gameControlSkin.customStyles[2]);
+			DisplayText = SizeDecorator(gameControlSkin.box);
+			TooltipBox = SizeDecorator(gameControlSkin.textArea);
 		}
 	}
-
-	public class OptionControlStyleLibrary {
+	
+	public class OptionControlStyleLibrary : StyleLibrary {
 		public GUIStyle Box;
 		public GUIStyle Button;
-
+		
 		public OptionControlStyleLibrary (GUISkin optionSkin) {
-			Box = optionSkin.box;
-			Button = optionSkin.button;
+			Box = SizeDecorator(optionSkin.box);
+			Button = SizeDecorator(optionSkin.button);
 		}
 	}
-
-	public class TutorialStyleLibrary {
+	
+	public class TutorialStyleLibrary : StyleLibrary {
 		public GUIStyle DialogueBox;
 		public GUIStyle StartButton;
 		public GUIStyle InfoBox;
 		public GUIStyle NextLevelButton;
-		public int DoneFontSize = 18;
-		public int FirstDialogueFontSize = 18;
-
+		public int DoneFontSize;
+		public int FirstDialogueFontSize;
+		
 		public TutorialStyleLibrary (GUISkin skin) {
-			DialogueBox = skin.customStyles[3];
-			StartButton = skin.button;
-			InfoBox = skin.customStyles[4];
-			NextLevelButton = skin.customStyles[1];
+			DoneFontSize = SizeIntDecorator(18);
+			FirstDialogueFontSize = SizeIntDecorator(18);
+			DialogueBox = SizeDecorator(skin.customStyles[3]);
+			StartButton = SizeDecorator(skin.button);
+			InfoBox = SizeDecorator(skin.customStyles[4]);
+			NextLevelButton = SizeDecorator(skin.customStyles[1]);
 		}
 	}
-
-	public class CardStyleLibrary {
+	
+	public class CardStyleLibrary : StyleLibrary {
 		public GUIStyle Tooltip;
-
+		
 		public CardStyleLibrary (GUISkin gameControlSkin) {
-			Tooltip = gameControlSkin.textArea;
+			Tooltip = SizeDecorator(gameControlSkin.textArea);
 		}
 	}
-
-	public class ShopStyleLibrary {
+	
+	public class ShopStyleLibrary : StyleLibrary {
 		// Goal exposition GUI
 		public GUIStyle TransparentBackground;
 		public GUIStyle GoalExpoBox;
 		public GUIStyle GotItButton;
 		public GUIStyle SmallerButton;
-
+		
 		// Cards to buy GUI
-			// Card miniature display
+		// Card miniature display
 		public GUIStyle DisplayTitle;
 		public GUIStyle DisplayText;
-		public int DisplayTitleFontSize = 9;
-		public int DisplayTextFontSize = 9;
+		public int DisplayTitleFontSize;
+		public int DisplayTextFontSize;
 		public GUIStyle ShopBox;
 		public GUIStyle ShopGoalGold;
 		public GUIStyle ShopGoalSilver;
 		public GUIStyle ShopGoalBronze;
 		public GUIStyle ShopHoverOverlay;
 		public GUIStyle NeutralButton;
-
+		
 		// In game goal GUI (shows three goals along top of screen)
 		public GUIStyle InGameGoalBox;
 		public GUIStyle InGameGoalBoxHoverOverlay;
-
+		
 		public ShopStyleLibrary (GUISkin shopSkin, GUISkin mainSkin) {
-			TransparentBackground = shopSkin.customStyles[0];
-			GoalExpoBox = shopSkin.box;
-			GotItButton = shopSkin.button;
-			SmallerButton = mainSkin.customStyles[1];
+			DisplayTitleFontSize  = SizeIntDecorator(9);
+
+			TransparentBackground = SizeDecorator(shopSkin.customStyles[0]);
+			GoalExpoBox = SizeDecorator(shopSkin.box);
+			GotItButton = SizeDecorator(shopSkin.button);
+			SmallerButton = SizeDecorator(mainSkin.customStyles[1]);
 			
-			DisplayTitle = mainSkin.customStyles[6];
-			DisplayText = mainSkin.customStyles[7];
-			ShopBox = shopSkin.customStyles[8];
-			ShopGoalGold = shopSkin.customStyles[6];
-			ShopGoalSilver = shopSkin.customStyles[5];
-			ShopGoalBronze = shopSkin.customStyles[4];
-			ShopHoverOverlay = shopSkin.customStyles[3];
-			InGameGoalBox = shopSkin.textArea;
-			InGameGoalBoxHoverOverlay = shopSkin.customStyles[1];
-			NeutralButton = shopSkin.customStyles[7];
+			DisplayTitle = SizeDecorator(mainSkin.customStyles[6]);
+			DisplayText = SizeDecorator(mainSkin.customStyles[7]);
+			ShopBox = SizeDecorator(shopSkin.customStyles[8]);
+			ShopGoalGold = SizeDecorator(shopSkin.customStyles[6]);
+			ShopGoalSilver = SizeDecorator(shopSkin.customStyles[5]);
+			ShopGoalBronze = SizeDecorator(shopSkin.customStyles[4]);
+			ShopHoverOverlay = SizeDecorator(shopSkin.customStyles[3]);
+			InGameGoalBox = SizeDecorator(shopSkin.textArea);
+			InGameGoalBoxHoverOverlay = SizeDecorator(shopSkin.customStyles[1]);
+			NeutralButton = SizeDecorator(shopSkin.customStyles[7]);
 		}
 	}
 }
