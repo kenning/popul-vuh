@@ -80,6 +80,7 @@ public class SaveData
 		UnlockedCards.Add(CardLibrary.Lib["Iron Macana"]);
 		//Chac
 		UnlockedCards.Add(CardLibrary.Lib["Coffee"]);
+		UnlockedCards.Add(CardLibrary.Lib["Coffee"]);
 		UnlockedCards.Add(CardLibrary.Lib["Apple"]);
 		//Kinich
 		//Akan

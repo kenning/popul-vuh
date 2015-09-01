@@ -80,13 +80,15 @@ public class Enemy : MonoBehaviour {
 				hpText = renderer.gameObject.GetComponentInChildren<TextMesh> ();
 				hpText.text = MaxHealth.ToString();
 				renderer.sortingOrder = 2;
-			}
-			else if(renderer.gameObject.name == "plays text") {
-				playsText = renderer.gameObject.GetComponentInChildren<TextMesh> ();
-				playsText.text = MaxPlays.ToString();
-				renderer.sortingOrder = 2;
-			}
-			else if(renderer.gameObject.name == "hp bar" |
+			} else if(renderer.gameObject.name == "plays text") {
+				if(MaxPlays == 1) {
+					renderer.enabled = false;
+				} else {
+					playsText = renderer.gameObject.GetComponentInChildren<TextMesh> ();
+					playsText.text = MaxPlays.ToString();
+					renderer.sortingOrder = 2;
+				}
+			} else if(renderer.gameObject.name == "hp bar" |
 					renderer.gameObject.name == "moves icon" ) {
 				renderer.sortingOrder = 1;
 
@@ -96,8 +98,11 @@ public class Enemy : MonoBehaviour {
 					renderer.transform.localScale = new Vector3(1, .15f);
 					hpBarObject = renderer.gameObject;
 				}
-			}
-			else {
+			} else if (renderer.gameObject.name == "plays icon") {
+				if(MaxPlays == 1) {
+					renderer.enabled = false;
+				}
+			} else {
 				//this is the main sprite
 			}
 		}
@@ -353,7 +358,9 @@ public class Enemy : MonoBehaviour {
 	public virtual void GoToMaxPlays()
 	{
 		CurrentPlays = MaxPlays;
-		playsText.text = CurrentPlays.ToString();
+		if(MaxPlays != 1) {
+			playsText.text = CurrentPlays.ToString ();
+		}
 	}
 
 	public bool IsOpenToMove(string direction)

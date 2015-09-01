@@ -254,7 +254,7 @@ public class CustomizeMenu : MonoBehaviour {
 			int appropriateGod = ShopControl.AllGods.IndexOf(bunch[i].God);
 			allCards[appropriateGod].Add(bunch[i]);
 			//VV add it again if it's paper.
-			if(bunch[i].CardName == "Iron Macana" || bunch[i].CardName == "Wooden Pike")
+			if(bunch[i].CardName == "Iron Macana" | bunch[i].CardName == "Wooden Pike" | bunch[i].CardName == "Coffee")
 				allCards[appropriateGod].Add(bunch[i]);
 		}
 

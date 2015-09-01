@@ -68,6 +68,15 @@ public class GameControl : MonoBehaviour
 
 	void Awake(){
 
+		if (Application.platform == RuntimePlatform.IPhonePlayer)
+		{
+			Debug.Log("on iphone");
+			System.Environment.SetEnvironmentVariable("MONO_REFLECTION_SERIALIZER", "yes");
+			Debug.Log("didn't error");
+			Debug.Log("didn't error");
+			Debug.Log("didn't error");
+		} 
+
 		EventControl.NewLevelReset ();
 		QControl.Initialize ();
 
