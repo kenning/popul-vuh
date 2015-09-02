@@ -6,8 +6,10 @@ public class GridCursorControl : MonoBehaviour {
 	GameControl gameControl;
 	GridControl gridControl;
 	ShopControl shopControl;
+	ClickControl clickControl;
 	GridCursorControlGUI gridCursorControlGUI;
 	bool cursorActionSet = false;
+	float lastCursorSetTime = 0;
 
 	GameObject playerObject;
 
@@ -25,14 +27,21 @@ public class GridCursorControl : MonoBehaviour {
 		gameControl = gameObject.GetComponent<GameControl> ();
 		gridControl = gameObject.GetComponent<GridControl> ();
 		shopControl = gameObject.GetComponent<ShopControl> ();
+		clickControl = gameObject.GetComponent<ClickControl> ();
 		gridCursorControlGUI = GameObject.Find("Grid Cursor").GetComponent<GridCursorControlGUI> ();
 		playerObject = GameObject.FindGameObjectWithTag ("Player");
 	}
 
 	void Update() {
-		if (cursorActionSet && !Input.GetMouseButtonDown(0)) {
-			ReleaseCursor();
-			cursorActionSet = false;
+		if (cursorActionSet) {
+			if(!Input.GetMouseButton(0)) {
+				ReleaseCursor();
+				gridCursorControlGUI.UnpresentCursor();
+				cursorActionSet = false;
+			} else if(Time.time > lastCursorSetTime + 1.0f) {
+				clickControl.GameBoardDrag();	
+				UnpresentCursor();
+			}
 		}
 	}
 
@@ -42,11 +51,16 @@ public class GridCursorControl : MonoBehaviour {
 	/// <param name="action">Action.</param>
 	public void PresentCursor(CursorActions action) {
 		Vector3 clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-//		if(clickPosition.x < 0) clickPosition.x -= .5f;
-//		if(clickPosition.y < 0) clickPosition.y -= .5f;
-		if (action != currentCursorAction |
+		if(clickPosition.x > 0) clickPosition.x += .5f;
+		if(clickPosition.y > 0) clickPosition.y += .5f;
+		if(clickPosition.x < 0) clickPosition.x -= .5f;
+		if(clickPosition.y < 0) clickPosition.y -= .5f;
+		if (cursorActionSet == false |
+		    action != currentCursorAction |
 			(int)(clickPosition.x) != currentCursorXPosition |
 			(int)(clickPosition.y) != currentCursorYPosition) {
+			lastCursorSetTime = Time.time;
+			cursorActionSet = true;
 			currentCursorXPosition = (int)clickPosition.x;
 			currentCursorYPosition = (int)clickPosition.y;
 			currentCursorAction = action;
@@ -57,6 +71,9 @@ public class GridCursorControl : MonoBehaviour {
 
 	public void UnpresentCursor() {
 		PresentCursor (CursorActions.None);
+		// Set them off camera so they get retriggered
+		currentCursorXPosition = 500;
+		currentCursorYPosition = 500;
 		gridCursorControlGUI.UnpresentCursor ();
 	}
 
@@ -87,8 +104,6 @@ public class GridCursorControl : MonoBehaviour {
 	/// Main method 2; Executes whatever action is set to happen
 	/// </summary>
 	public void ReleaseCursor() {
-		Debug.Log ("Releasing cursor for this action: ");
-		Debug.Log (currentCursorAction.ToString ());
 		switch (currentCursorAction) {
 		case CursorActions.StairMove:
 			if(gameControl.MovesLeft > 0){

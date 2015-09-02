@@ -65,6 +65,10 @@ public class ClickControl : MonoBehaviour {
 	}
 
 	void Update () {
+		
+		if (Input.GetMouseButtonDown (0)) {
+			shopControl.GoalCheck("Touch the screen no more than than X times");
+		}
 
 	//MainMenu
 		if(MainMenu.MainMenuUp 
@@ -132,10 +136,12 @@ public class ClickControl : MonoBehaviour {
 				}
 
 				Camera.main.transform.position = move + pos;
+				return;
 			}
 			else {
 				draggingGameboard = false;
 				arrows.GetComponent<SpriteRenderer>().enabled = false;
+				return;
 			}
 		}
 	//AllowInfoInput
@@ -240,8 +246,6 @@ public class ClickControl : MonoBehaviour {
 
 		if(Input.GetMouseButton(0)){
 
-			shopControl.GoalCheck("Touch the screen no more than than X times");
-
 			gameControlGUI.ShowDeck(false);
 			gameControl.Tooltip = "";
 
@@ -317,8 +321,6 @@ public class ClickControl : MonoBehaviour {
 					}
 				}
 
-				gameControl.DeselectCards();
-				
 				foreach(RaycastHit2D hit in hits) 
 					if(hit.collider.gameObject.tag == "Play board") 
 						return;
@@ -341,6 +343,8 @@ public class ClickControl : MonoBehaviour {
 					}
 				}
 
+				gameControl.DeselectCards();
+
 				gridBoss.DestroyAllTargetSquares();
 				
 				foreach(RaycastHit2D hit in hits){
@@ -353,6 +357,7 @@ public class ClickControl : MonoBehaviour {
 						}
 	//AllowInfoInput
 						else if(AllowInfoInput) {
+							Debug.Log("not getting here for some reason.");
 							gridCursorControl.PresentCursor(GridCursorControl.CursorActions.EnemyInfo);
 							gridCursorControl.SetCurrentCursorTarget(hit.collider.gameObject);
 						}
@@ -424,8 +429,9 @@ public class ClickControl : MonoBehaviour {
 		}
 	}
 
-    void gameBoardDrag()
+    public void GameBoardDrag()
     {
+		if(draggingGameboard) return;
         dragOrigin = Input.mousePosition;
 		gameControlGUI.Dim (false);
         draggingGameboard = true;

@@ -46,9 +46,6 @@ public class GridCursorControlGUI : MonoBehaviour {
 			cursorSpriteRenderer.sprite = NONESPRITE;
 			break;
 		}
-		//set cursor sprite to appropriate cursoraction's sprite
-		//Vector3 clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-		//move cursor to there
 	}
 
 	public void UnpresentCursor() {
