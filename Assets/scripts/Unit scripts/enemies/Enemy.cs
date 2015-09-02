@@ -190,7 +190,9 @@ public class Enemy : MonoBehaviour {
 	//Just lowers CurrentPlays by 1 and changes the text to the new number. It's the enemy so its plays = moves, remember? 
 	public void MakeMove() {
 		CurrentPlays--;
-		playsText.text = CurrentPlays.ToString();
+		if (MaxPlays != 1) {
+			playsText.text = CurrentPlays.ToString ();
+		}
 	}
 
 #region Attacking methods
