@@ -9,8 +9,10 @@ public class ClickControl : MonoBehaviour {
 	ShopControl shopControl;
 	GameObject handObj;
 	GameControlGUI gameControlGUI;
+	ShopControlGUI shopControlGUI;
 	ButtonAnimate playButton;
 	GridCursorControl gridCursorControl;
+	MenuControl menuControl;
     Player player;
 
 	//units
@@ -55,8 +57,10 @@ public class ClickControl : MonoBehaviour {
 		handObj = GameObject.Find ("Hand");
 		gridBoss = tempGO.GetComponent<GridControl>();
 		shopControl = tempGO.GetComponent<ShopControl> ();
+		menuControl = tempGO.GetComponent<MenuControl> ();
 		gridCursorControl = tempGO.GetComponent<GridCursorControl> ();
 		gameControlGUI = tempGO.GetComponent<GameControlGUI> ();
+		shopControlGUI = tempGO.GetComponent<ShopControlGUI> ();
 		playerObject = GameObject.FindGameObjectWithTag ("Player");
         player = playerObject.GetComponent<Player>();
 		playButton = GameObject.Find ("play end button").GetComponent<ButtonAnimate> ();
@@ -71,10 +75,7 @@ public class ClickControl : MonoBehaviour {
 		}
 
 	//MainMenu
-		if(MainMenu.MainMenuUp 
-		   | MainMenu.DeleteDataMenuUp 
-		   | CustomizeMenu.CustomizeMenuUp 
-		   | GodChoiceMenu.GodChoiceMenuUp ) {
+		if(menuControl.AnyMenuIsUp() | shopControlGUI.goalExpo) {
 			return;
 		}
 

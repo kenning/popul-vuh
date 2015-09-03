@@ -7,6 +7,8 @@ public class Tutorial : MonoBehaviour {
     //progress variables. tutorial level goes from 1-6.
 	public static int TutorialLevel = 0;
 
+	MenuControl menuControl;
+
     public string TutorialMessage = "";
     string[] TutorialStartMessages = new string[] {
         "Hi, I'm Buluc Chabtan, the God of sacrifice and war.\n\n" + 
@@ -38,6 +40,7 @@ public class Tutorial : MonoBehaviour {
 	void Start() {
 		useGUILayout = false;
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
+		menuControl = gameObject.GetComponent<MenuControl> ();
 		gameControlGUI = gameObject.GetComponent<GameControlGUI> ();
 	}
 
@@ -49,8 +52,6 @@ public class Tutorial : MonoBehaviour {
 
     public void OnGUI()
     {
-        if(TutorialLevel == 0) return;
-
         if (TutorialLevel == 1 | TutorialLevel == 7)
         {
             GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), BLACKBOX);
@@ -133,9 +134,8 @@ public class Tutorial : MonoBehaviour {
     void endTutorial()
     {
         Tutorial.TutorialLevel = 0;
-        MainMenu.MainMenuUp = true;
-     
-        MainMenu.CleanUpGameboard();
+
+		menuControl.TurnOnMenu (MenuControl.MenuType.MainMenu);
 
         SaveData.FinishedTutorial = true;
         SaveLoad.Save();

@@ -27,7 +27,11 @@ public class UnlockMenu : MonoBehaviour {
 //	void OnGUI () {
 //		if(UnlockMenuUp) {
 //
-//			GUI.depth = 0;
+//		GUI.depth = 1;
+//	
+//		GUI.Box(new Rect(0, 0, Screen.width, Screen.height), "", styleLibrary.MainStyles.BlackBackground);
+//	
+//		GUI.depth = 0;
 //
 //			if(GUI.Button(new Rect(0,0,Screen.width*.4f, Screen.height*.05f), "unlock all")) {
 //				for(int i = 0; i < ShopControl.AllGods.Count; i++) {

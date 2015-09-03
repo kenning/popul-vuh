@@ -7,8 +7,7 @@ public class CustomizeMenu : MonoBehaviour {
 	ShopControl shopControl;
 	ShopControlGUI shopControlGUI;
 	GUIStyleLibrary styleLibrary;
-
-	public static bool CustomizeMenuUp = false;
+	MenuControl menuControl;
 
 	float seventh = Screen.width * .8f / 7;
 
@@ -25,16 +24,17 @@ public class CustomizeMenu : MonoBehaviour {
 
 	void Start () {
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
+		menuControl = gameObject.GetComponent<MenuControl> ();
 		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
+		shopControl = gameObject.GetComponent<ShopControl> ();
 	}
 
 	void OnGUI () {
+		GUI.depth = 1;
+		
+		GUI.Box(new Rect(0, 0, Screen.width, Screen.height), "", styleLibrary.MainStyles.BlackBackground);
+		
 		GUI.depth = 0;
-
-		if (!CustomizeMenuUp) 
-						return;
-		if (shopControl == null) 
-						shopControl = gameObject.GetComponent<ShopControl> ();
 
 		GUI.BeginGroup (new Rect (Screen.width * .1f, Screen.height * .05f, Screen.width * .85f, Screen.height * .9f));
 
@@ -217,19 +217,13 @@ public class CustomizeMenu : MonoBehaviour {
 
 		if(GUI.Button(new Rect(Screen.width*.3f, Screen.height*.95f, Screen.width*.4f, Screen.height*.05f), 
 		              "Go back", styleLibrary.CustomizeStyles.CardToggleRemove)) {
-			CustomizeMenuUp = false;
-			MainMenu.MainMenuUp = true;
 			SaveLoad.Save();
 			selectedCard = new LibraryCard();
+			menuControl.TurnOnMenu(MenuControl.MenuType.MainMenu);
 		}
 	}
 
-	public void OpenMenu() {
-		CustomizeMenuUp = true;
-		FindCards ();
-	}
-
-	void FindCards() {
+	public void FindCards() {
 		UnlockedCardNames = new List<string> ();
 		for(int i = 0; i < SaveData.UnlockedCards.Count; i++) {
 			UnlockedCardNames.Add(SaveData.UnlockedCards[i].CardName);

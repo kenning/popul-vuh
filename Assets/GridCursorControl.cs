@@ -165,7 +165,7 @@ public class GridCursorControl : MonoBehaviour {
 			hitObstacle.ShowTooltip();
 			break;
 		case CursorActions.PlayerInfo:
-			gameControl.Tooltip = "That's you!\nTap adjacent squares to move there or punch enemies.";
+			gameControl.Tooltip = "That's you! You're Xbalanque, one of the twin sons of Hunapu.";
 			gridControl.MakeSquares(GridControl.TargetTypes.diamond, 1, 1, false);
 			break;
 		case CursorActions.None:

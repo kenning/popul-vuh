@@ -7,8 +7,8 @@ public class EncyclopediaMenu : MonoBehaviour {
 	ShopControl shopControl;
 	ShopControlGUI shopControlGUI;
 	GUIStyleLibrary styleLibrary;
+	MenuControl menuControl;
 
-	public bool EncyclopediaMenuUp = false;
 	bool[] Tabs = {false, false, false, false};
 	int SelectedGod;
 
@@ -28,20 +28,21 @@ public class EncyclopediaMenu : MonoBehaviour {
 		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
 		shopControl = gameObject.GetComponent<ShopControl> ();
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
+		menuControl = gameObject.GetComponent<MenuControl> ();
 	}
 
 	void OnGUI() {
-		GUI.depth = 0;
+		GUI.depth = 1;
+		
+		GUI.Box(new Rect(0, 0, Screen.width, Screen.height), "", styleLibrary.MainStyles.BlackBackground);
 
-		if(!EncyclopediaMenuUp) 
-			return;
+		GUI.depth = 0;
 
 		GUI.BeginGroup(new Rect(Screen.width*.1f, Screen.height*.051f, Screen.width*.8f, Screen.height*.91f), "");
 
 		if(GUI.Button(new Rect(0, Screen.height*.81f, Screen.width*.8f, Screen.height*.1f), 
 		              "Go back", styleLibrary.EncyclopediaStyles.BackButton)) {
-			EncyclopediaMenuUp = false;
-			MainMenu.MainMenuUp = true;
+			menuControl.TurnOnMenu(MenuControl.MenuType.MainMenu);
 		}
 
 		for(int i = 0; i < TabStrings.Length; i++) {
@@ -293,9 +294,5 @@ public class EncyclopediaMenu : MonoBehaviour {
 			enemyAttackTextures[i] = (Texture2D)Resources.Load("sprites/targeting icons/range " + bunch[i].AttackTargetType.ToString() + 
 			                                                " " + bunch[i].AttackMinRange.ToString() + "-" + bunch[i].AttackMaxRange.ToString());
 		}
-	}
-
-	public void ShowMenu() {
-		EncyclopediaMenuUp = true;
 	}
 }

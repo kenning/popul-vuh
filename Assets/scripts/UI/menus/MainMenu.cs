@@ -14,6 +14,7 @@ public class MainMenu : MonoBehaviour {
 	static int NextUnlockLevel = 0;
 	static string UnlockedText = "";
 
+	MenuControl menuControl;
 	static ClickControl clickControl;
 	GameControl gameControl;
 	GUIStyleLibrary styleLibrary;
@@ -24,24 +25,14 @@ public class MainMenu : MonoBehaviour {
 	static ShopControl.Gods[] UnlockOrder = new ShopControl.Gods[] {ShopControl.Gods.Chac, ShopControl.Gods.Ikka, 
 		ShopControl.Gods.Ixchel, ShopControl.Gods.Kinich, ShopControl.Gods.Akan, ShopControl.Gods.Ekcha};
 	static int[] UnlockLevels = new int[6] {2, 4, 6, 8, 10, 12};
-	EncyclopediaMenu encyclopediaMenu;
 
 	void Start() {
 		useGUILayout = false;
+		menuControl = gameObject.GetComponent<MenuControl> ();
 		gameControl = gameObject.GetComponent<GameControl> ();
 		clickControl = gameObject.GetComponent<ClickControl> ();
 		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
-		encyclopediaMenu = gameObject.GetComponent<EncyclopediaMenu> ();
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
-	}
-
-    //Could be called by MainMenu or by GodChoiceMenu, or by DeckAnimate. starts the game or goes to the next level.
-    public void BeginButton()
-    {
-		MainMenu.errorText = "";
-
-		SaveLoad.Load();
-		gameControl.BeginGame();
 	}
 
     //Brings up the "you died" menu, which is here in MainMenu.
@@ -119,17 +110,11 @@ public class MainMenu : MonoBehaviour {
     //Main menu, Delete data menu and You died menu.
     void OnGUI()
     {
+		GUI.depth = 1;
 
-        GUI.depth = 1;
-
-        if (MainMenuUp | GodChoiceMenu.GodChoiceMenuUp | DeleteDataMenuUp | encyclopediaMenu.EncyclopediaMenuUp | CustomizeMenu.CustomizeMenuUp)
-        {
-            GUI.Box(new Rect(0, 0, Screen.width, Screen.height), "", styleLibrary.MainStyles.BlackBackground);
-            //string text = "Moves are not plays";
-            //if (GameControl.MovesArePlays) 
-            //    text = "Moves are plays";
-            //GameControl.MovesArePlays = GUI.Toggle(new Rect(0, 0, Screen.width * .4f, Screen.height * .1f), GameControl.MovesArePlays, text);
-        }
+		GUI.Box(new Rect(0, 0, Screen.width, Screen.height), "", styleLibrary.MainStyles.BlackBackground);
+		
+		GUI.depth = 0;
 
         #region Main Menu
         if (MainMenuUp)
@@ -141,32 +126,20 @@ public class MainMenu : MonoBehaviour {
             if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .25f, Screen.width * .6f, Screen.height * .1f), 
 			               "Start new game", styleLibrary.MainStyles.Button))
             {
-                MainMenuUp = false;
-                Tutorial.TutorialLevel = 0;
-
+                
                 if (SaveData.UnlockedGods.Count == 7)
                 {
-                    GodChoiceMenu.GodChoiceMenuUp = true;
-                    GodChoiceMenu choiceMenu = gameObject.GetComponent<GodChoiceMenu>();
-                    for (int i = 0; i < SaveData.UnlockedGods.Count; i++)
-                    {
-                        choiceMenu.GodChoiceSelection[ShopControl.AllGods.IndexOf(SaveData.UnlockedGods[i])] = true;
-                    }
+					menuControl.TurnOnMenu(MenuControl.MenuType.GodChoiceMenu);
                 }
                 else
                 {
-                    GodChoiceMenu.GodChoiceMenuUp = false;
-                    MainMenu.errorText = "";
-
-                    BeginButton();
+					gameControl.BeginGame();
                 }
             }
 
 			if(GUI.Button(new Rect(Screen.width*.2f, Screen.height*.4f, Screen.width*.6f, Screen.height*.1f), 
 			  "Tutorial", styleLibrary.MainStyles.Button)) {
-				MainMenuUp = false;
-				Tutorial.TutorialLevel = 1;
-				BeginButton();
+				menuControl.TurnOnTutorial();
 			}
 
             if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .55f, Screen.width * .6f, Screen.height * .1f), 
@@ -179,18 +152,14 @@ public class MainMenu : MonoBehaviour {
             if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .7f, Screen.width * .6f, Screen.height * .1f), 
 			               "Customize Deck", styleLibrary.MainStyles.Button))
             {
-                CustomizeMenu tempMenu = gameObject.GetComponent<CustomizeMenu>();
-                tempMenu.OpenMenu();
-                MainMenuUp = false;
                 SaveData.NewCardsAvailable = false;
+				menuControl.TurnOnMenu(MenuControl.MenuType.CustomizeMenu);
             }
 
 			if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .85f, Screen.width * .6f, Screen.height * .1f),
 			               "Encyclopedia", styleLibrary.MainStyles.Button))
 			{
-				EncyclopediaMenu tempMenu = gameControl.gameObject.GetComponent<EncyclopediaMenu>();
-				tempMenu.ShowMenu();
-				MainMenuUp = false;
+				menuControl.TurnOnMenu(MenuControl.MenuType.EncyclopediaMenu);
 			}
 
             if (SaveData.NewCardsAvailable)
@@ -200,11 +169,8 @@ public class MainMenu : MonoBehaviour {
             }
 
 			GUIContent CardsUnlocked = new GUIContent("You have unlocked \n" + SaveData.UnlockedCards.Count + "/" + CardLibrary.Lib.Count + "\ncards");
-            if (GUI.Button(new Rect(Screen.width * .025f, Screen.height * .3f, Screen.width * .15f, Screen.height * .6f), 
-			               CardsUnlocked, styleLibrary.MainStyles.Sidebar))
-            {
-
-            }
+            GUI.Box(new Rect(Screen.width * .025f, Screen.height * .3f, Screen.width * .15f, Screen.height * .6f), 
+			        CardsUnlocked, styleLibrary.MainStyles.Sidebar);
 
             GUI.BeginGroup(new Rect(Screen.width * .825f, Screen.height * .3f, Screen.width * .15f, Screen.height * .6f));
 			GUI.Box(new Rect(0, Screen.height * .0f, Screen.width * .15f, Screen.height * .2f), "Next God to unlock:", styleLibrary.MainStyles.Sidebar);

@@ -14,6 +14,7 @@ public class GameControl : MonoBehaviour
 	EventGUI eventGUIgameControl;
 	GridControl gridControl;
 	GameControlGUI gameControlGUI;
+	MenuControl menuControl;
 
 	public GameObject handObj;
 	public GameObject playBoardObj;
@@ -93,7 +94,8 @@ public class GameControl : MonoBehaviour
 		shopControl = gameObject.GetComponent<ShopControl> ();
 		player = GameObject.FindGameObjectWithTag ("Player").GetComponent<Player> ();
 		gooeyskin = (GUISkin)Resources.Load ("GUISkins/gameControl guiskin");
-		
+
+		menuControl = gameObject.GetComponent<MenuControl> ();
 		library = gameObject.GetComponent<CardLibrary> ();
 		enemyLibrary = gameObject.GetComponent<EnemyLibrary>();
 		clickControl = gameObject.GetComponent<ClickControl> ();
@@ -476,8 +478,11 @@ public class GameControl : MonoBehaviour
 	}
 
 	public void ReturnToGodChoiceMenu() {
-		GodChoiceMenu.GodChoiceMenuUp = true;
+
+		// Why is this here??? VVV
 		shopControl.Goals = new Goal[0];
+		
+		menuControl.TurnOnMenu (MenuControl.MenuType.GodChoiceMenu);
 	}
 	#endregion
 
