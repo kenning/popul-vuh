@@ -10,6 +10,8 @@ public class GridCursorControl : MonoBehaviour {
 	GridCursorControlGUI gridCursorControlGUI;
 	bool cursorActionSet = false;
 	float lastCursorSetTime = 0;
+	public static bool GridCursorIsActive = false;
+	public static bool ClickedOffScreen = false;
 
 	GameObject playerObject;
 
@@ -36,8 +38,6 @@ public class GridCursorControl : MonoBehaviour {
 		if (cursorActionSet) {
 			if(!Input.GetMouseButton(0)) {
 				ReleaseCursor();
-				gridCursorControlGUI.UnpresentCursor();
-				cursorActionSet = false;
 			} else if(Time.time > lastCursorSetTime + 1.0f) {
 				clickControl.GameBoardDrag();	
 				UnpresentCursor();
@@ -50,6 +50,7 @@ public class GridCursorControl : MonoBehaviour {
 	/// </summary>
 	/// <param name="action">Action.</param>
 	public void PresentCursor(CursorActions action) {
+		GridCursorControl.GridCursorIsActive = true;
 		Vector3 clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		if(clickPosition.x > 0) clickPosition.x += .5f;
 		if(clickPosition.y > 0) clickPosition.y += .5f;
@@ -71,6 +72,7 @@ public class GridCursorControl : MonoBehaviour {
 
 	public void UnpresentCursor() {
 		PresentCursor (CursorActions.None);
+		GridCursorControl.GridCursorIsActive = false;
 		// Set them off camera so they get retriggered
 		currentCursorXPosition = 500;
 		currentCursorYPosition = 500;
@@ -171,5 +173,9 @@ public class GridCursorControl : MonoBehaviour {
 		case CursorActions.None:
 			break;
 		}
+
+		gridCursorControlGUI.UnpresentCursor();
+
+		cursorActionSet = false;
 	}
 }

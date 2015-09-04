@@ -4,6 +4,7 @@ using System.Collections;
 public class GridCursorControlGUI : MonoBehaviour {
 
 	public SpriteRenderer cursorSpriteRenderer;
+	public SpriteRenderer childSpriteRenderer;
 	public Sprite NONESPRITE;
 	public Sprite MOVESPRITE;
 	public Sprite PUNCHSPRITE;
@@ -12,11 +13,19 @@ public class GridCursorControlGUI : MonoBehaviour {
 
 	void Start() {
 		cursorSpriteRenderer = gameObject.GetComponent<SpriteRenderer> ();
+		SpriteRenderer[] sprites = gameObject.GetComponentsInChildren<SpriteRenderer> ();
+		foreach(SpriteRenderer sprite in sprites) {
+			if(sprite.gameObject.name == "Grid Cursor Box") {
+				childSpriteRenderer = sprite;
+				break;
+			}
+		}
 	}
 
 	public void PresentCursor(GridCursorControl.CursorActions action, int x, int y) {
 		transform.position = new Vector3 (x, y, 0);
 		cursorSpriteRenderer.enabled = true;
+		childSpriteRenderer.enabled = true;
 		switch (action) {
 		case GridCursorControl.CursorActions.StairMove:
 			cursorSpriteRenderer.sprite = MOVESPRITE;
@@ -50,5 +59,6 @@ public class GridCursorControlGUI : MonoBehaviour {
 
 	public void UnpresentCursor() {
 		cursorSpriteRenderer.enabled = false;
+		childSpriteRenderer.enabled = false;
 	}
 }

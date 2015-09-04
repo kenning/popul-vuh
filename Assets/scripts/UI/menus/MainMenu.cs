@@ -127,6 +127,8 @@ public class MainMenu : MonoBehaviour {
 			               "Start new game", styleLibrary.MainStyles.Button))
             {
                 
+				menuControl.TurnOffMenus();
+
                 if (SaveData.UnlockedGods.Count == 7)
                 {
 					menuControl.TurnOnMenu(MenuControl.MenuType.GodChoiceMenu);
