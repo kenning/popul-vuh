@@ -9,13 +9,12 @@ public class EnemyLibrary : MonoBehaviour {
 	public List<List<int>> challengeRatingsForEachLevel = new List<List<int>>();
 
 	void Start() {
+		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 1, 2, 2, 2, 3, 3 });
 		challengeRatingsForEachLevel.Add(new List<int> { 1, 1 });
-		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 1 });
 		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 2 });
-		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 2, 2 });
-		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 1, 2, 3 });
-		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 1, 2, 2, 3 });
-		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 1, 2, 2, 3, 3 });
+		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 2, 3 });
+		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 2, 2, 3 });
+		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 2, 2, 3, 3 });
 	}
 
 	//base method. only really used to load an enemy into a specific place in the tutorial. 
@@ -35,6 +34,7 @@ public class EnemyLibrary : MonoBehaviour {
 		{
 			string enemyScriptName = EnemyName;
             enemyScriptName = enemyScriptName.Replace(" ", "");
+			enemyScriptName = enemyScriptName.First().ToString().ToUpper() + enemyScriptName.Substring(1);
 			tempGO.AddComponent(System.Type.GetType(enemyScriptName));
 		}
 		else
@@ -84,52 +84,107 @@ public class EnemyLibrary : MonoBehaviour {
 	{
 		Lib = new Dictionary<string, EnemyLibraryCard>();
 
-		//mud and wooden men. each one is a copy of the previous one, except wooden men have 2 hp and do 1 more damage.
-		Lib.Add("Mud Spear Warrior", new EnemyLibraryCard("Mud Spear Warrior",
-			"Spear-wielding mud warrior. Attacks from two squares away.", 
-		    "Spear-wielding mud warrior. Attacks from two squares away. The mud men were the third attempt by the Gods to make humans.", 
-			1, 1, 1, 2, 1, GridControl.TargetTypes.cross, Enemy.MoveTarget.Cross, 1, false));
-		Lib.Add("Wooden Spear Warrior", new EnemyLibraryCard("Wooden Spear Warrior",
-			"Spear-wielding warrior made of wood. Attacks for two damage from two squares away.",
-			"Spear-wielding warrior made of wood. Attacks for two damage from two squares away. The wooden men were the fourth attempt by the Gods to make humans.",
-			2, 1, 1, 2, 2, GridControl.TargetTypes.cross, Enemy.MoveTarget.Cross, 2, false));
+		// Challenge rating 1
+		Lib.Add("pa", 
+		        new EnemyLibraryCard("pa", 
+		                     "Pa - Spear wielding warrior made of mud. Attacks from two squares away.",
+		                     "Pa - Spear wielding warrior made of mud. Attacks from two squares away. " +
+		                     "\nThe mud men were the third attempt by the Gods to make humans.",
+		                     1, 1, 1, 2, 1, GridControl.TargetTypes.cross, Enemy.MoveTarget.Cross, 1, false));
+		Lib.Add("jom", 
+		        new EnemyLibraryCard("jom",
+		                     "Jom - Ball playing warrior made of mud. Attacks from two sqaures away in a square.",
+		                     "Jom - Ball playing warrior made of mud. Attacks from two sqaures away in a square." + 
+		                     "\nThey even play ball games in the underworld!",
+							 1, 1, 1, 2, 1, GridControl.TargetTypes.square, Enemy.MoveTarget.Square, 1, false));
+		                     
 
-		Lib.Add("Mud Ball Player", new EnemyLibraryCard("Mud Ball Player",
-			"Ball player made of mud. They even play ball in the Underworld! Attacks diagonally.",
-			"Ball player made of mud. They even play ball in the Underworld! Attacks diagonally. The mud men were the third attempt by the Gods to make humans.",
-			1, 1, 1, 2, 1, GridControl.TargetTypes.diagonal, Enemy.MoveTarget.Diagonal, 1, false));
-		Lib.Add("Wooden Ball Player", new EnemyLibraryCard("Wooden Ball Player",
-			"Ball player made of wood. Its rubber ball looks heavy. Attacks diagonally.",
-			"Ball player made of wood. Its rubber ball looks heavy. Attacks diagonally.  The wooden men were the fourth attempt by the Gods to make humans.",
-			2, 1, 1, 2, 2, GridControl.TargetTypes.diagonal, Enemy.MoveTarget.Diagonal, 2, false));
+		// Challenge rating 2
+		Lib.Add("chitam", 
+		        new EnemyLibraryCard("chitam", 
+		                     "Chitam - Peccary demon. Takes two actions per turn. Its scavenging attack steals a card from your hand.",
+		                     "Chitam - Peccary demon. Takes two actions per turn. Its scavenging attack steals a card from your hand. " +
+		                     "\nPeccaries are spiritually powerful creatures but this minor peccary demon has not fully grown.",
+		                     1, 2, 1, 1, 1, GridControl.TargetTypes.diamond, Enemy.MoveTarget.Adjacent, 2, true)); 
 
-		Lib.Add("Mud Warrior", new EnemyLibraryCard("Mud Warrior",
-			"Macana-wielding warrior made of mud. Deals two damage.",
-			"Macana-wielding warrior made of mud. Deals two damage. The mud men were the third attempt by the Gods to make humans.",
-			1, 1, 1, 1, 2, GridControl.TargetTypes.diamond, Enemy.MoveTarget.Adjacent, 1, false));
-		Lib.Add("Wooden Warrior", new EnemyLibraryCard("Wooden Warrior",
-			"Macana-wielding warrior made of wood. Deals three damage, watch out!",
-			"Macana-wielding warrior made of wood. Deals three damage, watch out! The wooden men were the fourth attempt by the Gods to make humans.",
-			2, 1, 1, 1, 3, GridControl.TargetTypes.diamond, Enemy.MoveTarget.Adjacent, 2, false));
+		Lib.Add("pa che", 
+		        new EnemyLibraryCard("pa che", 
+		                     "Pa Che' - Spear wielding warrior made of wood. Attacks from two squares away for two damage.",
+		                     "Pa Che' - Spear wielding warrior made of wood. Attacks from two squares away for two damage. " +
+		                     "\nThe wooden men were the fourth attempt by the Gods to make humans.",
+		                     2, 1, 1, 2, 2, GridControl.TargetTypes.cross, Enemy.MoveTarget.Cross, 2, false));
+//		Lib.Add("chan", 
+//		        new EnemyLibraryCard("chan", 
+//		                     "Chan - Snake demon. Moves or attacks twice a turn. Constricting attack makes you unable to move for a turn.",
+//		                     "Chan - Snake demon. Moves or attacks twice a turn. Constricting attack makes you unable to move for a turn." +
+//		                     "Snakes are often a symbol for Ixchel. However this snake has very little spiritual power.",
+//		                     1, 2, 1, 1, 1, GridControl.TargetTypes.cross, Enemy.MoveTarget.Adjacent, 2, true));
 
-		Lib.Add("Mud Archer", new EnemyLibraryCard("Mud Archer", 
-		        "Bow-wielding warrior made of mud. Attacks across rows or columns.",
-		        "Bow-wielding warrior made of mud. Attacks across rows or columns. The mud men were the third attempt by the Gods to make humans.",
-		        1, 1, 1, 5, 1, GridControl.TargetTypes.cross, Enemy.MoveTarget.Cross, 2, false));
-		Lib.Add("Wooden Archer", new EnemyLibraryCard("Mud Archer", 
-		        "Bow-wielding warrior made of wood. Attacks for two damage across rows or columns.",
-		        "Bow-wielding warrior made of wood. Attacks for two damage across rows or columns. The wooden men were the fourth attempt by the Gods to make humans.",
-		        2, 1, 1, 5, 2, GridControl.TargetTypes.cross, Enemy.MoveTarget.Cross, 3, false));
+		// Challenge rating 3
+		Lib.Add("jom che", 
+		        new EnemyLibraryCard("jom che",
+		                     "Jom Che' - Ball playing warrior made of wood. Attacks from two squares away in a square for two damage.",
+		                     "Jom Che' - Ball playing warrior made of wood. Attacks from two squares away in a square for two damage." + 
+		                     "\nThey even play ball games in the underworld!",
+		                     2, 1, 1, 2, 2, GridControl.TargetTypes.square, Enemy.MoveTarget.Square, 3, false));
+		// Challenge rating 4
+		Lib.Add("balam",
+		        new EnemyLibraryCard("balam",
+		                     "Balam - Jaguar demon. Moves or attacks three times a turn. Uses black magic to attack from two squares away.",
+		                     "Balam - Jaguar demon. Moves or attacks three times a turn. Uses black magic to attack from two squares away." +
+		                     "Jaguars are extremely powerful animals and should be treated with extreme caution and respect.",
+		                     2, 3, 1, 2, 1, GridControl.TargetTypes.diamond, Enemy.MoveTarget.Cross, 4, false));
+
+//		Lib.Add("Tzi", new EnemyLibraryCard("Tzi",
+//		    "Tzi the Dog Demon", 
+//		    "Tzi the Dog Demon. Moves or attacks once per turn.", 
+//		    1, 1, 1, 1, 1, GridControl.TargetTypes.cross, Enemy.MoveTarget.Cross, 1, false));
+
+//		//mud and wooden men. each one is a copy of the previous one, except wooden men have 2 hp and do 1 more damage.
+//		Lib.Add("Mud Spear Warrior", new EnemyLibraryCard("Mud Spear Warrior",
+//			"Spear-wielding mud warrior. Attacks from two squares away.", 
+//		    "Spear-wielding mud warrior. Attacks from two squares away. The mud men were the third attempt by the Gods to make humans.", 
+//			1, 1, 1, 2, 1, GridControl.TargetTypes.cross, Enemy.MoveTarget.Cross, 1, false));
+//		Lib.Add("Wooden Spear Warrior", new EnemyLibraryCard("Wooden Spear Warrior",
+//			"Spear-wielding warrior made of wood. Attacks for two damage from two squares away.",
+//			"Spear-wielding warrior made of wood. Attacks for two damage from two squares away. The wooden men were the fourth attempt by the Gods to make humans.",
+//			2, 1, 1, 2, 2, GridControl.TargetTypes.cross, Enemy.MoveTarget.Cross, 2, false));
+
+//		Lib.Add("Mud Ball Player", new EnemyLibraryCard("Mud Ball Player",
+//			"Ball player made of mud. They even play ball in the Underworld! Attacks diagonally.",
+//			"Ball player made of mud. They even play ball in the Underworld! Attacks diagonally. The mud men were the third attempt by the Gods to make humans.",
+//			1, 1, 1, 2, 1, GridControl.TargetTypes.diagonal, Enemy.MoveTarget.Diagonal, 1, false));
+//		Lib.Add("Wooden Ball Player", new EnemyLibraryCard("Wooden Ball Player",
+//			"Ball player made of wood. Its rubber ball looks heavy. Attacks diagonally.",
+//			"Ball player made of wood. Its rubber ball looks heavy. Attacks diagonally.  The wooden men were the fourth attempt by the Gods to make humans.",
+//			2, 1, 1, 2, 2, GridControl.TargetTypes.diagonal, Enemy.MoveTarget.Diagonal, 2, false));
+
+//		Lib.Add("Mud Warrior", new EnemyLibraryCard("Mud Warrior",
+//			"Macana-wielding warrior made of mud. Deals two damage.",
+//			"Macana-wielding warrior made of mud. Deals two damage. The mud men were the third attempt by the Gods to make humans.",
+//			1, 1, 1, 1, 2, GridControl.TargetTypes.diamond, Enemy.MoveTarget.Adjacent, 1, false));
+//		Lib.Add("Wooden Warrior", new EnemyLibraryCard("Wooden Warrior",
+//			"Macana-wielding warrior made of wood. Deals three damage, watch out!",
+//			"Macana-wielding warrior made of wood. Deals three damage, watch out! The wooden men were the fourth attempt by the Gods to make humans.",
+//			2, 1, 1, 1, 3, GridControl.TargetTypes.diamond, Enemy.MoveTarget.Adjacent, 2, false));
+//
+//		Lib.Add("Mud Archer", new EnemyLibraryCard("Mud Archer", 
+//		        "Bow-wielding warrior made of mud. Attacks across rows or columns.",
+//		        "Bow-wielding warrior made of mud. Attacks across rows or columns. The mud men were the third attempt by the Gods to make humans.",
+//		        1, 1, 1, 5, 1, GridControl.TargetTypes.cross, Enemy.MoveTarget.Cross, 2, false));
+//		Lib.Add("Wooden Archer", new EnemyLibraryCard("Mud Archer", 
+//		        "Bow-wielding warrior made of wood. Attacks for two damage across rows or columns.",
+//		        "Bow-wielding warrior made of wood. Attacks for two damage across rows or columns. The wooden men were the fourth attempt by the Gods to make humans.",
+//		        2, 1, 1, 5, 2, GridControl.TargetTypes.cross, Enemy.MoveTarget.Cross, 3, false));
 
 
 		//Jaguars. Different kinds of jaguars include:
 			//basic jaguar
-		Lib.Add("Basic Jaguar", new EnemyLibraryCard("Basic Jaguar",
-			"Jaguar. These powerful creatures can do three things a turn. They may have other abilities, too...",
-			"Jaguar. These powerful creatures can do three things a turn.",
-			1, 3, 1, 1, 1, GridControl.TargetTypes.diamond, Enemy.MoveTarget.Adjacent, 1, false));
+//		Lib.Add("Basic Jaguar", new EnemyLibraryCard("Basic Jaguar",
+//			"Jaguar. These powerful creatures can do three things a turn. They may have other abilities, too...",
+//			"Jaguar. These powerful creatures can do three things a turn.",
+//			1, 3, 1, 1, 1, GridControl.TargetTypes.diamond, Enemy.MoveTarget.Adjacent, 1, false));
 		//naguals: can turn you into a jaguar
-        //THIS SHIT BROKE
         //Lib.Add("Nagual Jaguar", new EnemyLibraryCard("Nagual Jaguar", 
         //    "Jaguar. These powerful creatures can do three things a turn. They may have other abilities, too...",
         //    1, 3, 1, 1, 0, GridControl.TargetTypes.diamond, Enemy.MoveTarget.Adjacent, 1, true));
@@ -170,6 +225,6 @@ public class EnemyLibraryCard
 		ChallengeRating = challengeRating;
 		IsSubclass = isSubclass;
 
-		SpritePath = "sprites/enemies/" + name;
+		SpritePath = "sprites/enemies/new/" + name;
 	}
 }

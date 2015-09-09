@@ -8,8 +8,7 @@ public class GridCursorControl : MonoBehaviour {
 	ShopControl shopControl;
 	ClickControl clickControl;
 	GridCursorControlGUI gridCursorControlGUI;
-	bool cursorActionSet = false;
-	float lastCursorSetTime = 0;
+	public static bool cursorActionSet = false;
 	public static bool GridCursorIsActive = false;
 	public static bool ClickedOffScreen = false;
 
@@ -34,17 +33,6 @@ public class GridCursorControl : MonoBehaviour {
 		playerObject = GameObject.FindGameObjectWithTag ("Player");
 	}
 
-	void Update() {
-		if (cursorActionSet) {
-			if(!Input.GetMouseButton(0)) {
-				ReleaseCursor();
-			} else if(Time.time > lastCursorSetTime + 1.0f) {
-				clickControl.GameBoardDrag();	
-				UnpresentCursor();
-			}
-		}
-	}
-
 	/// <summary>
 	/// Main method 1; sets the cursor action
 	/// </summary>
@@ -60,7 +48,7 @@ public class GridCursorControl : MonoBehaviour {
 		    action != currentCursorAction |
 			(int)(clickPosition.x) != currentCursorXPosition |
 			(int)(clickPosition.y) != currentCursorYPosition) {
-			lastCursorSetTime = Time.time;
+			clickControl.lastCursorSetTime = Time.time;
 			cursorActionSet = true;
 			currentCursorXPosition = (int)clickPosition.x;
 			currentCursorYPosition = (int)clickPosition.y;

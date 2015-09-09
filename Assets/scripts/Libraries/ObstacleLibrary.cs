@@ -26,13 +26,14 @@ public class ObstacleLibrary : MonoBehaviour {
             {
                 numberOfRocks = 9;
             }
+			else if(numberOfRocks > 20) 
+			{
+				numberOfRocks = 20;
+			}
             GridControl.PossibleSpawnPoints = gridControl.EmptyPathSpots();
             for (int i = 0; i < numberOfRocks; i++)
             {
-                if (i < 20)
-                {
-                    LoadObstacle("Rock", tooltip);
-                }
+                LoadObstacle("Rock", tooltip);
             }
         }
         else if (levelType == LevelTypes.ScorpionRiver) LoadObstacleSet("Scorpion river");
@@ -70,6 +71,7 @@ public class ObstacleLibrary : MonoBehaviour {
     }
     void LoadObstacleSet(string ObstacleSetName)
     {
+		// TODO
 		// Should be a huge prefab instead of individual tiles.
     }
     #endregion

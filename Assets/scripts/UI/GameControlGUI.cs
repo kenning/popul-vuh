@@ -9,7 +9,6 @@ public class GameControlGUI : MonoBehaviour {
 	string DisplayName;
 	string DisplayRules;
 	Texture2D DisplayRangeTexture;
-//	float DisplayRangeSize;
 	Texture2D DisplayAOETexture;
 	float DisplayAOESize;
 	Sprite DisplayCard;
@@ -236,5 +235,24 @@ public class GameControlGUI : MonoBehaviour {
 			discard.transform.localPosition = originalDiscardPlacement;
 		}
 		showingDiscard = !showingDiscard;
+	}
+
+	public void AnimateCardsToCorrectPosition() {
+		MoveHandPositionWhenOutOfPlace ();
+		
+		GameObject[] allCards = GameObject.FindGameObjectsWithTag("Card");
+		if (allCards != null) {
+			foreach(GameObject cardObject in allCards) {
+				if(cardObject != null) {
+					Card currentCard = cardObject.GetComponent<Card>();
+					if(currentCard != null) {
+						currentCard.cardUI.TryToMoveAnimate();
+					}
+				}
+			}
+		}
+	}
+	public void AnimateCardsToCorrectPositionInSeconds(float seconds) {
+		Invoke ("AnimateCardsToCorrectPosition", seconds);
 	}
 }

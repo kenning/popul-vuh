@@ -228,6 +228,7 @@ public class GUIStyleLibrary : MonoBehaviour {
 		
 		public ShopStyleLibrary (GUISkin shopSkin, GUISkin mainSkin) {
 			DisplayTitleFontSize  = SizeIntDecorator(9);
+			DisplayTextFontSize  = SizeIntDecorator(9);
 
 			TransparentBackground = SizeDecorator(shopSkin.customStyles[0]);
 			GoalExpoBox = SizeDecorator(shopSkin.box);

@@ -14,6 +14,7 @@ public class CardLibrary : MonoBehaviour {
 	
 		for(int i = 0; i < SaveData.StartingDeckCards.Count; i++) {
 			StartingItems.Add(SaveData.StartingDeckCards[i]);
+			StartingItems.Add(Lib["Donut"]);
 		}
 
 //		LibraryCard[] allCards = Lib.Values.ToArray();

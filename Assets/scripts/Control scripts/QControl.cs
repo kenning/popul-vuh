@@ -8,11 +8,14 @@ public static class QControl {
 	static Queue<Card> CardQ;
 	static Queue<QMethodType> MethodQ;
 	static GameControl gameControl;
+	static GameControlGUI gameControlGUI;
 
 	public static void Initialize () {
 		CardQ = new Queue<Card> ();
 		MethodQ = new Queue<QMethodType> ();
-		gameControl = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameControl> ();
+		GameObject gameController = GameObject.FindGameObjectWithTag ("GameController");
+		gameControl = gameController.GetComponent<GameControl> ();
+		gameControlGUI = gameController.GetComponent<GameControlGUI> ();
 	}
 
 	public static void AddToQ(Card card, QMethodType methodType) {
@@ -32,7 +35,7 @@ public static class QControl {
 			ClickControl clickControl = GameObject.FindGameObjectWithTag("GameController").GetComponent<ClickControl>();
 			clickControl.AllowEveryInput();
 			Debug.Log("Checked Q and allowed every input! This is where card effects terminate and EndTurnCheck() is called.");
-			gameControl.AnimateCardsToCorrectPositionInSeconds(.05f);
+			gameControlGUI.AnimateCardsToCorrectPositionInSeconds(.05f);
 			gameControl.CheckDeckCount();
             gameControl.EndTurnCheck();
 			return;

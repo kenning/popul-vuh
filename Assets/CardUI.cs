@@ -99,7 +99,11 @@ public class CardUI : MonoBehaviour {
 		}
 		
 		foreach(SpriteRenderer SRenderer in SRenderers) {
-			if(SRenderer.gameObject.name == "rarity" | SRenderer.gameObject.name == "god icon" | SRenderer.gameObject.name == "picture") {
+			if(SRenderer.gameObject.name == "rarity" | 
+			   SRenderer.gameObject.name == "god icon" | 
+			   SRenderer.gameObject.name == "picture" | 
+			   SRenderer.gameObject.name == "aoe icon" | 
+			   SRenderer.gameObject.name == "range icon" ) {
 				SRenderer.sortingOrder = 101-index*2;
 			}
 			//this catches the card background VVV
@@ -156,7 +160,12 @@ public class CardUI : MonoBehaviour {
 			
 			SpriteRenderer[] SRenderers = gameObject.GetComponentsInChildren<SpriteRenderer>();
 			foreach(SpriteRenderer SRenderer in SRenderers) {
-				if(SRenderer.gameObject.name == "rarity" | SRenderer.gameObject.name == "glow" | SRenderer.gameObject.name == "god icon" | SRenderer.gameObject.name == "picture") {
+				if(SRenderer.gameObject.name == "rarity" | 
+				   SRenderer.gameObject.name == "glow" | 
+				   SRenderer.gameObject.name == "god icon" | 
+				   SRenderer.gameObject.name == "picture" |
+				   SRenderer.gameObject.name == "aoe icon" | 
+				   SRenderer.gameObject.name == "range icon" ) {
 					SRenderer.sortingLayerName = "Discard and deck";
 					SRenderer.sortingOrder = 101+index*2;
 				}
@@ -191,7 +200,12 @@ public class CardUI : MonoBehaviour {
 		}
 		
 		foreach(SpriteRenderer SRenderer in SRenderers) {
-			if(SRenderer.gameObject.name == "rarity" | SRenderer.gameObject.name == "glow" | SRenderer.gameObject.name == "god icon" | SRenderer.gameObject.name == "picture") {
+			if(SRenderer.gameObject.name == "rarity" | 
+			   SRenderer.gameObject.name == "glow" | 
+			   SRenderer.gameObject.name == "god icon" | 
+			   SRenderer.gameObject.name == "picture" | 
+			   SRenderer.gameObject.name == "aoe icon" | 
+			   SRenderer.gameObject.name == "range icon" ) {
 				SRenderer.sortingOrder = 101-position*2;
 			}
 			//this catches the card background VVV
@@ -308,6 +322,31 @@ public class CardUI : MonoBehaviour {
 			{
 				Glow = render.gameObject.GetComponent<SpriteRenderer>();
 			}
+			else if (render.gameObject.name == "aoe icon" | render.gameObject.name == "range icon" ) 
+			{
+				string resourceLoadTarget = "sprites/targeting icons/";
+				float baseIconSize = 2.4f;
+				if(render.gameObject.name == "range icon") 
+				{
+					if(card.rangeTargetType == GridControl.TargetTypes.none) 
+						continue;
+					resourceLoadTarget += ("range " + card.rangeTargetType.ToString() + 
+										  " " + card.minRange.ToString() + "-" + card.maxRange.ToString());
+					baseIconSize = baseIconSize / (card.maxRange*2+1);
+				}
+				else if(render.gameObject.name == "aoe icon")
+				{
+					if(card.aoeTargetType == GridControl.TargetTypes.none) 
+						continue;
+					resourceLoadTarget += ("aoe " + card.aoeTargetType.ToString() + 
+					                       " " + card.aoeMinRange.ToString() + "-" + card.aoeMaxRange.ToString());
+					baseIconSize = baseIconSize / (card.aoeMaxRange*2+1);
+				}
+				Debug.Log(resourceLoadTarget);
+				render.sprite = Resources.Load<Sprite>(resourceLoadTarget);
+
+				render.gameObject.transform.localScale = new Vector3(baseIconSize, baseIconSize, 0);
+			}
 			else if (render.gameObject.name != "picture")
 			{
 				int godnum = 3;
@@ -372,7 +411,12 @@ public class CardUI : MonoBehaviour {
 					SpriteRenderer[] spriterenderererers = GetComponentsInChildren<SpriteRenderer>();
 					foreach(SpriteRenderer sr in spriterenderererers) {
 						sr.sortingLayerName = "Field background";
-						if (sr.gameObject.name != "rarity" && sr.gameObject.name != "glow" && sr.gameObject.name != "god icon" && sr.gameObject.name != "picture")
+						if (sr.gameObject.name != "rarity" 
+						    && sr.gameObject.name != "glow" 
+						    && sr.gameObject.name != "god icon" 
+						    && sr.gameObject.name != "picture" 
+						    && sr.gameObject.name != "aoe icon"  
+						    && sr.gameObject.name != "range icon" )
 						{
 							sr.sortingOrder = 0;
 						}

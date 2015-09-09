@@ -43,7 +43,8 @@ public class GridControl : MonoBehaviour {
         ObstacleLibrary.LevelTypes obstacleLevelType = ObstacleLibrary.LevelTypes.Empty;
 
         int rand = Random.Range(0, 10);
-        obstacleLevelType = ObstacleLibrary.AllLevelTypes[rand];
+//        obstacleLevelType = ObstacleLibrary.AllLevelTypes[rand];
+		obstacleLevelType = ObstacleLibrary.LevelTypes.Rocks;
 
         obstacleL.LoadObstacles(obstacleLevelType);
         #endregion
@@ -187,8 +188,11 @@ public class GridControl : MonoBehaviour {
     List<int[]> Visit(Point start)
     {
         counter++;
-        if (counter % 400 == 0) Debug.Log("counter is " + counter.ToString());
-        if (counter > 4000000) return null;
+        if (counter % 200 == 0) Debug.Log("counter is " + counter.ToString());
+		if (counter > 400) {
+			// Pathfinding algorithm failed, enemy will just stumble towards player dumbly
+			return null;
+		}
 
         bool GotThere = false;
         

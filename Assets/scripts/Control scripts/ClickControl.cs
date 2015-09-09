@@ -21,8 +21,8 @@ public class ClickControl : MonoBehaviour {
 
 	//dragging variables
 	Vector3 dragOrigin;
-	bool draggingGameboard = false;
-	bool draggingHand = false;
+	public bool draggingGameboard = false;
+	public bool draggingHand = false;
 	bool draggingDiscard = false;
 	GameObject arrows;
 
@@ -32,7 +32,8 @@ public class ClickControl : MonoBehaviour {
 	float topLimit = -.6f;
 	float bottomLimit = -2f;
 
-	Texture2D SideArrows;
+	//gridcursorcontrol variables
+	public float lastCursorSetTime = 0;
 
 	//card clicking and display variables
 	public bool cardHasBeenClickedOn = false;
@@ -50,6 +51,8 @@ public class ClickControl : MonoBehaviour {
 	
 	//i'm impatient and want to end the damn turn already bool
 	public bool turnEndedAlready = false;
+
+	Texture2D SideArrows;
 	
 	void Start(){
 		GameObject tempGO = GameObject.FindGameObjectWithTag ("GameController");
@@ -69,6 +72,8 @@ public class ClickControl : MonoBehaviour {
 	}
 
 	void Update () {
+
+		// Resetting things
 		
 		if (Input.GetMouseButtonDown (0)) {
 			shopControl.GoalCheck("Touch the screen no more than than X times");
@@ -105,14 +110,25 @@ public class ClickControl : MonoBehaviour {
 			return;
 		}
 		
-		//////////////////////////////////////
-		/// DRAGGING AND DISPLAY -- InfoInput
-		//////////////////////////////////////
-
 		if(gameControlGUI.CardDisplay && !Input.GetMouseButton(0)) {
 			gameControlGUI.Undisplay();
 			cardHasBeenClickedOn = false;
 		}
+
+		if (GridCursorControl.cursorActionSet) {
+			if(!Input.GetMouseButton(0)) {
+				gridCursorControl.ReleaseCursor();
+				return;
+			} else if(Time.time > lastCursorSetTime + 1.0f) {
+				GameBoardDrag();	
+				gridCursorControl.UnpresentCursor();
+				return;
+			}
+		}
+		
+		//////////////////////////////////////
+		/// DRAGGING AND DISPLAY -- InfoInput
+		//////////////////////////////////////
 
 		if(draggingGameboard && AllowInfoInput){
 			if(Input.GetMouseButton(0)){
@@ -143,19 +159,19 @@ public class ClickControl : MonoBehaviour {
 			else {
 				draggingGameboard = false;
 				arrows.GetComponent<SpriteRenderer>().enabled = false;
-				return;
 			}
+			return;
 		}
+
 		if(draggingHand && AllowInfoInput){
 			if(Input.GetMouseButton(0)){
-
 				if(gameControl.Hand.Count < 4) { 
 					handObj.transform.localPosition = new Vector3(((3) * -1.48f) + 3.7f, 0, 0);
 					return;
 				}
 				Vector3 pos = Camera.main.ScreenToViewportPoint (Input.mousePosition - dragOrigin);
 
-				if(handObj.transform.localPosition.x >= -.75f &&  pos.x > 0) {
+				if(handObj.transform.localPosition.x >= -.75f && pos.x > 0) {
 					handObj.transform.localPosition = new Vector3(-.73f, 0, 0f);
 					return;
 				}
@@ -173,6 +189,7 @@ public class ClickControl : MonoBehaviour {
 				draggingHand = false;
 				Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
 			}
+			return;
 		}
 
 		//////////////////////////////////////
@@ -212,12 +229,13 @@ public class ClickControl : MonoBehaviour {
 					cardHasBeenClickedOn = false;
 				}
 				cardHasBeenClickedOn = false;
-				//return?
 			}
 			else {
+
 				if(Mathf.Abs(Input.mousePosition.x - dragOrigin.x) > .2f 
 				   && !cardScriptClickedOn.Discarded && AllowInfoInput) {
 					handDrag();
+					return;
 				}
 				else if(Mathf.Abs(Input.mousePosition.y - dragOrigin.y) > .2f 
 				        && cardScriptClickedOn.Discarded && AllowInfoInput) {
@@ -326,16 +344,19 @@ public class ClickControl : MonoBehaviour {
 				}
 			}
 
+			if(cardHasBeenClickedOn) return;
+
 			Vector3 clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
 			if((clickPosition.x > GridControl.GridSize + .5f |
 			    clickPosition.x < -GridControl.GridSize - .5f |
 				clickPosition.y > GridControl.GridSize + .5f | 
-			    clickPosition.y < -GridControl.GridSize - .5f) && GridCursorControl.GridCursorIsActive) {
-				GridCursorControl.ClickedOffScreen = true;
-				gridCursorControl.UnpresentCursor();
+			    clickPosition.y < -GridControl.GridSize - .5f)) {
+				if(GridCursorControl.GridCursorIsActive) {
+					GridCursorControl.ClickedOffScreen = true;
+					gridCursorControl.UnpresentCursor();
+				}
 				return;
-				Debug.Log("uh oh");
 			}
 
 			foreach(RaycastHit2D hit in hits){

@@ -172,8 +172,11 @@ public class ShopControlGUI : MonoBehaviour {
 				GUI.EndGroup();
 
 				if(highScoreNotification[i]) {
+					string scoreText = "New highest score!\n";
+					if(!Goals[i].HigherScoreIsGood) scoreText = "New lowest score!\n";
+					scoreText += Goals[i].HighScore.ToString();
 					GUI.Box (new Rect(cardWidth*(.2f+(i)), cardHeight*4.2f, cardWidth*.6f, cardHeight*.9f), 
-					         "New high score!\n" + Goals[i].HighScore.ToString(), styleLibrary.ShopStyles.ShopGoalGold);
+					         scoreText, styleLibrary.ShopStyles.ShopGoalGold);
 				}
 				
 				//cards to buy
