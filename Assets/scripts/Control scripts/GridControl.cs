@@ -38,6 +38,9 @@ public class GridControl : MonoBehaviour {
     public void LoadEnemiesAndObstacles(int level)
     {
         PossibleSpawnPoints = FindEmptySpots(false);
+		foreach (Point p in PossibleSpawnPoints) {
+			Debug.Log("point at " + p.x + ", " + p.y);
+		}
 
         #region Load Obstacles
         ObstacleLibrary.LevelTypes obstacleLevelType = ObstacleLibrary.LevelTypes.Empty;
@@ -126,8 +129,8 @@ public class GridControl : MonoBehaviour {
                     }
                     else if (!IgnoreEnemies && gu.gameObject.tag == "Enemy")  
                     {
-                        Debug.Log("removing the spot at " + gu.xPosition.ToString() + ", " + gu.yPosition.ToString() +
-                            " because of " + gu.gameObject.name);
+//                        Debug.Log("removing the spot at " + gu.xPosition.ToString() + ", " + gu.yPosition.ToString() +
+//                            " because of " + gu.gameObject.name);
                         possiblePoints.RemoveAt(i);
                     }
                     break;

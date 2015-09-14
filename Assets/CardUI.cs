@@ -342,7 +342,6 @@ public class CardUI : MonoBehaviour {
 					                       " " + card.aoeMinRange.ToString() + "-" + card.aoeMaxRange.ToString());
 					baseIconSize = baseIconSize / (card.aoeMaxRange*2+1);
 				}
-				Debug.Log(resourceLoadTarget);
 				render.sprite = Resources.Load<Sprite>(resourceLoadTarget);
 
 				render.gameObject.transform.localScale = new Vector3(baseIconSize, baseIconSize, 0);

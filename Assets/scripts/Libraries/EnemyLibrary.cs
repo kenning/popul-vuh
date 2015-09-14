@@ -34,7 +34,8 @@ public class EnemyLibrary : MonoBehaviour {
 		{
 			string enemyScriptName = EnemyName;
             enemyScriptName = enemyScriptName.Replace(" ", "");
-			enemyScriptName = enemyScriptName.First().ToString().ToUpper() + enemyScriptName.Substring(1);
+			enemyScriptName = enemyScriptName.First().ToString().ToUpper() + enemyScriptName.Substring(1) + "Enemy";
+			Debug.Log(enemyScriptName);
 			tempGO.AddComponent(System.Type.GetType(enemyScriptName));
 		}
 		else
@@ -47,7 +48,7 @@ public class EnemyLibrary : MonoBehaviour {
 	}
 
 	public void LoadEnemiesForLevel (int level) {
-		if(level > 6) level = 6;
+		if(level > challengeRatingsForEachLevel.Count) level = challengeRatingsForEachLevel.Count;
 		for(int i = 0; i < challengeRatingsForEachLevel[level].Count; i++) {
 			LoadRandomEnemyOfChallengeRating(challengeRatingsForEachLevel[level][i]);
 		}
@@ -61,20 +62,24 @@ public class EnemyLibrary : MonoBehaviour {
 				appropriateChallengeRatingList.Add(Lib[allEnemies[i]]);
 			}
 		}
-		int x = Random.Range(0, appropriateChallengeRatingList.Count - 1);
+		int x = Random.Range(0, appropriateChallengeRatingList.Count);
 		LoadEnemy(appropriateChallengeRatingList[x].Name);
 	}
 	
 	void LoadEnemy(string EnemyName)
 	{
+		Debug.Log ("length: " + GridControl.PossibleSpawnPoints.Count);
 		int RandomNumber = Random.Range(0, GridControl.PossibleSpawnPoints.Count - 1);
 		Point xycoord = GridControl.PossibleSpawnPoints[RandomNumber];
+		Debug.Log ("removing at " + RandomNumber.ToString ());
+		Debug.Log ("old value: " + GridControl.PossibleSpawnPoints [RandomNumber].x + ", " + GridControl.PossibleSpawnPoints[RandomNumber].y);
 		GridControl.PossibleSpawnPoints.RemoveAt(RandomNumber);
+		Debug.Log ("new value: " + GridControl.PossibleSpawnPoints [RandomNumber].x + ", " + GridControl.PossibleSpawnPoints[RandomNumber].y);
 
-		if (xycoord.x > 3) xycoord.x = 3;
-		if (xycoord.x < -3) xycoord.x = -3;
-		if (xycoord.y > 3) xycoord.y = 3;
-		if (xycoord.y < -3) xycoord.y = -3;
+//		if (xycoord.x > ) xycoord.x = 4;
+//		if (xycoord.x < -3) xycoord.x = -3;
+//		if (xycoord.y > 3) xycoord.y = 3;
+//		if (xycoord.y < -3) xycoord.y = -3;
 
 		LoadEnemy(EnemyName, xycoord.x, xycoord.y);
 	}
@@ -90,14 +95,7 @@ public class EnemyLibrary : MonoBehaviour {
 		                     "Pa - Spear wielding warrior made of mud. Attacks from two squares away.",
 		                     "Pa - Spear wielding warrior made of mud. Attacks from two squares away. " +
 		                     "\nThe mud men were the third attempt by the Gods to make humans.",
-		                     1, 1, 1, 2, 1, GridControl.TargetTypes.cross, Enemy.MoveTarget.Cross, 1, false));
-		Lib.Add("jom", 
-		        new EnemyLibraryCard("jom",
-		                     "Jom - Ball playing warrior made of mud. Attacks from two sqaures away in a square.",
-		                     "Jom - Ball playing warrior made of mud. Attacks from two sqaures away in a square." + 
-		                     "\nThey even play ball games in the underworld!",
-							 1, 1, 1, 2, 1, GridControl.TargetTypes.square, Enemy.MoveTarget.Square, 1, false));
-		                     
+		                     1, 1, 1, 2, 1, GridControl.TargetTypes.cross, Enemy.MoveTarget.Cross, 1, false));		                     
 
 		// Challenge rating 2
 		Lib.Add("chitam", 
@@ -113,6 +111,13 @@ public class EnemyLibrary : MonoBehaviour {
 		                     "Pa Che' - Spear wielding warrior made of wood. Attacks from two squares away for two damage. " +
 		                     "\nThe wooden men were the fourth attempt by the Gods to make humans.",
 		                     2, 1, 1, 2, 2, GridControl.TargetTypes.cross, Enemy.MoveTarget.Cross, 2, false));
+
+		Lib.Add("jom", 
+		        new EnemyLibraryCard("jom",
+		                     "Jom - Ball playing warrior made of mud. Attacks from two sqaures away in a square.",
+		                     "Jom - Ball playing warrior made of mud. Attacks from two sqaures away in a square." + 
+		                     "\nThey even play ball games in the underworld!",
+		                     1, 1, 0, 2, 1, GridControl.TargetTypes.square, Enemy.MoveTarget.Square, 2, false));
 //		Lib.Add("chan", 
 //		        new EnemyLibraryCard("chan", 
 //		                     "Chan - Snake demon. Moves or attacks twice a turn. Constricting attack makes you unable to move for a turn.",
@@ -126,14 +131,14 @@ public class EnemyLibrary : MonoBehaviour {
 		                     "Jom Che' - Ball playing warrior made of wood. Attacks from two squares away in a square for two damage.",
 		                     "Jom Che' - Ball playing warrior made of wood. Attacks from two squares away in a square for two damage." + 
 		                     "\nThey even play ball games in the underworld!",
-		                     2, 1, 1, 2, 2, GridControl.TargetTypes.square, Enemy.MoveTarget.Square, 3, false));
+		                     2, 1, 0, 2, 2, GridControl.TargetTypes.square, Enemy.MoveTarget.Square, 3, false));
 		// Challenge rating 4
 		Lib.Add("balam",
 		        new EnemyLibraryCard("balam",
 		                     "Balam - Jaguar demon. Moves or attacks three times a turn. Uses black magic to attack from two squares away.",
 		                     "Balam - Jaguar demon. Moves or attacks three times a turn. Uses black magic to attack from two squares away." +
 		                     "Jaguars are extremely powerful animals and should be treated with extreme caution and respect.",
-		                     2, 3, 1, 2, 1, GridControl.TargetTypes.diamond, Enemy.MoveTarget.Cross, 4, false));
+		                     2, 3, 1, 2, 1, GridControl.TargetTypes.diamond, Enemy.MoveTarget.Cross, 3, false));
 
 //		Lib.Add("Tzi", new EnemyLibraryCard("Tzi",
 //		    "Tzi the Dog Demon", 

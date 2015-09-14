@@ -18,6 +18,8 @@ public class Player : MonoBehaviour {
 
 	public bool alive = true;
 	GridUnit playerGU;
+
+	MenuControl menuControl;
 	
 	void Start () {
 		useGUILayout = false;
@@ -25,6 +27,7 @@ public class Player : MonoBehaviour {
 		gameControl = gameController.GetComponent<GameControl> ();
 		shopControl = gameController.GetComponent<ShopControl>();
 		gridControl = gameController.GetComponent<GridControl>();
+		menuControl = gameController.GetComponent<MenuControl> ();
 		playerGU = gameObject.GetComponent<GridUnit>();
 		ResetLife ();
 	}
@@ -79,7 +82,7 @@ public class Player : MonoBehaviour {
 		HPBARRENDERER.sprite = HPBars [currentHealth];
 
 		if (currentHealth <1) {
-			MainMenu.Die();
+			menuControl.Die();
 		}
 	}
 

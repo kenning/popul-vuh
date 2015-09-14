@@ -60,7 +60,7 @@ public class Enemy : MonoBehaviour {
 		AttackDamage = enemyLC.AttackDamage;
 		AttackTargetType = enemyLC.AttackTargetType;
 		ThisMoveTarget = enemyLC.ThisMoveTarget;
-		SpritePath = enemyLC.SpritePath;
+		SpritePath = enemyLC.SpritePath.Replace(" ", "");
 		ChallengeRating = enemyLC.ChallengeRating;
 
 		CurrentHealth = MaxHealth;
@@ -168,7 +168,6 @@ public class Enemy : MonoBehaviour {
 			else 
 			{
 				directionAttempt = gridControl.ReturnNextMove(this, false);
-                Debug.Log("first failed, the new directionAttempt is " + directionAttempt);
                 if (IsOpenToMove(directionAttempt))
                 {
                     thisGU.GridMove(directionAttempt);
@@ -202,6 +201,7 @@ public class Enemy : MonoBehaviour {
 	}
 	public bool AttackCheck(int EnemyXPosition, int EnemyYPosition)
 	{
+		//this is being called a lotttt....
 
 		int distance = Mathf.Abs(playerGU.xPosition - EnemyXPosition) + Mathf.Abs(playerGU.yPosition - EnemyYPosition);
 		int diff0 = Mathf.Abs(playerGU.xPosition - EnemyXPosition);
@@ -214,10 +214,11 @@ public class Enemy : MonoBehaviour {
 			case GridControl.TargetTypes.diagonal:
 				return (distance >= AttackMinRange * 2 && distance <= AttackMaxRange * 2 && thisGU.IsDiagonal(playerGU));
 			case GridControl.TargetTypes.square:
-				int xDifference = thisGU.xPosition - playerGU.xPosition;
-				int yDifference = thisGU.yPosition - playerGU.yPosition;
-				return (xDifference < AttackMaxRange && xDifference > AttackMinRange &&
-						yDifference < AttackMaxRange && yDifference > AttackMinRange);
+				int xDifference = Mathf.Abs(thisGU.xPosition - playerGU.xPosition);
+				int yDifference = Mathf.Abs(thisGU.yPosition - playerGU.yPosition);
+				Debug.Log(xDifference.ToString() + ", " + yDifference.ToString());
+				return (xDifference <= AttackMaxRange && xDifference >= AttackMinRange &&
+						yDifference <= AttackMaxRange && yDifference >= AttackMinRange);
 			case GridControl.TargetTypes.cross:
 				return ((diff0 == 0 && diff1 <= AttackMaxRange && diff1 >= AttackMinRange) |
 						(diff1 == 0 && diff0 <= AttackMaxRange && diff0 >= AttackMinRange));

@@ -370,6 +370,8 @@ public class Card : MonoBehaviour {
 		
 		shopControl.GoalCheck("Play less than X cards total");
 		shopControl.GoalCheck("Don't play a card X turns in a row");
+
+		gameControlGUI.AnimateCardsToCorrectPositionInSeconds (.3f);
 	}
 
 	public virtual void ArmorPlay() {
@@ -415,6 +417,8 @@ public class Card : MonoBehaviour {
 		gameControl.CardsToTarget = 0;
 		gameControlGUI.UnlockDim ();
 		gameControlGUI.Dim(false);
+
+		gameControlGUI.AnimateCardsToCorrectPosition ();
 
 		CheckQ();
 	}

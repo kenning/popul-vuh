@@ -102,7 +102,6 @@ public class GameControlGUI : MonoBehaviour {
 		if (card.maxRange != 0) {
 			DisplayRangeTexture = (Texture2D)Resources.Load("sprites/targeting icons/range " + card.rangeTargetType.ToString() + 
 			                                                " " + card.minRange.ToString() + "-" + card.maxRange.ToString());
-//			DisplayRangeSize = (card.maxRange*2+1)*.2f;
 		}
 		else 
 			DisplayRangeTexture = null;
@@ -110,7 +109,6 @@ public class GameControlGUI : MonoBehaviour {
 		if(card.aoeMaxRange != 0) {
 			DisplayAOETexture = (Texture2D)Resources.Load("sprites/targeting icons/aoe " + card.aoeTargetType.ToString() + 
 			                                              " " + card.aoeMinRange.ToString() + "-" + card.aoeMaxRange.ToString());
-//			DisplayAOESize = card.aoeMaxRange;
 		}
 		else {
 			DisplayAOETexture = null;

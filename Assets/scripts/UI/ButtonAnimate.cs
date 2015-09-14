@@ -86,51 +86,51 @@ public class ButtonAnimate : MonoBehaviour {
 
     public void UITransform(bool TurnToJaguar)
     {
-        bool PlayButton = (gameObject.name == "play end button");
-
-        if (PlayButton)
-        {
-            if (TurnToJaguar)
-            {
-                if (Transformed)
-                    return;
-
-                Transformed = true;
-
-                SetSprite();
-
-                TextMesh text = gameObject.GetComponentInChildren<TextMesh>();
-                text.gameObject.transform.localPosition = new Vector3(-.03f, .18f, 0f);
-
-                gameObject.transform.localPosition = new Vector3(3.64f, -.61f, 0f);
-
-            }
-            else
-            {
-                Transformed = false;
-
-                SetSprite();
-
-                TextMesh text = gameObject.GetComponentInChildren<TextMesh>();
-                text.gameObject.transform.localPosition = new Vector3(-.13f, .12f, 0);
-
-                gameObject.transform.localPosition = new Vector3(3.64f, -.32f, 0f);
-            }
-        }
-        else //movebutton
-        {
-            if (TurnToJaguar)
-            {
-                gameObject.GetComponent<SpriteRenderer>().enabled = false;
-                gameObject.GetComponent<BoxCollider2D>().enabled = false;
-                gameObject.GetComponentInChildren<TextMesh>().color = new Color(0, 0, 0, 0);
-            }
-            else
-            {
-                gameObject.GetComponent<SpriteRenderer>().enabled = true;
-                gameObject.GetComponent<BoxCollider2D>().enabled = true;
-                gameObject.GetComponentInChildren<TextMesh>().color = new Color(1, 1, 1, 1);
-            }
-        }
+//        bool PlayButton = (gameObject.name == "play end button");
+//
+//        if (PlayButton)
+//        {
+//            if (TurnToJaguar)
+//            {
+//                if (Transformed)
+//                    return;
+//
+//                Transformed = true;
+//
+//                SetSprite();
+//
+//                TextMesh text = gameObject.GetComponentInChildren<TextMesh>();
+//                text.gameObject.transform.localPosition = new Vector3(-.03f, .18f, 0f);
+//
+//                gameObject.transform.localPosition = new Vector3(3.64f, -.61f, 0f);
+//
+//            }
+//            else
+//            {
+//                Transformed = false;
+//
+//                SetSprite();
+//
+//                TextMesh text = gameObject.GetComponentInChildren<TextMesh>();
+//                text.gameObject.transform.localPosition = new Vector3(-.13f, .12f, 0);
+//
+//                gameObject.transform.localPosition = new Vector3(3.64f, -.32f, 0f);
+//            }
+//        }
+//        else //movebutton
+//        {
+//            if (TurnToJaguar)
+//            {
+//                gameObject.GetComponent<SpriteRenderer>().enabled = false;
+//                gameObject.GetComponent<BoxCollider2D>().enabled = false;
+//                gameObject.GetComponentInChildren<TextMesh>().color = new Color(0, 0, 0, 0);
+//            }
+//            else
+//            {
+//                gameObject.GetComponent<SpriteRenderer>().enabled = true;
+//                gameObject.GetComponent<BoxCollider2D>().enabled = true;
+//                gameObject.GetComponentInChildren<TextMesh>().color = new Color(1, 1, 1, 1);
+//            }
+//        }
     }
 }

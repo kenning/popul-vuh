@@ -40,6 +40,7 @@ public class MainMenu : MonoBehaviour {
     {
         GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().alive = false;
 
+		MainMenuUp = false;
 		DiedMenuUp = true;
 		clickControl.DisallowEveryInput ();
 		clickControl.AllowInfoInput = true;
