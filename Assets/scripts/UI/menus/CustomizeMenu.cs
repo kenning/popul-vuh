@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class CustomizeMenu : MonoBehaviour {
 
-	ShopControl shopControl;
 	ShopControlGUI shopControlGUI;
 	GUIStyleLibrary styleLibrary;
 	MenuControl menuControl;
@@ -26,7 +25,6 @@ public class CustomizeMenu : MonoBehaviour {
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
 		menuControl = gameObject.GetComponent<MenuControl> ();
 		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
-		shopControl = gameObject.GetComponent<ShopControl> ();
 	}
 
 	void OnGUI () {

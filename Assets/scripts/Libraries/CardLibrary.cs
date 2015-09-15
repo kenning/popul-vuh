@@ -66,8 +66,8 @@ public class CardLibrary : MonoBehaviour {
 		                                          "Move +2 Play +1\nTrigger:\nPunch enemy:\nMove +2",
 		                                          Card.CardActionTypes.NoTarget));
 		Lib.Add("Ninja Flipout", new LibraryCard("Ninja Flipout",
-		                                         "Ninja \nFlipout",
-		                                         "x",
+		                                         "Ninja \nFlipout", 
+		                                         "shuriken",
 		                                         ShopControl.Gods.Ikka,
 		                                         Card.Rarity.Silver,
 		                                         "To play, tap the card again",

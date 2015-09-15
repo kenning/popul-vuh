@@ -9,12 +9,12 @@ public class EnemyLibrary : MonoBehaviour {
 	public List<List<int>> challengeRatingsForEachLevel = new List<List<int>>();
 
 	void Start() {
-		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 1, 2, 2, 2, 3, 3 });
 		challengeRatingsForEachLevel.Add(new List<int> { 1, 1 });
 		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 2 });
 		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 2, 3 });
 		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 2, 2, 3 });
 		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 2, 2, 3, 3 });
+		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 2, 2, 3, 3, 4 });
 	}
 
 	//base method. only really used to load an enemy into a specific place in the tutorial. 
@@ -95,18 +95,29 @@ public class EnemyLibrary : MonoBehaviour {
 		                     "Pa - Spear wielding warrior made of mud. Attacks from two squares away.",
 		                     "Pa - Spear wielding warrior made of mud. Attacks from two squares away. " +
 		                     "\nThe mud men were the third attempt by the Gods to make humans.",
-		                     1, 1, 1, 2, 1, GridControl.TargetTypes.cross, Enemy.MoveTarget.Cross, 1, false));		                     
+		                     1, 1, 1, 2, 1, GridControl.TargetTypes.cross, Enemy.MoveTarget.Cross, 1, false));	
+		Lib.Add("zotz",
+		        new EnemyLibraryCard("zotz",
+		                     "Zotz - Leaf-Nosed Bat Demon. Your punches will miss, try using a weapon.",
+		                     "Zotz - Leaf-Nosed Bat Demon. Your punches will miss, try using a weapon." +
+		                     "Minor bat found in the Underworld's infamous House of Bats.",
+		                     1, 1, 1, 1, 1, GridControl.TargetTypes.cross, Enemy.MoveTarget.Adjacent, 1, true));
 
-		// Challenge rating 2
 		Lib.Add("chitam", 
 		        new EnemyLibraryCard("chitam", 
-		                     "Chitam - Peccary demon. Takes two actions per turn. Its scavenging attack steals a card from your hand.",
-		                     "Chitam - Peccary demon. Takes two actions per turn. Its scavenging attack steals a card from your hand. " +
-		                     "\nPeccaries are spiritually powerful creatures but this minor peccary demon has not fully grown.",
-		                     1, 2, 1, 1, 1, GridControl.TargetTypes.diamond, Enemy.MoveTarget.Adjacent, 2, true)); 
-
-		Lib.Add("pa che", 
-		        new EnemyLibraryCard("pa che", 
+		                     "Chitam - Peccary demon. Moves twice a turn. Its scavenging attack steals a card from your hand.",
+		                     "Chitam - Peccary demon. Moves twice. Its scavenging attack steals a card from your hand. " +
+		                     "\nThis minor peccary demon has not fully grown.",
+		                     1, 2, 1, 1, 1, GridControl.TargetTypes.diamond, Enemy.MoveTarget.Adjacent, 1, true)); 
+		Lib.Add("ni",
+		        new EnemyLibraryCard("ni",
+		                     "Ni - Blowgun wielding warrior made of mud. Attacks from six squares away.",
+		                     "Ni - Blowgun wielding warrior made of mud. Attacks from six squares away." + 
+		                     "Mayan blowguns traditionally have a sight and shoot clay pellets.",
+		                     1, 1, 1, 6, 1, GridControl.TargetTypes.cross, Enemy.MoveTarget.Cross, 1, false));
+		// Challenge rating 2
+		Lib.Add("pache", 
+		        new EnemyLibraryCard("pache", 
 		                     "Pa Che' - Spear wielding warrior made of wood. Attacks from two squares away for two damage.",
 		                     "Pa Che' - Spear wielding warrior made of wood. Attacks from two squares away for two damage. " +
 		                     "\nThe wooden men were the fourth attempt by the Gods to make humans.",
@@ -116,29 +127,40 @@ public class EnemyLibrary : MonoBehaviour {
 		        new EnemyLibraryCard("jom",
 		                     "Jom - Ball playing warrior made of mud. Attacks from two sqaures away in a square.",
 		                     "Jom - Ball playing warrior made of mud. Attacks from two sqaures away in a square." + 
-		                     "\nThey even play ball games in the underworld!",
+		                     "\nThey even play ball games in the Underworld!",
 		                     1, 1, 0, 2, 1, GridControl.TargetTypes.square, Enemy.MoveTarget.Square, 2, false));
-//		Lib.Add("chan", 
-//		        new EnemyLibraryCard("chan", 
-//		                     "Chan - Snake demon. Moves or attacks twice a turn. Constricting attack makes you unable to move for a turn.",
-//		                     "Chan - Snake demon. Moves or attacks twice a turn. Constricting attack makes you unable to move for a turn." +
-//		                     "Snakes are often a symbol for Ixchel. However this snake has very little spiritual power.",
-//		                     1, 2, 1, 1, 1, GridControl.TargetTypes.cross, Enemy.MoveTarget.Adjacent, 2, true));
-
 		// Challenge rating 3
-		Lib.Add("jom che", 
-		        new EnemyLibraryCard("jom che",
+		Lib.Add("niche",
+		        new EnemyLibraryCard("niche",
+		                     "Ni Che' - Blowgun wielding warrior made of wood. Attacks for two damage.",
+		                     "Ni Che' - Blowgun wielding warrior made of wood. Attacks for two damage." + 
+		                     "Mayan blowguns traditionally have a sight and shoot clay pellets.",
+		                     2, 1, 1, 6, 2, GridControl.TargetTypes.cross, Enemy.MoveTarget.Cross, 3, false));
+		Lib.Add("jomche", 
+		        new EnemyLibraryCard("jomche",
 		                     "Jom Che' - Ball playing warrior made of wood. Attacks from two squares away in a square for two damage.",
 		                     "Jom Che' - Ball playing warrior made of wood. Attacks from two squares away in a square for two damage." + 
-		                     "\nThey even play ball games in the underworld!",
+		                     "\nThey even play ball games in the Underworld!",
 		                     2, 1, 0, 2, 2, GridControl.TargetTypes.square, Enemy.MoveTarget.Square, 3, false));
+		Lib.Add("chan", 
+		        new EnemyLibraryCard("chan", 
+		                     "Chan - Snake demon. Moves or attacks twice a turn. Constricting attack makes you unable to move for a turn.",
+		                     "Chan - Snake demon. Moves or attacks twice a turn. Constricting attack makes you unable to move for a turn." +
+		                     "Snakes are often a symbol for Ixchel.",
+		                     2, 2, 1, 1, 1, GridControl.TargetTypes.cross, Enemy.MoveTarget.Adjacent, 3, true));
 		// Challenge rating 4
 		Lib.Add("balam",
 		        new EnemyLibraryCard("balam",
-		                     "Balam - Jaguar demon. Moves or attacks three times a turn. Uses black magic to attack from two squares away.",
-		                     "Balam - Jaguar demon. Moves or attacks three times a turn. Uses black magic to attack from two squares away." +
-		                     "Jaguars are extremely powerful animals and should be treated with extreme caution and respect.",
-		                     2, 3, 1, 2, 1, GridControl.TargetTypes.diamond, Enemy.MoveTarget.Cross, 3, false));
+		                     "Balam - Jaguar demon. Moves thrice a turn. Uses black magic to attack from two squares away.",
+		                     "Balam - Jaguar demon. Moves thrice a turn. Uses black magic to attack from two squares away." +
+		                     "Jaguars are extremely powerful animals and should be treated with caution.",
+		                     2, 3, 1, 2, 1, GridControl.TargetTypes.diamond, Enemy.MoveTarget.Cross, 4, false));
+		Lib.Add("camazotz",
+		        new EnemyLibraryCard("camazotz",
+		                     "Camazotz - Leaf-Nosed Bat Demon. Moves twice a turn. Your punches will miss, try using a weapon.",
+		                     "Camaotz - Leaf-Nosed Bat Demon. Your punches will miss, try using a weapon." +
+		                     "These demons are famous for their ability to decapitate.",
+		                     2, 2, 1, 1, 1, GridControl.TargetTypes.diamond, Enemy.MoveTarget.Adjacent, 4, true));
 
 //		Lib.Add("Tzi", new EnemyLibraryCard("Tzi",
 //		    "Tzi the Dog Demon", 

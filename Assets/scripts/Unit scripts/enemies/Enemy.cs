@@ -290,6 +290,16 @@ public class Enemy : MonoBehaviour {
 			SelectableCards[randomNumber].Discard();
 		}
 	}
+
+	public virtual void SetSickBleeding () {
+		gameControl.SetSick (GameControl.SickTypes.Bleeding);
+	}
+	public virtual void SetSickSwollen () {
+		gameControl.SetSick (GameControl.SickTypes.Swollen);
+	}
+	public virtual void SetSickHunger () {
+		gameControl.SetSick (GameControl.SickTypes.Hunger);
+	}
 #endregion
 
 #region Damage taking methods

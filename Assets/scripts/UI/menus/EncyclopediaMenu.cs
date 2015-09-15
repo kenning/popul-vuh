@@ -236,13 +236,13 @@ public class EncyclopediaMenu : MonoBehaviour {
 					GUI.BeginGroup(new Rect(0,Screen.height*(.15f*(i+1) - .04f), Screen.width*.75f, Screen.height*.14f), 
 					        	   styleLibrary.EncyclopediaStyles.NeutralButton);
 					if(enemyPortraitTextures[i] != null) {
-						GUI.DrawTexture(new Rect(0, 0, Screen.height*.14f, Screen.height*.14f), enemyPortraitTextures[i]);
+						GUI.DrawTexture(new Rect(Screen.height*.01f, Screen.height*.02f, Screen.height*.10f, Screen.height*.10f), enemyPortraitTextures[i]);
 					}
-					GUI.Box (new Rect(Screen.width*.21f, Screen.height*.005f, Screen.width*.38f, Screen.height*.02f), 
-					         allEnemies[i].Name, styleLibrary.EncyclopediaStyles.NoneStyleWordWrap);
-					GUI.Box (new Rect(Screen.width*.21f, Screen.height*.03f, Screen.width*.38f, Screen.height*.09f), 
+					GUI.Box (new Rect(Screen.width*.21f, Screen.height*.005f,Screen.width*.38f, Screen.height*.09f), 
 					         allEnemies[i].EncyclopediaEntry, styleLibrary.EncyclopediaStyles.NoneStyleWordWrap);
 					GUI.DrawTexture (new Rect(Screen.width*.593f, Screen.width*.0325f, Screen.width*.14f, Screen.width*.14f), enemyAttackTextures[i]);
+					GUI.Box(new Rect(Screen.width*.6f, Screen.width*.18f, Screen.width*.14f, Screen.width*.4f), 
+					        "Lv. " + allEnemies[i].ChallengeRating, styleLibrary.EncyclopediaStyles.NoneStyleWordWrap);
 					GUI.EndGroup();
 				}
 				else {

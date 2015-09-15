@@ -49,8 +49,8 @@ public class MainMenu : MonoBehaviour {
 
 		GameObject.Find ("Dimmer").GetComponent<DimAnimate>().ForceDim();
 
-        GameControl gameControl = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControl>();
-        gameControl.TransformPlayer(false);
+//        GameControl gameControl = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControl>();
+//        gameControl.TransformPlayer(false);
 
         if (GameControl.Level >= NextUnlockLevel)
         {
@@ -113,13 +113,12 @@ public class MainMenu : MonoBehaviour {
     {
 		GUI.depth = 1;
 
-		GUI.Box(new Rect(0, 0, Screen.width, Screen.height), "", styleLibrary.MainStyles.BlackBackground);
-		
 		GUI.depth = 0;
 
         #region Main Menu
         if (MainMenuUp)
         {
+			GUI.Box(new Rect(0, 0, Screen.width, Screen.height), "", styleLibrary.MainStyles.BlackBackground);
 
             GUI.Box(new Rect(Screen.width * .1f, Screen.height * .05f, Screen.width * .8f, Screen.height * .15f), 
 			        "Popul Vuh", styleLibrary.MainStyles.Title);
@@ -189,7 +188,9 @@ public class MainMenu : MonoBehaviour {
         #region Delete Data Menu
         if (DeleteDataMenuUp)
         {
-            GUI.Box(new Rect(Screen.width * .2f, Screen.height * .1f, Screen.width * .6f, Screen.height * .4f), 
+			GUI.Box(new Rect(0, 0, Screen.width, Screen.height), "", styleLibrary.MainStyles.BlackBackground);
+			
+			GUI.Box(new Rect(Screen.width * .2f, Screen.height * .1f, Screen.width * .6f, Screen.height * .4f), 
 			        "Are you sure?", styleLibrary.MainStyles.NeutralButton);
             if (GUI.Button(new Rect(Screen.width * .6f, Screen.height * .8f, Screen.width * .3f, Screen.height * .15f), 
 			               "Yes!", styleLibrary.MainStyles.Button))

@@ -32,7 +32,6 @@ public class MenuControl : MonoBehaviour {
 		TurnOffMenus ();
 
 		if (menu == MenuType.MainMenu) {
-			MainMenu.CleanUpGameboard();
 			MainMenu.errorText = "";
 			mainMenu.enabled = true;
 			MainMenuIsOn = true;
