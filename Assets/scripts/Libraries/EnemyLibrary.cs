@@ -9,7 +9,6 @@ public class EnemyLibrary : MonoBehaviour {
 	public List<List<int>> challengeRatingsForEachLevel = new List<List<int>>();
 
 	void Start() {
-		challengeRatingsForEachLevel.Add(new List<int> { 1, 1 });
 		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 2 });
 		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 2, 3 });
 		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 2, 2, 3 });
