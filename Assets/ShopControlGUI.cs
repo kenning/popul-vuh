@@ -7,6 +7,7 @@ public class ShopControlGUI : MonoBehaviour {
 	ShopControl shopControl;
 	GameControl gameControl;
 	ClickControl clickControl;
+	GameControlGUI gameControlGUI;
 	GUIStyleLibrary styleLibrary;
 	public bool goalExpo = false;
 	public bool normaldisplay = false;
@@ -48,6 +49,7 @@ public class ShopControlGUI : MonoBehaviour {
 		shopControl = gameObject.GetComponent<ShopControl> ();
 		clickControl = gameObject.GetComponent<ClickControl> ();
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
+		gameControlGUI = gameObject.GetComponent<GameControlGUI> ();
 		clickBlocker = GameObject.Find ("moving click blocker").GetComponent<ClickBlocker> ();
 
 		goalExpo = false;
@@ -296,7 +298,7 @@ public class ShopControlGUI : MonoBehaviour {
 			              "Go to next level", GoToNextLevelStyle)) {
 				shopGUI = false;
 				gameControl.CollectAnimate();
-				gameControl.Tooltip = "Shuffling together your deck and discard...";
+				gameControlGUI.SetTooltip("Shuffling together your deck and discard...");
 				AddedToCollText = "";
 				TurnOffShopControlGUIs(); //this bool prevents the normal goal display while shuffle animating.
 			}

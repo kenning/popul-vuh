@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 [System.Serializable]
 public class SaveData 
@@ -20,20 +21,20 @@ public class SaveData
 	
 	public static void LoadData(SavedGame savedGameData) {
 
-		if(File.Exists(Application.persistentDataPath + "savedGames.gd")) {
-			if(savedGameData.StartingDeckCards == null) {
-				Debug.Log("Oh shit! Can't load this!");
-				return;
-			}
 
             //$%^
-			SaveData.UnlockedGods = savedGameData.UnlockedGods;
-			SaveData.UnlockedCards = savedGameData.UnlockedCards;
-			SaveData.DefeatedEnemies = savedGameData.DefeatedEnemies;
-			SaveData.StartingDeckCards = savedGameData.StartingDeckCards;
-            SaveData.FinishedTutorial = savedGameData.FinishedTutorial;
-            SaveData.NewCardsAvailable = savedGameData.NewCardsAvailable;
-			SaveData.GoalHighScores = savedGameData.GoalHighScores;
+//			UnlockedGods = savedGameData.UnlockedGods;
+		if (ES2.Exists ("PV")) {
+			UnlockedGods = new List<ShopControl.Gods> ();
+			for (int i = 0; i < savedGameData.UnlockedGods.Count; i++) {
+				UnlockedGods.Add ((ShopControl.Gods)savedGameData.UnlockedGods [i]);
+			}
+			UnlockedCards = savedGameData.UnlockedCards;
+			DefeatedEnemies = savedGameData.DefeatedEnemies;
+			StartingDeckCards = savedGameData.StartingDeckCards;
+			FinishedTutorial = savedGameData.FinishedTutorial;
+			NewCardsAvailable = savedGameData.NewCardsAvailable;
+			GoalHighScores = savedGameData.GoalHighScores;
 		}
         MainMenu.UnlockCheck();
 		Debug.Log ("Loading! unlocked gods: " + SaveData.UnlockedGods.Count.ToString () + 
@@ -48,7 +49,7 @@ public class SaveData
 		SavedGame sg = new SavedGame ();
 		sg.UnlockedCards = SaveData.UnlockedCards;
 		sg.StartingDeckCards = SaveData.StartingDeckCards;
-		sg.UnlockedGods = SaveData.UnlockedGods;
+		sg.UnlockedGods = SaveData.UnlockedGods.Select(i=>(int)i).ToList();
 		sg.DefeatedEnemies = SaveData.DefeatedEnemies;
         sg.FinishedTutorial = SaveData.FinishedTutorial;
         sg.NewCardsAvailable = SaveData.NewCardsAvailable;
@@ -172,7 +173,7 @@ public class SavedGame
 	public List<LibraryCard> UnlockedCards = new List<LibraryCard>();
 	public List<LibraryCard> StartingDeckCards = new List<LibraryCard>();
 	public List<string> DefeatedEnemies = new List<string>();
-	public List<ShopControl.Gods> UnlockedGods = new List<ShopControl.Gods>();
+	public List<int> UnlockedGods = new List<int>();
 	public Dictionary<string, int> GoalHighScores = new Dictionary<string, int> ();
 	public bool FinishedTutorial = false;
     public bool NewCardsAvailable = false;

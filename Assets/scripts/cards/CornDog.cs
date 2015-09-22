@@ -18,7 +18,7 @@ public class CornDog : Card {
 		gameControl.CardsToTarget = 2;
 
 		gameControlGUI.ForceDim();
-		gameControl.Tooltip = "Pick two cards to discard.";
+		gameControlGUI.SetTooltip("Pick two cards to discard.");
 		
 		base.Play ();
 	}

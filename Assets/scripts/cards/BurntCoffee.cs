@@ -13,7 +13,7 @@ public class BurntCoffee : Card {
 	public override void Play () {
 		gameControl.CardsToTarget = 1;
 
-		gameControl.Tooltip =  "Pick a card to burn.";
+		gameControlGUI.SetTooltip("Pick a card to burn.");
 		
 		gameControlGUI.ForceDim ();
 

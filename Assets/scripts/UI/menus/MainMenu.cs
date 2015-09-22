@@ -120,9 +120,11 @@ public class MainMenu : MonoBehaviour {
         {
 			GUI.Box(new Rect(0, 0, Screen.width, Screen.height), "", styleLibrary.MainStyles.BlackBackground);
 
+			//Title
             GUI.Box(new Rect(Screen.width * .1f, Screen.height * .05f, Screen.width * .8f, Screen.height * .15f), 
 			        "Popul Vuh", styleLibrary.MainStyles.Title);
 
+			//Button 1: Start new game
             if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .25f, Screen.width * .6f, Screen.height * .1f), 
 			               "Start new game", styleLibrary.MainStyles.Button))
             {
@@ -139,41 +141,52 @@ public class MainMenu : MonoBehaviour {
                 }
             }
 
+			//Button 2: Tutorial
 			if(GUI.Button(new Rect(Screen.width*.2f, Screen.height*.4f, Screen.width*.6f, Screen.height*.1f), 
-			  "Tutorial", styleLibrary.MainStyles.Button)) {
-				menuControl.TurnOnTutorial();
+			              "Tutorial", styleLibrary.MainStyles.Button)) {
+				menuControl.TurnOnMenu(MenuControl.MenuType.Tutorial);
+			}
+			if (!SaveData.FinishedTutorial)
+			{
+				GUI.Box(new Rect(Screen.width * .25f, Screen.height * .475f, Screen.width * .5f, Screen.height * .05f), 
+				        "Learn to play here!", styleLibrary.MainStyles.NewCardsAvailablePopup);
 			}
 
-            if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .55f, Screen.width * .6f, Screen.height * .1f), 
-			               "Reset unlocked data", styleLibrary.MainStyles.Button))
-            {
-                DeleteDataMenuUp = true;
-                MainMenuUp = false;
-            }
-
-            if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .7f, Screen.width * .6f, Screen.height * .1f), 
+			//Button 3: Customize Deck
+			if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .55f, Screen.width * .6f, Screen.height * .1f), 
 			               "Customize Deck", styleLibrary.MainStyles.Button))
             {
                 SaveData.NewCardsAvailable = false;
 				menuControl.TurnOnMenu(MenuControl.MenuType.CustomizeMenu);
             }
+				//Subheading for Customize Deck
+			if (SaveData.NewCardsAvailable)
+			{
+				GUI.Box(new Rect(Screen.width * .25f, Screen.height * .625f, Screen.width * .5f, Screen.height * .05f), 
+				        "New cards available!", styleLibrary.MainStyles.NewCardsAvailablePopup);
+			}
 
-			if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .85f, Screen.width * .6f, Screen.height * .1f),
+			//Button 4: Encyclopedia
+			if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .7f, Screen.width * .6f, Screen.height * .1f),
 			               "Encyclopedia", styleLibrary.MainStyles.Button))
 			{
 				menuControl.TurnOnMenu(MenuControl.MenuType.EncyclopediaMenu);
 			}
 
-            if (SaveData.NewCardsAvailable)
-            {
-                GUI.Box(new Rect(Screen.width * .25f, Screen.height * .775f, Screen.width * .5f, Screen.height * .05f), 
-				        "New cards available!", styleLibrary.MainStyles.Sidebar);
-            }
+			//Button 5: Reset data
+			if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .85f, Screen.width * .6f, Screen.height * .1f), 
+			               "Reset unlocked data", styleLibrary.MainStyles.Button))
+			{
+				DeleteDataMenuUp = true;
+				MainMenuUp = false;
+			}
 
+			//Left Sidebar
 			GUIContent CardsUnlocked = new GUIContent("You have unlocked \n" + SaveData.UnlockedCards.Count + "/" + CardLibrary.Lib.Count + "\ncards");
             GUI.Box(new Rect(Screen.width * .025f, Screen.height * .3f, Screen.width * .15f, Screen.height * .6f), 
 			        CardsUnlocked, styleLibrary.MainStyles.Sidebar);
 
+			//Right Sidebar
             GUI.BeginGroup(new Rect(Screen.width * .825f, Screen.height * .3f, Screen.width * .15f, Screen.height * .6f));
 			GUI.Box(new Rect(0, Screen.height * .0f, Screen.width * .15f, Screen.height * .2f), "Next God to unlock:", styleLibrary.MainStyles.Sidebar);
             GUI.Box(new Rect(0, Screen.height * .2f, Screen.width * .15f, Screen.height * .2f), new GUIContent("\n" + NextGodToUnlock.ToString(),
@@ -195,12 +208,10 @@ public class MainMenu : MonoBehaviour {
             if (GUI.Button(new Rect(Screen.width * .6f, Screen.height * .8f, Screen.width * .3f, Screen.height * .15f), 
 			               "Yes!", styleLibrary.MainStyles.Button))
             {
-                SaveData.UnlockedGods = new List<ShopControl.Gods> { ShopControl.Gods.Buluc, ShopControl.Gods.Chac };
-                SaveData.UnlockedCards = new List<LibraryCard>();
-                SaveLoad.Save();
                 MainMenuUp = true;
                 DeleteDataMenuUp = false;
                 SaveData.NewSaveFile();
+				SaveLoad.Save();
             }
             if (GUI.Button(new Rect(Screen.width * .1f, Screen.height * .8f, Screen.width * .3f, Screen.height * .15f), 
 			               "Back", styleLibrary.MainStyles.Button))

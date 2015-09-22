@@ -15,7 +15,7 @@ public class GlassOfChardonnay : Card {
 		gameControl.CardsToTarget = 1;
 
 		gameControlGUI.ForceDim();
-		gameControl.Tooltip =  ("Please select a discarded card to tuck back into your deck.");
+		gameControlGUI.SetTooltip("Please select a discarded card to tuck back into your deck.");
 	}
 	
 	public override void AfterCardTargetingCallback() {

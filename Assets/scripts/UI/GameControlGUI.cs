@@ -25,6 +25,8 @@ public class GameControlGUI : MonoBehaviour {
 	public bool CardDisplay = false;
 	GameObject cardObjFromDeck;
 
+	string tooltip = "";
+
 	bool showingDiscard;
 	Vector3 originalDiscardPlacement = new Vector3(3f, 2f, 0);
 	Vector3 displayDiscardPlacement = new Vector3(3f, 6.5f, 0);
@@ -84,9 +86,9 @@ public class GameControlGUI : MonoBehaviour {
 			GUI.EndGroup();
 		}
 		
-		if (gameControl.Tooltip != "") {
+		if (tooltip != "") {
 			GUI.Box(new Rect(Screen.width*.02f, Screen.height*.68f, Screen.width*.8f, Screen.height*.08f), 
-			        gameControl.Tooltip, styleLibrary.GameControlGUIStyles.TooltipBox);
+			        tooltip, styleLibrary.GameControlGUIStyles.TooltipBox);
 		}
 	}
 
@@ -190,6 +192,10 @@ public class GameControlGUI : MonoBehaviour {
 
 	public void UnlockDim() {
 		dimmer.UnlockDim ();
+	}
+
+	public void SetTooltip(string newToolTip) {
+		tooltip = newToolTip;
 	}
 
 	public void ShowDeck(bool TurningOn) {

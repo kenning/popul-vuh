@@ -3,7 +3,7 @@ using System.Collections;
 
 public class MenuControl : MonoBehaviour {
 
-	public enum MenuType {MainMenu, EncyclopediaMenu, GodChoiceMenu, CustomizeMenu};
+	public enum MenuType {MainMenu, EncyclopediaMenu, GodChoiceMenu, CustomizeMenu, Tutorial};
 
 	public MainMenu mainMenu;
 	GameControl gameControl;
@@ -14,6 +14,7 @@ public class MenuControl : MonoBehaviour {
 	bool GodChoiceMenuIsOn = false;
 	CustomizeMenu customizeMenu;
 	bool CustomizeMenuIsOn = false;
+	Tutorial tutorial;
 	bool TutorialIsOn = false;
 
 	GUIStyleLibrary styleLibrary;
@@ -24,6 +25,7 @@ public class MenuControl : MonoBehaviour {
 		encyclopediaMenu = gameObject.GetComponent<EncyclopediaMenu> ();
 		godChoiceMenu = gameObject.GetComponent<GodChoiceMenu> ();
 		customizeMenu = gameObject.GetComponent<CustomizeMenu> ();
+		tutorial = gameObject.GetComponent<Tutorial> ();
 
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
 	}
@@ -41,23 +43,20 @@ public class MenuControl : MonoBehaviour {
 		} else if (menu == MenuType.GodChoiceMenu) {
 			godChoiceMenu.enabled = true;
 			GodChoiceMenuIsOn = true;
-			for (int i = 0; i < SaveData.UnlockedGods.Count; i++)
-			{
-				godChoiceMenu.GodChoiceSelection[ShopControl.AllGods.IndexOf(SaveData.UnlockedGods[i])] = true;
+			for (int i = 0; i < SaveData.UnlockedGods.Count; i++) {
+				godChoiceMenu.GodChoiceSelection [ShopControl.AllGods.IndexOf (SaveData.UnlockedGods [i])] = true;
 			}
 		} else if (menu == MenuType.CustomizeMenu) {
 			customizeMenu.enabled = true;
 			CustomizeMenuIsOn = true;
-			customizeMenu.FindCards();
+			customizeMenu.FindCards ();
+		} else if (menu == MenuType.Tutorial) {
+			tutorial.enabled = true;
+			Tutorial.TutorialLevel = 1;
+			TutorialIsOn = true;
 		} else {
 			Debug.LogError("An unknown menu type was passed.");
 		}
-	}
-
-	public void TurnOnTutorial() {
-		TurnOffMenus ();
-		Tutorial.TutorialLevel = 1;
-		gameControl.BeginGame();
 	}
 	
 	public void TurnOffMenus() {
@@ -65,11 +64,13 @@ public class MenuControl : MonoBehaviour {
 		encyclopediaMenu.enabled = false;
 		godChoiceMenu.enabled = false;
 		customizeMenu.enabled = false;
+		tutorial.enabled = false;
 
 		EncyclopediaMenuIsOn = false;
 		GodChoiceMenuIsOn = false;
 		CustomizeMenuIsOn = false;
 		MainMenuIsOn = false;
+		TutorialIsOn = false;
 	}
 
 	public void Die() {

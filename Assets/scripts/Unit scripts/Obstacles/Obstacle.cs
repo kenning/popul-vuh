@@ -3,18 +3,25 @@ using System.Collections;
 
 public class Obstacle : MonoBehaviour {
 
-    public string tooltip;
-    public GameControl gameControl;
+    protected string tooltip;
+    protected GameControl gameControl;
+	protected GameControlGUI gameControlGUI;
     public bool Walkable;
 
     public virtual void Start()
     {
-        gameControl = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControl>();
+		GameObject tempGO = GameObject.FindGameObjectWithTag ("GameController");
+        gameControl = tempGO.GetComponent<GameControl>();
+		gameControlGUI = tempGO.GetComponent<GameControlGUI> ();
     }
+
+	public void SetTooltip(string tool) {
+		tooltip = tool;
+	}
 
     public void ShowTooltip()
     {
-        gameControl.Tooltip = tooltip;
+		gameControlGUI.SetTooltip(tooltip);
     }
 
     public virtual void StepIn() { }

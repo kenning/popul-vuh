@@ -15,7 +15,7 @@ public class Pinata : Card {
 	
 	public override void Play () {
 
-		gameControl.Tooltip = "";
+		gameControlGUI.SetTooltip ("");
 
 		gameControl.Peek(2, this);
 
@@ -46,7 +46,7 @@ public class Pinata : Card {
 			}
 			TooltipMessage += "\n";
 		}
-		gameControl.Tooltip = TooltipMessage;
+		gameControlGUI.SetTooltip(TooltipMessage);
 
 		Invoke ("PinataMethod", 2f);
 	}
@@ -56,7 +56,7 @@ public class Pinata : Card {
 		for(int i = gameControl.PeekedCards.Count-1; i > -1; i++) {
 			gameControl.PeekedCards[i].GetComponent<Card>().Tuck();
 		}
-		gameControl.Tooltip = "";
+		gameControlGUI.SetTooltip("");
 
 		clickControl.AllowEveryInput ();
 		CheckQ();

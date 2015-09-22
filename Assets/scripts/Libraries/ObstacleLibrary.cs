@@ -59,7 +59,7 @@ public class ObstacleLibrary : MonoBehaviour {
         tempGO.transform.position = new Vector3(xPosition, yPosition, 0);
         tempGO.transform.parent = obstacleParent.transform;
 
-        tempGO.GetComponent<Obstacle>().tooltip = Tooltip;
+        tempGO.GetComponent<Obstacle>().SetTooltip(Tooltip);
     }
     void LoadObstacle(string ObstacleName, string Tooltip)
     {

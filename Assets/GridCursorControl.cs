@@ -8,6 +8,7 @@ public class GridCursorControl : MonoBehaviour {
 	ShopControl shopControl;
 	ClickControl clickControl;
 	GridCursorControlGUI gridCursorControlGUI;
+	GameControlGUI gameControlGUI;
 	public static bool cursorActionSet = false;
 	public static bool GridCursorIsActive = false;
 	public static bool ClickedOffScreen = false;
@@ -30,6 +31,7 @@ public class GridCursorControl : MonoBehaviour {
 		shopControl = gameObject.GetComponent<ShopControl> ();
 		clickControl = gameObject.GetComponent<ClickControl> ();
 		gridCursorControlGUI = GameObject.Find("Grid Cursor").GetComponent<GridCursorControlGUI> ();
+		gameControlGUI = gameObject.GetComponent<GameControlGUI> ();
 		playerObject = GameObject.FindGameObjectWithTag ("Player");
 	}
 
@@ -146,7 +148,7 @@ public class GridCursorControl : MonoBehaviour {
 		case CursorActions.EnemyInfo:
 			GridUnit tempGU = currentCursorTarget.GetComponent<GridUnit>();
 			Enemy tempEnemy = currentCursorTarget.GetComponent<Enemy>();
-			gameControl.Tooltip = tempEnemy.Tooltip;
+			gameControlGUI.SetTooltip(tempEnemy.Tooltip);
 			gridControl.MakeSquares(tempEnemy.AttackTargetType, tempEnemy.AttackMinRange, 
 			                     tempEnemy.AttackMaxRange, tempGU.xPosition, tempGU.yPosition, false);
 			break;
@@ -155,7 +157,7 @@ public class GridCursorControl : MonoBehaviour {
 			hitObstacle.ShowTooltip();
 			break;
 		case CursorActions.PlayerInfo:
-			gameControl.Tooltip = "That's you! You're Xbalanque, one of the twin sons of Hunapu.";
+			gameControlGUI.SetTooltip("That's you! You're Xbalanque, one of the twin sons of Hunapu.");
 			gridControl.MakeSquares(GridControl.TargetTypes.diamond, 1, 1, false);
 			break;
 		case CursorActions.None:

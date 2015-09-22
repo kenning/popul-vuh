@@ -261,7 +261,7 @@ public class ClickControl : MonoBehaviour {
 		if(Input.GetMouseButton(0)){
 
 			gameControlGUI.ShowDeck(false);
-			gameControl.Tooltip = "";
+			gameControlGUI.SetTooltip("");
 
 			float dist = transform.position.z - Camera.main.transform.position.z;
 			var pos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, dist);
@@ -292,9 +292,11 @@ public class ClickControl : MonoBehaviour {
 					foreach(RaycastHit2D hit in hits) {
 						if(hit.collider.gameObject.name == "play end button" && AllowForfeitButtonInput) { 
 							if(gameControl.PlaysLeft == 1) {
-								gameControl.Tooltip = "You can punch or play a card one more time this turn.";
+								gameControlGUI.SetTooltip("You can punch or play a card one more time this turn.");
 							} else {
-								gameControl.Tooltip = "You can punch or play a card " + gameControl.PlaysLeft.ToString() + " more times this turn.";
+								gameControlGUI.SetTooltip("You can punch or play a card " + 
+								                          gameControl.PlaysLeft.ToString() + 
+								                          " more times this turn.");
 							}
 							foreach(GameObject card in gameControl.Hand) {
 								card.GetComponent<CardUI>().ShineAnimate();
@@ -305,9 +307,11 @@ public class ClickControl : MonoBehaviour {
 					foreach(RaycastHit2D hit in hits) {
 						if(hit.collider.gameObject.name == "move end button" && AllowForfeitButtonInput) { 
 							if(gameControl.MovesLeft == 1) {
-								gameControl.Tooltip = "You can move one more time this turn.";
+								gameControlGUI.SetTooltip("You can move one more time this turn.");
 							} else {
-								gameControl.Tooltip = "You can move " + gameControl.MovesLeft.ToString() + " more times this turn.";
+								gameControlGUI.SetTooltip("You can move " + 
+								                          gameControl.MovesLeft.ToString() + 
+								                          " more times this turn.");
 							}
 							return;
 						}

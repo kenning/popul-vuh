@@ -174,7 +174,7 @@ public class Tutorial : MonoBehaviour {
             clickControl.AllowInputUmbrella = true;
 
             GridUnit p = GameObject.FindGameObjectWithTag("Player").GetComponent<GridUnit>();
-            gameObject.GetComponent<EnemyLibrary>().LoadEnemy("Mud Warrior", p.xPosition, p.yPosition-1);
+            gameObject.GetComponent<EnemyLibrary>().LoadEnemy("pa", p.xPosition, p.yPosition-1);
             gameObject.GetComponent<GridControl>().InvokeRepeating("TutorialPunchIllustration", .4f, 1.2f);
         }
         if (TutorialLevel == 4)
@@ -215,7 +215,7 @@ public class Tutorial : MonoBehaviour {
             p.yPosition = 0;
             p.gameObject.transform.position = new Vector3(0, 0, 0);
 
-            gameObject.GetComponent<EnemyLibrary>().LoadEnemy("Mud Warrior", p.xPosition, p.yPosition - 2);
+            gameObject.GetComponent<EnemyLibrary>().LoadEnemy("pa", p.xPosition, p.yPosition - 2);
         }
         if (TutorialLevel == 6)
         {

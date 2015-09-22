@@ -52,7 +52,7 @@ public class GameControl : MonoBehaviour
 	public Card TargetSquareCallback;
 	
 	//UI data
-	public string Tooltip = "";
+	string tooltip = "";
 
 	//UI variables
 	TextMesh playsLeftText;

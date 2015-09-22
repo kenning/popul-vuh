@@ -67,13 +67,9 @@ public class EnemyLibrary : MonoBehaviour {
 	
 	void LoadEnemy(string EnemyName)
 	{
-		Debug.Log ("length: " + GridControl.PossibleSpawnPoints.Count);
 		int RandomNumber = Random.Range(0, GridControl.PossibleSpawnPoints.Count - 1);
 		Point xycoord = GridControl.PossibleSpawnPoints[RandomNumber];
-		Debug.Log ("removing at " + RandomNumber.ToString ());
-		Debug.Log ("old value: " + GridControl.PossibleSpawnPoints [RandomNumber].x + ", " + GridControl.PossibleSpawnPoints[RandomNumber].y);
 		GridControl.PossibleSpawnPoints.RemoveAt(RandomNumber);
-		Debug.Log ("new value: " + GridControl.PossibleSpawnPoints [RandomNumber].x + ", " + GridControl.PossibleSpawnPoints[RandomNumber].y);
 
 //		if (xycoord.x > ) xycoord.x = 4;
 //		if (xycoord.x < -3) xycoord.x = -3;

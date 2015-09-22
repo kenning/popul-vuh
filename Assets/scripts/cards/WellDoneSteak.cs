@@ -15,7 +15,7 @@ public class WellDoneSteak : Card {
 
 		gameControl.TargetSquareCallback = this;
 		
-		gameControl.Tooltip =  ("Please select a card to burn.");
+		gameControlGUI.SetTooltip("Please select a card to burn.");
 		
 		gameControlGUI.ForceDim();
 		

@@ -15,7 +15,7 @@ public class FairyTequila : Card {
 		gameControl.CardsToTarget = 1;
 
 		gameControlGUI.ForceDim();
-		gameControl.Tooltip =  ("Please select a discarded card to return to your hand.");
+		gameControlGUI.SetTooltip("Please select a discarded card to return to your hand.");
 		
 		base.Play ();
 	}

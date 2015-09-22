@@ -15,7 +15,7 @@ public class Goulash : Card {
 		gameControl.CardsToTarget = 1;
 
 		gameControlGUI.ForceDim();
-		gameControl.Tooltip = "Pick a card to discard.";
+		gameControlGUI.SetTooltip("Pick a card to discard.");
 
 		base.Play ();
 	}

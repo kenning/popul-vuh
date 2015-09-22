@@ -38,9 +38,6 @@ public class GridControl : MonoBehaviour {
     public void LoadEnemiesAndObstacles(int level)
     {
         PossibleSpawnPoints = FindEmptySpots(false);
-		foreach (Point p in PossibleSpawnPoints) {
-			Debug.Log("point at " + p.x + ", " + p.y);
-		}
 
         #region Load Obstacles
         ObstacleLibrary.LevelTypes obstacleLevelType = ObstacleLibrary.LevelTypes.Empty;

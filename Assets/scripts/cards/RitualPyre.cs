@@ -15,7 +15,7 @@ public class RitualPyre : Card {
 
 		gameControl.TargetSquareCallback = this;
 
-		gameControl.Tooltip = "Pick a card to burn.";
+		gameControlGUI.SetTooltip("Pick a card to burn.");
 
 		gameControlGUI.ForceDim();
 		

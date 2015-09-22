@@ -658,7 +658,6 @@ public class LibraryCard {
 
 	public string CardName;
 	public string DisplayName;
-	public string PrefabPath;
 	public string IconPath;
 	public string Tooltip;
 	public string DisplayText;

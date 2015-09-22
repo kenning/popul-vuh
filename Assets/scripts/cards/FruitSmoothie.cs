@@ -18,7 +18,7 @@ public class FruitSmoothie : Card {
 		gameControl.CardsToTarget = 2;
 
 		gameControlGUI.ForceDim();
-		gameControl.Tooltip = "Pick two cards to tuck back into your deck.";
+		gameControlGUI.SetTooltip("Pick two cards to tuck back into your deck.");
 		
 		base.Play ();
 	}

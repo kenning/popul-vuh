@@ -94,7 +94,6 @@ public class Card : MonoBehaviour {
 		CardName = tempLibraryCard.CardName;
 		DisplayName = tempLibraryCard.DisplayName;
 		IconPath = "sprites/card icons/" + tempLibraryCard.IconPath;
-		PrefabPath = tempLibraryCard.PrefabPath;
 		Tooltip = tempLibraryCard.Tooltip;
 		DisplayText = tempLibraryCard.DisplayText;
 		MiniDisplayText = tempLibraryCard.MiniDisplayText;
@@ -260,7 +259,7 @@ public class Card : MonoBehaviour {
 			//Extreme corner case, this prevents Target Card cards from being played without valid targets
 			if(CardAction == CardActionTypes.TargetCard && ((CardsToTargetWillBeDiscarded && gameControl.Discard.Count < 1) | 
 															(!CardsToTargetWillBeDiscarded && gameControl.Hand.Count < 2)    ) ) {
-				gameControl.Tooltip = "You can't play this card right now, because it can't target a card.";
+				gameControlGUI.SetTooltip("You can't play this card right now, because it can't target a card.");
 				return;
 			}
 
@@ -308,7 +307,7 @@ public class Card : MonoBehaviour {
 			if((CardsToTargetWillBePeeked && gameControl.PeekedCards.Count < CardsToTarget) |
 			   (CardsToTargetWillBeDiscarded && gameControl.Discard.Count < CardsToTarget) |
 			   (!CardsToTargetWillBeDiscarded && gameControl.Hand.Count < CardsToTarget)) {
-				Tooltip = "Not enough cards to target!";
+				gameControlGUI.SetTooltip("Not enough cards to target!");
 				DiscardOrBurnIfNotInQ();
 				return;
 			}
@@ -354,7 +353,7 @@ public class Card : MonoBehaviour {
 		Select();
 		gridControl.EnterTargetingMode(rangeTargetType, minRange, maxRange);
 		gameControl.TargetSquareCallback = this;
-		gameControl.Tooltip = "Please select a square.";
+		gameControlGUI.SetTooltip("Please select a square.");
 		
 		clickControl.AllowInputUmbrella = true;
 		clickControl.AllowSquareTargetInput = true;
