@@ -19,11 +19,11 @@ public class River : Obstacle {
         switch (ThisRiverType)
         {
             case RiverType.Blood:
-                gameControl.SetSick(GameControl.SickTypes.Hunger);
+                gameControl.SetSick(GameControl.SickTypes.Hunger, 1);
                 Debug.Log("hi");
                 break;
             case RiverType.Pus:
-                gameControl.SetSick(GameControl.SickTypes.Swollen);
+                gameControl.SetSick(GameControl.SickTypes.Swollen, 1);
                 break;
             case RiverType.Scorpion:
                 player.TakeDamage(1, 0);

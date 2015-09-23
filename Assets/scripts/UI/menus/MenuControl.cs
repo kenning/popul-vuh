@@ -82,6 +82,7 @@ public class MenuControl : MonoBehaviour {
 		return EncyclopediaMenuIsOn |
 			GodChoiceMenuIsOn |
 			CustomizeMenuIsOn |
-			MainMenuIsOn;
+			MainMenuIsOn |
+			TutorialIsOn;
 	}
 }

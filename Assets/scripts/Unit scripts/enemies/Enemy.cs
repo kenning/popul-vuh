@@ -292,13 +292,13 @@ public class Enemy : MonoBehaviour {
 	}
 
 	public virtual void SetSickBleeding () {
-		gameControl.SetSick (GameControl.SickTypes.Bleeding);
+		gameControl.SetSick (GameControl.SickTypes.Bleeding, 2);
 	}
 	public virtual void SetSickSwollen () {
-		gameControl.SetSick (GameControl.SickTypes.Swollen);
+		gameControl.SetSick (GameControl.SickTypes.Swollen, 2);
 	}
 	public virtual void SetSickHunger () {
-		gameControl.SetSick (GameControl.SickTypes.Hunger);
+		gameControl.SetSick (GameControl.SickTypes.Hunger, 2);
 	}
 #endregion
 

@@ -48,6 +48,14 @@ public class ClickControl : MonoBehaviour {
 	public bool AllowMoveInput = true; 			// punch, play cards
 	public bool AllowCardTargetInput = false;
 	public bool AllowSquareTargetInput = true;
+
+	// Info will be displayed after cursor is set 
+		// These bools track what info will be displayed so that after the 'none' cursor is set,
+		// the proper call of ShowInfo will be sent to GridCursorControl.
+	bool willShowPlayerInfo = false;
+	bool willShowEnemyInfo = false;
+	bool willShowObstacleInfo = false;
+	GameObject infoTarget;
 	
 	//i'm impatient and want to end the damn turn already bool
 	public bool turnEndedAlready = false;
@@ -85,6 +93,10 @@ public class ClickControl : MonoBehaviour {
 
 		if(menuControl.AnyMenuIsUp() | shopControlGUI.goalExpo | GridCursorControl.ClickedOffScreen) {
 			return;
+		}
+
+		if (!Input.GetMouseButton (0)) {
+			gameControlGUI.SetTooltip("");
 		}
 
         if(cardScriptClickedOn != null) {
@@ -261,7 +273,6 @@ public class ClickControl : MonoBehaviour {
 		if(Input.GetMouseButton(0)){
 
 			gameControlGUI.ShowDeck(false);
-			gameControlGUI.SetTooltip("");
 
 			float dist = transform.position.z - Camera.main.transform.position.z;
 			var pos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, dist);
@@ -377,38 +388,42 @@ public class ClickControl : MonoBehaviour {
 			
 			foreach(RaycastHit2D hit in hits){
 				if(hit.collider.gameObject.tag == "Enemy"){
+					if(AllowInfoInput) {
+						willShowEnemyInfo = true;
+						willShowPlayerInfo = false;
+						willShowObstacleInfo = false;
+						infoTarget = hit.collider.gameObject;
+					}
 					if(adjCheck(hit.collider.gameObject.transform.position) != "none" 
 					   && gameControl.PlaysLeft > 0 && AllowNewPlayInput){
 						gridCursorControl.PresentCursor(GridCursorControl.CursorActions.Punch);
 						gridCursorControl.SetCurrentCursorTarget(hit.collider.gameObject);
+						// Even though this should return and end the Update method, it still needs to
+							// try to show a tooltip
+						tryToShowInfo();
+						return;
 					}
-					else if(AllowInfoInput) {
-						gridCursorControl.PresentCursor(GridCursorControl.CursorActions.EnemyInfo);
-						gridCursorControl.SetCurrentCursorTarget(hit.collider.gameObject);
-					}
-					return;
 				}
 			}
 
 			foreach(RaycastHit2D hit in hits){
 				if(hit.collider.gameObject.tag == "Player" && AllowInfoInput){
-					gridCursorControl.PresentCursor(GridCursorControl.CursorActions.PlayerInfo);
-					return;
+					willShowEnemyInfo = false;
+					willShowPlayerInfo = true;
+					willShowObstacleInfo = false;
+					infoTarget = hit.collider.gameObject;
 				}
 			}
             foreach (RaycastHit2D hit in hits)
             {
                 if (hit.collider.gameObject.tag == "obstacle")
                 {
-                    GridUnit obstacleGU = hit.collider.gameObject.GetComponent<GridUnit>();
-                    GridUnit playerGU = gameControl.playerObj.GetComponent<GridUnit>();
 
-                    if (!obstacleGU.IsAdjacent(playerGU))
-                    {
-						gridCursorControl.PresentCursor(GridCursorControl.CursorActions.ObstacleInfo);
-						gridCursorControl.SetCurrentCursorTarget(hit.collider.gameObject);
-                    }
-                    else
+					GridUnit obstacleGU = hit.collider.gameObject.GetComponent<GridUnit>();
+					GridUnit playerGU = gameControl.playerObj.GetComponent<GridUnit>();
+					
+					
+                    if (obstacleGU.IsAdjacent(playerGU))
                     {
                         Obstacle hitObstacle = hit.collider.gameObject.GetComponent<Obstacle>();
                         if (hitObstacle.Walkable)
@@ -422,6 +437,11 @@ public class ClickControl : MonoBehaviour {
 						}
                     	return;
 					}
+
+					willShowEnemyInfo = false;
+					willShowPlayerInfo = false;
+					willShowObstacleInfo = true;
+					infoTarget = hit.collider.gameObject;
                 }
             }
             foreach (RaycastHit2D hit in hits)
@@ -442,13 +462,35 @@ public class ClickControl : MonoBehaviour {
 					else if (AllowInfoInput) {
 						gridCursorControl.PresentCursor(GridCursorControl.CursorActions.None);
 					}
-					return;
 				}
 			}
+
+			tryToShowInfo();
 		}
 	}
 
-    public void GameBoardDrag()
+	void tryToShowInfo() {
+		if((Time.time - .15f) > lastCursorSetTime) {
+			if(willShowEnemyInfo) {
+				gridCursorControl.ShowInfo(GridCursorControl.CursorInfoTypes.EnemyInfo, infoTarget);
+				willShowEnemyInfo = false;
+				willShowPlayerInfo = false;
+				willShowObstacleInfo = false;
+			} else if (willShowPlayerInfo) {
+				gridCursorControl.ShowInfo(GridCursorControl.CursorInfoTypes.PlayerInfo, infoTarget);
+				willShowEnemyInfo = false;
+				willShowPlayerInfo = false;
+				willShowObstacleInfo = false;
+			} else if (willShowObstacleInfo) {
+				gridCursorControl.ShowInfo(GridCursorControl.CursorInfoTypes.ObstacleInfo, infoTarget);
+				willShowEnemyInfo = false;
+				willShowPlayerInfo = false;
+				willShowObstacleInfo = false;
+			}
+		}
+	}
+	
+	public void GameBoardDrag()
     {
 		if( draggingGameboard | GridCursorControl.ClickedOffScreen ) return;
         dragOrigin = Input.mousePosition;

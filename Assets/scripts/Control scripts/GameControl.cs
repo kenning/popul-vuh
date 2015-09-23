@@ -546,22 +546,22 @@ public class GameControl : MonoBehaviour
     /// Makes player sick. Possible arguments are "bleeding", "
     /// </summary>
     /// <param name="SickType"></param>
-    public void SetSick(SickTypes SickType)
+    public void SetSick(SickTypes SickType, int turns)
     {
         if (SickType == SickTypes.Swollen) 
         {
-            SwollenTurns = 1;
+            SwollenTurns = turns;
             if (PlaysLeft > 0) AddPlays(-1);
             playButton.SetSprite();
         }
         else if (SickType == SickTypes.Hunger)
         {
-            HungerTurns = 1;
+            HungerTurns = turns;
             deckObj.GetComponent<DeckAnimate>().SetSprite();
         }
         else //bleeding
         {
-            BleedingTurns = 1;
+            BleedingTurns = turns;
             if (MovesLeft > 0) AddMoves(-1);
             moveButton.SetSprite();
         }

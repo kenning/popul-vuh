@@ -10,11 +10,9 @@ public class GridCursorControlGUI : MonoBehaviour {
 	public Sprite MOVESPRITE;
 	public Sprite PUNCHSPRITE;
 	public Sprite TARGETSQUARESPRITE;
-	public Sprite INFOSPRITE;
 	public Sprite MOVEICONSPRITE;
 	public Sprite PUNCHICONSPRITE;
 	public Sprite TARGETSQUAREICONSPRITE;
-	public Sprite INFOICONSPRITE;
 
 	void Start() {
 		cursorSpriteRenderer = gameObject.GetComponent<SpriteRenderer> ();
@@ -54,18 +52,6 @@ public class GridCursorControlGUI : MonoBehaviour {
 		case GridCursorControl.CursorActions.TargetSquare:
 			cursorSpriteRenderer.sprite = TARGETSQUARESPRITE;
 			iconSpriteRenderer.sprite = TARGETSQUAREICONSPRITE;
-			break;
-		case GridCursorControl.CursorActions.EnemyInfo:
-			cursorSpriteRenderer.sprite = INFOSPRITE;
-			iconSpriteRenderer.sprite = INFOICONSPRITE;
-			break;
-		case GridCursorControl.CursorActions.ObstacleInfo:
-			cursorSpriteRenderer.sprite = INFOSPRITE;
-			iconSpriteRenderer.sprite = INFOICONSPRITE;
-			break;
-		case GridCursorControl.CursorActions.PlayerInfo:
-			cursorSpriteRenderer.sprite = INFOSPRITE;
-			iconSpriteRenderer.sprite = INFOICONSPRITE;
 			break;
 		case GridCursorControl.CursorActions.None:
 			cursorSpriteRenderer.sprite = NONESPRITE;

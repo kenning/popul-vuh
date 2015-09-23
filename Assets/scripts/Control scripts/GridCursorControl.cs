@@ -15,11 +15,12 @@ public class GridCursorControl : MonoBehaviour {
 
 	GameObject playerObject;
 
-	public enum CursorActions {Punch, TargetSquare, PlayerInfo, 
-		EnemyInfo, ObstacleInfo, Move, StairMove, Poke, None };
+	public enum CursorActions {Punch, TargetSquare, Move, StairMove, Poke, None };
+	public enum CursorInfoTypes {EnemyInfo, PlayerInfo, ObstacleInfo};
 
 	CursorActions currentCursorAction = CursorActions.None;
 	GameObject currentCursorTarget = null;
+	GameObject cursorInfoTarget = null;
 	int currentCursorXPosition = 0;
 	int currentCursorYPosition = 0;
 	Obstacle walkableObstacleToWalkInto = null;
@@ -50,6 +51,7 @@ public class GridCursorControl : MonoBehaviour {
 		    action != currentCursorAction |
 			(int)(clickPosition.x) != currentCursorXPosition |
 			(int)(clickPosition.y) != currentCursorYPosition) {
+			ResetInfoTarget ();
 			clickControl.lastCursorSetTime = Time.time;
 			cursorActionSet = true;
 			currentCursorXPosition = (int)clickPosition.x;
@@ -67,6 +69,7 @@ public class GridCursorControl : MonoBehaviour {
 		currentCursorXPosition = 500;
 		currentCursorYPosition = 500;
 		gridCursorControlGUI.UnpresentCursor ();
+//		gameControlGUI.SetTooltip ("");
 	}
 
 	/// <summary>
@@ -145,27 +148,42 @@ public class GridCursorControl : MonoBehaviour {
 			}
 			gameControl.TargetSquareCallback.TargetSquareCalledThis(square.XCoor, square.YCoor);
 			break;
-		case CursorActions.EnemyInfo:
-			GridUnit tempGU = currentCursorTarget.GetComponent<GridUnit>();
-			Enemy tempEnemy = currentCursorTarget.GetComponent<Enemy>();
-			gameControlGUI.SetTooltip(tempEnemy.Tooltip);
-			gridControl.MakeSquares(tempEnemy.AttackTargetType, tempEnemy.AttackMinRange, 
-			                     tempEnemy.AttackMaxRange, tempGU.xPosition, tempGU.yPosition, false);
-			break;
-		case CursorActions.ObstacleInfo:
-			Obstacle hitObstacle = currentCursorTarget.GetComponent<Obstacle>();
-			hitObstacle.ShowTooltip();
-			break;
-		case CursorActions.PlayerInfo:
-			gameControlGUI.SetTooltip("That's you! You're Xbalanque, one of the twin sons of Hunapu.");
-			gridControl.MakeSquares(GridControl.TargetTypes.diamond, 1, 1, false);
-			break;
 		case CursorActions.None:
+			break;
+		default:
+			Debug.Log("shouldn't be showing info! bug!");
 			break;
 		}
 
 		gridCursorControlGUI.UnpresentCursor();
 
 		cursorActionSet = false;
+	}
+
+	public void ShowInfo(CursorInfoTypes infoType, GameObject infoTarget) {
+		if (cursorInfoTarget == null) {
+			cursorInfoTarget = infoTarget;
+			switch (infoType) {
+			case CursorInfoTypes.EnemyInfo:
+				GridUnit tempGU = infoTarget.GetComponent<GridUnit> ();
+				Enemy tempEnemy = infoTarget.GetComponent<Enemy> ();
+				gameControlGUI.SetTooltip (tempEnemy.Tooltip);
+				gridControl.MakeSquares (tempEnemy.AttackTargetType, tempEnemy.AttackMinRange, 
+				                        tempEnemy.AttackMaxRange, tempGU.xPosition, tempGU.yPosition, false);
+				break;
+			case CursorInfoTypes.ObstacleInfo:
+				Obstacle hitObstacle = infoTarget.GetComponent<Obstacle> ();
+				hitObstacle.ShowTooltip ();
+				break;
+			case CursorInfoTypes.PlayerInfo:
+				gameControlGUI.SetTooltip ("That's you! You're Xbalanque, one of the twin sons of Hunapu.");
+				gridControl.MakeSquares (GridControl.TargetTypes.diamond, 1, 1, false);
+				break;
+			}
+		} 
+	}
+
+	public void ResetInfoTarget() {
+		cursorInfoTarget = null;
 	}
 }

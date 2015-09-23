@@ -19,7 +19,7 @@ public class EnemyLibrary : MonoBehaviour {
 	//base method. only really used to load an enemy into a specific place in the tutorial. 
 	public void LoadEnemy(string EnemyName, int xPosition, int yPosition)
 	{
-		string EnemyToLoad = "prefabs/enemies/dummy enemy";
+		string EnemyToLoad = "prefabs/dummy enemy";
 
 		GameObject tempGO = (GameObject)Instantiate((GameObject)Resources.Load(EnemyToLoad));
 
