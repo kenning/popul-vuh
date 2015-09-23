@@ -72,7 +72,7 @@ public class GameControl : MonoBehaviour
 		if (Application.platform == RuntimePlatform.IPhonePlayer)
 		{
 			Debug.Log("on iphone");
-			System.Environment.SetEnvironmentVariable("MONO_REFLECTION_SERIALIZER", "yes");
+//			System.Environment.SetEnvironmentVariable("MONO_REFLECTION_SERIALIZER", "yes");
 			Debug.Log("didn't error");
 			Debug.Log("didn't error");
 			Debug.Log("didn't error");
@@ -143,22 +143,22 @@ public class GameControl : MonoBehaviour
 		player.ResetLife ();
 		SetDollars (0);
 
-		if (Tutorial.TutorialLevel == 0)
-		{
-			//should this really be set to true?
-//			normaldisplay = true;
-			library.SetStartingItems();
-		}
-
 		GameObject[] cards = GameObject.FindGameObjectsWithTag ("Card");
 		foreach(GameObject GO in cards) {
 			Destroy(GO);
 		}
 		Hand = new List<GameObject> ();
 
-		for(int i = 0; i < library.StartingItems.Count; i++) {
-			string tempString = library.StartingItems[i].CardName;
-			Deck.Add(tempString);
+		if (Tutorial.TutorialLevel == 0)
+		{
+			//should this really be set to true?
+			//			normaldisplay = true;
+			library.SetStartingItems();
+			
+			for(int i = 0; i < library.StartingItems.Count; i++) {
+				string tempString = library.StartingItems[i].CardName;
+				Deck.Add(tempString);
+			}
 		}
 
 		StartNewLevel ();

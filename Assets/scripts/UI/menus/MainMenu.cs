@@ -145,6 +145,7 @@ public class MainMenu : MonoBehaviour {
 			if(GUI.Button(new Rect(Screen.width*.2f, Screen.height*.4f, Screen.width*.6f, Screen.height*.1f), 
 			              "Tutorial", styleLibrary.MainStyles.Button)) {
 				menuControl.TurnOnMenu(MenuControl.MenuType.Tutorial);
+				gameControl.BeginGame();
 			}
 			if (!SaveData.FinishedTutorial)
 			{
