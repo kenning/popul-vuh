@@ -24,7 +24,7 @@ public class MainMenu : MonoBehaviour {
 
 	static ShopControl.Gods[] UnlockOrder = new ShopControl.Gods[] {ShopControl.Gods.Chac, ShopControl.Gods.Ikka, 
 		ShopControl.Gods.Ixchel, ShopControl.Gods.Kinich, ShopControl.Gods.Akan, ShopControl.Gods.Ekcha};
-	static int[] UnlockLevels = new int[6] {2, 4, 6, 8, 10, 12};
+	static int[] UnlockLevels = new int[6] {2, 4, 7, 10, 13, 16};
 
 	void Start() {
 		useGUILayout = false;

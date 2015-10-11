@@ -9,11 +9,21 @@ public class EnemyLibrary : MonoBehaviour {
 	public List<List<int>> challengeRatingsForEachLevel = new List<List<int>>();
 
 	void Start() {
-		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 2 });
-		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 2, 3 });
-		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 2, 2, 3 });
-		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 2, 2, 3, 3 });
-		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 2, 2, 3, 3, 4 });
+		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 1 }); //3
+		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 2 }); //4
+		challengeRatingsForEachLevel.Add(new List<int> { 1, 2, 2 }); //5
+		challengeRatingsForEachLevel.Add(new List<int> { 1, 2, 3 }); //6
+		challengeRatingsForEachLevel.Add(new List<int> { 3, 3 }); //6
+		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 2, 3 }); //7
+		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 1, 2, 3 }); //8
+		challengeRatingsForEachLevel.Add(new List<int> { 1, 3, 4 }); //8
+		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 2, 2, 3 }); //9
+		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 1, 2, 2, 3 }); //10
+		challengeRatingsForEachLevel.Add(new List<int> { 3, 3, 4 }); //10
+		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 2, 2, 2, 3 }); //11
+		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 2, 2, 3, 4 }); //12
+		challengeRatingsForEachLevel.Add(new List<int> { 4, 4, 4 }); //12
+		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 2, 4, 4 }); //12
 	}
 
 	//base method. only really used to load an enemy into a specific place in the tutorial. 

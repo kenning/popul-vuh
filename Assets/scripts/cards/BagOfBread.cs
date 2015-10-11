@@ -14,6 +14,7 @@ public class BagOfBread : Card {
 	
 	public override void Play () {
 		gameControl.Draw ();
+		gameControl.Draw ();
 
 		base.Play ();
 	}

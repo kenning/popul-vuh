@@ -315,8 +315,8 @@ public class CardLibrary : MonoBehaviour {
 		                                    ShopControl.Gods.Chac,
 		                                    Card.Rarity.Paper,
 		                                    "To play, tap the card again", 
-		                                    "Draw 1 card",
-		                                    "Draw 1",
+		                                    "Draw 2 cards and gain 1 play.",
+		                                    "Draw 2, \n+1 play",
 		                                    Card.CardActionTypes.NoTarget)));
 		Lib.Add("Coffee",  (new LibraryCard ("Coffee",
 		                                     "food/coffee-mug",
@@ -341,8 +341,8 @@ public class CardLibrary : MonoBehaviour {
 		                                          ShopControl.Gods.Chac,
 		                                          Card.Rarity.Silver,
 		                                          "To play, tap the card again",
-		                                          "Draw 1. This card is reusable -- it is not discarded when you play it.",
-		                                          "Draw 1. \nReusable",
+		                                          "Draw 2. This card is reusable -- it is not discarded when you play it.",
+		                                          "Draw 2. \nReusable",
 		                                          Card.CardActionTypes.NoTarget));
 		Lib.Add("Energy Drink", new LibraryCard("Energy Drink",
 		                                        "Energy \nDrink",
