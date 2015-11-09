@@ -57,17 +57,10 @@ public class ShopControl : MonoBehaviour {
 			AllGods.Add (Gods.none);
 		}
 	}
-    
-    public void SetGoalGUIVariables() {
-		for(int i = 0; i < Goals.Length; i++) {
-			Goals[i].SetDisplayScore();
-		}
-		shopControlGUI.ResetTime ();
-	}
 
 	public void ProduceCards () {
 
-		SetGoalGUIVariables ();
+		shopControlGUI.SetGoalGUIVariables ();
 
 		CardsToBuyFrom = new List<LibraryCard>[Goals.Length];
 		for(int i = 0; i < CardsToBuyFrom.Length; i++) {
@@ -124,13 +117,9 @@ public class ShopControl : MonoBehaviour {
 		Goals = new Goal[numberOfGods];
 		Goals = goalLibrary.InitializeGoals (numberOfGods);
 
-		foreach(Goal g in Goals) {
-			g.SetGodString();
-			shopControlGUI.SetGodPicture(g);
-			g.ResetTheScore();
-		}
+		shopControlGUI.SetInitialGoalInfo (Goals);
 
-		SetGoalGUIVariables ();
+		shopControlGUI.SetGoalGUIVariables ();
 		clickControl.DisallowEveryInput ();
 
 		shopControlGUI.NewLevelNewGoals (numberOfGods);

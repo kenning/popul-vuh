@@ -5,9 +5,6 @@ public class Goal  {
 
 	public ShopControl.Gods God;
 	public string GodString;
-	public Sprite GodPicture;
-	public Texture2D GodIcon;
-	public Texture2D GodTexture;
 	public string Description;
 	public string MiniDescription;
 	public int CurrentScore;

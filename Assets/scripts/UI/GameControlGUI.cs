@@ -95,7 +95,9 @@ public class GameControlGUI : MonoBehaviour {
 	public void Display(Card card) {
 		CardDisplay = true;
 		if (Tutorial.TutorialLevel != 0) return;
+
 		shopControlGUI.UnclickGoals ();
+
 		displayCardRenderer.enabled = true;
 		DisplayName = card.CardName;
 		DisplayName.Replace ("\n", "");

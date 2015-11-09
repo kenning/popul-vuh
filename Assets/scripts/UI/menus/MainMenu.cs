@@ -76,7 +76,7 @@ public class MainMenu : MonoBehaviour {
         MainMenu.MainMenuUp = true;
         MainMenu.InGame = false;
         DiedMenuUp = false;
-        shopControlGUI.TurnOffShopControlGUIs();
+        shopControlGUI.TurnOffAllShopGUI();
         UnlockedText = "";
         UnlockCheck();
 
