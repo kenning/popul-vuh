@@ -1,0 +1,672 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"usero",
+				"userObjects"
+			],
+			[
+				"decor",
+				"decorateWithGameData"
+			],
+			[
+				"deco",
+				"decorateWithPreviousQuestionData"
+			],
+			[
+				"team",
+				"answeringTeamIsCorrect"
+			],
+			[
+				"answer",
+				"answeringTeamIsHost"
+			],
+			[
+				"backgr",
+				"background-image"
+			],
+			[
+				"large",
+				"large-width-only"
+			],
+			[
+				"lar",
+				"very-large-width"
+			],
+			[
+				"large-w",
+				"large-width"
+			],
+			[
+				"inline",
+				"inline-block"
+			],
+			[
+				"large-widt",
+				"large-width-only"
+			],
+			[
+				"inli",
+				"inline-block"
+			],
+			[
+				"small-window",
+				"small-window-query-2"
+			],
+			[
+				"small-wind",
+				"small-window-query-2"
+			],
+			[
+				"small-wi",
+				"small-window-query"
+			],
+			[
+				"backg",
+				"background"
+			],
+			[
+				"singlepl",
+				"singlePlayer"
+			],
+			[
+				"singleplay",
+				"singlePlayerGame"
+			],
+			[
+				"en",
+				"enemySecondsLeft"
+			],
+			[
+				"ele",
+				"else"
+			],
+			[
+				"render",
+				"renderTeam"
+			],
+			[
+				"back",
+				"background-color"
+			],
+			[
+				"margin-",
+				"margin-left"
+			],
+			[
+				"notho",
+				"notHostTeamQuestionQueue"
+			],
+			[
+				"appr",
+				"appropriateQuestionQueue"
+			],
+			[
+				"nth",
+				"notHostTeamQuestionQueue"
+			],
+			[
+				"host",
+				"hostTeamQuestionQueue"
+			],
+			[
+				"noth",
+				"notHostTeamExtraTime"
+			],
+			[
+				"hostt",
+				"hostTeamUserObjects"
+			],
+			[
+				"start",
+				"startMultipleTeamGame"
+			],
+			[
+				"working",
+				"workingHintUserObject"
+			],
+			[
+				"que",
+				"questionId"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"contents": "using UnityEngine;\nusing System.Collections;\n\npublic class ZotzEnemy : Enemy {\n	\n	public override void GetPunched (int punchingDamage)\n	{\n    this.\n	}\n}\n\n",
+			"file": "Assets/scripts/ZotzEnemy.cs",
+			"file_size": 152,
+			"file_write_time": 130958415750000000,
+			"settings":
+			{
+				"buffer_size": 154,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "popul-vuh.sublime-project",
+			"settings":
+			{
+				"buffer_size": 114,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 87.0,
+		"last_filter": "install",
+		"selected_items":
+		[
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"package control inst",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 449.0
+	},
+	"console":
+	{
+		"height": 146.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = 'eb2297e1a458f27d836c04bb0cbaf282' + 'd0e7a3098092775ccb37ca9d6b2e4b7d'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/nick/Documents/popul-vuh"
+	],
+	"file_history":
+	[
+		"/Users/nick/Library/Application Support/Sublime Text 3/Packages/User/C#.sublime-settings",
+		"/Users/nick/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/nick/Library/Application Support/Sublime Text 3/Packages/User/JSON.sublime-settings",
+		"/Users/nick/Documents/popul-vuh/popul-vuh.sublime-project",
+		"/Users/nick/Documents/tomato-tosser/public/bower_components/marked/Gulpfile.js",
+		"/Users/nick/Documents/tomato-tosser/public/index.html",
+		"/Users/nick/Documents/tomato-tosser/public/routing.html",
+		"/usr/local/bin/subl",
+		"/Users/nick/Documents/tomato-tosser/.git/COMMIT_EDITMSG",
+		"/Users/nick/Desktop/stuff to do",
+		"/Users/nick/Documents/popul-vuh/.git/COMMIT_EDITMSG",
+		"/Users/nick/Documents/polymer-docs-notes/cors notes",
+		"/Users/nick/Documents/hard-mode-polymer-tt-frontend/app/index.html",
+		"/Users/nick/Desktop/page-hashbang.html",
+		"/Users/nick/Documents/hard-mode-polymer-tt-frontend/app/components/ajax-list.html",
+		"/Users/nick/Documents/polymer-docs-notes/polymer docs notes 2 props",
+		"/Users/nick/Documents/hard-mode-polymer-tt-frontend/app/scripts/app.js",
+		"/Users/nick/Documents/hard-mode-polymer-tt-frontend/app/elements/elements.html",
+		"/Users/nick/Documents/hard-mode-polymer-tt-frontend/gulpfile.js",
+		"/Users/nick/Documents/hard-mode-polymer-tt-frontend/.git/COMMIT_EDITMSG",
+		"/Users/nick/Documents/another-polymer-tutorial/dummy.json",
+		"/Users/nick/Documents/tomato-tosser/public/elements.html",
+		"/Users/nick/Documents/tomato-tosser/client/components/AppView.jsx",
+		"/Users/nick/Documents/hard-mode-polymer-tt-frontend/app/scripts/clientSocketManager.js",
+		"/Users/nick/Documents/hard-mode-polymer-tt-frontend/app/components/lobby-list.html",
+		"/Users/nick/Documents/hard-mode-polymer-tt-frontend/app/scripts/dataDispatcher.js",
+		"/Users/nick/Documents/hard-mode-polymer-tt-frontend/app/old-index.html",
+		"/Users/nick/Documents/hard-mode-polymer-tt-frontend/app/components/app-globals.html",
+		"/Users/nick/Documents/hard-mode-polymer-tt-frontend/app/elements/routing.html",
+		"/Users/nick/Documents/tomato-tosser/GameManager.js",
+		"/Users/nick/Documents/hard-mode-polymer-tt-frontend/app/bower_components/paper-card/paper-card.html",
+		"/Users/nick/Documents/hard-mode-polymer-tt-frontend/package.json",
+		"/Users/nick/Documents/tomato-tosser/bin/www",
+		"/Users/nick/Documents/tomato-tosser/server.js",
+		"/Users/nick/Documents/foodhype/client/scripts/map.js",
+		"/Users/nick/Documents/foodhype/.git/COMMIT_EDITMSG",
+		"/Users/nick/Documents/nightmare-mode-polymer-tomato-tosser-frontend/polymer-docs-notes/polymer docs notes 1",
+		"/Users/nick/Documents/nightmare-mode-polymer-tomato-tosser-frontend/polymer-docs-notes/polymer docs notes 2",
+		"/Users/nick/Documents/nightmare-mode-polymer-tomato-tosser-frontend/polymer-docs-notes/polymer docs notes 10",
+		"/Users/nick/Library/Application Support/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/Users/nick/Documents/polymer-tomato-tosser-frontend/app/manifest.json",
+		"/Users/nick/Documents/polymer-tomato-tosser-frontend/app/index.html",
+		"/Users/nick/Documents/pub-sockets/.git/COMMIT_EDITMSG",
+		"/Users/nick/Desktop/story blog post",
+		"/Users/nick/Documents/popul vuh ios/web build/.git/COMMIT_EDITMSG",
+		"/Users/nick/Documents/nickmc.co/.git/COMMIT_EDITMSG",
+		"/Users/nick/Documents/nickmc.co/views/equipp.jade",
+		"/Users/nick/Documents/nickmc.co/views/portfolio.jade",
+		"/Users/nick/Documents/equip/.git/COMMIT_EDITMSG",
+		"/Users/nick/Documents/equip/client/built/styles.min.css",
+		"/Users/nick/Documents/equip/client/css/style.css",
+		"/Users/nick/Documents/equip/client/components/todo/todo.ctrl.js",
+		"/Users/nick/Documents/equip/GruntFile.js",
+		"/Users/nick/Documents/equip/client/components/documents/documents.jq.js",
+		"/Users/nick/Documents/equip/client/components/home/home.html",
+		"/Users/nick/Documents/equip/client/css/landing/landing.css",
+		"/Users/nick/Documents/equip/client/components/todo/todo.html",
+		"/Users/nick/Desktop/rxjs/rx.lite.js",
+		"/Users/nick/Desktop/rxjs/index.html",
+		"/Users/nick/Desktop/rxjs/main.js",
+		"/Users/nick/Documents/flux.io/css/main.css",
+		"/Users/nick/Dropbox/flux.io/flux.io/js/hex-graph.js",
+		"/Volumes/NO NAME/flux.io accessibility notes.txt",
+		"/Users/nick/Documents/flux.io/index.html",
+		"/Users/nick/Documents/flux.io/js/main.js",
+		"/Users/nick/Documents/flux.io/hex-graph.js",
+		"/Users/nick/Documents/flux.io/main.css",
+		"/Users/nick/Desktop/riven",
+		"/Users/nick/Desktop/flux.io accessibility notes",
+		"/Users/nick/Documents/blog/.git/COMMIT_EDITMSG",
+		"/Users/nick/Desktop/blog post!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
+		"/Users/nick/Documents/foodhype/client/index.html",
+		"/Users/nick/Desktop/http.js",
+		"/Users/nick/Desktop/course hero questions",
+		"/Users/nick/Documents/tomato-tosser/GameModel.js",
+		"/Users/nick/Documents/tomato-tosser/client/components/GameView.jsx",
+		"/Users/nick/Documents/tomato-tosser/client/components/LobbyView.jsx",
+		"/Users/nick/Documents/tomato-tosser/client/components/LobbyListView.jsx",
+		"/Users/nick/Documents/tomato-tosser/db/textfile",
+		"/Users/nick/Documents/tomato-tosser/db/asdf",
+		"/Users/nick/Documents/tomato-tosser/db/questions.js",
+		"/Users/nick/Documents/tomato-tosser/client/sass/app.scss",
+		"/Users/nick/Documents/tomato-tosser/client/components/PreviousReviewView.jsx",
+		"/Users/nick/Documents/tomato-tosser/client/components/TimerView.jsx",
+		"/Users/nick/Documents/nickmc.co/views/foodhyped.jade",
+		"/Users/nick/Documents/nickmc.co/views/populvuh.jade",
+		"/Users/nick/Documents/nickmc.co/routes/index.js",
+		"/Users/nick/Documents/fuckingmondaynight/.git/COMMIT_EDITMSG",
+		"/Users/nick/Documents/fuckingmondaynight/desc",
+		"/Users/nick/Documents/popul-vuh/README.md",
+		"/Users/nick/Documents/popul-vuh/.gitignore",
+		"/Users/nick/.gitignore",
+		"/Users/nick/downloads/startbootstrap-the-big-picture-1.0.3/README.md",
+		"/Users/nick/Documents/nickmc.co/views/layout.jade",
+		"/Users/nick/Documents/nickmc.co/views/breannabaker.jade",
+		"/Users/nick/Documents/nickmc.co/README.md",
+		"/Users/nick/Documents/nickmc.co copy/routes/index.js",
+		"/Users/nick/Documents/nickmc.co copy/.git/COMMIT_EDITMSG",
+		"/Users/nick/Documents/nickmc.co/portfolio/views/portfolio.jade",
+		"/Users/nick/Documents/nickmc.co/portfolio/client/sass/app.scss",
+		"/Users/nick/Documents/nickmc.co/portfolio/.gitignore",
+		"/Users/nick/Documents/nickmc.co/portfolio/views/layout.jade",
+		"/Users/nick/Documents/nickmc.co/portfolio/app.js",
+		"/Users/nick/Documents/nickmc.co/portfolio/routes/index.js",
+		"/Users/nick/Documents/nickmc.co/portfolio/.git/COMMIT_EDITMSG",
+		"/Users/nick/Documents/nickmc.co/portfolio/views/portfolio.html",
+		"/Users/nick/Documents/nickmc.co/portfolio/GruntFile.js",
+		"/Users/nick/Documents/nickmc.co/portfolio/package.json",
+		"/Users/nick/.Trash/portfolio w-o webgl/index.html",
+		"/Users/nick/Documents/nickmc.co/portfolio/routes/portfolio.js",
+		"/Users/nick/Documents/nickmc.co/portfolio/client/app.js",
+		"/Users/nick/Documents/nickmc.co/portfolio/public/portfolio w-o webgl/index.html",
+		"/Users/nick/Documents/nickmc.co/portfolio/views/index.jade",
+		"/Users/nick/Documents/nickmc.co/portfolio/engine-seed/src/index.js",
+		"/Users/nick/Documents/nickmc.co/portfolio/bin/www",
+		"/Users/nick/Documents/tomato-tosser/.flowconfig",
+		"/Users/nick/Documents/nickmc.co/portfolio/.flowconfig",
+		"/Users/nick/Documents/tomato-tosser/package.json",
+		"/Users/nick/Documents/nickmc.co/portfolio/package 2.json",
+		"/Users/nick/documents/tomato-tosser/db/DatabaseManager.js",
+		"/Users/nick/documents/tomato-tosser/db/questions.js",
+		"/Users/nick/documents/tomato-tosser/client/components/ReviewView.jsx",
+		"/Users/nick/documents/tomato-tosser/client/components/LobbyView.jsx",
+		"/Users/nick/documents/tomato-tosser/client/components/TitleView.jsx",
+		"/Users/nick/documents/tomato-tosser/client/components/GameView.jsx",
+		"/Users/nick/documents/tomato-tosser/client/components/AppView.jsx",
+		"/Users/nick/Documents/amazonkey.pem alias",
+		"/Users/nick/documents/tomato-tosser/GameModel.js"
+	],
+	"find":
+	{
+		"height": 23.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+			"/Users/nick/Documents/hard-mode-polymer-tt-frontend/app",
+			"/Users/nick/Documents/hard-mode-polymer-tt-frontend",
+			"/Users/nick/Documents/tomato-tosser",
+			"/Users/nick/Documents/polymer-tomato-tosser-frontend",
+			"/Users/nick/Documents/polymer-tomato-tosser-frontend/app",
+			"/Users/nick/Documents/equip",
+			"/Users/nick/Documents/equip/client",
+			"/Users/nick/Documents/tomato-tosser/client/components",
+			"/Users/nick/Documents/nickmc.co/node_modules/grunt-sass/node_modules/node-sass/src",
+			"/Users/nick/documents/tomato-tosser",
+			"/Users/nick/documents/blog/core",
+			"/Users/nick/documents/blog/content",
+			"/Users/nick/documents/blog",
+			"/Users/nick/documents/blog/content/themes",
+			"/Users/nick/documents/blog/content/themes/abc"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"ajax",
+			"aja",
+			"ajax-",
+			"Lobby",
+			"polymer",
+			"iron-pages",
+			"paper-drawer-panel",
+			"$",
+			".$",
+			"$",
+			"addnewdatalist",
+			"routclick",
+			"var app",
+			"routing",
+			"params",
+			"{{",
+			"list",
+			"array",
+			"list",
+			"document",
+			"iron-flex",
+			"paper-material",
+			"decreaseShadow",
+			"panel",
+			"app",
+			"detail",
+			"app",
+			"bodypar",
+			"browsersync",
+			"browsers",
+			"serve",
+			"gamemanager",
+			"server-dev",
+			"serve",
+			"position",
+			"window.user.position",
+			"x",
+			"//",
+			"rename-index",
+			"index",
+			"dom-bind",
+			"header",
+			"condensed",
+			"topBar",
+			"paper-toolbar",
+			"maintool",
+			"main",
+			"is=",
+			"css",
+			"Polymer Starter Kit",
+			"polymer starter kit",
+			"Polymer Starter",
+			"starter ",
+			"import",
+			"build",
+			".me",
+			"equipp",
+			"</a>",
+			"<a",
+			"{\n}",
+			"{",
+			"{}",
+			".logo",
+			"css",
+			"cssmin",
+			"inspin",
+			"styles.min",
+			"cssmin",
+			"info",
+			"success",
+			"statuses",
+			"statusclass",
+			"new",
+			"<a",
+			"</a>",
+			"<a",
+			"config.js",
+			"config",
+			"solution",
+			"close-",
+			"hamburger",
+			"attr",
+			"att",
+			"initgraph",
+			"graph",
+			"352",
+			"drawGrids",
+			"attr",
+			"arrow-",
+			"divider",
+			"dynamo",
+			"graph",
+			"id:",
+			".attr",
+			"Addition",
+			"initgraph",
+			"animateData",
+			"tiny",
+			"nodes",
+			"<g",
+			"ms-",
+			"style",
+			"twitter",
+			"html",
+			"CursorRelease",
+			"Prepare",
+			"= ",
+			":hover",
+			"bigPicture",
+			"small-window",
+			"medium-width-short",
+			"h2",
+			"console.log",
+			"that",
+			"bravo",
+			"data.",
+			"Data",
+			"data",
+			"hostteamuserob",
+			"this.review",
+			"data",
+			"previousAnswerer",
+			"this.currentQuestionData",
+			"decorateWithGameData",
+			"hostteamuserobjects",
+			"userobjects",
+			"props.",
+			"url"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "Assets/scripts/ZotzEnemy.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 154,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								147,
+								147
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C#/C#.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "popul-vuh.sublime-project",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 114,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								51,
+								51
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 34.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 100.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.variable_get":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "popul-vuh.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"package",
+				"package.json"
+			],
+			[
+				"gulp",
+				"public/bower_components/marked/Gulpfile.js"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"~/Documents/popul-vuh/popul-vuh.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 392.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 701.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 300.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

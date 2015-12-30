@@ -10,13 +10,11 @@ public class ShopControlGUI : MonoBehaviour {
 	GameControlGUI gameControlGUI;
 	GUIStyleLibrary styleLibrary;
 
-	GoalCanvas[] goalCanvases;
+	public bool IgnoreClicking;
+
+	public GoalCanvas[] GOALCANVASES;
 	ShopAndGoalParentCanvas shopAndGoalParentCanvas;	
 
-	public bool goalExpo = false;
-	public bool normaldisplay = false;
-	public bool shopGUI = false;
-	
 	public Sprite[] GodFullSprites;
 	public Texture2D[] GodFullTextures;
 	public Sprite[] SpriteGodIcons;
@@ -53,39 +51,31 @@ public class ShopControlGUI : MonoBehaviour {
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
 		gameControlGUI = gameObject.GetComponent<GameControlGUI> ();
 
-		goalCanvases [0] = GameObject.Find ("Goal canvas 0").GetComponent<GoalCanvas>();
-		goalCanvases [1] = GameObject.Find ("Goal canvas 1").GetComponent<GoalCanvas>();
-		goalCanvases [2] = GameObject.Find ("Goal canvas 2").GetComponent<GoalCanvas>();
-
-		goalExpo = false;
+		shopAndGoalParentCanvas = GameObject.FindGameObjectWithTag ("canvas").
+			GetComponentInChildren<ShopAndGoalParentCanvas> ();
 	}
 
-	public void NewLevelNewGoals (int numberOfGods) {
-		Goals = shopControl.Goals;
+	public void NewLevelNewGoals (int numberOfGods, Goal[] goals) {
+		Goals = goals;
 		GoalDisplay = new bool[numberOfGods];
 		highScoreNotification = new bool[numberOfGods];
+
+		TurnOnExpoGUI ();
 		
-		goalExpo = true;
+		shopAndGoalParentCanvas.NewLevelNewGoals (goals);
 	}
 	
 	#region Setting canvas displaying info
-	public void SetInitialGoalInfo (Goal[] goals) {
-		for (int i = 0; i < goalCanvases.Length; i++) {
-			goalCanvases[i].SetInitialGoalInfo(goals[i]);
-		}
-	}
-
-	public void SetGoalGUIVariables() {
-		for(int i = 0; i < Goals.Length; i++) {
-			Goals[i].SetDisplayScore();
-			goalCanvases[i].UpdateGoalInfo();
-		}
+	public void UpdateGoalInfos() {
+		shopAndGoalParentCanvas.UpdateGoalInfos (Goals); 
 	}
 	#endregion
 
 	#region Turning off and on GUI
 	public void TurnOnExpoGUI () {
 		TurnOffAllShopGUI ();
+
+		IgnoreClicking = true;
 		
 		shopAndGoalParentCanvas.TurnOnExpoGUI ();
 	}
@@ -93,9 +83,9 @@ public class ShopControlGUI : MonoBehaviour {
 	public void TurnOnNormalGUI () {
 		TurnOffAllShopGUI ();
 
-		SetGoalGUIVariables ();
+		UpdateGoalInfos ();
 
-		shopAndGoalParentCanvas.TurnOnNormalGUI ();
+//		shopAndGoalParentCanvas.TurnOnNormalGUI ();
 	}
 
 	public void TurnOnShopGUI() {
@@ -105,9 +95,11 @@ public class ShopControlGUI : MonoBehaviour {
 			}
 		}
 
+		IgnoreClicking = true;
+
 		shopAndGoalParentCanvas.SetUpShopRows (Goals, highScoreNotification);
 
-		TurnOnShopGUI ();
+		shopAndGoalParentCanvas.TurnOnShopGUI ();
 	}
 
 	/// <summary>
@@ -115,6 +107,7 @@ public class ShopControlGUI : MonoBehaviour {
 	/// also used when shuffle animating.
 	/// </summary>
 	public void TurnOffAllShopGUI () {
+		IgnoreClicking = false;
 		shopAndGoalParentCanvas.TurnOffNormalGUI ();
 		shopAndGoalParentCanvas.TurnOffShopGUI ();
 		shopAndGoalParentCanvas.TurnOffExpoGUI ();

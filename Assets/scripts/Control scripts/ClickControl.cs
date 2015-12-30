@@ -84,14 +84,14 @@ public class ClickControl : MonoBehaviour {
 		// Resetting things
 		
 		if (Input.GetMouseButtonDown (0)) {
-			shopControl.GoalCheck("Touch the screen no more than than X times");
+//			shopControl.GoalCheck("Touch the screen no more than than X times");
 		}
 		
 		if (!Input.GetMouseButton (0) && GridCursorControl.ClickedOffScreen) {
 			GridCursorControl.ClickedOffScreen = false;
 		}
 
-		if(menuControl.AnyMenuIsUp() | shopControlGUI.goalExpo | GridCursorControl.ClickedOffScreen) {
+		if(menuControl.AnyMenuIsUp() | shopControlGUI.IgnoreClicking | GridCursorControl.ClickedOffScreen) {
 			return;
 		}
 

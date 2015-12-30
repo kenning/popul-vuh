@@ -44,7 +44,6 @@ public class EnemyLibrary : MonoBehaviour {
 			string enemyScriptName = EnemyName;
             enemyScriptName = enemyScriptName.Replace(" ", "");
 			enemyScriptName = enemyScriptName.First().ToString().ToUpper() + enemyScriptName.Substring(1) + "Enemy";
-			Debug.Log(enemyScriptName);
 			tempGO.AddComponent(System.Type.GetType(enemyScriptName));
 		}
 		else
@@ -57,6 +56,7 @@ public class EnemyLibrary : MonoBehaviour {
 	}
 
 	public void LoadEnemiesForLevel (int level) {
+		Debug.Log(level);
 		if(level > challengeRatingsForEachLevel.Count) level = challengeRatingsForEachLevel.Count;
 		for(int i = 0; i < challengeRatingsForEachLevel[level].Count; i++) {
 			LoadRandomEnemyOfChallengeRating(challengeRatingsForEachLevel[level][i]);
@@ -72,6 +72,7 @@ public class EnemyLibrary : MonoBehaviour {
 			}
 		}
 		int x = Random.Range(0, appropriateChallengeRatingList.Count);
+		Debug.Log("loading enemy: " + appropriateChallengeRatingList[x].Name);
 		LoadEnemy(appropriateChallengeRatingList[x].Name);
 	}
 	
@@ -95,12 +96,6 @@ public class EnemyLibrary : MonoBehaviour {
 		Lib = new Dictionary<string, EnemyLibraryCard>();
 
 		// Challenge rating 1
-		Lib.Add("pa", 
-		        new EnemyLibraryCard("pa", 
-		                     "Pa - Spear wielding warrior made of mud. Attacks from two squares away.",
-		                     "Pa - Spear wielding warrior made of mud. Attacks from two squares away. " +
-		                     "\nThe mud men were the third attempt by the Gods to make humans.",
-		                     1, 1, 1, 2, 1, GridControl.TargetTypes.cross, Enemy.MoveTarget.Cross, 1, false));	
 		Lib.Add("zotz",
 		        new EnemyLibraryCard("zotz",
 		                     "Zotz - Leaf-Nosed Bat Demon. Your punches will miss, try using a weapon.",
@@ -114,33 +109,32 @@ public class EnemyLibrary : MonoBehaviour {
 		                     "Chitam - Peccary demon. Moves twice. Its scavenging attack steals a card from your hand. " +
 		                     "\nThis minor peccary demon has not fully grown.",
 		                     1, 2, 1, 1, 1, GridControl.TargetTypes.diamond, Enemy.MoveTarget.Adjacent, 1, true)); 
-		Lib.Add("ni",
-		        new EnemyLibraryCard("ni",
-		                     "Ni - Blowgun wielding warrior made of mud. Attacks from six squares away.",
-		                     "Ni - Blowgun wielding warrior made of mud. Attacks from six squares away." + 
-		                     "Mayan blowguns traditionally have a sight and shoot clay pellets.",
-		                     1, 1, 1, 6, 1, GridControl.TargetTypes.cross, Enemy.MoveTarget.Cross, 1, false));
+		Lib.Add("pa", 
+			new EnemyLibraryCard("pa", 
+							"Pa - Spear wielding warrior made of mud. Attacks from two squares away.",
+							"Pa - Spear wielding warrior made of mud. Attacks from two squares away. " +
+							"\nThe mud men were the third attempt by the Gods to make humans.",
+							1, 1, 1, 2, 1, GridControl.TargetTypes.cross, Enemy.MoveTarget.Cross, 1, false));	
 		// Challenge rating 2
-		Lib.Add("pache", 
-		        new EnemyLibraryCard("pache", 
-		                     "Pa Che' - Spear wielding warrior made of wood. Attacks from two squares away for two damage.",
-		                     "Pa Che' - Spear wielding warrior made of wood. Attacks from two squares away for two damage. " +
-		                     "\nThe wooden men were the fourth attempt by the Gods to make humans.",
-		                     2, 1, 1, 2, 2, GridControl.TargetTypes.cross, Enemy.MoveTarget.Cross, 2, false));
-
+		Lib.Add("ni",
+			new EnemyLibraryCard("ni",
+				"Ni - Blowgun wielding warrior made of mud. Attacks from six squares away.",
+				"Ni - Blowgun wielding warrior made of mud. Attacks from six squares away." + 
+				"Mayan blowguns traditionally have a sight and shoot clay pellets.",
+				1, 1, 1, 6, 1, GridControl.TargetTypes.cross, Enemy.MoveTarget.Cross, 2, false));
 		Lib.Add("jom", 
 		        new EnemyLibraryCard("jom",
 		                     "Jom - Ball playing warrior made of mud. Attacks from two sqaures away in a square.",
 		                     "Jom - Ball playing warrior made of mud. Attacks from two sqaures away in a square." + 
 		                     "\nThey even play ball games in the Underworld!",
 		                     1, 1, 0, 2, 1, GridControl.TargetTypes.square, Enemy.MoveTarget.Square, 2, false));
+		Lib.Add("pache", 
+			new EnemyLibraryCard("pache", 
+							"Pa Che' - Spear wielding warrior made of wood. Attacks from two squares away for two damage.",
+							"Pa Che' - Spear wielding warrior made of wood. Attacks from two squares away for two damage. " +
+							"\nThe wooden men were the fourth attempt by the Gods to make humans.",
+							2, 1, 1, 2, 2, GridControl.TargetTypes.cross, Enemy.MoveTarget.Cross, 2, false));
 		// Challenge rating 3
-		Lib.Add("niche",
-		        new EnemyLibraryCard("niche",
-		                     "Ni Che' - Blowgun wielding warrior made of wood. Attacks for two damage.",
-		                     "Ni Che' - Blowgun wielding warrior made of wood. Attacks for two damage." + 
-		                     "Mayan blowguns traditionally have a sight and shoot clay pellets.",
-		                     2, 1, 1, 6, 2, GridControl.TargetTypes.cross, Enemy.MoveTarget.Cross, 3, false));
 		Lib.Add("jomche", 
 		        new EnemyLibraryCard("jomche",
 		                     "Jom Che' - Ball playing warrior made of wood. Attacks from two squares away in a square for two damage.",
@@ -154,6 +148,12 @@ public class EnemyLibrary : MonoBehaviour {
 		                     "Snakes are often a symbol for Ixchel.",
 		                     2, 2, 1, 1, 1, GridControl.TargetTypes.cross, Enemy.MoveTarget.Adjacent, 3, true));
 		// Challenge rating 4
+		Lib.Add("niche",
+			new EnemyLibraryCard("niche",
+							"Ni Che' - Blowgun wielding warrior made of wood. Attacks for two damage.",
+							"Ni Che' - Blowgun wielding warrior made of wood. Attacks for two damage." + 
+							"Mayan blowguns traditionally have a sight and shoot clay pellets.",
+							2, 1, 1, 6, 2, GridControl.TargetTypes.cross, Enemy.MoveTarget.Cross, 4, false));
 		Lib.Add("balam",
 		        new EnemyLibraryCard("balam",
 		                     "Balam - Jaguar demon. Moves thrice a turn. Uses black magic to attack from two squares away.",

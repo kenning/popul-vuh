@@ -60,7 +60,10 @@ public class ShopControl : MonoBehaviour {
 
 	public void ProduceCards () {
 
-		shopControlGUI.SetGoalGUIVariables ();
+		Debug.Log("this is the nice method where we set what cards you can buy.");
+		Debug.Log("it will change a lot soon.");
+
+		shopControlGUI.UpdateGoalInfos ();
 
 		CardsToBuyFrom = new List<LibraryCard>[Goals.Length];
 		for(int i = 0; i < CardsToBuyFrom.Length; i++) {
@@ -111,17 +114,18 @@ public class ShopControl : MonoBehaviour {
 				Goals[i].MakeCheck();
 			}
 		}
+		shopControlGUI.UpdateGoalInfos();
+
 	}
 
 	public void NewLevelNewGoals(int numberOfGods) {
 		Goals = new Goal[numberOfGods];
 		Goals = goalLibrary.InitializeGoals (numberOfGods);
 
-		shopControlGUI.SetInitialGoalInfo (Goals);
+		shopControlGUI.NewLevelNewGoals (numberOfGods, Goals);
 
-		shopControlGUI.SetGoalGUIVariables ();
+		shopControlGUI.UpdateGoalInfos ();
 		clickControl.DisallowEveryInput ();
 
-		shopControlGUI.NewLevelNewGoals (numberOfGods);
 	}
 }

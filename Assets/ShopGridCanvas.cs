@@ -1,17 +1,35 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
-public class ShopRowCanvas : MonoBehaviour {
+public class ShopGridCanvas : MonoBehaviour {
+
+	bool initialized = false;
 
 	ShopAndGoalParentCanvas shopAndGoalParentCanvas;
 	ShopControlGUI shopControlGUI;
 	GameControl gameControl;
 	List<LibraryCard> libraryCards;
+	
 
-	public void SetShopRowInfo (Goal goal, List<LibraryCard> cardsToBuyFrom, bool highScoreNotification) {
-		libraryCards = cardsToBuyFrom;
+	//OK basically this will have
 
+	//This is a list of the card scripts in the grid
+	public List<ShopGridCardCanvas> COLUMN1;
+	public List<ShopGridCardCanvas> COLUMN2;
+	public List<ShopGridCardCanvas> COLUMN3;
+	List<List<ShopGridCardCanvas>> cardGrid;
+
+	void Initialize() {
+		if(initialized) return;
+		initialized = true;
+
+		cardGrid = new List<List<ShopGridCardCanvas>> {COLUMN1, COLUMN2, COLUMN3};
+	}
+
+	//Here's a stupid method for setting one grade/whatever notification
+	public void SetGradeInfo (int position, Goal goal, bool highScoreNotification) {
 		string[] awards = {"Nothing! +$0", "Bronze! +$1", "Silver! +$2", "Gold! +$3"};
 		string grade = "Nothing! +$0";
 
@@ -26,11 +44,17 @@ public class ShopRowCanvas : MonoBehaviour {
 			
 		} else {
 			if(goal.HighScore <= goal.GoalScore[2]) { 
+				//apply 'gold' style to award box
 				grade = awards[3];
 			} else if(goal.HighScore <= goal.GoalScore[1]) {
+				//apply 'silver' style to award box
 				grade = awards[2];
 			} else if(goal.HighScore <= goal.GoalScore[0]) { 
+				//apply 'bronze' style to award box
 				grade = awards[1];
+			} else {
+				//apply 'none' style to award box (?)
+				
 			}
 		}
 
@@ -50,50 +74,28 @@ public class ShopRowCanvas : MonoBehaviour {
 			scoreText += goal.CurrentScore.ToString();
 			//do something here
 		}
-
-
-
-		for (int i = 0; i < cardsToBuyFrom.Count; i++) {
-
-			LibraryCard thisCard = cardsToBuyFrom [i];
-			
-			if (thisCard == null) 
-				break;
-		
-			// set background to this:
-			// = shopControlGUI.CardTextures [ShopControl.AllGods.IndexOf (thisCard.God)];
-			
-			if (thisCard.God == ShopControl.Gods.Akan | thisCard.God == ShopControl.Gods.Buluc |
-				thisCard.God == ShopControl.Gods.Ikka | thisCard.God == ShopControl.Gods.Kinich | 
-				thisCard.God == ShopControl.Gods.Chac) {
-				// set text color to black
-			} else {
-				// set text color to white
-			}
-			
-			Texture2D icon = Resources.Load ("sprites/card icons/" + thisCard.IconPath) as Texture2D;
-			// set icon
-
-			Card.Rarity rarity = thisCard.ThisRarity;
-			if (rarity == Card.Rarity.Bronze) {
-				//set rarity picture				
-				//set cost box background color
-			} else if (rarity == Card.Rarity.Silver) {
-				//set rarity picture
-				//set cost box background color
-			} else if (rarity == Card.Rarity.Gold) {
-				//set rarity picture
-				//set cost box background color
-			}
-
-			//set god icon
-
-			if (!SaveData.UnlockedCards.Contains (thisCard) && SaveData.UnlockedGods.Contains (thisCard.God)) {
-				//turn on the box that says "Buying this card will add it to your collection!";
-			}
-		}
 	}
 
+	//Here's the stupid method for setting the info of a specific card in the grid
+	public void SetCardInfo (int ColumnNumber, int RowNumber, LibraryCard thisCard) {
+
+		Initialize();
+			
+		if (thisCard == null) {
+			Debug.LogError("what the fuck");
+		}
+
+		Debug.Log(ColumnNumber);
+		Debug.Log(RowNumber);
+		Debug.Log(thisCard);
+		Debug.Log(cardGrid);
+
+
+		cardGrid[ColumnNumber][RowNumber].SetInfo(thisCard);
+	}
+
+	// i dont even know if i should put this method in this script or in the card script. probably in the 
+	// card script...
 	public void ClickCard (int position) {
 		if (gameControl.Dollars >= libraryCards[position].Cost) {
 			string tempString = libraryCards[position].CardName.ToString ();
@@ -102,8 +104,8 @@ public class ShopRowCanvas : MonoBehaviour {
 			RemoveCardFromList(position);
 			
 			if (SaveData.TryToUnlockCard (libraryCards[position])) {
-				shopAndGoalParentCanvas.SetAddedToCollectionText("Added " + libraryCards[position].God.ToString () + "'s card " + tempString + 
-					" to your collection!");
+				shopAndGoalParentCanvas.SetAddedToCollectionText("Added " + libraryCards[position].God.ToString () + 
+				    "'s card " + tempString + " to your collection!");
 			}
 		} else {
 			Debug.Log ("Not enough money");
@@ -114,4 +116,11 @@ public class ShopRowCanvas : MonoBehaviour {
 
 	}
 
+	public void TurnOff () {
+		for (int i = 0; i < cardGrid.Count; i++) {
+			for (int j = 0; j < cardGrid[i].Count; j++) {
+				cardGrid[i][j].gameObject.SetActive(false);
+			}
+		}
+	}
 }

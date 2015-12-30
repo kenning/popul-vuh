@@ -70,7 +70,6 @@ public class SaveData
 
 		UnlockedCards = new List<LibraryCard> ();
 		//Ikka
-		UnlockedCards.Add(CardLibrary.Lib["Cloth Shoes"]);
 		//Ekcha
 		UnlockedCards.Add(CardLibrary.Lib["Quick Prayer"]);
 		//Ixchel
@@ -79,10 +78,9 @@ public class SaveData
 		//Buluc
 		UnlockedCards.Add(CardLibrary.Lib["Wooden Pike"]);
 		UnlockedCards.Add(CardLibrary.Lib["Iron Macana"]);
+		UnlockedCards.Add(CardLibrary.Lib["Wooden Bow"]);
 		//Chac
 		UnlockedCards.Add(CardLibrary.Lib["Coffee"]);
-		UnlockedCards.Add(CardLibrary.Lib["Coffee"]);
-		UnlockedCards.Add(CardLibrary.Lib["Apple"]);
 		UnlockedCards.Add(CardLibrary.Lib["Apple"]);
 		//Kinich
 		//Akan
@@ -93,15 +91,24 @@ public class SaveData
 		DefeatedEnemies = new List<string> ();
 
 		StartingDeckCards = new List<LibraryCard> ();
+		//Ikka
+		//Ekcha
+		StartingDeckCards.Add(CardLibrary.Lib["Quick Prayer"]);
+		//Ixchel
 		StartingDeckCards.Add(CardLibrary.Lib["Cloth Shirt"]);
 		StartingDeckCards.Add(CardLibrary.Lib["Cloth Shoes"]);
+		//Buluc
+		StartingDeckCards.Add(CardLibrary.Lib["Wooden Bow"]);
+		StartingDeckCards.Add(CardLibrary.Lib["Wooden Bow"]);
+		StartingDeckCards.Add(CardLibrary.Lib["Wooden Pike"]);
+		StartingDeckCards.Add(CardLibrary.Lib["Wooden Pike"]);
+		StartingDeckCards.Add(CardLibrary.Lib["Iron Macana"]);
+        StartingDeckCards.Add(CardLibrary.Lib["Iron Macana"]);
+		//Chac
 		StartingDeckCards.Add(CardLibrary.Lib["Coffee"]);
-		StartingDeckCards.Add(CardLibrary.Lib["Wooden Pike"]);
-		StartingDeckCards.Add(CardLibrary.Lib["Wooden Pike"]);
 		StartingDeckCards.Add(CardLibrary.Lib["Apple"]);
-        StartingDeckCards.Add(CardLibrary.Lib["Iron Macana"]);
-        StartingDeckCards.Add(CardLibrary.Lib["Iron Macana"]);
-		StartingDeckCards.Add(CardLibrary.Lib["Quick Prayer"]);
+		//Kinich
+		//Akan
 
         MainMenu.UnlockCheck();
 	}
