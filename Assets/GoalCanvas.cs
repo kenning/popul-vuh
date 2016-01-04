@@ -55,6 +55,8 @@ public class GoalCanvas : MonoBehaviour {
 		unclickedGoalDescription.text = goal.MiniDescription;
 		clickedGoalDescription.text = goal.God.ToString() + goal.Description;
 
+		ContractGoalDisplay();
+
 		UpdateGoalInfo ();
 	}
 
@@ -75,6 +77,8 @@ public class GoalCanvas : MonoBehaviour {
 		}
 
 		clickedScoreList.text = tempString;
+
+		clickedHighScore.text = "High score:\n" + goal.HighScore.ToString();
 
 		score.text = goal.TheScore ();
 	}

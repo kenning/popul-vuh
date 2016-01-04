@@ -6,17 +6,8 @@ public class GameControlGUI : MonoBehaviour {
 	GameControl gameControl;
 	ShopControlGUI shopControlGUI;
 
-	string DisplayName;
-	string DisplayRules;
-	Texture2D DisplayRangeTexture;
-	Texture2D DisplayAOETexture;
-	float DisplayAOESize;
-	Sprite DisplayCard;
-	Texture2D DisplayCardIcon;
-	Texture2D DisplayRarity;
-	Texture2D DisplayIcon;
-	GUIStyle DisplayTitleStyle;
-	GUIStyle DisplayTextStyle;
+	DisplayCardCanvas displayCardCanvas;
+
 	bool showingDeck;
 	
 	bool displayDim = false;
@@ -38,8 +29,11 @@ public class GameControlGUI : MonoBehaviour {
 		gameControl = gameObject.GetComponent<GameControl> ();
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
 		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
-		displayCardRenderer = GameObject.Find ("Display card").GetComponent<SpriteRenderer> ();
 		dimmer = GameObject.Find ("Dimmer").GetComponent<DimAnimate>();
+		displayCardCanvas = GameObject.FindGameObjectWithTag("displaycard").GetComponent<DisplayCardCanvas>();
+		MeshRenderer deckText = GameObject.Find("Deck count").GetComponent<MeshRenderer>();
+		deckText.sortingLayerName = "PlayBoard bg";
+		deckText.sortingOrder = 1;
 	}
 
 	void Update() {
@@ -52,38 +46,7 @@ public class GameControlGUI : MonoBehaviour {
 	void OnGUI () {
 		
 		if (showingDeck) {
-			string tempString = "Cards left in \nthe deck:\n";
-			GUI.Box(new Rect(0, 0, Screen.width*.2f, Screen.height*(gameControl.Deck.Count+3)*.03f), tempString);
-			for(int i = 0; i < gameControl.Deck.Count; i++) {
-				tempString += ((i+1) + ". " + gameControl.Deck[i]);
-				while(GUI.Button(new Rect(Screen.width*.01f, Screen.height*.03f*(i+2), Screen.width*.18f, Screen.height*.028f), 
-				                 gameControl.Deck[i])){
-					string stringCardToDraw = "prefabs/cards/" + gameControl.Deck[i] + " card";
-					cardObjFromDeck = (GameObject)GameObject.Instantiate (Resources.Load (stringCardToDraw));
-					Card tempCard = cardObjFromDeck.GetComponent<Card>();
-					Display(tempCard);
-				}
-			}
-		}
-		
-		if (CardDisplay) {
-			GUI.BeginGroup (new Rect (Screen.width*.2f, Screen.height*.165f, Screen.width*.6f, Screen.height*.55f), "");
-			GUI.Box (new Rect (0,0, Screen.width*.33f, Screen.height*.2f), DisplayName, DisplayTitleStyle);
-			GUI.Box (new Rect (Screen.width*.33f, 0, Screen.width*.25f, Screen.width*.25f), DisplayCardIcon, DisplayTitleStyle);
-			GUI.Box(new Rect(0, Screen.height*.25f, Screen.width*.5f, Screen.height*.4f), DisplayRules, DisplayTextStyle); 
-			if(DisplayRangeTexture != null) {
-//				GUI.DrawTexture(new Rect(Screen.width*.05f, Screen.height*.38f, Screen.width*.1f*DisplayRangeSize, Screen.width*.1f*DisplayRangeSize), 
-				GUI.DrawTexture(new Rect(Screen.width*.15f, Screen.height*.47f, Screen.width*.08f, Screen.width*.08f), 
-			                                                DisplayRangeTexture);
-			}
-			if(DisplayAOETexture != null) {
-//				GUI.DrawTexture(new Rect(Screen.width*.25f, Screen.height*.38f, Screen.width*.1f*DisplayAOESize, Screen.width*.1f*DisplayAOESize), 
-				GUI.DrawTexture(new Rect(Screen.width*.25f, Screen.height*.47f, Screen.width*.08f, Screen.width*.08f), 
-			                                              DisplayAOETexture);
-			}
-			GUI.DrawTexture(new Rect(Screen.width*.0f, Screen.height*.47f, Screen.width*.08f, Screen.width*.08f), DisplayRarity);
-			GUI.DrawTexture(new Rect(Screen.width*.45f, Screen.height*.47f, Screen.width*.08f, Screen.width*.08f), DisplayIcon);
-			GUI.EndGroup();
+			//TODO displaying cards from the deck
 		}
 		
 		if (tooltip != "") {
@@ -93,77 +56,20 @@ public class GameControlGUI : MonoBehaviour {
 	}
 
 	public void Display(Card card) {
-		CardDisplay = true;
-		if (Tutorial.TutorialLevel != 0) return;
-
-		shopControlGUI.UnclickGoals ();
-
-		displayCardRenderer.enabled = true;
-		DisplayName = card.CardName;
-		DisplayName.Replace ("\n", "");
-		DisplayCardIcon = Resources.Load (card.IconPath) as Texture2D;
-		DisplayRules = card.DisplayText;
-		if (card.maxRange != 0) {
-			DisplayRangeTexture = (Texture2D)Resources.Load("sprites/targeting icons/range " + card.rangeTargetType.ToString() + 
-			                                                " " + card.minRange.ToString() + "-" + card.maxRange.ToString());
-		}
-		else 
-			DisplayRangeTexture = null;
-		
-		if(card.aoeMaxRange != 0) {
-			DisplayAOETexture = (Texture2D)Resources.Load("sprites/targeting icons/aoe " + card.aoeTargetType.ToString() + 
-			                                              " " + card.aoeMinRange.ToString() + "-" + card.aoeMaxRange.ToString());
-		}
-		else {
-			DisplayAOETexture = null;
-		}
-		
-		DisplayTitleStyle = new GUIStyle(styleLibrary.GameControlGUIStyles.DisplayTitle);
-		DisplayTitleStyle.fontSize = card.cardUI.DisplayTitleFontSize;
-		DisplayTextStyle = new GUIStyle(styleLibrary.GameControlGUIStyles.DisplayText);
-		DisplayTextStyle.fontSize = card.cardUI.DisplayRulesFontSize;
-		
-		//default text color is black
-		DisplayTitleStyle.normal.textColor = new Color(0,0,0);
-		DisplayTextStyle.normal.textColor = new Color(0,0,0);
-		
-		int godnum = ShopControl.AllGods.IndexOf (card.God);
-		
-		DisplayCard = shopControlGUI.GodDisplayCards [godnum];
-		DisplayIcon = shopControlGUI.GodIcons [godnum];
-		
-		if(card.God == ShopControl.Gods.Ekcha | card.God == ShopControl.Gods.Ixchel) {
-			DisplayTitleStyle.normal.textColor = new Color(1,1,1);
-			DisplayTextStyle.normal.textColor = new Color(1,1,1);
-		}
-		
-		switch(card.ThisRarity) {
-		case (Card.Rarity.Paper):
-			DisplayRarity = shopControlGUI.PaperTexture;
-			break;
-		case (Card.Rarity.Bronze):
-			DisplayRarity = shopControlGUI.BronzeTexture;
-			break;
-		case (Card.Rarity.Silver):
-			DisplayRarity = shopControlGUI.SilverTexture;
-			break;
-		case (Card.Rarity.Gold):
-			DisplayRarity = shopControlGUI.GoldTexture;
-			break;
-		}
-		displayCardRenderer.sprite = DisplayCard;
-		
-		CardDisplay = true;
+		displayCardCanvas.Display(card);
 	}
 	
 	public void Undisplay() {
+		displayCardCanvas.Undisplay();
 		CardDisplay = false;
 		//this vvv might be a bad condition to base whether or not to turn off the dimmer on. it works for now though.
 		if(gameControl.CardsToTarget == 0) {
 			Dim(false);
 		}
-		displayCardRenderer.enabled = false;
-		if(cardObjFromDeck != null) Destroy(cardObjFromDeck);
+		if(cardObjFromDeck != null) {
+			// TODO display cards from the deck. i dont think this ever worked?
+			Destroy(cardObjFromDeck);
+		}
 	}
 
 	public void DisplayDim() {

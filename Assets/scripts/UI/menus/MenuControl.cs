@@ -6,7 +6,6 @@ public class MenuControl : MonoBehaviour {
 	public enum MenuType {MainMenu, EncyclopediaMenu, GodChoiceMenu, CustomizeMenu, Tutorial};
 
 	public MainMenu mainMenu;
-	GameControl gameControl;
 	bool MainMenuIsOn = true;
 	EncyclopediaMenu encyclopediaMenu;
 	bool EncyclopediaMenuIsOn = false;
@@ -20,7 +19,6 @@ public class MenuControl : MonoBehaviour {
 	GUIStyleLibrary styleLibrary;
 
 	void Start() {
-		gameControl = gameObject.GetComponent<GameControl> ();
 		mainMenu = gameObject.GetComponent<MainMenu> ();
 		encyclopediaMenu = gameObject.GetComponent<EncyclopediaMenu> ();
 		godChoiceMenu = gameObject.GetComponent<GodChoiceMenu> ();

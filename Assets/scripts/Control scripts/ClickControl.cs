@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
 public class ClickControl : MonoBehaviour {
 	//Game control scripts
@@ -12,8 +13,10 @@ public class ClickControl : MonoBehaviour {
 	ShopControlGUI shopControlGUI;
 	ButtonAnimate playButton;
 	GridCursorControl gridCursorControl;
+	DisplayCardCanvas displayCardCanvas;
 	MenuControl menuControl;
     Player player;
+	EventSystem eventSystem;
 
 	//units
 	List<GridUnit> UnitList;
@@ -72,11 +75,18 @@ public class ClickControl : MonoBehaviour {
 		gridCursorControl = tempGO.GetComponent<GridCursorControl> ();
 		gameControlGUI = tempGO.GetComponent<GameControlGUI> ();
 		shopControlGUI = tempGO.GetComponent<ShopControlGUI> ();
+
 		playerObject = GameObject.FindGameObjectWithTag ("Player");
         player = playerObject.GetComponent<Player>();
+
 		playButton = GameObject.Find ("play end button").GetComponent<ButtonAnimate> ();
+
 		arrows =  GameObject.FindGameObjectWithTag("Camera Arrow");
 		SideArrows = (Texture2D)Resources.Load ("sprites/ui/side arrows");
+
+		displayCardCanvas = GameObject.FindGameObjectWithTag("displaycard").GetComponent<DisplayCardCanvas>(); 
+
+		eventSystem = GameObject.FindGameObjectWithTag("eventsystem").GetComponent<EventSystem>();
 	}
 
 	void Update () {
@@ -84,9 +94,11 @@ public class ClickControl : MonoBehaviour {
 		// Resetting things
 		
 		if (Input.GetMouseButtonDown (0)) {
-//			shopControl.GoalCheck("Touch the screen no more than than X times");
+			shopControl.GoalCheck("Touch the screen no more than than X times");
 		}
-		
+		if (eventSystem.IsPointerOverGameObject()) {
+			return;
+		}
 		if (!Input.GetMouseButton (0) && GridCursorControl.ClickedOffScreen) {
 			GridCursorControl.ClickedOffScreen = false;
 		}
@@ -107,7 +119,7 @@ public class ClickControl : MonoBehaviour {
         }
 
 		if(!AllowInputUmbrella) {
-			if(gameControlGUI.CardDisplay) {
+			if(displayCardCanvas.CardDisplay) {
 				gameControlGUI.Undisplay();
 				cardHasBeenClickedOn = false;
 			}
@@ -122,7 +134,7 @@ public class ClickControl : MonoBehaviour {
 			return;
 		}
 		
-		if(gameControlGUI.CardDisplay && !Input.GetMouseButton(0)) {
+		if(displayCardCanvas.CardDisplay && !Input.GetMouseButton(0)) {
 			gameControlGUI.Undisplay();
 			cardHasBeenClickedOn = false;
 		}
@@ -254,7 +266,7 @@ public class ClickControl : MonoBehaviour {
 					draggingDiscard = true;
 					cardHasBeenClickedOn = false;
 				}
-				else if(Time.time - 0.22f > lastCardClick && !gameControlGUI.CardDisplay && AllowInfoInput) { 
+				else if(Time.time - 0.22f > lastCardClick && !displayCardCanvas.CardDisplay && AllowInfoInput) { 
 					gameControlGUI.Display(cardScriptClickedOn);
 					cardHasBeenClickedOn = false;
 				}

@@ -61,6 +61,7 @@ public class EasySerializer {
 		} 
 
 		catch(FileNotFoundException e) {
+			UnityEngine.Debug.LogError(e);
 			return null;
 		}
 		

@@ -6,7 +6,13 @@ public class ShopGridCardCanvas : MonoBehaviour {
 
 	bool initialized = false;
 
+	GameControl gameControl;
+
 	ShopControlGUI shopControlGUI;
+
+	ShopGridCanvas shopGridCanvas;
+
+	LibraryCard thisCard;
 
 	Image background;
 	Image icon;
@@ -21,8 +27,12 @@ public class ShopGridCardCanvas : MonoBehaviour {
 	Text costBarDescription;
 	Image costRarityIcon;
 
+	Image buyingThisCardButton;
 	Image buyingThisCardBackground;
 	Text buyingThisCardText;
+
+	Image boughtThisCardDialog;
+	Text boughtThisCardText;
 
 	void Start() {
 		Initialize();
@@ -32,7 +42,10 @@ public class ShopGridCardCanvas : MonoBehaviour {
 		if(initialized) return;
 		initialized = true;
 
-		shopControlGUI = GameObject.FindGameObjectWithTag("GameController").GetComponent<ShopControlGUI>();
+		GameObject gamecontroller = GameObject.FindGameObjectWithTag("GameController");
+		shopControlGUI = gamecontroller.GetComponent<ShopControlGUI>();
+		gameControl = gamecontroller.GetComponent<GameControl>();
+		shopGridCanvas = gameObject.transform.parent.parent.GetComponent<ShopGridCanvas>();
 
 		Image[] Images = gameObject.GetComponentsInChildren<Image>();
 		foreach (Image img in Images) {
@@ -52,6 +65,10 @@ public class ShopGridCardCanvas : MonoBehaviour {
 				costRarityIcon = img;
 			} else if (img.gameObject.name == "Buying this card background") {
 				buyingThisCardBackground = img;
+			} else if (img.gameObject.name == "Show buying this card button") {
+				buyingThisCardButton = img;
+			} else if (img.gameObject.name == "Bought this card box") {
+				boughtThisCardDialog = img;
 			}
 		}
 		Text[] Texts = gameObject.GetComponentsInChildren<Text>();
@@ -64,15 +81,30 @@ public class ShopGridCardCanvas : MonoBehaviour {
 				costBarDescription = txt;
 			} else if (txt.gameObject.name == "Buying this card text") {
 				buyingThisCardText = txt;
+			} else if (txt.gameObject.name == "Bought this card description") {
+				boughtThisCardText = txt;
 			}
 		}
 	}
 
-	public void SetInfo (LibraryCard thisCard) {
+	public void SetInfo (LibraryCard card) {
 
 		Initialize();
 
+		thisCard = card;
+
 		gameObject.SetActive(true);
+
+		background.gameObject.SetActive(true);
+		buyingThisCardButton.gameObject.SetActive(true);
+		buyingThisCardBackground.gameObject.transform.parent.gameObject.SetActive(true);
+		costBarDescription.gameObject.transform.parent.gameObject.SetActive(true);
+
+		boughtThisCardDialog.gameObject.SetActive(false);
+		buyingThisCardButton.gameObject.SetActive(false);
+
+		description.text = card.DisplayText;
+		title.text = card.CardName;
 		
 		if (thisCard.God == ShopControl.Gods.Akan | thisCard.God == ShopControl.Gods.Buluc |
 		    thisCard.God == ShopControl.Gods.Ikka | thisCard.God == ShopControl.Gods.Kinich | 
@@ -91,24 +123,44 @@ public class ShopGridCardCanvas : MonoBehaviour {
 			rarityIcon.sprite = shopControlGUI.Bronze;
 			//set cost box background color
 			costRarityIcon.sprite = shopControlGUI.Bronze;
-			costBarDescription.text = "$1";
+			costBarDescription.text = "$2\n←";
 		} else if (thisCard.ThisRarity == Card.Rarity.Silver) {
 			//set rarity picture
 			rarityIcon.sprite = shopControlGUI.Silver;
 			//set cost box background color
 			costRarityIcon.sprite = shopControlGUI.Silver;
-			costBarDescription.text = "$2";
+			costBarDescription.text = "$4\n←";
 		} else if (thisCard.ThisRarity == Card.Rarity.Gold) {
 			//set rarity picture
 			rarityIcon.sprite = shopControlGUI.Gold;
 			//set cost box background color
 			costRarityIcon.sprite = shopControlGUI.Gold;
-			costBarDescription.text = "$3";
+			costBarDescription.text = "$6\n←";
 		}
 		
 		// set icon
-		Sprite loadIcon = Resources.Load ("sprites/card icons/" + thisCard.IconPath) as Sprite;
+		Sprite loadIcon = Resources.Load<Sprite> ("sprites/card icons/" + thisCard.IconPath);
 		icon.sprite = loadIcon;
+//		rangeIcon = Resources.Load<Sprite>(
+
+		if (thisCard.rangeMax != 0) {
+			rangeIcon.gameObject.SetActive(true);
+			rangeIcon.sprite = Resources.Load<Sprite>("sprites/targeting icons/range " + thisCard.RangeTargetType.ToString() + 
+				" " + thisCard.rangeMin.ToString() + "-" + thisCard.rangeMax.ToString());
+		}
+		else {
+			rangeIcon.gameObject.SetActive(false);
+		}
+
+		if(thisCard.aoeMaxRange != 0) {
+			aoeIcon.gameObject.SetActive(true);
+			aoeIcon.sprite = Resources.Load<Sprite>("sprites/targeting icons/aoe " + thisCard.AoeTargetType.ToString() + 
+				" " + thisCard.aoeMinRange.ToString() + "-" + thisCard.aoeMaxRange.ToString());
+		}
+		else {
+			aoeIcon.gameObject.SetActive(false);
+		}
+
 		
 		// set god icon
 		godIcon.sprite = shopControlGUI.SpriteGodIcons[ShopControl.AllGods.IndexOf(thisCard.God)];
@@ -116,13 +168,51 @@ public class ShopGridCardCanvas : MonoBehaviour {
 		// set card background
 		background.sprite = shopControlGUI.GodSmallCards[ShopControl.AllGods.IndexOf(thisCard.God)];
 
+		GameObject go = buyingThisCardText.transform.parent.gameObject;
 		if (!SaveData.UnlockedCards.Contains (thisCard) && SaveData.UnlockedGods.Contains (thisCard.God)) {
-			buyingThisCardBackground.enabled = true;
-			buyingThisCardText.enabled = true;
-			buyingThisCardText.text = "Buying this card will add it to your collection!";
+			go.SetActive(true);
+			Invoke("HideCollectionAddDialog", 2.0f);
 		} else {
-			buyingThisCardBackground.enabled = false;
-			buyingThisCardText.enabled = false;
+			go.SetActive(false);
 		}
+	}
+
+	public void HideCollectionAddDialog () {
+		// lets just have this appear when the card is new (usually). 
+		buyingThisCardText.transform.parent.gameObject.SetActive(false);
+	}
+
+	void HideBoughtThisCardDialog () {
+		//actually just hides the whole thing.
+		gameObject.SetActive(false);
+	}
+
+	public void Buy () {
+		Debug.Log("buy");
+		background.gameObject.SetActive(false);
+		buyingThisCardButton.gameObject.SetActive(false);
+		buyingThisCardBackground.gameObject.transform.parent.gameObject.SetActive(false);
+		costBarDescription.gameObject.transform.parent.gameObject.SetActive(false);
+		boughtThisCardDialog.gameObject.SetActive(true);
+
+		if (gameControl.Dollars >= thisCard.Cost) {
+			string tempString = thisCard.CardName.ToString ();
+			gameControl.Deck.Add (tempString);
+			gameControl.AddDollars (-thisCard.Cost);
+
+			if (SaveData.TryToUnlockCard (thisCard)) {
+				boughtThisCardText.text = ("Added " + thisCard.God.ToString () + 
+					"'s card " + tempString + " to your deck as well as your collection!");
+				boughtThisCardDialog.sprite = shopGridCanvas.BOUGHTSPRITEADDEDTOCOLLECTION;
+			} else {
+				boughtThisCardText.text = ("This card has been added to your deck!");
+				boughtThisCardDialog.sprite = shopGridCanvas.BOUGHTSPRITENORMAL;
+			}
+		} else {
+			boughtThisCardText.text = ("You don't have enough money! This card costs $" + thisCard.Cost.ToString() + ".");
+			boughtThisCardDialog.sprite = shopGridCanvas.BOUGHTSPRITENORMAL;
+		}
+
+		Invoke("HideBoughtThisCardDialog", 2.0f);
 	}
 }

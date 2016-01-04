@@ -56,7 +56,6 @@ public class EnemyLibrary : MonoBehaviour {
 	}
 
 	public void LoadEnemiesForLevel (int level) {
-		Debug.Log(level);
 		if(level > challengeRatingsForEachLevel.Count) level = challengeRatingsForEachLevel.Count;
 		for(int i = 0; i < challengeRatingsForEachLevel[level].Count; i++) {
 			LoadRandomEnemyOfChallengeRating(challengeRatingsForEachLevel[level][i]);
@@ -72,7 +71,6 @@ public class EnemyLibrary : MonoBehaviour {
 			}
 		}
 		int x = Random.Range(0, appropriateChallengeRatingList.Count);
-		Debug.Log("loading enemy: " + appropriateChallengeRatingList[x].Name);
 		LoadEnemy(appropriateChallengeRatingList[x].Name);
 	}
 	

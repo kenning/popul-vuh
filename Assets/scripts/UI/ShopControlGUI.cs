@@ -42,6 +42,9 @@ public class ShopControlGUI : MonoBehaviour {
 	float cardHeight = Screen.height*.16f;
 
 	string AddedToCollText = "";
+
+	public Sprite BOUGHTSPRITEADDEDTOCOLLECTION;
+	public Sprite BOUGHTSPRITENORMAL;
 	
 	void Start () {
 		useGUILayout = false;

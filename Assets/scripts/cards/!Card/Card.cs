@@ -89,23 +89,24 @@ public class Card : MonoBehaviour {
 		playerObj = GameObject.FindGameObjectWithTag("Player");
 
 		// Initialize card variables
-		LibraryCard tempLibraryCard = CardLibrary.Lib[CardName];
+		LibraryCard ThisLibraryCard = CardLibrary.Lib[CardName];
+
 		name = CardName;
-		CardName = tempLibraryCard.CardName;
-		DisplayName = tempLibraryCard.DisplayName;
-		IconPath = "sprites/card icons/" + tempLibraryCard.IconPath;
-		Tooltip = tempLibraryCard.Tooltip;
-		DisplayText = tempLibraryCard.DisplayText;
-		MiniDisplayText = tempLibraryCard.MiniDisplayText;
-		rangeTargetType = tempLibraryCard.RangeTargetType;
-		minRange = tempLibraryCard.rangeMin;
-		maxRange = tempLibraryCard.rangeMax;
-		aoeTargetType = tempLibraryCard.AoeTargetType;
-		aoeMinRange = tempLibraryCard.aoeMinRange;
-		aoeMaxRange = tempLibraryCard.aoeMaxRange;
-		ThisRarity = tempLibraryCard.ThisRarity;
-		CardAction = tempLibraryCard.CardAction;
-		God = tempLibraryCard.God;
+		CardName = ThisLibraryCard.CardName;
+		DisplayName = ThisLibraryCard.DisplayName;
+		IconPath = "sprites/card icons/" + ThisLibraryCard.IconPath;
+		Tooltip = ThisLibraryCard.Tooltip;
+		DisplayText = ThisLibraryCard.DisplayText;
+		MiniDisplayText = ThisLibraryCard.MiniDisplayText;
+		rangeTargetType = ThisLibraryCard.RangeTargetType;
+		minRange = ThisLibraryCard.rangeMin;
+		maxRange = ThisLibraryCard.rangeMax;
+		aoeTargetType = ThisLibraryCard.AoeTargetType;
+		aoeMinRange = ThisLibraryCard.aoeMinRange;
+		aoeMaxRange = ThisLibraryCard.aoeMaxRange;
+		ThisRarity = ThisLibraryCard.ThisRarity;
+		CardAction = ThisLibraryCard.CardAction;
+		God = ThisLibraryCard.God;
 
 		gameControl.Hand.Add(gameObject);
 

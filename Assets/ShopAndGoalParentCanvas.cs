@@ -17,6 +17,9 @@ public class ShopAndGoalParentCanvas : MonoBehaviour {
 	public GameObject FINISHSHOPPINGBUTTON;
 	public GameObject SHOPDOLLARCOUNTER;
 	public GameObject EXPOBACKGROUND;
+	public Sprite[] GRADEBACKGROUNDS;
+	public ShopAwardCanvas[] SHOPAWARDS;
+
 	Text dollarsText;
 
 	GameControl gameControl;
@@ -39,6 +42,7 @@ public class ShopAndGoalParentCanvas : MonoBehaviour {
 	#region Initialization methods
 	// This just gets used by updategoalinfos and newlevelnewgoals.
 	void TurnOnAppropriateGoals (Goal[] goals) {
+
 		for (int i = 0; i < 3; i++) {
 			if(i >= goals.Length) {
 				GOALCANVASES[i].gameObject.SetActive(false);
@@ -50,6 +54,9 @@ public class ShopAndGoalParentCanvas : MonoBehaviour {
 
 	public void UpdateGoalInfos (Goal[] goals)
 	{
+		// Happens when clickcontrol.goalcheck() is called
+		if(goals == null) return;
+
 		TurnOnAppropriateGoals(goals);
 
 		for(int i = 0; i < goals.Length; i++) {
@@ -71,9 +78,10 @@ public class ShopAndGoalParentCanvas : MonoBehaviour {
 		UpdateGoalInfos (goals);
 	}
 	public void SetUpShopRows (Goal[] goals, bool[] highScoreNotifications) {
-		Debug.Log("Well, we tried to set up shop rows at least.");
 		for(int i = 0; i < goals.Length; i++) {
-			SHOPGRIDCANVAS.SetGradeInfo (i, goals[i], highScoreNotifications[i]);
+			
+			SHOPAWARDS[i].SetGradeInfo(goals[i], highScoreNotifications[i]);
+
 			for (int j = 0; j < shopControl.CardsToBuyFrom[i].Count; j++) {
 				SHOPGRIDCANVAS.SetCardInfo(i, j, shopControl.CardsToBuyFrom[i][j]);
 			}
@@ -85,14 +93,16 @@ public class ShopAndGoalParentCanvas : MonoBehaviour {
 
 	#region Turning expo, normal and shop guis on and off
 	public void TurnOnShopGUI() {
-		if(SHOPGRIDCANVAS != null) SHOPGRIDCANVAS.GetComponent<ShopGridCanvas>().TurnOff();
 		FINISHSHOPPINGBUTTON.SetActive (true);
 		SHOPDOLLARCOUNTER.SetActive (true);
+		EXPOBACKGROUND.SetActive(true);
 	}
 	public void TurnOffShopGUI() {
-		if(SHOPGRIDCANVAS != null) SHOPGRIDCANVAS.gameObject.SetActive(false);
+		if(SHOPGRIDCANVAS != null) SHOPGRIDCANVAS.GetComponent<ShopGridCanvas>().TurnOff();
 		FINISHSHOPPINGBUTTON.SetActive (false);
 		SHOPDOLLARCOUNTER.SetActive (false);
+		EXPOBACKGROUND.SetActive(false);
+		for(int i = 0; i < SHOPAWARDS.Length; i++) SHOPAWARDS[i].TurnOff();
 	}
 	public void TurnOnNormalGUI() {
 		for (int i = 0; i < GOALCANVASES.Length; i++) {
@@ -134,6 +144,7 @@ public class ShopAndGoalParentCanvas : MonoBehaviour {
 	}
 
 	public void FinishShopping () {
+		EXPOBACKGROUND.SetActive(false);
 		gameControl.CollectAnimate();
 		gameControlGUI.SetTooltip("Shuffling together your deck and discard...");
 

@@ -195,7 +195,6 @@ public class GameControl : MonoBehaviour
 		cardClass = cardClass.Replace (" ", "");
 		cardClass = cardClass.Replace ("'", "");
 		cardClass = cardClass.Replace ("-", "");
-		Debug.Log(cardClass);
 		newCardObj.AddComponent(System.Type.GetType(cardClass));
 
 		//VV this is here and not in the start() method because it doesn't get called if the card is revealed
