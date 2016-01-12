@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class ShopGridCardCanvas : MonoBehaviour {
 
+	public int GODNUMBER;
+
 	bool initialized = false;
 
 	GameControl gameControl;
@@ -11,6 +13,8 @@ public class ShopGridCardCanvas : MonoBehaviour {
 	ShopControlGUI shopControlGUI;
 
 	ShopGridCanvas shopGridCanvas;
+
+	ShopControl shopControl;
 
 	LibraryCard thisCard;
 
@@ -46,6 +50,7 @@ public class ShopGridCardCanvas : MonoBehaviour {
 		shopControlGUI = gamecontroller.GetComponent<ShopControlGUI>();
 		gameControl = gamecontroller.GetComponent<GameControl>();
 		shopGridCanvas = gameObject.transform.parent.parent.GetComponent<ShopGridCanvas>();
+		shopControl = gamecontroller.GetComponent<ShopControl>();
 
 		Image[] Images = gameObject.GetComponentsInChildren<Image>();
 		foreach (Image img in Images) {
@@ -189,6 +194,7 @@ public class ShopGridCardCanvas : MonoBehaviour {
 
 	public void Buy () {
 		Debug.Log("buy");
+		shopControl.BoughtCardFromGod(GODNUMBER);
 		background.gameObject.SetActive(false);
 		buyingThisCardButton.gameObject.SetActive(false);
 		buyingThisCardBackground.gameObject.transform.parent.gameObject.SetActive(false);

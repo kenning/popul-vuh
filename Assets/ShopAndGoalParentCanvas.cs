@@ -79,9 +79,9 @@ public class ShopAndGoalParentCanvas : MonoBehaviour {
 	}
 	public void SetUpShopRows (Goal[] goals, bool[] highScoreNotifications) {
 		for(int i = 0; i < goals.Length; i++) {
-			
 			SHOPAWARDS[i].SetGradeInfo(goals[i], highScoreNotifications[i]);
-
+		}
+		for(int i = 0; i < 3; i++) {
 			for (int j = 0; j < shopControl.CardsToBuyFrom[i].Count; j++) {
 				SHOPGRIDCANVAS.SetCardInfo(i, j, shopControl.CardsToBuyFrom[i][j]);
 			}

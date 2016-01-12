@@ -17,6 +17,8 @@ public class ShopControl : MonoBehaviour {
 
 	string[] possibleGoals;
 
+	int[] shopCardRarityLevelsByGod = {0, 0, 0, 0, 0, 0, 0, 0};
+
 	//Phases
 	public enum Gods {Akan, Buluc, Chac, Ekcha, Ikka, Ixchel, Kinich, Pantheon, none};
 	public static string[] GodDescriptions	= {
@@ -60,23 +62,35 @@ public class ShopControl : MonoBehaviour {
 
 	public void ProduceCards () {
 
-		Debug.Log("this is the nice method where we set what cards you can buy.");
-		Debug.Log("it will change a lot soon.");
-
 		shopControlGUI.UpdateGoalInfos ();
 
-		CardsToBuyFrom = new List<LibraryCard>[Goals.Length];
+		CardsToBuyFrom = new List<LibraryCard>[3];
 		for(int i = 0; i < CardsToBuyFrom.Length; i++) {
 			CardsToBuyFrom[i] = new List<LibraryCard>();
 		}
+			
+		// Count - 2 because the last ones are 'pantheon' and 'none'
+		for (int i = 0, j = 0; i < AllGods.Count - 2; i++) {
+			Debug.Log(AllGods[i]);
+			Debug.Log(SaveData.UnlockedGods.IndexOf(AllGods[i]));
+			if(SaveData.UnlockedGods.IndexOf(AllGods[i]) != -1) {
+				Card.Rarity rare = Card.Rarity.Bronze;
+				if (shopCardRarityLevelsByGod[i] == 1) {
+					rare = Card.Rarity.Silver;
+				} else if (shopCardRarityLevelsByGod[i] == 2) {
+					rare = Card.Rarity.Gold;
+				}
+				LibraryCard tempLC = library.PullCardFromPack(AllGods[i], rare);
+				CardsToBuyFrom[j].Add(tempLC);
+			}
+
+			if(i == 1 | i == 4) j++;
+		}
+
+
 
 		int[] finalScores = FinalScores ();
 		for(int i = 0; i < Goals.Length; i++) {
-
-			if(finalScores[i] >= 1) { 
-				LibraryCard tempLC = library.PullCardFromPack(Goals[i].God, Card.Rarity.Bronze);
-				CardsToBuyFrom[i].Add(tempLC);
-			}
 
 			if(finalScores[i] == 1) gameControl.AddDollars(1);
 			if(finalScores[i] >= 2) CardsToBuyFrom[i].Add(library.PullCardFromPack(Goals[i].God, Card.Rarity.Silver));
@@ -127,5 +141,12 @@ public class ShopControl : MonoBehaviour {
 		shopControlGUI.UpdateGoalInfos ();
 		clickControl.DisallowEveryInput ();
 
+	}
+
+	public void BoughtCardFromGod(int godNumber) {
+		if(godNumber > 6) Debug.LogError("whaaaa??????");
+		if(shopCardRarityLevelsByGod[godNumber] < 2) {
+			shopCardRarityLevelsByGod[godNumber]++; 
+		}
 	}
 }

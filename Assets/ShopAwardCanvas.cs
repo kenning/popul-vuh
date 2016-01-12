@@ -51,9 +51,10 @@ public class ShopAwardCanvas : MonoBehaviour {
 		else if (grade == awards [1]) gradeQuality = 1;
 
 		if (highScoreNotification) {
-			string scoreText = "New highest score!\n\n";
-			if(!goal.HigherScoreIsGood) scoreText = "New lowest score!\n\n";
+			string scoreText = "New highest score: ";
+			if(!goal.HigherScoreIsGood) scoreText = "New lowest score: ";
 			scoreText += goal.CurrentScore.ToString();
+			scoreText += "\n\n";
 			grade = scoreText + grade;
 
 			//TODO interact with savedata or something here when i implement high scores.
