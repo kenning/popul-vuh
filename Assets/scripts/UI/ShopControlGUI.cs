@@ -93,7 +93,7 @@ public class ShopControlGUI : MonoBehaviour {
 
 	public void TurnOnShopGUI() {
 		for (int i = 0; i < shopControl.Goals.Length; i++) {
-			if(SaveData.CheckForHighScores(shopControl.Goals[i])) {
+			if(SaveDataControl.CheckForHighScores(shopControl.Goals[i])) {
 				highScoreNotification[i] = true;
 			}
 		}
@@ -101,6 +101,10 @@ public class ShopControlGUI : MonoBehaviour {
 		IgnoreClicking = true;
 
 		shopAndGoalParentCanvas.SetUpShopRows (Goals, highScoreNotification);
+
+		StateSavingControl.TurnShopModeOn();
+		Debug.Log("huh?");
+		StateSavingControl.Save();
 
 		shopAndGoalParentCanvas.TurnOnShopGUI ();
 	}

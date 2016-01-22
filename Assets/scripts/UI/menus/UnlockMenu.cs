@@ -36,8 +36,8 @@ public class UnlockMenu : MonoBehaviour {
 //			if(GUI.Button(new Rect(0,0,Screen.width*.4f, Screen.height*.05f), "unlock all")) {
 //				for(int i = 0; i < ShopControl.AllGods.Count; i++) {
 //					CardLibrary.UnlockAllCards(ShopControl.AllGods[i]);
-//					SaveData.AddGodInOrderToUnlocked(ShopControl.AllGods[i]);
-//					SaveData.AddGodInOrderToFullyUnlocked(ShopControl.AllGods[i]);
+//					SaveDataControl.AddGodInOrderToUnlocked(ShopControl.AllGods[i]);
+//					SaveDataControl.AddGodInOrderToFullyUnlocked(ShopControl.AllGods[i]);
 //					FindUnlockBaseCost();
 //				}
 //			}
@@ -46,26 +46,26 @@ public class UnlockMenu : MonoBehaviour {
 //			
 //			GUI.BeginGroup(new Rect(Screen.width*.1f, Screen.height*.15f, Screen.width*.8f, Screen.height*.7f), "");
 //			for(int i = 0; i < ShopControl.AllGods.Count; i++){
-//				if(SaveData.UnlockedGods.Contains(ShopControl.AllGods[i]) && SaveData.FullyUnlockedGods.Contains(ShopControl.AllGods[i])) {
+//				if(SaveDataControl.UnlockedGods.Contains(ShopControl.AllGods[i]) && SaveDataControl.FullyUnlockedGods.Contains(ShopControl.AllGods[i])) {
 //					//Big box: you unlocked everything!
 //					GUI.Box(new Rect(0,Screen.height*.1f*i, Screen.width*.7f, Screen.height*.1f), ShopControl.AllGods[i].ToString() + " fully unlocked!", UNLOCKMENUGUISKIN.customStyles[3]);
-//				} else if (SaveData.UnlockedGods.Contains(ShopControl.AllGods[i])) {
+//				} else if (SaveDataControl.UnlockedGods.Contains(ShopControl.AllGods[i])) {
 //					//You unlocked this god, click button to unlock all cards
 //					GUI.Box(new Rect(0, Screen.height*.1f*(i), Screen.width*.35f, Screen.height*.1f), ShopControl.AllGods[i].ToString() + " unlocked!", UNLOCKMENUGUISKIN.customStyles[3]);
 //					if(GUI.Button(new Rect(Screen.width*.35f, Screen.height*.1f*(i), Screen.width*.35f, Screen.height*.1f), "Unlock all of " + ShopControl.AllGods[i].ToString() + "'s cards for £" + unlockAllCardCost.ToString(), UNLOCKMENUGUISKIN.customStyles[4])){
-//						if(SaveData.UnlockBux >= unlockAllCardCost) {
+//						if(SaveDataControl.UnlockBux >= unlockAllCardCost) {
 //							CardLibrary.UnlockAllCards(ShopControl.AllGods[i]);
-//							SaveData.AddGodInOrderToFullyUnlocked(ShopControl.AllGods[i]);
-//							SaveData.UnlockBux += -unlockAllCardCost;
+//							SaveDataControl.AddGodInOrderToFullyUnlocked(ShopControl.AllGods[i]);
+//							SaveDataControl.UnlockBux += -unlockAllCardCost;
 //						}
 //						FindUnlockBaseCost();
 //					}
 //				} else {
 //					//click this button to unlock this god
 //					if(GUI.Button(new Rect(0, Screen.height*.1f*(i), Screen.width*.7f, Screen.height*.1f), "Unlock " + ShopControl.AllGods[i].ToString() + " for £" + unlockBaseCost.ToString(), UNLOCKMENUGUISKIN.customStyles[4])){
-//						if(SaveData.UnlockBux >= unlockBaseCost) {
-//							SaveData.AddGodInOrderToUnlocked(ShopControl.AllGods[i]);
-//							SaveData.UnlockBux += -unlockBaseCost;
+//						if(SaveDataControl.UnlockBux >= unlockBaseCost) {
+//							SaveDataControl.AddGodInOrderToUnlocked(ShopControl.AllGods[i]);
+//							SaveDataControl.UnlockBux += -unlockBaseCost;
 //						}
 //						FindUnlockBaseCost();
 //					}
@@ -78,17 +78,17 @@ public class UnlockMenu : MonoBehaviour {
 //			if(GUI.Button(new Rect(Screen.width*.1f, Screen.height*.875f, Screen.width*.4f, Screen.height*.1f), "Go back", UNLOCKMENUGUISKIN.button)) {
 //				MainMenu.MainMenuUp = true;
 //				UnlockMenuUp = false;
-//				SaveLoad.Save();
+//				SaveDataControl.Save();
 //			}
 //
-//			GUI.Box(new Rect(Screen.width*.55f, Screen.height*.875f, Screen.width*.35f, Screen.height*.1f), SaveData.UnlockBux.ToString() + " God£", UNLOCKMENUGUISKIN.customStyles[0]);
+//			GUI.Box(new Rect(Screen.width*.55f, Screen.height*.875f, Screen.width*.35f, Screen.height*.1f), SaveDataControl.UnlockBux.ToString() + " God£", UNLOCKMENUGUISKIN.customStyles[0]);
 //		}
 //	}
 //
 //	void FindUnlockBaseCost() {
 //		int totalUnlockedThings = 0;
-//		totalUnlockedThings += SaveData.UnlockedGods.Count;
-//		totalUnlockedThings += SaveData.FullyUnlockedGods.Count;
+//		totalUnlockedThings += SaveDataControl.UnlockedGods.Count;
+//		totalUnlockedThings += SaveDataControl.FullyUnlockedGods.Count;
 //		Debug.Log("fully unlocked stuff: " + totalUnlockedThings.ToString());
 //
 //		unlockBaseCost = Mathf.RoundToInt((totalUnlockedThings*totalUnlockedThings*.25f*.25f) + totalUnlockedThings);

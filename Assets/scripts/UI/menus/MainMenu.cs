@@ -36,8 +36,7 @@ public class MainMenu : MonoBehaviour {
 	}
 
     //Brings up the "you died" menu, which is here in MainMenu.
-	public static void Die() 
-    {
+	public static void Die() {
         GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().alive = false;
 
 		MainMenuUp = false;
@@ -58,21 +57,23 @@ public class MainMenu : MonoBehaviour {
             {
                 if (GameControl.Level >= UnlockLevels[i])
                 {
-                    if (!SaveData.UnlockedGods.Contains(UnlockOrder[i]))
+                    if (!SaveDataControl.UnlockedGods.Contains(UnlockOrder[i]))
                     {
                         UnlockedText += "Unlocked " + UnlockOrder[i].ToString();
-                        SaveData.UnlockedGods.Add(UnlockOrder[i]);
+                        SaveDataControl.UnlockedGods.Add(UnlockOrder[i]);
                     }
                 }
             }
         }
+
+		StateSavingControl.Save();
 	}
 
     //This gets called when you click "OK in the "you died" menu.
     public static void CleanUpGameboard()
     {
         GameControl.Level = 0;
-        SaveLoad.Save();
+        SaveDataControl.Save();
         MainMenu.MainMenuUp = true;
         MainMenu.InGame = false;
         DiedMenuUp = false;
@@ -101,7 +102,7 @@ public class MainMenu : MonoBehaviour {
     //Those variables show up on the main menu and also get checked in MainMenu.Die() to see if you unlocked something new.
 	public static void UnlockCheck() {
 		for(int i = 0; i < UnlockOrder.Length; i++) {
-			if(!SaveData.UnlockedGods.Contains(UnlockOrder[i])) {
+			if(!SaveDataControl.UnlockedGods.Contains(UnlockOrder[i])) {
 				NextGodToUnlock = UnlockOrder[i];
 				NextUnlockLevel = UnlockLevels[i];
 				break;
@@ -116,8 +117,7 @@ public class MainMenu : MonoBehaviour {
 		GUI.depth = 0;
 
         #region Main Menu
-        if (MainMenuUp)
-        {
+        if (MainMenuUp) {
 			GUI.Box(new Rect(0, 0, Screen.width, Screen.height), "", styleLibrary.MainStyles.BlackBackground);
 
 			//Title
@@ -126,17 +126,15 @@ public class MainMenu : MonoBehaviour {
 
 			//Button 1: Start new game
             if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .25f, Screen.width * .6f, Screen.height * .1f), 
-			               "Start new game", styleLibrary.MainStyles.Button))
-            {
+			               "Start new game", styleLibrary.MainStyles.Button)) {
                 
 				menuControl.TurnOffMenus();
 
-                if (SaveData.UnlockedGods.Count == 7)
-                {
+                if (SaveDataControl.UnlockedGods.Count == 7) {
 					menuControl.TurnOnMenu(MenuControl.MenuType.GodChoiceMenu);
-                }
-                else
-                {
+				} else if (StateSavingControl.StateWasSaved()) {
+					StateSavingControl.Load();
+				} else {
 					gameControl.BeginGame();
                 }
             }
@@ -147,7 +145,7 @@ public class MainMenu : MonoBehaviour {
 				menuControl.TurnOnMenu(MenuControl.MenuType.Tutorial);
 				gameControl.BeginGame();
 			}
-			if (!SaveData.FinishedTutorial)
+			if (!SaveDataControl.FinishedTutorial)
 			{
 				GUI.Box(new Rect(Screen.width * .25f, Screen.height * .475f, Screen.width * .5f, Screen.height * .05f), 
 				        "Learn to play here!", styleLibrary.MainStyles.NewCardsAvailablePopup);
@@ -157,11 +155,11 @@ public class MainMenu : MonoBehaviour {
 			if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .55f, Screen.width * .6f, Screen.height * .1f), 
 			               "Customize Deck", styleLibrary.MainStyles.Button))
             {
-                SaveData.NewCardsAvailable = false;
+                SaveDataControl.NewCardsAvailable = false;
 				menuControl.TurnOnMenu(MenuControl.MenuType.CustomizeMenu);
             }
 				//Subheading for Customize Deck
-			if (SaveData.NewCardsAvailable)
+			if (SaveDataControl.NewCardsAvailable)
 			{
 				GUI.Box(new Rect(Screen.width * .25f, Screen.height * .625f, Screen.width * .5f, Screen.height * .05f), 
 				        "New cards available!", styleLibrary.MainStyles.NewCardsAvailablePopup);
@@ -183,7 +181,7 @@ public class MainMenu : MonoBehaviour {
 			}
 
 			//Left Sidebar
-			GUIContent CardsUnlocked = new GUIContent("You have unlocked \n" + SaveData.UnlockedCards.Count + "/" + CardLibrary.Lib.Count + "\ncards");
+			GUIContent CardsUnlocked = new GUIContent("You have unlocked \n" + SaveDataControl.UnlockedCards.Count + "/" + CardLibrary.Lib.Count + "\ncards");
             GUI.Box(new Rect(Screen.width * .025f, Screen.height * .3f, Screen.width * .15f, Screen.height * .6f), 
 			        CardsUnlocked, styleLibrary.MainStyles.Sidebar);
 
@@ -211,14 +209,15 @@ public class MainMenu : MonoBehaviour {
             {
                 MainMenuUp = true;
                 DeleteDataMenuUp = false;
-                SaveData.NewSaveFile();
-				SaveLoad.Save();
+                SaveDataControl.NewSaveFile();
+				SaveDataControl.Save();
+				StateSavingControl.DeleteState();
             }
             if (GUI.Button(new Rect(Screen.width * .1f, Screen.height * .8f, Screen.width * .3f, Screen.height * .15f), 
 			               "Back", styleLibrary.MainStyles.Button))
             {
                 DeleteDataMenuUp = false;
-                SaveLoad.Save();
+                SaveDataControl.Save();
                 MainMenuUp = true;
             }
 

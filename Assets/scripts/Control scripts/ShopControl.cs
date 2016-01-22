@@ -72,8 +72,8 @@ public class ShopControl : MonoBehaviour {
 		// Count - 2 because the last ones are 'pantheon' and 'none'
 		for (int i = 0, j = 0; i < AllGods.Count - 2; i++) {
 			Debug.Log(AllGods[i]);
-			Debug.Log(SaveData.UnlockedGods.IndexOf(AllGods[i]));
-			if(SaveData.UnlockedGods.IndexOf(AllGods[i]) != -1) {
+			Debug.Log(SaveDataControl.UnlockedGods.IndexOf(AllGods[i]));
+			if(SaveDataControl.UnlockedGods.IndexOf(AllGods[i]) != -1) {
 				Card.Rarity rare = Card.Rarity.Bronze;
 				if (shopCardRarityLevelsByGod[i] == 1) {
 					rare = Card.Rarity.Silver;
@@ -101,6 +101,10 @@ public class ShopControl : MonoBehaviour {
 			if(finalScores[i] == 4) gameControl.AddDollars(5);
 		}
 
+		TurnOnShopGUI();
+	}
+
+	public void TurnOnShopGUI() {
 		shopControlGUI.TurnOnShopGUI ();
 		clickControl.DisallowEveryInput ();
 	}
@@ -147,6 +151,18 @@ public class ShopControl : MonoBehaviour {
 		if(godNumber > 6) Debug.LogError("whaaaa??????");
 		if(shopCardRarityLevelsByGod[godNumber] < 2) {
 			shopCardRarityLevelsByGod[godNumber]++; 
+		}
+	}
+
+	public void RemoveBoughtCard(string cardname) {
+		foreach (List<LibraryCard> column in CardsToBuyFrom) {
+			foreach (LibraryCard lc in column) {
+				if (cardname == lc.CardName) {
+					column.Remove(lc);
+					Debug.Log("removed card from shopcontrol cardstobuyfrom list");
+					return;
+				}
+			}
 		}
 	}
 }

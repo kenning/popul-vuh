@@ -165,6 +165,7 @@ public class GridCursorControl : MonoBehaviour {
 			cursorInfoTarget = infoTarget;
 			switch (infoType) {
 			case CursorInfoTypes.EnemyInfo:
+				Debug.Log("Some error here from when you saw an enemy before");
 				GridUnit tempGU = infoTarget.GetComponent<GridUnit> ();
 				Enemy tempEnemy = infoTarget.GetComponent<Enemy> ();
 				gameControlGUI.SetTooltip (tempEnemy.Tooltip);

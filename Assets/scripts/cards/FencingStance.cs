@@ -15,7 +15,7 @@ public class FencingStance : Card {
 
 		gameControl.AddMoves (2);
 		gameControl.AddPlays (1);
-		EventControl.AddToTriggerList (this);
+		AddToTriggerList();
 
 		base.Play ();
 	}

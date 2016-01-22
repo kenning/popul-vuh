@@ -14,7 +14,7 @@ public class TigerStance : Card {
 
 		gameControl.AddMoves (1);
 		gameControl.AddPlays (1);
-		EventControl.AddToTriggerList (this);
+		AddToTriggerList();
 
 		base.Play ();
 	}

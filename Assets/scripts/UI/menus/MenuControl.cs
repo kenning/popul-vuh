@@ -18,7 +18,7 @@ public class MenuControl : MonoBehaviour {
 
 	GUIStyleLibrary styleLibrary;
 
-	void Start() {
+	void Awake() {
 		mainMenu = gameObject.GetComponent<MainMenu> ();
 		encyclopediaMenu = gameObject.GetComponent<EncyclopediaMenu> ();
 		godChoiceMenu = gameObject.GetComponent<GodChoiceMenu> ();
@@ -41,8 +41,8 @@ public class MenuControl : MonoBehaviour {
 		} else if (menu == MenuType.GodChoiceMenu) {
 			godChoiceMenu.enabled = true;
 			GodChoiceMenuIsOn = true;
-			for (int i = 0; i < SaveData.UnlockedGods.Count; i++) {
-				godChoiceMenu.GodChoiceSelection [ShopControl.AllGods.IndexOf (SaveData.UnlockedGods [i])] = true;
+			for (int i = 0; i < SaveDataControl.UnlockedGods.Count; i++) {
+				godChoiceMenu.GodChoiceSelection [ShopControl.AllGods.IndexOf (SaveDataControl.UnlockedGods [i])] = true;
 			}
 		} else if (menu == MenuType.CustomizeMenu) {
 			customizeMenu.enabled = true;

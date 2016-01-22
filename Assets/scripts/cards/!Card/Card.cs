@@ -23,6 +23,7 @@ public class Card : MonoBehaviour {
 	public GUIStyleLibrary styleLibrary;
 
 	public CardUI cardUI;
+	public CardSFX cardSFX;
 
 	public CardLibrary library;
 	public GameObject hand;
@@ -33,6 +34,7 @@ public class Card : MonoBehaviour {
 	public bool CardsToTargetWillBePeeked = false;
 
 	//Card-specific variables, to be set in the Start() function before calling base.Start()
+	public LibraryCard ThisLibraryCard;
 	public string CardName;
 	public string DisplayName;
 	public string PrefabPath;
@@ -85,11 +87,12 @@ public class Card : MonoBehaviour {
 		eventGUIControl = gameController.GetComponent<EventGUI> ();
 		styleLibrary = gameController.GetComponent<GUIStyleLibrary> ();
 		cardUI = gameObject.GetComponent<CardUI> ();
+		cardSFX = gameObject.GetComponent<CardSFX> ();
 		hand = GameObject.Find("Hand");
 		playerObj = GameObject.FindGameObjectWithTag("Player");
 
 		// Initialize card variables
-		LibraryCard ThisLibraryCard = CardLibrary.Lib[CardName];
+		ThisLibraryCard = CardLibrary.Lib[CardName];
 
 		name = CardName;
 		CardName = ThisLibraryCard.CardName;
@@ -127,6 +130,8 @@ public class Card : MonoBehaviour {
 		}
 
 		cardUI.Initialize (gameController);
+
+		cardSFX.PlayDrawCardSFX();
     }
 
 	//////////////////////////////////////
@@ -173,12 +178,18 @@ public class Card : MonoBehaviour {
 		}
 		bool actuallyDiscarding = DiscardWhenPlayed | ForcingDiscardOfThis;
 		if(actuallyDiscarding) {
-			Discarded = true;
 			gameControl.Hand.Remove(gameObject);
 			gameControl.Discard.Add(gameObject);
+			StateSavingControl.Save();
 		}
 
 		cardUI.DiscardAnimate ();
+	}
+
+	public void InvisibleDiscard() {
+		Discarded = true;
+		gameControl.Discard.Add(gameObject);
+		cardUI.FinishDiscardAnimate (true);
 	}
 
 	public void FinishDiscard() {
@@ -244,6 +255,8 @@ public class Card : MonoBehaviour {
 
 		gameControlGUI.Dim(false);
 
+		gameControlGUI.SetTooltip("");
+
 		if(Discarded) {
 			return;
 		}		
@@ -274,8 +287,9 @@ public class Card : MonoBehaviour {
 	//VV this is almost never going to be overwritten, except in cases like DragonWhiskey where the card 
 	//has multiple steps so it runs CheckQ() at the end instead of halfway through.
 	public virtual void Activate(bool FreePlay) {
-		if(!FreePlay && CardAction != CardActionTypes.TargetGridSquare)
+		if(!FreePlay && CardAction != CardActionTypes.TargetGridSquare) {
 			gameControl.AddPlays(-1);
+		}
 
 		clickControl.DisallowEveryInput();
 
@@ -362,6 +376,8 @@ public class Card : MonoBehaviour {
 	}
 
 	public virtual void Play() {
+		cardSFX.PlayPlayCardSFX();
+
 		shopControl.GoalCheck("Play X cards in one turn");
 		
 		if(ThisRarity == Rarity.Paper) {
@@ -525,8 +541,17 @@ public class Card : MonoBehaviour {
 		return 555;
 	}
 
-	public void DestroyThisGameObject() {
+	public void AddToTriggerList() {
+		EventControl.AddToTriggerList (this);
+	}
+
+	public void RemoveFromTriggerList() {
 		EventControl.RemoveFromLists(this);
+	}
+
+	public void DestroyThisGameObject() {
+		RemoveFromTriggerList();
+		StateSavingControl.RemoveFromTriggerList(CardName);
 		Destroy(gameObject);
 	}
 }

@@ -11,13 +11,12 @@ public class Player : MonoBehaviour {
 	GameControl gameControl;
 	ShopControl shopControl;
 	GridControl gridControl;
-	//public Texture2D Heart;
-	//public Texture2D EmptyHeart;
 	public Sprite[] HPBars;
 	public SpriteRenderer HPBARRENDERER;
+	UnitSFX unitSFX;
 
 	public bool alive = true;
-	GridUnit playerGU;
+	public GridUnit playerGU;
 
 	MenuControl menuControl;
 	
@@ -29,6 +28,7 @@ public class Player : MonoBehaviour {
 		gridControl = gameController.GetComponent<GridControl>();
 		menuControl = gameController.GetComponent<MenuControl> ();
 		playerGU = gameObject.GetComponent<GridUnit>();
+		unitSFX = gameObject.GetComponent<UnitSFX>();
 		ResetLife ();
 	}
 
@@ -82,6 +82,7 @@ public class Player : MonoBehaviour {
 		HPBARRENDERER.sprite = HPBars [currentHealth];
 
 		if (currentHealth <1) {
+			unitSFX.PlayDieSFX();
 			menuControl.Die();
 		}
 	}
@@ -118,16 +119,18 @@ public class Player : MonoBehaviour {
 			shopControl.GoalCheck("Don't deal damage or move X turns in a row");
 			shopControl.GoalCheck("Don't move X turns in a row");
 			gridControl.DestroyAllTargetSquares();
+
 			if (Tutorial.TutorialLevel != 0)
 			{
 				gameControl.gameObject.GetComponent<Tutorial>().TutorialTrigger(2);
 			}
+
+			StateSavingControl.Save();
 		}
 		else
 		{
 			ButtonAnimate moveButton = GameObject.Find("move end button").GetComponent<ButtonAnimate>();
 			moveButton.ErrorAnimation();
 		}
-
 	}
 }

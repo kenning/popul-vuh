@@ -37,7 +37,12 @@ public static class QControl {
 			Debug.Log("Checked Q and allowed every input! This is where card effects terminate and EndTurnCheck() is called.");
 			gameControlGUI.AnimateCardsToCorrectPositionInSeconds(.05f);
 			gameControl.CheckDeckCount();
-            gameControl.EndTurnCheck();
+
+			// Checks if the turn is over, and if it is, takes the enemy's turn. 
+			if (!gameControl.EndTurnCheck()) {
+				// The player's turn is not over yet
+				StateSavingControl.Save();
+			}
 			return;
 		}
 

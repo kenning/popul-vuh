@@ -1,0 +1,11 @@
+todo
+ugh... finishing a goal exactly as the level ends doesn't make it show up in the shop as completed. tooltip also needs to disappear
+
+make a way to display credits
+
+dragging hand should subtract the position of the card you selected so it stops dragging if you only move it over a bit
+
+Need to fix the amateurish GameObject.FindGameObjectByTag("GameController") shit
+
+when you buy cards, canvas $ doesn't update
+

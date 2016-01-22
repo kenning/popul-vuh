@@ -40,15 +40,15 @@ public class GodChoiceMenu : MonoBehaviour {
 		
 		GUI.depth = 0;
 
-		for(int i = 0; i < SaveData.UnlockedGods.Count; i++) {
+		for(int i = 0; i < SaveDataControl.UnlockedGods.Count; i++) {
 			if(shopControl == null) shopControl = gameObject.GetComponent<ShopControl>();
-			int thisGodNumber = ShopControl.AllGods.IndexOf(SaveData.UnlockedGods[i]);
+			int thisGodNumber = ShopControl.AllGods.IndexOf(SaveDataControl.UnlockedGods[i]);
 			GodChoiceSelection[thisGodNumber] = 
 				GUI.Toggle(new Rect(Screen.width*.1f, Screen.height*.1f*i, Screen.width*.6f, Screen.height*.1f), 
-				           GodChoiceSelection[thisGodNumber], SaveData.UnlockedGods[i].ToString(), styleLibrary.GodChoiceStyles.GodChoiceToggle);
+				           GodChoiceSelection[thisGodNumber], SaveDataControl.UnlockedGods[i].ToString(), styleLibrary.GodChoiceStyles.GodChoiceToggle);
 			GUI.Box(new Rect(Screen.width*.15f, Screen.height*.1f*i + Screen.height*.06f, Screen.width*.6f, Screen.height*.030f), 
 			        ShopControl.GodDescriptions[thisGodNumber], styleLibrary.GodChoiceStyles.GodChoiceToggleText);
-			if(GodChoiceSelection[ShopControl.AllGods.IndexOf(SaveData.UnlockedGods[i])]) {
+			if(GodChoiceSelection[ShopControl.AllGods.IndexOf(SaveDataControl.UnlockedGods[i])]) {
 				GUI.Box(new Rect(Screen.width*.75f, Screen.height*.1f*i, Screen.width*.2f, Screen.height*.1f), 
 				        shopControlGUI.GodIcons[thisGodNumber]);
 			}
@@ -58,7 +58,7 @@ public class GodChoiceMenu : MonoBehaviour {
 			if(GUI.Button(new Rect(Screen.width*.1f, Screen.height*.8f, Screen.width*.3f, Screen.height*.15f), 
 			              "Back", styleLibrary.GodChoiceStyles.BackButton)) {
 				menuControl.TurnOnMenu(MenuControl.MenuType.MainMenu);
-				SaveLoad.Save();
+				SaveDataControl.Save();
 			}
 		}
 		if(GUI.Button(new Rect(Screen.width*.6f, Screen.height*.8f, Screen.width*.3f, Screen.height*.15f), 

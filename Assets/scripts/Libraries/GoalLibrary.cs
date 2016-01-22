@@ -27,7 +27,7 @@ public class GoalLibrary : MonoBehaviour {
 		GodChoiceMenu menu = gameObject.GetComponent<GodChoiceMenu> ();
 
 		//If godchoicemenu is unlocked, pick from the selected gods' goals; otherwise, pick from all goals
-		if(SaveData.UnlockedGods.Count == 7) {
+		if(SaveDataControl.UnlockedGods.Count == 7) {
 			for(int i = 0; i < allGoals.Count; i++) {
 				for(int j = 0; j < menu.GodChoiceSelection.Length; j++) {
 					if(menu.GodChoiceSelection[j] && allGoals[i].God == ShopControl.AllGods[j]){

@@ -229,22 +229,7 @@ public class CardUI : MonoBehaviour {
 		}
 
 	}
-
-	//////////////////////////////////////
-	/// OnGUI: Only for tooltip
-	//////////////////////////////////////
-	
-//	public virtual void OnGUI() {
-//		if(card.Selected && card.Tooltip != ""){
-//			GUI.Box(new Rect(Screen.width * .02f, Screen.height * .68f, Screen.width * .8f, Screen.height * .08f), 
-//			        card.Tooltip, styleLibrary.CardStyles.Tooltip);
-//		}
-//		if(gameControl.CardsToTarget != 0 && card.Tooltip == "") {
-//			GUI.Box(new Rect(Screen.width*.02f, Screen.height*.72f, Screen.width*.8f, Screen.height*.04f), 
-//			        "Please ` " + gameControl.CardsToTarget.ToString() + " cards", styleLibrary.CardStyles.Tooltip);
-//		}
-//	}
-
+		
 	//////////////////////////////////////
 	/// delete this header later and move initialize to the top
 	//////////////////////////////////////

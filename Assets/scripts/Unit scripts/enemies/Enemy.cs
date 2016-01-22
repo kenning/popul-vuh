@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class Enemy : MonoBehaviour {
 
+	public EnemyLibraryCard ThisEnemyLibraryCard;
+
 	public enum DebugType {Path, AttackSquares, EmptySquares};
 	public bool DebugOn = false;
 	public DebugType DebugChoice;
@@ -14,6 +16,7 @@ public class Enemy : MonoBehaviour {
 	
 	public ShopControl shopControl;
 	public GridControl gridControl;
+	public GameControlGUI gameControlGUI;
 //	public EnemyLibrary enemyLibrary;
 	
 	public List<GridUnit> EnemyUnits;
@@ -48,9 +51,21 @@ public class Enemy : MonoBehaviour {
 	public TextMesh playsText;
 	public GameObject hpBarObject;
 
+	public UnitSFX unitSFX;
+
 	public enum MoveTarget { Adjacent, Diagonal, Cross, Square };
 
 	public virtual void Initialize(EnemyLibraryCard enemyLC) {
+		ThisEnemyLibraryCard = enemyLC;
+		thisGU = gameObject.GetComponent<GridUnit> ();
+		playerGU = GameObject.FindGameObjectWithTag ("Player").GetComponent<GridUnit> ();
+		playerScript = GameObject.FindGameObjectWithTag ("Player").GetComponent<Player> ();
+		gameControl = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameControl>();
+		shopControl = gameControl.gameObject.GetComponent<ShopControl>();
+		gridControl = gameControl.gameObject.GetComponent<GridControl>();
+		gameControlGUI = gameControl.gameObject.GetComponent<GameControlGUI>();
+		unitSFX = gameObject.GetComponent<UnitSFX>();
+
 		Name = enemyLC.Name;
 		Tooltip = enemyLC.Tooltip;
 		MaxHealth = enemyLC.MaxHealth;
@@ -63,15 +78,9 @@ public class Enemy : MonoBehaviour {
 		SpritePath = enemyLC.SpritePath.Replace(" ", "");
 		ChallengeRating = enemyLC.ChallengeRating;
 
+		unitSFX.SetSFX(enemyLC.AttackSoundPath, enemyLC.DieSoundPath, enemyLC.StepSoundPath);
+
 		CurrentHealth = MaxHealth;
-		
-		thisGU = gameObject.GetComponent<GridUnit> ();
-		playerGU = GameObject.FindGameObjectWithTag ("Player").GetComponent<GridUnit> ();
-		playerScript = GameObject.FindGameObjectWithTag ("Player").GetComponent<Player> ();
-		gameControl = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameControl>();
-		shopControl = gameControl.gameObject.GetComponent<ShopControl>();
-		gridControl = gameControl.gameObject.GetComponent<GridControl>();
-//		enemyLibrary = gameControl.gameObject.GetComponent<EnemyLibrary> ();
 
 		Renderer[] Renderers = gameObject.GetComponentsInChildren<Renderer> ();
 		foreach(Renderer renderer in Renderers) {
@@ -115,7 +124,6 @@ public class Enemy : MonoBehaviour {
 		gameObject.name = Name;
 	}
 
-	/// UPDATE, JUST FOR ANIMATIONS AGAIN
 	public virtual void Update()
 	{
 		if (attackAnimating)
@@ -201,6 +209,7 @@ public class Enemy : MonoBehaviour {
 	}
 	public bool AttackCheck(int EnemyXPosition, int EnemyYPosition)
 	{
+		//TODO
 		//this is being called a lotttt....
 
 		int distance = Mathf.Abs(playerGU.xPosition - EnemyXPosition) + Mathf.Abs(playerGU.yPosition - EnemyYPosition);
@@ -249,6 +258,7 @@ public class Enemy : MonoBehaviour {
 	public virtual void AttackConnects() 
     {
 		AnimateAttack ();
+		unitSFX.PlayAttackSFX();
 		Invoke ("DealDefaultDamage", .3f);
 	}
 	
@@ -289,6 +299,8 @@ public class Enemy : MonoBehaviour {
 			SelectableCards[randomNumber].ForcingDiscardOfThis = true;
 			SelectableCards[randomNumber].Discard();
 		}
+
+		gameControlGUI.AnimateCardsToCorrectPositionInSeconds (.3f);
 	}
 
 	public virtual void SetSickBleeding () {
@@ -330,6 +342,8 @@ public class Enemy : MonoBehaviour {
 	}
 
 	void Die () {
+		unitSFX.PlayDieSFX();
+
 		shopControl.GoalCheck ("Kill X enemies in one turn");
 		shopControl.GoalCheck ("Kill enemies X turns in a row");
 		EventControl.EventCheck ("Enemy Death");
@@ -342,7 +356,7 @@ public class Enemy : MonoBehaviour {
         thisGU.xPosition = 100;
         thisGU.yPosition = 100;
 
-		SaveData.AddEnemyToDefeated (Name);
+		SaveDataControl.AddEnemyToDefeated (Name);
 
 		Destroy(gameObject);
 	}

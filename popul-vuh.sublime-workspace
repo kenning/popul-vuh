@@ -135,25 +135,6 @@
 	},
 	"buffers":
 	[
-		{
-			"contents": "using UnityEngine;\nusing System.Collections;\n\npublic class ZotzEnemy : Enemy {\n	\n	public override void GetPunched (int punchingDamage)\n	{\n    this.\n	}\n}\n\n",
-			"file": "Assets/scripts/ZotzEnemy.cs",
-			"file_size": 152,
-			"file_write_time": 130958415750000000,
-			"settings":
-			{
-				"buffer_size": 154,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "popul-vuh.sublime-project",
-			"settings":
-			{
-				"buffer_size": 114,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -196,19 +177,26 @@
 	},
 	"expanded_folders":
 	[
-		"/Users/nick/Documents/popul-vuh"
+		"/Users/nick/Documents/popul-vuh",
+		"/Users/nick/Documents/popul-vuh/Assets",
+		"/Users/nick/Documents/popul-vuh/Assets/not in game assets",
+		"/Users/nick/Documents/popul-vuh/Assets/Resources"
 	],
 	"file_history":
 	[
+		"/Users/nick/Documents/popul-vuh/Assets/not in game assets/todo popul vuh",
+		"/Users/nick/Documents/tomato-tosser/client/css/foundation.min.css",
+		"/Users/nick/Documents/tomato-tosser/gruntfile.js",
+		"/usr/local/bin/subl",
+		"/Users/nick/Documents/tomato-tosser/.git/COMMIT_EDITMSG",
+		"/Users/nick/Documents/popul-vuh/Assets/scripts/ZotzEnemy.cs",
+		"/Users/nick/Documents/popul-vuh/popul-vuh.sublime-project",
 		"/Users/nick/Library/Application Support/Sublime Text 3/Packages/User/C#.sublime-settings",
 		"/Users/nick/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/Users/nick/Library/Application Support/Sublime Text 3/Packages/User/JSON.sublime-settings",
-		"/Users/nick/Documents/popul-vuh/popul-vuh.sublime-project",
 		"/Users/nick/Documents/tomato-tosser/public/bower_components/marked/Gulpfile.js",
 		"/Users/nick/Documents/tomato-tosser/public/index.html",
 		"/Users/nick/Documents/tomato-tosser/public/routing.html",
-		"/usr/local/bin/subl",
-		"/Users/nick/Documents/tomato-tosser/.git/COMMIT_EDITMSG",
 		"/Users/nick/Desktop/stuff to do",
 		"/Users/nick/Documents/popul-vuh/.git/COMMIT_EDITMSG",
 		"/Users/nick/Documents/polymer-docs-notes/cors notes",
@@ -323,11 +311,7 @@
 		"/Users/nick/documents/tomato-tosser/db/questions.js",
 		"/Users/nick/documents/tomato-tosser/client/components/ReviewView.jsx",
 		"/Users/nick/documents/tomato-tosser/client/components/LobbyView.jsx",
-		"/Users/nick/documents/tomato-tosser/client/components/TitleView.jsx",
-		"/Users/nick/documents/tomato-tosser/client/components/GameView.jsx",
-		"/Users/nick/documents/tomato-tosser/client/components/AppView.jsx",
-		"/Users/nick/Documents/amazonkey.pem alias",
-		"/Users/nick/documents/tomato-tosser/GameModel.js"
+		"/Users/nick/documents/tomato-tosser/client/components/TitleView.jsx"
 	],
 	"find":
 	{
@@ -505,65 +489,8 @@
 	"groups":
 	[
 		{
-			"selected": 1,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "Assets/scripts/ZotzEnemy.cs",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 154,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								147,
-								147
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C#/C#.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "popul-vuh.sublime-project",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 114,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								51,
-								51
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				}
 			]
 		}
 	],
@@ -600,7 +527,7 @@
 	"menu_visible": true,
 	"output.exec":
 	{
-		"height": 100.0
+		"height": 222.0
 	},
 	"output.find_results":
 	{
@@ -608,7 +535,7 @@
 	},
 	"output.variable_get":
 	{
-		"height": 0.0
+		"height": 100.0
 	},
 	"pinned_build_system": "",
 	"project": "popul-vuh.sublime-project",
@@ -623,6 +550,14 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"todo",
+				"Assets/not in game assets/todo popul vuh"
+			],
+			[
+				"zo",
+				"Assets/scripts/ZotzEnemy.cs"
+			],
 			[
 				"package",
 				"package.json"

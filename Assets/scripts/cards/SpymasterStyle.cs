@@ -14,7 +14,7 @@ public class SpymasterStyle : Card {
 	
 	public override void Play () {
 
-		EventControl.AddToTriggerList (this);
+		AddToTriggerList();
 
 		base.Play ();
 	}

@@ -41,7 +41,7 @@ public class CustomizeMenu : MonoBehaviour {
 		}
 
 		for(int i = 0; i < ShopControl.AllGods.Count-2; i++) {
-			if(SaveData.UnlockedGods.Contains(ShopControl.AllGods[i])) {
+			if(SaveDataControl.UnlockedGods.Contains(ShopControl.AllGods[i])) {
 				GUI.Box(new Rect(seventh*i, 0f, seventh, Screen.height*.1f), new GUIContent(shopControlGUI.GodIcons[i]), GUIStyle.none);
 			} else {
 				GUI.Box(new Rect(seventh*i, 0f, seventh, Screen.height*.1f), new GUIContent(shopControlGUI.GodIcons[7]), GUIStyle.none);
@@ -62,7 +62,7 @@ public class CustomizeMenu : MonoBehaviour {
 				GUIContent name = new GUIContent(thisCard.CardName, Rarity);
 					//if this isn't unlocked, don't display it....
 				if(!UnlockedCardNames.Contains(thisCard.CardName) | 
-				   (thisCard.ThisRarity != Card.Rarity.Paper && !SaveData.UnlockedGods.Contains(thisCard.God))) {
+				   (thisCard.ThisRarity != Card.Rarity.Paper && !SaveDataControl.UnlockedGods.Contains(thisCard.God))) {
 
 					if(GUI.Button(new Rect(seventh*i, Screen.height*.1f*(j+1), seventh, Screen.height*.1f),
 					              "???", styleLibrary.CustomizeStyles.CardToggleOff)) {
@@ -84,9 +84,9 @@ public class CustomizeMenu : MonoBehaviour {
 							return;
 						}
 
-						for(int k = 0; k < SaveData.StartingDeckCards.Count; k++) {
-							if(SaveData.StartingDeckCards[k].CardName == thisCard.CardName) {
-								SaveData.StartingDeckCards.RemoveAt(k);
+						for(int k = 0; k < SaveDataControl.StartingDeckCards.Count; k++) {
+							if(SaveDataControl.StartingDeckCards[k].CardName == thisCard.CardName) {
+								SaveDataControl.StartingDeckCards.RemoveAt(k);
 							}
 						}
 
@@ -107,16 +107,16 @@ public class CustomizeMenu : MonoBehaviour {
                         {
                             Card.Rarity thisRarity = thisCard.ThisRarity;
 
-                            for (int k = 0; k < SaveData.StartingDeckCards.Count; k++)
+                            for (int k = 0; k < SaveDataControl.StartingDeckCards.Count; k++)
                             {
-                                if (SaveData.StartingDeckCards[k].ThisRarity == thisRarity)
+                                if (SaveDataControl.StartingDeckCards[k].ThisRarity == thisRarity)
                                 {
-                                    SaveData.StartingDeckCards.RemoveAt(k);
+                                    SaveDataControl.StartingDeckCards.RemoveAt(k);
                                     break;
                                 }
                             }
 
-                            SaveData.StartingDeckCards.Add(thisCard);
+                            SaveDataControl.StartingDeckCards.Add(thisCard);
                         }
 		
 						FindCards();
@@ -215,7 +215,7 @@ public class CustomizeMenu : MonoBehaviour {
 
 		if(GUI.Button(new Rect(Screen.width*.3f, Screen.height*.95f, Screen.width*.4f, Screen.height*.05f), 
 		              "Go back", styleLibrary.CustomizeStyles.CardToggleRemove)) {
-			SaveLoad.Save();
+			SaveDataControl.Save();
 			selectedCard = new LibraryCard();
 			menuControl.TurnOnMenu(MenuControl.MenuType.MainMenu);
 		}
@@ -223,13 +223,13 @@ public class CustomizeMenu : MonoBehaviour {
 
 	public void FindCards() {
 		UnlockedCardNames = new List<string> ();
-		for(int i = 0; i < SaveData.UnlockedCards.Count; i++) {
-			UnlockedCardNames.Add(SaveData.UnlockedCards[i].CardName);
+		for(int i = 0; i < SaveDataControl.UnlockedCards.Count; i++) {
+			UnlockedCardNames.Add(SaveDataControl.UnlockedCards[i].CardName);
 		}
 
 		StartingDeckCardNames = new List<string> ();
-		for(int i = 0; i < SaveData.StartingDeckCards.Count; i++) {
-			StartingDeckCardNames.Add(SaveData.StartingDeckCards[i].CardName);
+		for(int i = 0; i < SaveDataControl.StartingDeckCards.Count; i++) {
+			StartingDeckCardNames.Add(SaveDataControl.StartingDeckCards[i].CardName);
 		}
 		
 		allCards = new List<LibraryCard>[ShopControl.AllGods.Count];
@@ -260,15 +260,15 @@ public class CustomizeMenu : MonoBehaviour {
 		silverSpotTaken = "";
 		BronzeSpotTaken = "";
 		
-		for(int k = 0; k < SaveData.StartingDeckCards.Count; k++) {
-			if(SaveData.StartingDeckCards[k].ThisRarity == Card.Rarity.Paper) 
+		for(int k = 0; k < SaveDataControl.StartingDeckCards.Count; k++) {
+			if(SaveDataControl.StartingDeckCards[k].ThisRarity == Card.Rarity.Paper) 
 				continue;
-			else if(SaveData.StartingDeckCards[k].ThisRarity == Card.Rarity.Bronze)
-				BronzeSpotTaken = SaveData.StartingDeckCards[k].CardName;
-			else if(SaveData.StartingDeckCards[k].ThisRarity == Card.Rarity.Silver) 
-				silverSpotTaken = SaveData.StartingDeckCards[k].CardName;
-			else if(SaveData.StartingDeckCards[k].ThisRarity == Card.Rarity.Gold) 
-				goldSpotTaken = SaveData.StartingDeckCards[k].CardName;
+			else if(SaveDataControl.StartingDeckCards[k].ThisRarity == Card.Rarity.Bronze)
+				BronzeSpotTaken = SaveDataControl.StartingDeckCards[k].CardName;
+			else if(SaveDataControl.StartingDeckCards[k].ThisRarity == Card.Rarity.Silver) 
+				silverSpotTaken = SaveDataControl.StartingDeckCards[k].CardName;
+			else if(SaveDataControl.StartingDeckCards[k].ThisRarity == Card.Rarity.Gold) 
+				goldSpotTaken = SaveDataControl.StartingDeckCards[k].CardName;
 		}
 	}
 }

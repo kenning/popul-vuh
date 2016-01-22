@@ -12,7 +12,7 @@ public class PrayerBeads : Card {
 	public override void Play () {
 
 		gameControl.AddPlays (1);
-		EventControl.AddToTriggerList (this);
+		AddToTriggerList();
 
 		base.Play ();
 	}

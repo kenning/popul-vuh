@@ -137,8 +137,8 @@ public class Tutorial : MonoBehaviour {
 
 		menuControl.TurnOnMenu (MenuControl.MenuType.MainMenu);
 
-        SaveData.FinishedTutorial = true;
-        SaveLoad.Save();
+        SaveDataControl.FinishedTutorial = true;
+        SaveDataControl.Save();
         
         gameObject.GetComponent<GridControl>().CancelInvoke();
     }

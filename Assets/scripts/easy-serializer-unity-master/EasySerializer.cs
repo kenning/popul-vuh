@@ -88,7 +88,7 @@ public class EasySerializer {
 /* VersionDeserializationBinder is required to guarantee a fixed serialization assembly name, 
  * which Unity likes to randomize on each compile
  * Suggested by TowerOfBricks:
- * http://answers.unity3d.com/questions/8480/how-to-scrip-a-saveload-game-option.html
+ * http://answers.unity3d.com/questions/8480/how-to-scrip-a-SaveDataControl-game-option.html
  * */
 public sealed class VersionDeserializationBinder : SerializationBinder 
 { 

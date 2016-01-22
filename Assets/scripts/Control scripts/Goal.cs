@@ -1,16 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Goal  {
+[System.Serializable]
+public class Goal {
 
 	public ShopControl.Gods God;
-	public string GodString;
-	public string Description;
-	public string MiniDescription;
+	public string GodString = "";
+	public string Description = "";
+	public string MiniDescription = "";
 	public int CurrentScore;
 	public int HighScore = 0;
 	public int[] GoalScore;
-	public string DisplayScore;
+	public string DisplayScore = "";
 
 	//only used in some goals
 	public bool DidGoalThisTurnTracker = false;
@@ -198,7 +199,7 @@ public class Goal  {
 	}
 
 	public void SetGodString() {
-		if(SaveData.UnlockedGods.Contains(God)) {
+		if(SaveDataControl.UnlockedGods.Contains(God)) {
 			GodString = God.ToString ();
 		} else {
 			GodString = "An unknown God";

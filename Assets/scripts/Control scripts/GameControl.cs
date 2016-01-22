@@ -69,12 +69,9 @@ public class GameControl : MonoBehaviour
 
 	void Awake(){
 
-		if (Application.platform == RuntimePlatform.IPhonePlayer)
-		{
+		if (Application.platform == RuntimePlatform.IPhonePlayer) {
 			Debug.Log("on iphone");
 //			System.Environment.SetEnvironmentVariable("MONO_REFLECTION_SERIALIZER", "yes");
-			Debug.Log("didn't error");
-			Debug.Log("didn't error");
 			Debug.Log("didn't error");
 		} 
 
@@ -107,10 +104,11 @@ public class GameControl : MonoBehaviour
 		shopControl.Initialize ();
 		gameObject.GetComponent<Tutorial>().Initialize();
 
-		SaveLoad.Load ();
+		SaveDataControl.Load ();
+		StateSavingControl.Initialize (this, player);
 
-		if(SaveData.UnlockedCards.Count == 0 | SaveData.UnlockedGods.Count == 0) {
-			SaveData.NewSaveFile ();
+		if(SaveDataControl.UnlockedCards.Count == 0 | SaveDataControl.UnlockedGods.Count == 0) {
+			SaveDataControl.NewSaveFile ();
 		}
 
 		MainMenu.UnlockCheck();
@@ -120,6 +118,9 @@ public class GameControl : MonoBehaviour
 	/// Initializes game elements. Called from a main menu button.
 	/// </summary>
 	public void BeginGame () {
+		BeginGame(false);
+	}
+	public void BeginGame (bool loadedFromSaveState) {
 		MainMenu.InGame = true;
 		GameObject.Find ("Dimmer").GetComponent<DimAnimate> ().UnlockDim ();
 
@@ -161,10 +162,28 @@ public class GameControl : MonoBehaviour
 			}
 		}
 
-		StartNewLevel ();
+		StartNewLevel (loadedFromSaveState);
 	}
 
 	#region Card related methods: Draw(), Peek(), Return()
+	#region Creation 
+	public Card Create(string cardClass) {
+		GameObject newCardObj = (GameObject)GameObject.Instantiate (Resources.Load ("prefabs/dummy card"));
+
+		string libraryCardName = cardClass;
+		cardClass = cardClass.Replace (" ", "");
+		cardClass = cardClass.Replace ("'", "");
+		cardClass = cardClass.Replace ("-", "");
+		newCardObj.AddComponent(System.Type.GetType(cardClass));
+
+		//VV this is here and not in the start() method because it doesn't get called if the card is revealed
+		Card newCardScript = newCardObj.GetComponent<Card> ();
+		newCardScript.CardName = libraryCardName;
+		newCardScript.Initialize ();	
+		return newCardScript;
+	}
+	#endregion
+
 	#region Draw methods
 	public void Draw(string SpecificCard, bool isInvisible) {
 
@@ -187,20 +206,7 @@ public class GameControl : MonoBehaviour
 			Deck.Remove(cardClass);
 		}
 
-		string dummyCard = "prefabs/dummy card";
-
-		GameObject newCardObj = (GameObject)GameObject.Instantiate (Resources.Load (dummyCard));
-
-		string libraryCardName = cardClass;
-		cardClass = cardClass.Replace (" ", "");
-		cardClass = cardClass.Replace ("'", "");
-		cardClass = cardClass.Replace ("-", "");
-		newCardObj.AddComponent(System.Type.GetType(cardClass));
-
-		//VV this is here and not in the start() method because it doesn't get called if the card is revealed
-		Card newCardScript = newCardObj.GetComponent<Card> ();
-		newCardScript.CardName = libraryCardName;
-		newCardScript.Initialize ();	
+		Card newCardScript = Create(cardClass);
 		DrawIntoHand (newCardScript, isInvisible);
 
 		CheckDeckCount ();
@@ -296,85 +302,89 @@ public class GameControl : MonoBehaviour
 	/// <summary>
 	/// Load enemies, Invisibledraw 3 cards, start turn.
 	/// </summary>
-	public void StartNewLevel () {
+	public void StartNewLevel (bool loadedFromSaveState = false) {
 
 		handObj.transform.localPosition = new Vector3 (-0.8f, 0, 0);
 
-		playerObj.GetComponent<GridUnit> ().xPosition = 0;
-		playerObj.GetComponent<GridUnit> ().yPosition = 0;
-		Camera.main.transform.position = new Vector3 (0, -1, -10);
-		playerObj.transform.position = new Vector3 (0, 0, 0);
+		if (!loadedFromSaveState) {
+			playerObj.GetComponent<GridUnit> ().xPosition = 0;
+			playerObj.GetComponent<GridUnit> ().yPosition = 0;
+			Camera.main.transform.position = new Vector3 (0, -1, -10);
+			playerObj.transform.position = new Vector3 (0, 0, 0);
 
-		//DIFFERENT IN TUTORIAL!
-		if (Tutorial.TutorialLevel == 0)
-		{
-			Level++;
-
-			int numberOfGods = 3;
-			if (Level < 3)
+			//DIFFERENT IN TUTORIAL!
+			if (Tutorial.TutorialLevel == 0)
 			{
-				numberOfGods = Level;
+				Level++;
+
+				int numberOfGods = (Level < 3) ? Level : 3;
+
+				shopControl.NewLevelNewGoals(numberOfGods);
+
+				gridControl.LoadEnemiesAndObstacles(Level);
+				InvisibleDraw();
+				InvisibleDraw();
+				InvisibleDraw();
 			}
 
-			shopControl.NewLevelNewGoals(numberOfGods);
-
-			gridControl.LoadEnemiesAndObstacles(Level);
-			InvisibleDraw();
-			InvisibleDraw();
-			InvisibleDraw();
+	        EventControl.NewLevelReset();
 		}
 
-        EventControl.NewLevelReset();
+		StateSavingControl.TurnShopModeOff();
 
 		clickControl.AllowInputUmbrella = false;
 
 		gameControlGUI.UnlockDim ();
 		gameControlGUI.Dim (false);
 
-		StartNewTurn();
-
+		StartNewTurn(loadedFromSaveState);
 	}
 
 	/// <summary>
 	/// This method draws and resets goals. If stunned, return; otherwise get your 1 play and 1 move.
 	/// Behaves very differently if Tutorial.TutorialLevel != 0.
 	/// </summary>
-	public void StartNewTurn() {
+	public void StartNewTurn(bool loadedFromSaveState) {
 
         if (!player.alive)
             return;
 
-		foreach(Goal g in shopControl.Goals) {
-			g.NewTurnCheck();
-		}
-
 		gameControlGUI.Dim (false);
 
 		//DIFFERENT IN TUTORIAL!
-		if (Tutorial.TutorialLevel == 0)
-		{
-			NewTurnCheckWounds();
+		if (Tutorial.TutorialLevel == 0) {
+			if (!loadedFromSaveState) {
+				foreach(Goal g in shopControl.Goals) {
+					g.NewTurnCheck();
+				}
+
+				NewTurnCheckWoundsDrawAddMovesAndPlays();
+
+				EventControl.NewTurnReset();
+
+				//sets enemy's moves and actions to their max, preparing them for their turn.
+				GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+				foreach (GameObject badguy in enemies)
+				{
+					Enemy en = badguy.GetComponent<Enemy>();
+					if (en != null)
+						en.GoToMaxPlays();
+				}
+
+				Debug.Log(loadedFromSaveState);
+
+				StateSavingControl.Save();
+			}
 
 			UICheck();
 
 			clickControl.turnEndedAlready = false;
 			clickControl.AllowEveryInput();
 			clickControl.cardScriptClickedOn = null;
-
-			EventControl.NewTurnReset();
-
-			//sets enemy's moves and actions to their max, preparing them for their turn.
-			GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-			foreach (GameObject badguy in enemies)
-			{
-				Enemy en = badguy.GetComponent<Enemy>();
-				if (en != null)
-					en.GoToMaxPlays();
-			}
 		}
 	}
 
-	void NewTurnCheckWounds() {
+	void NewTurnCheckWoundsDrawAddMovesAndPlays() {
 		if (HungerTurns < 2)
 			Draw();
 		if (HungerTurns > 0)
@@ -567,16 +577,18 @@ public class GameControl : MonoBehaviour
         }
     }
 
-	public void EndTurnCheck()
-	{
-		//Levels don't end in the tutorial
-		if (Tutorial.TutorialLevel != 0) return;
-
-		if ((MovesLeft == 0 && PlaysLeft == 0) | (PlaysLeft == 0 && MovesArePlays))
-		{
+	/// <summary>
+	/// Checks to see if the turn is over, and if it is, takes the enemy turn. Returns true if the turn ends, false otherwise
+	/// </summary>
+	/// <returns><c>true</c>, if turn check was ended, <c>false</c> otherwise.</returns>
+	public bool EndTurnCheck() {
+		if ((Tutorial.TutorialLevel == 0) && ((MovesLeft == 0 && PlaysLeft == 0) | (PlaysLeft == 0 && MovesArePlays))) {
 			ButtonSpritesLookClicked();
             EnemyTurn(true);
+			return true;
 		}
+
+		return false;
 	}
 	#endregion
 
@@ -612,9 +624,9 @@ public class GameControl : MonoBehaviour
 			}
 		}
 	}
-	public void AnimateCardsToCorrectPositionInSeconds(float seconds) {
-		Invoke ("AnimateCardsToCorrectPosition", seconds);
-	}
+//	public void AnimateCardsToCorrectPositionInSeconds(float seconds) {
+//		Invoke ("AnimateCardsToCorrectPosition", seconds);
+//	}
 
 	public void CheckDeckCount() {
 		deckText.text = Deck.Count.ToString ();

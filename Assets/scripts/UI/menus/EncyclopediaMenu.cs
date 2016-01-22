@@ -151,9 +151,9 @@ public class EncyclopediaMenu : MonoBehaviour {
 					        shownGoals[selectedGoal].GoalScore[2], styleLibrary.EncyclopediaStyles.BigText);
 					GUI.DrawTexture(new Rect(Screen.width*.175f, Screen.height*.47f, Screen.width*.1f, Screen.height*.24f),
 					                shopControlGUI.STOPLIGHTTEXTURE);
-					if(SaveData.GoalHighScores.ContainsKey(shownGoals[selectedGoal].MiniDescription)) {
+					if(SaveDataControl.GoalHighScores.ContainsKey(shownGoals[selectedGoal].MiniDescription)) {
 						GUI.Box(new Rect(Screen.width*.3f,Screen.height*.45f, Screen.width*.3f, Screen.height*.3f), 
-						        "Your high score is " + SaveData.GoalHighScores[shownGoals[selectedGoal].MiniDescription].ToString(), 
+						        "Your high score is " + SaveDataControl.GoalHighScores[shownGoals[selectedGoal].MiniDescription].ToString(), 
 						        styleLibrary.EncyclopediaStyles.NeutralButton);
 					} else {
 						GUI.Box(new Rect(Screen.width*.3f,Screen.height*.45f, Screen.width*.3f, Screen.height*.3f), 
@@ -232,7 +232,7 @@ public class EncyclopediaMenu : MonoBehaviour {
 			scrollPos = GUI.BeginScrollView(new Rect(0, Screen.height*.11f, Screen.width*.8f, Screen.height*.68f), scrollPos, 
 			                                new Rect(0, Screen.height*.11f, Screen.width*.6f, Screen.height*.15f*allEnemies.Count));
 			for(int i = 0; i < allEnemies.Count; i++) {
-				if(SaveData.DefeatedEnemies.Contains(allEnemies[i].Name)) {					
+				if(SaveDataControl.DefeatedEnemies.Contains(allEnemies[i].Name)) {					
 					GUI.BeginGroup(new Rect(0,Screen.height*(.15f*(i+1) - .04f), Screen.width*.75f, Screen.height*.14f), 
 					        	   styleLibrary.EncyclopediaStyles.NeutralButton);
 					if(enemyPortraitTextures[i] != null) {
@@ -267,8 +267,8 @@ public class EncyclopediaMenu : MonoBehaviour {
 	}
 	void FindCards() {
 		UnlockedCardNames = new List<string> ();
-		for(int i = 0; i < SaveData.UnlockedCards.Count; i++) {
-			UnlockedCardNames.Add(SaveData.UnlockedCards[i].CardName);
+		for(int i = 0; i < SaveDataControl.UnlockedCards.Count; i++) {
+			UnlockedCardNames.Add(SaveDataControl.UnlockedCards[i].CardName);
 		}
 
 		shownCards = new List<LibraryCard> ();

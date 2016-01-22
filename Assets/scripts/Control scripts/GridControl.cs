@@ -46,7 +46,7 @@ public class GridControl : MonoBehaviour {
 //        obstacleLevelType = ObstacleLibrary.AllLevelTypes[rand];
 		obstacleLevelType = ObstacleLibrary.LevelTypes.Rocks;
 
-        obstacleL.LoadObstacles(obstacleLevelType);
+		obstacleL.LoadObstaclesIfExist(obstacleLevelType);
         #endregion
 
         PossibleSpawnPoints = FindEmptySpots(false);

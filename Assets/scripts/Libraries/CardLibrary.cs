@@ -12,8 +12,8 @@ public class CardLibrary : MonoBehaviour {
 	public void SetStartingItems () {
 		StartingItems = new List<LibraryCard> ();
 	
-		for(int i = 0; i < SaveData.StartingDeckCards.Count; i++) {
-			StartingItems.Add(SaveData.StartingDeckCards[i]);
+		for(int i = 0; i < SaveDataControl.StartingDeckCards.Count; i++) {
+			StartingItems.Add(SaveDataControl.StartingDeckCards[i]);
 		}
 
 //		LibraryCard[] allCards = Lib.Values.ToArray();
@@ -637,7 +637,7 @@ public class CardLibrary : MonoBehaviour {
 
 		List<LibraryCard> allCards = CardLibrary.Lib.Values.ToList<LibraryCard>();
 
-		if(SaveData.UnlockedGods.Contains(god)) {
+		if(SaveDataControl.UnlockedGods.Contains(god)) {
 			// => this goal isn't from the pantheon.
 			foreach(LibraryCard LC in allCards) {
 				if((LC.God == god && LC.ThisRarity == rarity)) {

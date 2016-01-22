@@ -63,6 +63,10 @@ public class ClickControl : MonoBehaviour {
 	//i'm impatient and want to end the damn turn already bool
 	public bool turnEndedAlready = false;
 
+	// This gets set when the shop menu is up so that the behavior for undisplaying a card
+	// is different from normal. Pretty ugly i know
+	public bool undisplayCardOnClick = false;
+
 	Texture2D SideArrows;
 	
 	void Start(){
@@ -96,19 +100,13 @@ public class ClickControl : MonoBehaviour {
 		if (Input.GetMouseButtonDown (0)) {
 			shopControl.GoalCheck("Touch the screen no more than than X times");
 		}
-		if (eventSystem.IsPointerOverGameObject()) {
-			return;
-		}
+
 		if (!Input.GetMouseButton (0) && GridCursorControl.ClickedOffScreen) {
 			GridCursorControl.ClickedOffScreen = false;
 		}
 
 		if(menuControl.AnyMenuIsUp() | shopControlGUI.IgnoreClicking | GridCursorControl.ClickedOffScreen) {
 			return;
-		}
-
-		if (!Input.GetMouseButton (0)) {
-			gameControlGUI.SetTooltip("");
 		}
 
         if(cardScriptClickedOn != null) {
@@ -137,6 +135,11 @@ public class ClickControl : MonoBehaviour {
 		if(displayCardCanvas.CardDisplay && !Input.GetMouseButton(0)) {
 			gameControlGUI.Undisplay();
 			cardHasBeenClickedOn = false;
+		}
+
+		// This replaces the clickblocker system. Prevents clicking on stuff under canvas elements
+		if (eventSystem.IsPointerOverGameObject()) {
+			return;
 		}
 
 		if (GridCursorControl.cursorActionSet) {
@@ -193,7 +196,9 @@ public class ClickControl : MonoBehaviour {
 					handObj.transform.localPosition = new Vector3(((3) * -1.48f) + 3.7f, 0, 0);
 					return;
 				}
-				Vector3 pos = Camera.main.ScreenToViewportPoint (Input.mousePosition - dragOrigin);
+				Vector3 pos = Camera.main.ScreenToViewportPoint 
+					(Input.mousePosition - (cardScriptClickedOn.transform.position*10) - dragOrigin);
+				Debug.Log(pos.x);
 
 				if(handObj.transform.localPosition.x >= -.75f && pos.x > 0) {
 					handObj.transform.localPosition = new Vector3(-.73f, 0, 0f);
@@ -303,7 +308,7 @@ public class ClickControl : MonoBehaviour {
 							gridBoss.DestroyAllTargetSquares();
 	                        if (Tutorial.TutorialLevel != 0)
 	                        {
-	                            gameControl.StartNewTurn();
+								gameControl.StartNewTurn(false);
 	                        }
 	                        else
 	                        {

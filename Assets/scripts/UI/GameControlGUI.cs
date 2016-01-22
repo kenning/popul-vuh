@@ -56,6 +56,7 @@ public class GameControlGUI : MonoBehaviour {
 	}
 
 	public void Display(Card card) {
+		SetTooltip("");
 		displayCardCanvas.Display(card);
 	}
 	
