@@ -8,8 +8,10 @@ public class StateSavingControl : MonoBehaviour {
 
 	static GameControl gameControl;
 	static ShopControl shopControl;
+    static ShopControlGUI shopControlGUI;
 	static ObstacleLibrary obstacleLibrary;
 	static EnemyLibrary enemyLibrary;
+    static ShopAndGoalParentCanvas shopAndGoalParentCanvas;
 	static Player player;
 	static List<int> ObstacleXPositions = new List<int>();
 	static List<int> ObstacleYPositions = new List<int>();
@@ -19,8 +21,11 @@ public class StateSavingControl : MonoBehaviour {
 	public static void Initialize (GameControl gc, Player pl) {
 		gameControl = gc;
 		shopControl = gc.gameObject.GetComponent<ShopControl>();
+        shopControlGUI = gc.gameObject.GetComponent<ShopControlGUI>();
 		obstacleLibrary = gc.gameObject.GetComponent<ObstacleLibrary>();
 		enemyLibrary = gc.gameObject.GetComponent<EnemyLibrary>();
+        shopAndGoalParentCanvas = GameObject.FindGameObjectWithTag("goalandshopparent")
+                                  .GetComponent<ShopAndGoalParentCanvas>();
 		player = pl;
 	}
 		
@@ -50,6 +55,7 @@ public class StateSavingControl : MonoBehaviour {
 		}
 		foreach (GameObject enemyGO in gameControl.EnemyObjs) {
 			Enemy thisEnemy = enemyGO.GetComponent<Enemy>();
+            Debug.Log("saving the enemy " + thisEnemy.name);
 			ss.Enemies.Add(thisEnemy.ThisEnemyLibraryCard.Name);
 			ss.EnemyHealths.Add(thisEnemy.CurrentHealth);
 			ss.EnemyPlays.Add(thisEnemy.CurrentPlays);
@@ -69,13 +75,11 @@ public class StateSavingControl : MonoBehaviour {
 		ss.Goals				= shopControl.Goals;
 		ss.ShopMode 			= ShopMode;
 
-		Debug.Log(ss.Goals[0].Description);
-			
 		if (ShopMode) {
 			ss.ShopCardList1 = shopControl.CardsToBuyFrom[0];
 			ss.ShopCardList2 = shopControl.CardsToBuyFrom[1];
 			ss.ShopCardList3 = shopControl.CardsToBuyFrom[2];
-		}
+		} 
 
 		ES2.Save<SavedState>(ss, "PVState");
 	}
@@ -119,17 +123,26 @@ public class StateSavingControl : MonoBehaviour {
 			shopControl.Goals = loaded.Goals;
 				
 			if (loaded.ShopMode) {
+				Debug.Log("shop mode!");
 				shopControl.CardsToBuyFrom = new List<LibraryCard>[3];
 				shopControl.CardsToBuyFrom[0] = loaded.ShopCardList1;
 				shopControl.CardsToBuyFrom[1] = loaded.ShopCardList2;
 				shopControl.CardsToBuyFrom[2] = loaded.ShopCardList3;
+                
+                gameControl.BleedingTurns = loaded.BleedingTurns;
+                gameControl.SwollenTurns = loaded.SwollenTurns;
+                gameControl.HungerTurns = loaded.HungerTurns;
+                EventControl.LoadTriggerListState(loaded.TriggerList);
 			} else {
+				Debug.Log("in game mode!");
 				for (int i = 0; i < loaded.Enemies.Count; i++) {
 					enemyLibrary.LoadEnemy(	loaded.Enemies[i], 
 						loaded.EnemyXPositions[i], 
 						loaded.EnemyYPositions[i], 
 						loaded.EnemyHealths[i]);
 				}
+                
+                shopControlGUI.NewLevelNewGoals(loaded.Goals.Length, loaded.Goals);                
 			}
 
 			player.transform.position = new Vector3(loaded.PlayerPosition[0], loaded.PlayerPosition[1], 1);
@@ -139,10 +152,6 @@ public class StateSavingControl : MonoBehaviour {
 			gameControl.PlaysLeft = loaded.PlayerPlays;
 			gameControl.MovesLeft = loaded.PlayerMoves;
 			gameControl.Dollars = loaded.Dollars;
-			gameControl.BleedingTurns = loaded.BleedingTurns;
-			gameControl.SwollenTurns = loaded.SwollenTurns;
-			gameControl.HungerTurns = loaded.HungerTurns;
-			EventControl.LoadTriggerListState(loaded.TriggerList);
 		}		
 	}
 

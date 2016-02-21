@@ -344,6 +344,7 @@ public class GameControl : MonoBehaviour
 	/// This method draws and resets goals. If stunned, return; otherwise get your 1 play and 1 move.
 	/// Behaves very differently if Tutorial.TutorialLevel != 0.
 	/// </summary>
+	public void StartNewTurn() { StartNewTurn(false);}
 	public void StartNewTurn(bool loadedFromSaveState) {
 
         if (!player.alive)
