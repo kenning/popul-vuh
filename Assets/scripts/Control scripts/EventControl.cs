@@ -61,7 +61,9 @@ public class EventControl : MonoBehaviour {
     }
 
 	public static void LoadTriggerListState(List<string> stringList) {
+        Debug.Log("There should never be one of these:");
 		foreach (string s in stringList) {
+            Debug.Log(s);
 			foreach (GameObject tempGO in gameControl.Discard) {
 				Debug.Log("I should eventually test if these event things actually persist because i'll never run into this in the wild");
 				Debug.Log("Also this is pretty shitty but if the event trigger list is [SpymasterStyle, SpymasterStyle] it will trigger" + 

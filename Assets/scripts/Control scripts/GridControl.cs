@@ -415,7 +415,7 @@ public class GridControl : MonoBehaviour {
 
     #endregion
 
-    void EnemiesFindGridUnits()
+    public void EnemiesFindGridUnits()
     {
         GameObject[] EnemyObjArray = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (GameObject eGU in EnemyObjArray)

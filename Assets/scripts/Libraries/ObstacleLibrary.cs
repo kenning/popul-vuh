@@ -97,5 +97,7 @@ public class ObstacleLibrary : MonoBehaviour {
 				LoadObstacleBase(obstacleName, position[0], position[1], tooltip);
 			}
 		}
+        
+        CurrentLevelType = levelType;
 	}
 }

@@ -148,6 +148,7 @@ public class CardUI : MonoBehaviour {
 	public void FinishDiscardAnimate(bool ActuallyDiscarding) {
 		DiscardAnimating = false;
 		if(ActuallyDiscarding) {
+            Debug.Log("actually discarding, finishing the animation");
 			Animating = false;
 			BurnAnimating = false;
 			DrawAnimating = false;

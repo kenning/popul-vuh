@@ -8,6 +8,7 @@ public class StateSavingControl : MonoBehaviour {
 
 	static GameControl gameControl;
 	static ShopControl shopControl;
+    static GridControl gridControl;
     static ShopControlGUI shopControlGUI;
 	static ObstacleLibrary obstacleLibrary;
 	static EnemyLibrary enemyLibrary;
@@ -21,6 +22,7 @@ public class StateSavingControl : MonoBehaviour {
 	public static void Initialize (GameControl gc, Player pl) {
 		gameControl = gc;
 		shopControl = gc.gameObject.GetComponent<ShopControl>();
+        gridControl = gc.gameObject.GetComponent<GridControl>();
         shopControlGUI = gc.gameObject.GetComponent<ShopControlGUI>();
 		obstacleLibrary = gc.gameObject.GetComponent<ObstacleLibrary>();
 		enemyLibrary = gc.gameObject.GetComponent<EnemyLibrary>();
@@ -41,7 +43,6 @@ public class StateSavingControl : MonoBehaviour {
 		if (!MainMenu.InGame) return;
 		Debug.Log("Saving stuff");
 
-
 		SavedState ss = new SavedState ();
 		ss.ObstacleLevelType 	= ObstacleLibrary.CurrentLevelType;
 		ss.ObstacleXPositions 	= ObstacleXPositions;
@@ -55,7 +56,6 @@ public class StateSavingControl : MonoBehaviour {
 		}
 		foreach (GameObject enemyGO in gameControl.EnemyObjs) {
 			Enemy thisEnemy = enemyGO.GetComponent<Enemy>();
-            Debug.Log("saving the enemy " + thisEnemy.name);
 			ss.Enemies.Add(thisEnemy.ThisEnemyLibraryCard.Name);
 			ss.EnemyHealths.Add(thisEnemy.CurrentHealth);
 			ss.EnemyPlays.Add(thisEnemy.CurrentPlays);
@@ -105,6 +105,7 @@ public class StateSavingControl : MonoBehaviour {
 			int[][] positions = new int[loaded.ObstacleXPositions.Count][];
 			for (int i = 0; i < loaded.ObstacleXPositions.Count; i++) {
 				positions[i] = new int[] {loaded.ObstacleXPositions[i], loaded.ObstacleYPositions[i]};
+                AddObstacle(loaded.ObstacleXPositions[i], loaded.ObstacleYPositions[i]);
 			}
 			obstacleLibrary.LoadObstaclesFromState(loaded.ObstacleLevelType, positions);
 
@@ -141,7 +142,8 @@ public class StateSavingControl : MonoBehaviour {
 						loaded.EnemyYPositions[i], 
 						loaded.EnemyHealths[i]);
 				}
-                
+
+                gridControl.EnemiesFindGridUnits();                
                 shopControlGUI.NewLevelNewGoals(loaded.Goals.Length, loaded.Goals);                
 			}
 

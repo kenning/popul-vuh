@@ -372,8 +372,6 @@ public class GameControl : MonoBehaviour
 						en.GoToMaxPlays();
 				}
 
-				Debug.Log(loadedFromSaveState);
-
 				StateSavingControl.Save();
 			}
 

@@ -393,9 +393,6 @@ public class Enemy : MonoBehaviour {
 	public bool IsOpenToMove(string direction)
 	{
 		int gridSize = GridControl.GridSize;
-        if (EnemyUnits == null || EnemyUnits.Count == 0) {
-            FindOtherGridUnits();
-        }
 		for(int i = 0; i < EnemyUnits.Count; i++) {
 			GridUnit otherGU = EnemyUnits[i];
 			int[] diff = new int[] { 0, 0 };
