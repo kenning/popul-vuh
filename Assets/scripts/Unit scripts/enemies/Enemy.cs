@@ -148,14 +148,17 @@ public class Enemy : MonoBehaviour {
 
 	public virtual void TakeTurn()
 	{
+        Debug.Log("taking turn!");
 		if(StunnedForXTurns != 0) 
         {
+            Debug.Log("stunned");
 			StunnedForXTurns--;
 			return;
 		}
 
         if (!playerGU.GetComponent<Player>().alive)
         {
+            Debug.Log("player dead");
             return;
         }
 
@@ -186,7 +189,11 @@ public class Enemy : MonoBehaviour {
                     TurnAttempts++;
                 }
 			}
-		}
+		} else {
+            Debug.Log("current plays is 0");
+        }
+        
+        
 
 		if((CurrentPlays > 0) && TurnAttempts > 2) 
 		{

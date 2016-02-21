@@ -412,7 +412,7 @@ public class GameControl : MonoBehaviour
 
     public void EnemyTurn() { EnemyTurn(false);  }
 	public void EnemyTurn(bool startingEnemyTurn) {
-
+        Debug.Log("EnemyTurn");
         if (!player.alive) return;
 
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
@@ -503,7 +503,7 @@ public class GameControl : MonoBehaviour
 	public void AddPlays(int NumberOfPlays) {
 		SetPlays(NumberOfPlays + PlaysLeft);
 	}
-	void SetPlays(int NumberOfPlays)
+	public void SetPlays(int NumberOfPlays)
 	{
 		PlaysLeft = NumberOfPlays;
 		playsLeftText.text = PlaysLeft.ToString();
@@ -527,7 +527,7 @@ public class GameControl : MonoBehaviour
 			SetMoves(MovesLeft + NumberOfMoves);
 		}
 	}
-	void SetMoves(int NumberOfMoves)
+	public void SetMoves(int NumberOfMoves)
 	{
 		MovesLeft = NumberOfMoves;
 		movesLeftText.text = MovesLeft.ToString();
@@ -544,7 +544,7 @@ public class GameControl : MonoBehaviour
 	public void AddDollars(int NumberOfDollars) {
 		SetDollars(NumberOfDollars + Dollars);
 	}
-	void SetDollars(int NumberOfDollars)
+	public void SetDollars(int NumberOfDollars)
 	{
 		Dollars = NumberOfDollars;
 		string tempString = Dollars.ToString();
@@ -581,6 +581,7 @@ public class GameControl : MonoBehaviour
 	/// </summary>
 	/// <returns><c>true</c>, if turn check was ended, <c>false</c> otherwise.</returns>
 	public bool EndTurnCheck() {
+        Debug.Log("end turn check");
 		if ((Tutorial.TutorialLevel == 0) && ((MovesLeft == 0 && PlaysLeft == 0) | (PlaysLeft == 0 && MovesArePlays))) {
 			ButtonSpritesLookClicked();
             EnemyTurn(true);

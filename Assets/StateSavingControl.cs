@@ -8,6 +8,7 @@ public class StateSavingControl : MonoBehaviour {
 
 	static GameControl gameControl;
 	static ShopControl shopControl;
+    static ClickControl clickControl;
     static GridControl gridControl;
     static ShopControlGUI shopControlGUI;
 	static ObstacleLibrary obstacleLibrary;
@@ -22,6 +23,7 @@ public class StateSavingControl : MonoBehaviour {
 	public static void Initialize (GameControl gc, Player pl) {
 		gameControl = gc;
 		shopControl = gc.gameObject.GetComponent<ShopControl>();
+        clickControl = gc.gameObject.GetComponent<ClickControl>();
         gridControl = gc.gameObject.GetComponent<GridControl>();
         shopControlGUI = gc.gameObject.GetComponent<ShopControlGUI>();
 		obstacleLibrary = gc.gameObject.GetComponent<ObstacleLibrary>();
@@ -151,9 +153,10 @@ public class StateSavingControl : MonoBehaviour {
 			player.playerGU.xPosition = loaded.PlayerPosition[0];
 			player.playerGU.yPosition = loaded.PlayerPosition[1];
 			player.currentHealth = loaded.PlayerHealth;
-			gameControl.PlaysLeft = loaded.PlayerPlays;
-			gameControl.MovesLeft = loaded.PlayerMoves;
-			gameControl.Dollars = loaded.Dollars;
+			gameControl.SetMoves(loaded.PlayerPlays);
+			gameControl.SetMoves(loaded.PlayerMoves);
+			gameControl.SetDollars(loaded.Dollars);
+            clickControl.AllowForfeitButtonInput = true;
 		}		
 	}
 

@@ -288,7 +288,7 @@ public class ClickControl : MonoBehaviour {
 		//////////////////////////////////////
 
 		if(Input.GetMouseButton(0)){
-
+            
 			gameControlGUI.ShowDeck(false);
 
 			float dist = transform.position.z - Camera.main.transform.position.z;
