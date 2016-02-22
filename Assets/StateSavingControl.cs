@@ -139,10 +139,11 @@ public class StateSavingControl : MonoBehaviour {
 			} else {
 				Debug.Log("in game mode!");
 				for (int i = 0; i < loaded.Enemies.Count; i++) {
-					enemyLibrary.LoadEnemy(	loaded.Enemies[i], 
+					Enemy newEnemy = enemyLibrary.LoadEnemy(loaded.Enemies[i], 
 						loaded.EnemyXPositions[i], 
 						loaded.EnemyYPositions[i], 
 						loaded.EnemyHealths[i]);
+                    newEnemy.CurrentPlays = loaded.EnemyPlays[i];
 				}
 
                 gridControl.EnemiesFindGridUnits();                

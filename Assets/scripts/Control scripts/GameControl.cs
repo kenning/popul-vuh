@@ -434,6 +434,7 @@ public class GameControl : MonoBehaviour
 			Enemy en = badguy.GetComponent<Enemy>();
 			if (en != null)
 			{
+                Debug.Log("about to go for " + badguy.name);
                 if (startingEnemyTurn)
                 {
                     en.TurnAttempts = 0;

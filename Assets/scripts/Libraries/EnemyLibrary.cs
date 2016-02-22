@@ -28,8 +28,9 @@ public class EnemyLibrary : MonoBehaviour {
 		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 2, 4, 4 }); //12
 	}
 
-	//base method. only really used to load an enemy into a specific place in the tutorial. 
-	public void LoadEnemy(string EnemyName, int xPosition, int yPosition, int health = 0) {
+	// base method. only really used to load an enemy into a specific place in the tutorial
+    // and also to load dudes in a saved state (that's why it returns tempEScript) 
+	public Enemy LoadEnemy(string EnemyName, int xPosition, int yPosition, int health = 0) {
 		string EnemyToLoad = "prefabs/dummy enemy";
 
 		GameObject tempGO = (GameObject)Instantiate((GameObject)Resources.Load(EnemyToLoad));
@@ -59,6 +60,8 @@ public class EnemyLibrary : MonoBehaviour {
 		if (health != 0) {
 			tempEScript.CurrentHealth = health;
 		}
+        
+        return tempEScript;
 	}
 
 	public void LoadEnemiesForLevel (int level) {
