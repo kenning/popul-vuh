@@ -73,7 +73,8 @@ public class Card : MonoBehaviour {
 	/// INITIALIZE METHOD -- CALLED BY PEEK() AND DRAW()
 	//////////////////////////////////////
 
-	public virtual void Initialize() {
+    public virtual void Initialize() {Initialize(false);}
+	public virtual void Initialize(bool alreadyDiscarded) {
 
 		GameObject gameController = GameObject.FindGameObjectWithTag("GameController");
 		gameControl = gameController.GetComponent<GameControl>();
@@ -111,7 +112,9 @@ public class Card : MonoBehaviour {
 		CardAction = ThisLibraryCard.CardAction;
 		God = ThisLibraryCard.God;
 
-		gameControl.Hand.Add(gameObject);
+        if (!alreadyDiscarded) {
+    		gameControl.Hand.Add(gameObject);        
+        }
 
 		switch (ThisRarity)
 		{
@@ -129,7 +132,7 @@ public class Card : MonoBehaviour {
 			break;
 		}
 
-		cardUI.Initialize (gameController);
+		cardUI.Initialize (gameController, alreadyDiscarded);
 
 		cardSFX.PlayDrawCardSFX();
     }

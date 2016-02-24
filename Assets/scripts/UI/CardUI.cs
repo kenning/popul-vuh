@@ -235,7 +235,8 @@ public class CardUI : MonoBehaviour {
 	/// delete this header later and move initialize to the top
 	//////////////////////////////////////
 
-	public void Initialize (GameObject gameController) {
+	public void Initialize (GameObject gameController, bool alreadyDiscarded) {
+        //TODO do i need alreadyDiscarded here?
 		card = gameObject.GetComponent<Card> ();
 		
 		gameControl = gameController.GetComponent<GameControl> ();

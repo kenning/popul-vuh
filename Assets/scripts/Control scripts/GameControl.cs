@@ -167,7 +167,8 @@ public class GameControl : MonoBehaviour
 
 	#region Card related methods: Draw(), Peek(), Return()
 	#region Creation 
-	public Card Create(string cardClass) {
+    public Card Create(string cardClass) {return Create(cardClass, false);}
+	public Card Create(string cardClass, bool alreadyDiscarded) {
 		GameObject newCardObj = (GameObject)GameObject.Instantiate (Resources.Load ("prefabs/dummy card"));
 
 		string libraryCardName = cardClass;
@@ -179,7 +180,7 @@ public class GameControl : MonoBehaviour
 		//VV this is here and not in the start() method because it doesn't get called if the card is revealed
 		Card newCardScript = newCardObj.GetComponent<Card> ();
 		newCardScript.CardName = libraryCardName;
-		newCardScript.Initialize ();	
+		newCardScript.Initialize (alreadyDiscarded);	
 		return newCardScript;
 	}
 	#endregion
@@ -434,7 +435,6 @@ public class GameControl : MonoBehaviour
 			Enemy en = badguy.GetComponent<Enemy>();
 			if (en != null)
 			{
-                Debug.Log("about to go for " + badguy.name);
                 if (startingEnemyTurn)
                 {
                     en.TurnAttempts = 0;
@@ -582,7 +582,6 @@ public class GameControl : MonoBehaviour
 	/// </summary>
 	/// <returns><c>true</c>, if turn check was ended, <c>false</c> otherwise.</returns>
 	public bool EndTurnCheck() {
-        Debug.Log("end turn check");
 		if ((Tutorial.TutorialLevel == 0) && ((MovesLeft == 0 && PlaysLeft == 0) | (PlaysLeft == 0 && MovesArePlays))) {
 			ButtonSpritesLookClicked();
             EnemyTurn(true);

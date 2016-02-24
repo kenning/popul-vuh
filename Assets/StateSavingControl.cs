@@ -39,11 +39,9 @@ public class StateSavingControl : MonoBehaviour {
 	/// But let's see how slow it is first. 
 	/// </summary>
 	public static void Save() {
-		Debug.Log("Deleting old save");
 		ES2.Delete("PVState");
 
 		if (!MainMenu.InGame) return;
-		Debug.Log("Saving stuff");
 
 		SavedState ss = new SavedState ();
 		ss.ObstacleLevelType 	= ObstacleLibrary.CurrentLevelType;
@@ -96,10 +94,7 @@ public class StateSavingControl : MonoBehaviour {
 
 	public static void Load() {
 		if (ES2.Exists ("PVState")) {
-			Debug.Log("Loading");
 			SavedState loaded = ES2.Load<SavedState> ("PVState");
-
-			Debug.Log(loaded.Goals[0].Description);
 
 			// Hoo boy it would be cool if starting the game and then setting a bunch of stuff just worked
 			gameControl.BeginGame(true);
@@ -117,7 +112,7 @@ public class StateSavingControl : MonoBehaviour {
 			}
 
 			foreach (LibraryCard lc in loaded.CardsInDiscard) {
-				Card card = gameControl.Create(lc.CardName);
+				Card card = gameControl.Create(lc.CardName, true);
 				card.InvisibleDiscard();
 			}
 
@@ -137,7 +132,6 @@ public class StateSavingControl : MonoBehaviour {
                 gameControl.HungerTurns = loaded.HungerTurns;
                 EventControl.LoadTriggerListState(loaded.TriggerList);
 			} else {
-				Debug.Log("in game mode!");
 				for (int i = 0; i < loaded.Enemies.Count; i++) {
 					Enemy newEnemy = enemyLibrary.LoadEnemy(loaded.Enemies[i], 
 						loaded.EnemyXPositions[i], 

@@ -31,7 +31,6 @@ public static class QControl {
 		}
 
 		if(CardQ.Count == 0) {
-            Debug.Log("cardq count is 0");
 			ClickControl clickControl = GameObject.FindGameObjectWithTag("GameController").GetComponent<ClickControl>();
 			clickControl.AllowEveryInput();
 			Debug.Log("Checked Q and allowed every input! This is where card effects terminate and EndTurnCheck() is called.");
