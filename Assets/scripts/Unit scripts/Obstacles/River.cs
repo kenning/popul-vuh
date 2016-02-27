@@ -7,11 +7,9 @@ public class River : Obstacle {
     public RiverType ThisRiverType;
     public Player player;
 
-    override public void Start()
+    public void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-
-        base.Start();
     }
 
     public override void StepIn()

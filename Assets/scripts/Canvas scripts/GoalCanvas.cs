@@ -6,8 +6,6 @@ public class GoalCanvas : MonoBehaviour {
 
 	bool initialized = false;
 
-	ShopControlGUI shopControlGUI;
-
 	Goal goal = null;
 
 	GameObject clickedBox;
@@ -22,8 +20,6 @@ public class GoalCanvas : MonoBehaviour {
 	void Initialize () {
 		if(initialized) return;
 		initialized = true;
-
-		shopControlGUI = GameObject.FindGameObjectWithTag ("GameController").GetComponent<ShopControlGUI> ();
 
 		Image[] images = gameObject.GetComponentsInChildren<Image> ();
 		foreach(Image img in images) {
@@ -50,7 +46,7 @@ public class GoalCanvas : MonoBehaviour {
 		if(!SaveDataControl.UnlockedGods.Contains(goal.God)) godNumber = 7;
 		else godNumber = ShopControl.AllGods.IndexOf (goal.God);
 		gameObject.SetActive(true);
-		godIcon.sprite = shopControlGUI.SpriteGodIcons [godNumber];
+		godIcon.sprite = S.ShopControlGUIInst.SpriteGodIcons [godNumber];
 
 		unclickedGoalDescription.text = goal.MiniDescription;
 		clickedGoalDescription.text = goal.God.ToString() + goal.Description;

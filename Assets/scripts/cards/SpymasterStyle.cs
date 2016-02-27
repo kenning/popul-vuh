@@ -23,7 +23,7 @@ public class SpymasterStyle : Card {
 		if(s == "Enemy Damage") {
 			S.GameControlInst.Draw();
 
-            eventGUIControl.AddGUIString("Draw 1!");
+            S.EventGUIInst.AddGUIString("Draw 1!");
 		}		
 	}
 }

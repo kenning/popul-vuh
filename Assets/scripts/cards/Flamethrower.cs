@@ -15,8 +15,8 @@ public class Flamethrower : Card {
 
 		S.GameControlInst.TargetSquareCallback = this;
 
-		gameControlGUI.ForceDim();
-		gameControlGUI.SetTooltip("Pick a card to burn.");
+		S.GameControlGUIInst.ForceDim();
+		S.GameControlGUIInst.SetTooltip("Pick a card to burn.");
 		
 		base.Play ();
 	}
@@ -27,11 +27,11 @@ public class Flamethrower : Card {
 			tempCard.Burn();
 		}
 
-		gridControl.EnterTargetingMode (rangeTargetType, minRange, maxRange);
+		S.GridControlInst.EnterTargetingMode (rangeTargetType, minRange, maxRange);
 
-		clickControl.DisallowEveryInput ();
-		clickControl.AllowInfoInput = true;
-		clickControl.AllowSquareTargetInput = true;
+		S.ClickControlInst.DisallowEveryInput ();
+		S.ClickControlInst.AllowInfoInput = true;
+		S.ClickControlInst.AllowSquareTargetInput = true;
 		S.GameControlInst.TargetSquareCallback = this;
 //		ReallowUmbrellaInputAfterDiscardOrBurn ();
 
@@ -43,12 +43,12 @@ public class Flamethrower : Card {
 	}
 
 	public override void TargetSquareCalledThis (int x, int y) {
-		gridControl.DestroyAllTargetSquares();
+		S.GridControlInst.DestroyAllTargetSquares();
 		
 		FindAndAffectUnits(x, y);
-		gridControl.MakeSquares (aoeTargetType, aoeMinRange, aoeMaxRange, x, y, false);
+		S.GridControlInst.MakeSquares (aoeTargetType, aoeMinRange, aoeMaxRange, x, y, false);
 		
-		clickControl.DisallowEveryInput ();
+		S.ClickControlInst.DisallowEveryInput ();
 //		ReallowEveryInputAfterDiscardOrBurn ();
 	}
 }

@@ -4,11 +4,10 @@ using System.Collections.Generic;
 
 public class ShopControl : MonoBehaviour {
 
-	ClickControl clickControl;
-	ShopControlGUI shopControlGUI;
+	ClickControl S.ClickControlInst;
+	ShopControlGUI S.ShopControlGUIInst;
 
 	CardLibrary library;
-	GoalLibrary goalLibrary;
 
 	public Goal[] Goals;
 
@@ -37,11 +36,7 @@ public class ShopControl : MonoBehaviour {
 	
 
     public void Initialize () {
-		clickControl =  gameObject.GetComponent<ClickControl>();
-		library =  gameObject.GetComponent<CardLibrary>();
-		goalLibrary = gameObject.GetComponent<GoalLibrary> ();
-		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
-		goalLibrary.Startup ();
+		S.GoalLibraryInst.Startup ();
 
 		Goals = new Goal[0];
 
@@ -60,7 +55,7 @@ public class ShopControl : MonoBehaviour {
 
 	public void ProduceCards () {
 
-		shopControlGUI.UpdateGoalInfos ();
+		S.ShopControlGUIInst.UpdateGoalInfos ();
 
 		CardsToBuyFrom = new List<LibraryCard>[3];
 		for(int i = 0; i < CardsToBuyFrom.Length; i++) {
@@ -78,7 +73,7 @@ public class ShopControl : MonoBehaviour {
 				} else if (shopCardRarityLevelsByGod[i] == 2) {
 					rare = Card.Rarity.Gold;
 				}
-				LibraryCard tempLC = library.PullCardFromPack(AllGods[i], rare);
+				LibraryCard tempLC = S.CardLibraryInst.PullCardFromPack(AllGods[i], rare);
 				CardsToBuyFrom[j].Add(tempLC);
 			}
 
@@ -103,8 +98,8 @@ public class ShopControl : MonoBehaviour {
 	}
 
 	public void TurnOnShopGUI() {
-		shopControlGUI.TurnOnShopGUI ();
-		clickControl.DisallowEveryInput ();
+		S.ShopControlGUIInst.TurnOnShopGUI ();
+		S.ClickControlInst.DisallowEveryInput ();
 	}
 
 	int[] FinalScores () {
@@ -130,18 +125,18 @@ public class ShopControl : MonoBehaviour {
 				Goals[i].MakeCheck();
 			}
 		}
-		shopControlGUI.UpdateGoalInfos();
+		S.ShopControlGUIInst.UpdateGoalInfos();
 
 	}
 
 	public void NewLevelNewGoals(int numberOfGods) {
 		Goals = new Goal[numberOfGods];
-		Goals = goalLibrary.InitializeGoals (numberOfGods);
+		Goals = S.GoalLibraryInst.InitializeGoals (numberOfGods);
 
-		shopControlGUI.NewLevelNewGoals (numberOfGods, Goals);
+		S.ShopControlGUIInst.NewLevelNewGoals (numberOfGods, Goals);
 
-		shopControlGUI.UpdateGoalInfos ();
-		clickControl.DisallowEveryInput ();
+		S.ShopControlGUIInst.UpdateGoalInfos ();
+		S.ClickControlInst.DisallowEveryInput ();
 
 	}
 

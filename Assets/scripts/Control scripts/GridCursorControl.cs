@@ -3,11 +3,6 @@ using System.Collections;
 
 public class GridCursorControl : MonoBehaviour {
 
-	ShopControl shopControl;
-	ClickControl clickControl;
-    GridControl gridControl;
-	GridCursorControlGUI gridCursorControlGUI;
-	GameControlGUI gameControlGUI;
 	public static bool cursorActionSet = false;
 	public static bool GridCursorIsActive = false;
 	public static bool ClickedOffScreen = false;
@@ -26,11 +21,6 @@ public class GridCursorControl : MonoBehaviour {
 	string moveDirection = null;
 
 	void Start() {
-		gridControl = gameObject.GetComponent<GridControl> ();
-		shopControl = gameObject.GetComponent<ShopControl> ();
-		clickControl = gameObject.GetComponent<ClickControl> ();
-		gridCursorControlGUI = GameObject.Find("Grid Cursor").GetComponent<GridCursorControlGUI> ();
-		gameControlGUI = gameObject.GetComponent<GameControlGUI> ();
 		playerObject = GameObject.FindGameObjectWithTag ("Player");
 	}
 
@@ -50,12 +40,12 @@ public class GridCursorControl : MonoBehaviour {
 			(int)(clickPosition.x) != currentCursorXPosition |
 			(int)(clickPosition.y) != currentCursorYPosition) {
 			ResetInfoTarget ();
-			clickControl.lastCursorSetTime = Time.time;
+			S.ClickControlInst.lastCursorSetTime = Time.time;
 			cursorActionSet = true;
 			currentCursorXPosition = (int)clickPosition.x;
 			currentCursorYPosition = (int)clickPosition.y;
 			currentCursorAction = action;
-			gridCursorControlGUI.PresentCursor (action, currentCursorXPosition, currentCursorYPosition);
+			//PresentCursor (action, currentCursorXPosition, currentCursorYPosition);
 		}
 		
 	}
@@ -66,8 +56,8 @@ public class GridCursorControl : MonoBehaviour {
 		// Set them off camera so they get retriggered
 		currentCursorXPosition = 500;
 		currentCursorYPosition = 500;
-		gridCursorControlGUI.UnpresentCursor ();
-//		gameControlGUI.SetTooltip ("");
+		S.GridCursorControlInst.UnpresentCursor ();
+//		S.GameControlGUIInst.SetTooltip ("");
 	}
 
 	/// <summary>
@@ -101,10 +91,10 @@ public class GridCursorControl : MonoBehaviour {
 		case CursorActions.StairMove:
 			if(S.GameControlInst.MovesLeft > 0){
 				S.GameControlInst.AddMoves(-1);
-				shopControl.GoalCheck("Move X times in one turn");
-				shopControl.GoalCheck("Don't move X turns in a row");
-				shopControl.GoalCheck("Don't deal damage or move X turns in a row");
-				shopControl.GoalCheck("Don't move X turns in a row");
+				S.ShopControlInst.GoalCheck("Move X times in one turn");
+				S.ShopControlInst.GoalCheck("Don't move X turns in a row");
+				S.ShopControlInst.GoalCheck("Don't deal damage or move X turns in a row");
+				S.ShopControlInst.GoalCheck("Don't move X turns in a row");
 			}
 			else {
 				ButtonAnimate moveButton = 
@@ -153,7 +143,7 @@ public class GridCursorControl : MonoBehaviour {
 			break;
 		}
 
-		gridCursorControlGUI.UnpresentCursor();
+		UnpresentCursor();
 
 		cursorActionSet = false;
 	}
@@ -166,8 +156,8 @@ public class GridCursorControl : MonoBehaviour {
 				Debug.Log("Some error here from when you saw an enemy before");
 				GridUnit tempGU = infoTarget.GetComponent<GridUnit> ();
 				Enemy tempEnemy = infoTarget.GetComponent<Enemy> ();
-				gameControlGUI.SetTooltip (tempEnemy.Tooltip);
-				gridControl.MakeSquares (tempEnemy.AttackTargetType, tempEnemy.AttackMinRange, 
+				S.GameControlGUIInst.SetTooltip (tempEnemy.Tooltip);
+				S.GridControlInst.MakeSquares (tempEnemy.AttackTargetType, tempEnemy.AttackMinRange, 
 				                        tempEnemy.AttackMaxRange, tempGU.xPosition, tempGU.yPosition, false);
 				break;
 			case CursorInfoTypes.ObstacleInfo:
@@ -175,8 +165,8 @@ public class GridCursorControl : MonoBehaviour {
 				hitObstacle.ShowTooltip ();
 				break;
 			case CursorInfoTypes.PlayerInfo:
-				gameControlGUI.SetTooltip ("That's you! You're Xbalanque, one of the twin sons of Hunapu.");
-				gridControl.MakeSquares (GridControl.TargetTypes.diamond, 1, 1, false);
+				S.GameControlGUIInst.SetTooltip ("That's you! You're Xbalanque, one of the twin sons of Hunapu.");
+				S.GridControlInst.MakeSquares (GridControl.TargetTypes.diamond, 1, 1, false);
 				break;
 			}
 		} 

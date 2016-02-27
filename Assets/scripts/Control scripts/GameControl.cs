@@ -9,18 +9,11 @@ public class GameControl : MonoBehaviour
 
 	public static bool MovesArePlays = false;
 
-	ClickControl clickControl;
-	ShopControl shopControl;
-	GridControl gridControl;
-	GameControlGUI gameControlGUI;
-	MenuControl menuControl;
-
 	public GameObject handObj;
 	public GameObject playBoardObj;
 	public GameObject deckObj;
 	public GameObject playerObj;
 	public CardLibrary library;
-	public EnemyLibrary enemyLibrary;
 	public Player player;
 	public List<GameObject> EnemyObjs;
 	
@@ -66,6 +59,9 @@ public class GameControl : MonoBehaviour
 	#endregion
 
 	void Awake(){
+        S.initialize(GameObject.FindGameObjectWithTag ("GameController"),
+                    GameObject.FindGameObjectWithTag("goalandshopparent"),
+                    GameObject.FindGameObjectWithTag("shopgrid"));
 
 		if (Application.platform == RuntimePlatform.IPhonePlayer) {
 			Debug.Log("on iphone");
@@ -86,21 +82,12 @@ public class GameControl : MonoBehaviour
 		handObj = GameObject.Find ("Hand");
 		playBoardObj = GameObject.Find ("Play board");
 		playerObj = GameObject.FindGameObjectWithTag ("Player");
-		shopControl = gameObject.GetComponent<ShopControl> ();
 		player = GameObject.FindGameObjectWithTag ("Player").GetComponent<Player> ();
 		gooeyskin = (GUISkin)Resources.Load ("GUISkins/S.GameControlInst.guiskin");
 
-		menuControl = gameObject.GetComponent<MenuControl> ();
-		library = gameObject.GetComponent<CardLibrary> ();
-		enemyLibrary = gameObject.GetComponent<EnemyLibrary>();
-		clickControl = gameObject.GetComponent<ClickControl> ();
-		gridControl = gameObject.GetComponent<GridControl>();
-		gameControlGUI = gameObject.GetComponent<GameControlGUI> ();
-
-		library.Startup ();
-		enemyLibrary.Startup();
-		shopControl.Initialize ();
-		gameObject.GetComponent<Tutorial>().Initialize();
+		S.CardLibraryInst.Startup ();
+		S.EnemyLibraryInst.Startup();
+		S.ShopControlInst.Initialize ();
 
 		SaveDataControl.Load ();
 		StateSavingControl.Initialize (this, player);
@@ -127,7 +114,7 @@ public class GameControl : MonoBehaviour
 		Discard = new List<GameObject> ();
 		TargetedCards = new List<GameObject> ();
 		EnemyObjs = new List<GameObject> ();
-		gameControlGUI.SetDiscardPilePosition ();
+		S.GameControlGUIInst.SetDiscardPilePosition ();
         deckObj = GameObject.Find("Deck");
 
 		GameObject[] EnemyObjects = GameObject.FindGameObjectsWithTag ("Enemy");
@@ -137,8 +124,8 @@ public class GameControl : MonoBehaviour
 			}
 		}
 		
-		library.Startup ();
-		shopControl.Initialize ();
+		S.CardLibraryInst.Startup ();
+		S.ShopControlInst.Initialize ();
 		player.ResetLife ();
 		SetDollars (0);
 
@@ -152,10 +139,10 @@ public class GameControl : MonoBehaviour
 		{
 			//should this really be set to true?
 			//			normaldisplay = true;
-			library.SetStartingItems();
+			S.CardLibraryInst.SetStartingItems();
 			
-			for(int i = 0; i < library.StartingItems.Count; i++) {
-				string tempString = library.StartingItems[i].CardName;
+			for(int i = 0; i < S.CardLibraryInst.StartingItems.Count; i++) {
+				string tempString = S.CardLibraryInst.StartingItems[i].CardName;
 				Deck.Add(tempString);
 			}
 		}
@@ -223,9 +210,9 @@ public class GameControl : MonoBehaviour
 		card.cardUI.DrawAnimate (Hand.Count-1);	
 		
 		if(!invisibleDraw) { 
-			shopControl.GoalCheck("Draw X cards in one turn");
+			S.ShopControlInst.GoalCheck("Draw X cards in one turn");
 			if(card.ThisRarity == Card.Rarity.Paper) {
-				shopControl.GoalCheck("Draw X paper cards in one turn");
+				S.ShopControlInst.GoalCheck("Draw X paper cards in one turn");
 			}
 		}
 	}
@@ -265,7 +252,7 @@ public class GameControl : MonoBehaviour
 			newCardScript.Initialize();
 			newCardScript.Peek(i, numberOfCards);
 			PeekedCards.Add(newCardObj);
-			gameControlGUI.Dim ();
+			S.GameControlGUIInst.Dim ();
 		}
 
 		CallbackCard.PeekCallback ();
@@ -318,9 +305,9 @@ public class GameControl : MonoBehaviour
 
 				int numberOfGods = (Level < 3) ? Level : 3;
 
-				shopControl.NewLevelNewGoals(numberOfGods);
+				S.ShopControlInst.NewLevelNewGoals(numberOfGods);
 
-				gridControl.LoadEnemiesAndObstacles(Level);
+				S.GridControlInst.LoadEnemiesAndObstacles(Level);
 				InvisibleDraw();
 				InvisibleDraw();
 				InvisibleDraw();
@@ -331,10 +318,10 @@ public class GameControl : MonoBehaviour
 
 		StateSavingControl.TurnShopModeOff();
 
-		clickControl.AllowInputUmbrella = false;
+		S.ClickControlInst.AllowInputUmbrella = false;
 
-		gameControlGUI.UnlockDim ();
-		gameControlGUI.Dim (false);
+		S.GameControlGUIInst.UnlockDim ();
+		S.GameControlGUIInst.Dim (false);
 
 		StartNewTurn(loadedFromSaveState);
 	}
@@ -349,12 +336,12 @@ public class GameControl : MonoBehaviour
         if (!player.alive)
             return;
 
-		gameControlGUI.Dim (false);
+		S.GameControlGUIInst.Dim (false);
 
 		//DIFFERENT IN TUTORIAL!
 		if (Tutorial.TutorialLevel == 0) {
 			if (!loadedFromSaveState) {
-				foreach(Goal g in shopControl.Goals) {
+				foreach(Goal g in S.ShopControlInst.Goals) {
 					g.NewTurnCheck();
 				}
 
@@ -376,9 +363,9 @@ public class GameControl : MonoBehaviour
 
 			UICheck();
 
-			clickControl.turnEndedAlready = false;
-			clickControl.AllowEveryInput();
-			clickControl.cardScriptClickedOn = null;
+			S.ClickControlInst.turnEndedAlready = false;
+			S.ClickControlInst.AllowEveryInput();
+			S.ClickControlInst.cardScriptClickedOn = null;
 		}
 	}
 
@@ -423,7 +410,7 @@ public class GameControl : MonoBehaviour
 
         if (startingEnemyTurn)
         {
-	    	clickControl.DisallowEveryInput ();
+	    	S.ClickControlInst.DisallowEveryInput ();
         }
 
         bool turnIsOver = true;
@@ -456,13 +443,13 @@ public class GameControl : MonoBehaviour
 	/// makes shopping interface appears. when shopping is done, go to the next level
 	public void LevelIsDone(){
 		if(!player.alive) return;
-		clickControl.AllowInputUmbrella = false;
-		gameControlGUI.ForceDim ();
-		shopControl.ProduceCards ();
+		S.ClickControlInst.AllowInputUmbrella = false;
+		S.GameControlGUIInst.ForceDim ();
+		S.ShopControlInst.ProduceCards ();
 	}
 
 	public void CollectAnimate () {
-		clickControl.AllowInputUmbrella = false;
+		S.ClickControlInst.AllowInputUmbrella = false;
 		DeckAnimate deckAnim = deckObj.GetComponent<DeckAnimate> ();
 		deckAnim.ShuffleMoveAnimate();
 	}
@@ -487,9 +474,9 @@ public class GameControl : MonoBehaviour
 	public void ReturnToGodChoiceMenu() {
 
 		// Why is this here??? VVV
-		shopControl.Goals = new Goal[0];
+		S.ShopControlInst.Goals = new Goal[0];
 		
-		menuControl.TurnOnMenu (MenuControl.MenuType.GodChoiceMenu);
+		S.MenuControlInst.TurnOnMenu (MenuControl.MenuType.GodChoiceMenu);
 	}
 	#endregion
 
@@ -607,7 +594,7 @@ public class GameControl : MonoBehaviour
 	}
 
 	public void AnimateCardsToCorrectPosition() {
-	   gameControlGUI.AnimateCardsToCorrectPosition();	
+	   S.GameControlGUIInst.AnimateCardsToCorrectPosition();	
     }
 //	public void AnimateCardsToCorrectPositionInSeconds(float seconds) {
 //		Invoke ("AnimateCardsToCorrectPosition", seconds);

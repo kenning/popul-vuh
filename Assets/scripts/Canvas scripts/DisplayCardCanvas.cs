@@ -7,12 +7,10 @@ public class DisplayCardCanvas : MonoBehaviour {
 	bool initialized = false;
 	public bool CardDisplay = false;
 
-	ShopControlGUI shopControlGUI;
-
 	public GameObject CHILDGAMEOBJECT;
 	public GameObject EXPOBACKGROUND;
 
-	Text name;
+	Text cardname;
 	Text description;
 	Image background;
 	Image icon;
@@ -26,13 +24,12 @@ public class DisplayCardCanvas : MonoBehaviour {
 	void initialize() {
 		if(initialized) return;
 		initialized = true;
-		shopControlGUI = GameObject.FindGameObjectWithTag("GameController").GetComponent<ShopControlGUI>();
 
 		Text[] texts = CHILDGAMEOBJECT.GetComponentsInChildren<Text>();
 		Image[] images = CHILDGAMEOBJECT.GetComponentsInChildren<Image>();
 
 		foreach(Text txt in texts) {
-			if(txt.gameObject.name == "Card name") name = txt;
+			if(txt.gameObject.name == "Card name") cardname = txt;
 			if(txt.gameObject.name == "Card description") description = txt;
 		}
 		foreach(Image img in images) {
@@ -58,7 +55,7 @@ public class DisplayCardCanvas : MonoBehaviour {
 		CHILDGAMEOBJECT.SetActive(true);
 		EXPOBACKGROUND.SetActive(true);
 
-		name.text = card.CardName.Replace ("\n", "");
+		cardname.text = card.CardName.Replace ("\n", "");
 		icon.sprite = Resources.Load<Sprite> ("sprites/card icons/" + card.IconPath);
 		description.text = card.DisplayText;
 
@@ -81,31 +78,31 @@ public class DisplayCardCanvas : MonoBehaviour {
 		}
 
 		//default text color is black
-		name.color = new Color(0,0,0);
+		cardname.color = new Color(0,0,0);
 		description.color = new Color(0,0,0);
 
 		int godnum = ShopControl.AllGods.IndexOf (card.God);
 
-		background.sprite = shopControlGUI.GodDisplayCards[godnum];
-		godIcon.sprite = shopControlGUI.SpriteGodIcons [godnum];
+		background.sprite = S.ShopControlGUIInst.GodDisplayCards[godnum];
+		godIcon.sprite = S.ShopControlGUIInst.SpriteGodIcons [godnum];
 
 		if(card.God == ShopControl.Gods.Ekcha | card.God == ShopControl.Gods.Ixchel) {
-			name.color = new Color(1,1,1);
+			cardname.color = new Color(1,1,1);
 			description.color = new Color(1,1,1);
 		}
 
 		switch(card.ThisRarity) {
 		case (Card.Rarity.Paper):
-			rarityIcon.sprite = shopControlGUI.Paper;
+			rarityIcon.sprite = S.ShopControlGUIInst.Paper;
 			break;
 		case (Card.Rarity.Bronze):
-			rarityIcon.sprite = shopControlGUI.Bronze;
+			rarityIcon.sprite = S.ShopControlGUIInst.Bronze;
 			break;
 		case (Card.Rarity.Silver):
-			rarityIcon.sprite = shopControlGUI.Silver;
+			rarityIcon.sprite = S.ShopControlGUIInst.Silver;
 			break;
 		case (Card.Rarity.Gold):
-			rarityIcon.sprite = shopControlGUI.Gold;
+			rarityIcon.sprite = S.ShopControlGUIInst.Gold;
 			break;
 		}
 	}
@@ -122,7 +119,7 @@ public class DisplayCardCanvas : MonoBehaviour {
 		CHILDGAMEOBJECT.SetActive(true);
 		EXPOBACKGROUND.SetActive(true);
 
-		name.text = card.CardName.Replace ("\n", "");
+		cardname.text = card.CardName.Replace ("\n", "");
 		icon.sprite = Resources.Load<Sprite> (card.IconPath);
 		description.text = card.DisplayText;
 
@@ -145,31 +142,31 @@ public class DisplayCardCanvas : MonoBehaviour {
 		}
 
 		//default text color is black
-		name.color = new Color(0,0,0);
+		cardname.color = new Color(0,0,0);
 		description.color = new Color(0,0,0);
 
 		int godnum = ShopControl.AllGods.IndexOf (card.God);
 
-		background.sprite = shopControlGUI.GodDisplayCards[godnum];
-		godIcon.sprite = shopControlGUI.SpriteGodIcons [godnum];
+		background.sprite = S.ShopControlGUIInst.GodDisplayCards[godnum];
+		godIcon.sprite = S.ShopControlGUIInst.SpriteGodIcons [godnum];
 
 		if(card.God == ShopControl.Gods.Ekcha | card.God == ShopControl.Gods.Ixchel) {
-			name.color = new Color(1,1,1);
+			cardname.color = new Color(1,1,1);
 			description.color = new Color(1,1,1);
 		}
 
 		switch(card.ThisRarity) {
 		case (Card.Rarity.Paper):
-			rarityIcon.sprite = shopControlGUI.Paper;
+			rarityIcon.sprite = S.ShopControlGUIInst.Paper;
 			break;
 		case (Card.Rarity.Bronze):
-			rarityIcon.sprite = shopControlGUI.Bronze;
+			rarityIcon.sprite = S.ShopControlGUIInst.Bronze;
 			break;
 		case (Card.Rarity.Silver):
-			rarityIcon.sprite = shopControlGUI.Silver;
+			rarityIcon.sprite = S.ShopControlGUIInst.Silver;
 			break;
 		case (Card.Rarity.Gold):
-			rarityIcon.sprite = shopControlGUI.Gold;
+			rarityIcon.sprite = S.ShopControlGUIInst.Gold;
 			break;
 		}
 	}

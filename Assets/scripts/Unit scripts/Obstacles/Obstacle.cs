@@ -4,14 +4,7 @@ using System.Collections;
 public class Obstacle : MonoBehaviour {
 
     protected string tooltip;
-	protected GameControlGUI gameControlGUI;
     public bool Walkable;
-
-    public virtual void Start()
-    {
-		GameObject tempGO = GameObject.FindGameObjectWithTag ("GameController");
-		gameControlGUI = tempGO.GetComponent<GameControlGUI> ();
-    }
 
 	public void SetTooltip(string tool) {
 		tooltip = tool;
@@ -19,7 +12,7 @@ public class Obstacle : MonoBehaviour {
 
     public void ShowTooltip()
     {
-		gameControlGUI.SetTooltip(tooltip);
+		S.GameControlGUIInst.SetTooltip(tooltip);
     }
 
     public virtual void StepIn() { }

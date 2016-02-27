@@ -9,7 +9,7 @@ public class ShopAwardCanvas : MonoBehaviour {
 	Image background;
 	Text description;
 
-	public ShopAndGoalParentCanvas SHOPANDGOALPARENTCANVAS;
+    ShopAndGoalParentCanvas SHOPANDGOALPARENTCANVAS;
 
 	void Initialize () {
 		if(initialized) return;

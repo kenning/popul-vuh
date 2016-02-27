@@ -16,8 +16,8 @@ public class BreadBowl : Card {
 		S.GameControlInst.Peek (3, this);
 
 		S.GameControlInst.CardsToTarget = 1;
-		gameControlGUI.ForceDim ();
-		gameControlGUI.SetTooltip("Pick a card to put in your hand.");
+		S.GameControlGUIInst.ForceDim ();
+		S.GameControlGUIInst.SetTooltip("Pick a card to put in your hand.");
 		
 		base.Play ();
 	}

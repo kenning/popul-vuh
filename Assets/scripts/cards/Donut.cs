@@ -15,8 +15,8 @@ public class Donut : Card {
 
 		S.GameControlInst.CardsToTarget = 1;
 
-		gameControlGUI.ForceDim();
-		gameControlGUI.SetTooltip("Pick a card to discard.");
+		S.GameControlGUIInst.ForceDim();
+		S.GameControlGUIInst.SetTooltip("Pick a card to discard.");
 
 
 		

@@ -7,13 +7,10 @@ public static class QControl {
 	public enum QMethodType {Activate, FreeActivate, Option, Special, FreeSpecial, Discard};
 	static Queue<Card> CardQ;
 	static Queue<QMethodType> MethodQ;
-	static GameControlGUI gameControlGUI;
 
 	public static void Initialize () {
 		CardQ = new Queue<Card> ();
 		MethodQ = new Queue<QMethodType> ();
-		GameObject gameController = GameObject.FindGameObjectWithTag ("GameController");
-		gameControlGUI = gameController.GetComponent<GameControlGUI> ();
 	}
 
 	public static void AddToQ(Card card, QMethodType methodType) {
@@ -29,10 +26,9 @@ public static class QControl {
 		}
 
 		if(CardQ.Count == 0) {
-			ClickControl clickControl = GameObject.FindGameObjectWithTag("GameController").GetComponent<ClickControl>();
-			clickControl.AllowEveryInput();
+			S.ClickControlInst.AllowEveryInput();
 			Debug.Log("Checked Q and allowed every input! This is where card effects terminate and EndTurnCheck() is called.");
-			gameControlGUI.AnimateCardsToCorrectPositionInSeconds(.05f);
+			S.GameControlGUIInst.AnimateCardsToCorrectPositionInSeconds(.05f);
 			S.GameControlInst.CheckDeckCount();
 
 			// Checks if the turn is over, and if it is, takes the enemy's turn. 

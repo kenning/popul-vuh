@@ -22,18 +22,7 @@ public class ShopAndGoalParentCanvas : MonoBehaviour {
 
 	Text dollarsText;
 
-	GameControlGUI gameControlGUI;
-	ShopControl shopControl;
-	ShopControlGUI shopControlGUI;
-	ClickControl clickControl;
-
 	void Start () {
-		GameObject tempGO = GameObject.FindGameObjectWithTag ("GameController");
-		gameControlGUI = tempGO.GetComponent<GameControlGUI> ();
-		shopControl = tempGO.GetComponent<ShopControl> ();
-		shopControlGUI = tempGO.GetComponent<ShopControlGUI> ();
-		clickControl = tempGO.GetComponent<ClickControl> ();
-
 		dollarsText = SHOPDOLLARCOUNTER.GetComponentInChildren<Text> ();
 	}
 
@@ -80,8 +69,8 @@ public class ShopAndGoalParentCanvas : MonoBehaviour {
 			SHOPAWARDS[i].SetGradeInfo(goals[i], highScoreNotifications[i]);
 		}
 		for(int i = 0; i < 3; i++) {
-			for (int j = 0; j < shopControl.CardsToBuyFrom[i].Count; j++) {
-				SHOPGRIDCANVAS.SetCardInfo(i, j, shopControl.CardsToBuyFrom[i][j]);
+			for (int j = 0; j < S.ShopControlInst.CardsToBuyFrom[i].Count; j++) {
+				SHOPGRIDCANVAS.SetCardInfo(i, j, S.ShopControlInst.CardsToBuyFrom[i][j]);
 			}
 		}
 
@@ -94,7 +83,7 @@ public class ShopAndGoalParentCanvas : MonoBehaviour {
 		FINISHSHOPPINGBUTTON.SetActive (true);
 		SHOPDOLLARCOUNTER.SetActive (true);
 		EXPOBACKGROUND.SetActive(true);
-		gameControlGUI.SetTooltip("");
+		S.GameControlGUIInst.SetTooltip("");
 	}
 	public void TurnOffShopGUI() {
 		if(SHOPGRIDCANVAS != null) SHOPGRIDCANVAS.GetComponent<ShopGridCanvas>().TurnOff();
@@ -105,7 +94,7 @@ public class ShopAndGoalParentCanvas : MonoBehaviour {
 	}
 	public void TurnOnNormalGUI() {
 		for (int i = 0; i < GOALCANVASES.Length; i++) {
-			if (i >= shopControl.Goals.Length) {
+			if (i >= S.ShopControlInst.Goals.Length) {
 				GOALCANVASES[i].gameObject.SetActive(false);
 			} else {
 				GOALCANVASES[i].gameObject.SetActive(true);
@@ -119,11 +108,11 @@ public class ShopAndGoalParentCanvas : MonoBehaviour {
 		for(int i = 0; i < EXPOGAMEOBJECTS.Length; i++) {
 			if(EXPOGAMEOBJECTS[i] == null) {
 				Debug.LogError("expo game object not set");
-			} else if (i >= shopControl.Goals.Length) {
+			} else if (i >= S.ShopControlInst.Goals.Length) {
 				EXPOGAMEOBJECTS[i].SetActive(false);
 			} else {
 				EXPOGAMEOBJECTS[i].SetActive(true);
-				EXPOGAMEOBJECTS[i].GetComponent<GoalExpoCanvas>().SetExpoInfo(shopControl.Goals[i]);
+				EXPOGAMEOBJECTS[i].GetComponent<GoalExpoCanvas>().SetExpoInfo(S.ShopControlInst.Goals[i]);
 			}
 		}
 		FINISHEXPOBUTTON.SetActive (true);
@@ -138,16 +127,16 @@ public class ShopAndGoalParentCanvas : MonoBehaviour {
 	#endregion
 
 	public void FinishGoalExpo () {
-		clickControl.Invoke ("AllowEveryInput", .1f);
-		shopControlGUI.TurnOnNormalGUI ();
+		S.ClickControlInst.Invoke ("AllowEveryInput", .1f);
+		S.ShopControlGUIInst.TurnOnNormalGUI ();
 	}
 
 	public void FinishShopping () {
 		EXPOBACKGROUND.SetActive(false);
 		S.GameControlInst.CollectAnimate();
-		gameControlGUI.SetTooltip("Shuffling together your deck and discard...");
+		S.GameControlGUIInst.SetTooltip("Shuffling together your deck and discard...");
 
-		shopControlGUI.TurnOffAllShopGUI ();
+		S.ShopControlGUIInst.TurnOffAllShopGUI ();
 	}
 
 	public void SetAddedToCollectionText (string newText) {

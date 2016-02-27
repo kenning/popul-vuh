@@ -21,7 +21,7 @@ public class PrayerBeads : Card {
 		if(s == "Burn") {
 			S.GameControlInst.AddDollars(3);
 
-            eventGUIControl.AddGUIString("+$3!");
+            S.EventGUIInst.AddGUIString("+$3!");
 		}
 	}
 }

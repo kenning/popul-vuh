@@ -8,12 +8,6 @@ public class ShopGridCardCanvas : MonoBehaviour {
 
 	bool initialized = false;
 
-	ShopControlGUI shopControlGUI;
-
-	ShopGridCanvas shopGridCanvas;
-
-	ShopControl shopControl;
-
 	LibraryCard thisCard;
 
 	Image background;
@@ -45,11 +39,6 @@ public class ShopGridCardCanvas : MonoBehaviour {
 	void Initialize () {
 		if(initialized) return;
 		initialized = true;
-
-		GameObject gamecontroller = GameObject.FindGameObjectWithTag("GameController");
-		shopControlGUI = gamecontroller.GetComponent<ShopControlGUI>();
-		shopGridCanvas = gameObject.transform.parent.parent.GetComponent<ShopGridCanvas>();
-		shopControl = gamecontroller.GetComponent<ShopControl>();
 
 		Image[] Images = gameObject.GetComponentsInChildren<Image>();
 		foreach (Image img in Images) {
@@ -124,21 +113,21 @@ public class ShopGridCardCanvas : MonoBehaviour {
 		
 		if (thisCard.ThisRarity == Card.Rarity.Bronze) {
 			//set rarity picture			
-			rarityIcon.sprite = shopControlGUI.Bronze;
+			rarityIcon.sprite = S.ShopControlGUIInst.Bronze;
 			//set cost box background color
-			costRarityIcon.sprite = shopControlGUI.Bronze;
+			costRarityIcon.sprite = S.ShopControlGUIInst.Bronze;
 			costBarDescription.text = "$2\n←";
 		} else if (thisCard.ThisRarity == Card.Rarity.Silver) {
 			//set rarity picture
-			rarityIcon.sprite = shopControlGUI.Silver;
+			rarityIcon.sprite = S.ShopControlGUIInst.Silver;
 			//set cost box background color
-			costRarityIcon.sprite = shopControlGUI.Silver;
+			costRarityIcon.sprite = S.ShopControlGUIInst.Silver;
 			costBarDescription.text = "$4\n←";
 		} else if (thisCard.ThisRarity == Card.Rarity.Gold) {
 			//set rarity picture
-			rarityIcon.sprite = shopControlGUI.Gold;
+			rarityIcon.sprite = S.ShopControlGUIInst.Gold;
 			//set cost box background color
-			costRarityIcon.sprite = shopControlGUI.Gold;
+			costRarityIcon.sprite = S.ShopControlGUIInst.Gold;
 			costBarDescription.text = "$6\n←";
 		}
 		
@@ -166,10 +155,10 @@ public class ShopGridCardCanvas : MonoBehaviour {
 
 		
 		// set god icon
-		godIcon.sprite = shopControlGUI.SpriteGodIcons[ShopControl.AllGods.IndexOf(thisCard.God)];
+		godIcon.sprite = S.ShopControlGUIInst.SpriteGodIcons[ShopControl.AllGods.IndexOf(thisCard.God)];
 
 		// set card background
-		background.sprite = shopControlGUI.GodSmallCards[ShopControl.AllGods.IndexOf(thisCard.God)];
+		background.sprite = S.ShopControlGUIInst.GodSmallCards[ShopControl.AllGods.IndexOf(thisCard.God)];
 
 		GameObject go = buyingThisCardText.transform.parent.gameObject;
 		if (!SaveDataControl.UnlockedCards.Contains (thisCard) && SaveDataControl.UnlockedGods.Contains (thisCard.God)) {
@@ -192,8 +181,8 @@ public class ShopGridCardCanvas : MonoBehaviour {
 
 	public void Buy () {
 		Debug.Log("buy");
-		shopControl.BoughtCardFromGod(GODNUMBER);
-		shopControl.RemoveBoughtCard(title.text);
+		S.ShopControlInst.BoughtCardFromGod(GODNUMBER);
+		S.ShopControlInst.RemoveBoughtCard(title.text);
 		background.gameObject.SetActive(false);
 		showThisCardButton.gameObject.SetActive(false);
 		buyingThisCardBackground.gameObject.transform.parent.gameObject.SetActive(false);
@@ -208,10 +197,10 @@ public class ShopGridCardCanvas : MonoBehaviour {
 			if (SaveDataControl.TryToUnlockCard (thisCard)) {
 				boughtThisCardText.text = ("Added " + thisCard.God.ToString () + 
 					"'s card " + tempString + " to your deck as well as your collection!");
-				boughtThisCardDialog.sprite = shopGridCanvas.BOUGHTSPRITEADDEDTOCOLLECTION;
+				boughtThisCardDialog.sprite = S.ShopGridCanvasInst.BOUGHTSPRITEADDEDTOCOLLECTION;
 			} else {
 				boughtThisCardText.text = ("This card has been added to your deck!");
-				boughtThisCardDialog.sprite = shopGridCanvas.BOUGHTSPRITENORMAL;
+				boughtThisCardDialog.sprite = S.ShopGridCanvasInst.BOUGHTSPRITENORMAL;
 			}
 
 			Invoke("HideThisCard", 2.0f);
@@ -220,7 +209,7 @@ public class ShopGridCardCanvas : MonoBehaviour {
 
 		} else {
 			boughtThisCardText.text = ("You don't have enough money! This card costs $" + thisCard.Cost.ToString() + ".");
-			boughtThisCardDialog.sprite = shopGridCanvas.BOUGHTSPRITENORMAL;
+			boughtThisCardDialog.sprite = S.ShopGridCanvasInst.BOUGHTSPRITENORMAL;
 		}
 
 		StateSavingControl.Save();

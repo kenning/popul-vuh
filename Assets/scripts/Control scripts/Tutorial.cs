@@ -7,9 +7,6 @@ public class Tutorial : MonoBehaviour {
     //progress variables. tutorial level goes from 1-6.
 	public static int TutorialLevel = 0;
     
-    GameControlGUI gameControlGUI;
-	MenuControl menuControl;
-
     public string TutorialMessage = "";
     string[] TutorialStartMessages = new string[] {
         "Hi, I'm Buluc Chabtan, the God of sacrifice and war.\n\n" + 
@@ -30,23 +27,11 @@ public class Tutorial : MonoBehaviour {
 
     public Texture2D BLACKBOX;
 
-	GUIStyleLibrary styleLibrary;
-
-    ClickControl clickControl;
-
     public static bool PlayedACardLevel7 = false;
 
 	void Start() {
 		useGUILayout = false;
-		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
-		menuControl = gameObject.GetComponent<MenuControl> ();
-		gameControlGUI = gameObject.GetComponent<GameControlGUI> ();
 	}
-
-    public void Initialize()
-    {
-        clickControl = gameObject.GetComponent<ClickControl>();
-    }
 
     public void OnGUI()
     {
@@ -55,12 +40,12 @@ public class Tutorial : MonoBehaviour {
             GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), BLACKBOX);
             GUI.DrawTexture(new Rect(Screen.width * .4f, Screen.height * .2f, Screen.width * .55f, Screen.height * .6f), 
 			                BulucTUTORIALFULL);
-			GUIStyle dialogueStyle = new GUIStyle(styleLibrary.TutorialStyles.DialogueBox);
-			if(TutorialLevel == 1) dialogueStyle.fontSize = styleLibrary.TutorialStyles.FirstDialogueFontSize;
+			GUIStyle dialogueStyle = new GUIStyle(S.GUIStyleLibraryInst.TutorialStyles.DialogueBox);
+			if(TutorialLevel == 1) dialogueStyle.fontSize = S.GUIStyleLibraryInst.TutorialStyles.FirstDialogueFontSize;
             GUI.Box(new Rect(Screen.width*.05f, Screen.height*.25f, Screen.width*.58f, Screen.height*.5f), 
 			        TutorialStartMessages[TutorialLevel-1], dialogueStyle);
             if(GUI.Button(new Rect(Screen.width*.2f, Screen.height*.85f, Screen.width*.6f, Screen.height*.1f), 
-			              "OK", styleLibrary.TutorialStyles.StartButton))
+			              "OK", S.GUIStyleLibraryInst.TutorialStyles.StartButton))
             {
                 if(TutorialLevel == 1) 
                 { 
@@ -76,12 +61,12 @@ public class Tutorial : MonoBehaviour {
         {
          //   GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.width*.3f), BLACKBOX);
             GUI.DrawTexture(new Rect(Screen.width*.7f, 0, Screen.width*.3f, Screen.width*.3f), BulucTUTORIALMUGSHOT);
-            GUI.Box(new Rect(Screen.height*.03f, Screen.width*.025f, Screen.width*.75f, Screen.width*.3f), TutorialMessage, styleLibrary.TutorialStyles.DialogueBox);
+            GUI.Box(new Rect(Screen.height*.03f, Screen.width*.025f, Screen.width*.75f, Screen.width*.3f), TutorialMessage, S.GUIStyleLibraryInst.TutorialStyles.DialogueBox);
 
             if (TutorialLevel == 4 )
             {
-				GUIStyle OKStyle = new GUIStyle(styleLibrary.TutorialStyles.NextLevelButton);
-				OKStyle.fontSize = styleLibrary.TutorialStyles.DoneFontSize;
+				GUIStyle OKStyle = new GUIStyle(S.GUIStyleLibraryInst.TutorialStyles.NextLevelButton);
+				OKStyle.fontSize = S.GUIStyleLibraryInst.TutorialStyles.DoneFontSize;
                 if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .55f, Screen.width * .6f, Screen.height * .075f), 
 				               "OK", OKStyle))
                 {
@@ -90,10 +75,10 @@ public class Tutorial : MonoBehaviour {
             }
             if ((TutorialLevel == 6 && PlayedACardLevel7))
             {
-				GUIStyle DoneStyle = new GUIStyle(styleLibrary.TutorialStyles.NextLevelButton);
-				DoneStyle.fontSize = styleLibrary.TutorialStyles.DoneFontSize;
+				GUIStyle DoneStyle = new GUIStyle(S.GUIStyleLibraryInst.TutorialStyles.NextLevelButton);
+				DoneStyle.fontSize = S.GUIStyleLibraryInst.TutorialStyles.DoneFontSize;
                 if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .55f, Screen.width * .6f, Screen.height * .075f), 
-				               "I'm done with the tutorial", styleLibrary.TutorialStyles.NextLevelButton))
+				               "I'm done with the tutorial", S.GUIStyleLibraryInst.TutorialStyles.NextLevelButton))
                 {
                     continueTutorial();
                 }
@@ -103,21 +88,21 @@ public class Tutorial : MonoBehaviour {
         #region always on buttons
         if (TutorialLevel != 1 && TutorialLevel != 7) {
 	        GUI.Box(new Rect(Screen.width * .6f, 0, Screen.width * .4f, Screen.height * .035f), 
-			        "Tutorial level " + TutorialLevel.ToString(), styleLibrary.TutorialStyles.InfoBox);
+			        "Tutorial level " + TutorialLevel.ToString(), S.GUIStyleLibraryInst.TutorialStyles.InfoBox);
 	        if (GUI.Button(new Rect(Screen.width * .05f, Screen.height * .235f, Screen.width * .4f, Screen.height * .06f), 
-			               "Skip this tutorial level", styleLibrary.TutorialStyles.NextLevelButton))
+			               "Skip this tutorial level", S.GUIStyleLibraryInst.TutorialStyles.NextLevelButton))
 	        {
 	        	continueTutorial();
 	        }
 	        if (GUI.Button(new Rect(Screen.width * .55f, Screen.height * .235f, Screen.width * .4f, Screen.height * .06f), 
-			               "Skip whole tutorial", styleLibrary.TutorialStyles.NextLevelButton))
+			               "Skip whole tutorial", S.GUIStyleLibraryInst.TutorialStyles.NextLevelButton))
 	        {
 	            endTutorial();
 	        }
 		}
 		if(TutorialLevel == 1) {
 			if (GUI.Button(new Rect(Screen.width * .3f, Screen.height * .1f, Screen.width * .4f, Screen.height * .08f), 
-			               "Skip tutorial", styleLibrary.TutorialStyles.NextLevelButton))
+			               "Skip tutorial", S.GUIStyleLibraryInst.TutorialStyles.NextLevelButton))
 			{
 				endTutorial();
 			}
@@ -133,7 +118,7 @@ public class Tutorial : MonoBehaviour {
     {
         Tutorial.TutorialLevel = 0;
 
-		menuControl.TurnOnMenu (MenuControl.MenuType.MainMenu);
+		S.MenuControlInst.TurnOnMenu (MenuControl.MenuType.MainMenu);
 
         SaveDataControl.FinishedTutorial = true;
         SaveDataControl.Save();
@@ -157,9 +142,9 @@ public class Tutorial : MonoBehaviour {
 
         if (TutorialLevel == 2)
         {
-            clickControl.DisallowEveryInput();
-            clickControl.AllowMoveInput = true;
-            clickControl.AllowInputUmbrella = true;
+            S.ClickControlInst.DisallowEveryInput();
+            S.ClickControlInst.AllowMoveInput = true;
+            S.ClickControlInst.AllowInputUmbrella = true;
 
             gameObject.GetComponent<GridControl>().InvokeRepeating("TutorialMovementIllustration", .4f, 1.2f);
         }
@@ -167,9 +152,9 @@ public class Tutorial : MonoBehaviour {
         {
             gameObject.GetComponent<GridControl>().CancelInvoke();
 
-            clickControl.DisallowEveryInput();
-            clickControl.AllowNewPlayInput = true;
-            clickControl.AllowInputUmbrella = true;
+            S.ClickControlInst.DisallowEveryInput();
+            S.ClickControlInst.AllowNewPlayInput = true;
+            S.ClickControlInst.AllowInputUmbrella = true;
 
             GridUnit p = GameObject.FindGameObjectWithTag("Player").GetComponent<GridUnit>();
             gameObject.GetComponent<EnemyLibrary>().LoadEnemy("pa", p.xPosition, p.yPosition-1);
@@ -184,14 +169,14 @@ public class Tutorial : MonoBehaviour {
             {
                 Destroy(en);
             }
-            clickControl.DisallowEveryInput();
-			gameControlGUI.Dim();
+            S.ClickControlInst.DisallowEveryInput();
+			S.GameControlGUIInst.Dim();
         }
         if (TutorialLevel == 5)
         {
             gameObject.GetComponent<GridControl>().CancelInvoke();
 
-			gameControlGUI.Dim(false);
+			S.GameControlGUIInst.Dim(false);
 			S.GameControlInst.DeleteAllCards();
 			List<string> deck = S.GameControlInst.Deck;
             deck.Add("Wooden Pike");
@@ -203,10 +188,10 @@ public class Tutorial : MonoBehaviour {
             for (int i = 0; i < count; i++) { S.GameControlInst.Draw(); }
             S.GameControlInst.AddPlays(1);
 
-            clickControl.DisallowEveryInput();
-            clickControl.AllowNewPlayInput = true;
-            clickControl.AllowInfoInput = true;
-            clickControl.AllowInputUmbrella = true;
+            S.ClickControlInst.DisallowEveryInput();
+            S.ClickControlInst.AllowNewPlayInput = true;
+            S.ClickControlInst.AllowInfoInput = true;
+            S.ClickControlInst.AllowInputUmbrella = true;
 
             GridUnit p = GameObject.FindGameObjectWithTag("Player").GetComponent<GridUnit>();
             p.xPosition = 0;
@@ -238,10 +223,10 @@ public class Tutorial : MonoBehaviour {
 
             S.GameControlInst.AddPlays(4);
 
-            clickControl.DisallowEveryInput();
-            clickControl.AllowNewPlayInput = true;
-            clickControl.AllowInfoInput = true;
-            clickControl.AllowInputUmbrella = true;
+            S.ClickControlInst.DisallowEveryInput();
+            S.ClickControlInst.AllowNewPlayInput = true;
+            S.ClickControlInst.AllowInfoInput = true;
+            S.ClickControlInst.AllowInputUmbrella = true;
         }
     }
 

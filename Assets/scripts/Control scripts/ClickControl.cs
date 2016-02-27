@@ -5,17 +5,9 @@ using UnityEngine.EventSystems;
 
 public class ClickControl : MonoBehaviour {
 	//Game control scripts
-	GridControl gridBoss;
-	ShopControl shopControl;
-	GameObject handObj;
-	GameControlGUI gameControlGUI;
-	ShopControlGUI shopControlGUI;
 	ButtonAnimate playButton;
-	GridCursorControl gridCursorControl;
 	DisplayCardCanvas displayCardCanvas;
-	MenuControl menuControl;
     Player player;
-	EventSystem eventSystem;
 
 	//units
 	List<GridUnit> UnitList;
@@ -67,17 +59,9 @@ public class ClickControl : MonoBehaviour {
 	public bool undisplayCardOnClick = false;
 
 	Texture2D SideArrows;
+    EventSystem eventSystem = GameObject.FindGameObjectWithTag("eventsystem").GetComponent<EventSystem>();
 	
 	void Start(){
-		GameObject tempGO = GameObject.FindGameObjectWithTag ("GameController");
-		handObj = GameObject.Find ("Hand");
-		gridBoss = tempGO.GetComponent<GridControl>();
-		shopControl = tempGO.GetComponent<ShopControl> ();
-		menuControl = tempGO.GetComponent<MenuControl> ();
-		gridCursorControl = tempGO.GetComponent<GridCursorControl> ();
-		gameControlGUI = tempGO.GetComponent<GameControlGUI> ();
-		shopControlGUI = tempGO.GetComponent<ShopControlGUI> ();
-
 		playerObject = GameObject.FindGameObjectWithTag ("Player");
         player = playerObject.GetComponent<Player>();
 
@@ -87,8 +71,6 @@ public class ClickControl : MonoBehaviour {
 		SideArrows = (Texture2D)Resources.Load ("sprites/ui/side arrows");
 
 		displayCardCanvas = GameObject.FindGameObjectWithTag("displaycard").GetComponent<DisplayCardCanvas>(); 
-
-		eventSystem = GameObject.FindGameObjectWithTag("eventsystem").GetComponent<EventSystem>();
 	}
 
 	void Update () {
@@ -96,14 +78,14 @@ public class ClickControl : MonoBehaviour {
 		// Resetting things
 		
 		if (Input.GetMouseButtonDown (0)) {
-			shopControl.GoalCheck("Touch the screen no more than than X times");
+			S.ShopControlInst.GoalCheck("Touch the screen no more than than X times");
 		}
 
 		if (!Input.GetMouseButton (0) && GridCursorControl.ClickedOffScreen) {
 			GridCursorControl.ClickedOffScreen = false;
 		}
 
-		if(menuControl.AnyMenuIsUp() | shopControlGUI.IgnoreClicking | GridCursorControl.ClickedOffScreen) {
+		if(S.MenuControlInst.AnyMenuIsUp() | S.ShopControlGUIInst.IgnoreClicking | GridCursorControl.ClickedOffScreen) {
 			return;
 		}
 
@@ -116,7 +98,7 @@ public class ClickControl : MonoBehaviour {
 
 		if(!AllowInputUmbrella) {
 			if(displayCardCanvas.CardDisplay) {
-				gameControlGUI.Undisplay();
+				S.GameControlGUIInst.Undisplay();
 				cardHasBeenClickedOn = false;
 			}
 			if(draggingGameboard) {
@@ -131,7 +113,7 @@ public class ClickControl : MonoBehaviour {
 		}
 		
 		if(displayCardCanvas.CardDisplay && !Input.GetMouseButton(0)) {
-			gameControlGUI.Undisplay();
+			S.GameControlGUIInst.Undisplay();
 			cardHasBeenClickedOn = false;
 		}
 
@@ -142,11 +124,11 @@ public class ClickControl : MonoBehaviour {
 
 		if (GridCursorControl.cursorActionSet) {
 			if(!Input.GetMouseButton(0)) {
-				gridCursorControl.ReleaseCursor();
+				S.GridCursorControlInst.ReleaseCursor();
 				return;
 			} else if(Time.time > lastCursorSetTime + 1.0f) {
 				GameBoardDrag();	
-				gridCursorControl.UnpresentCursor();
+				S.GridCursorControlInst.UnpresentCursor();
 				return;
 			}
 		}
@@ -191,24 +173,24 @@ public class ClickControl : MonoBehaviour {
 		if(draggingHand && AllowInfoInput){
 			if(Input.GetMouseButton(0)){
 				if(S.GameControlInst.Hand.Count < 4) { 
-					handObj.transform.localPosition = new Vector3(((3) * -1.48f) + 3.7f, 0, 0);
+					S.HandInst.transform.localPosition = new Vector3(((3) * -1.48f) + 3.7f, 0, 0);
 					return;
 				}
 				Vector3 pos = Camera.main.ScreenToViewportPoint 
 					(Input.mousePosition - (cardScriptClickedOn.transform.position*10) - dragOrigin);
 				Debug.Log(pos.x);
 
-				if(handObj.transform.localPosition.x >= -.75f && pos.x > 0) {
-					handObj.transform.localPosition = new Vector3(-.73f, 0, 0f);
+				if(S.HandInst.transform.localPosition.x >= -.75f && pos.x > 0) {
+					S.HandInst.transform.localPosition = new Vector3(-.73f, 0, 0f);
 					return;
 				}
-				else if((handObj.transform.localPosition.x <= ((S.GameControlInst.Hand.Count) * -1.55f) + 5.35f) &&  pos.x < 0) {
+				else if((S.HandInst.transform.localPosition.x <= ((S.GameControlInst.Hand.Count) * -1.55f) + 5.35f) &&  pos.x < 0) {
 					//this is for after the exact position has gotten nailed down, purpose is to lock it to the edge. 
 					//the key numbers are: 3.95 one line above and .75 six lines above.
-					handObj.transform.localPosition = new Vector3(((S.GameControlInst.Hand.Count) * -1.55f) + 5.3f, 0, 0);
+					S.HandInst.transform.localPosition = new Vector3(((S.GameControlInst.Hand.Count) * -1.55f) + 5.3f, 0, 0);
 				} else {
 					Vector3 move = new Vector3(pos.x, 0, 0);
-					handObj.transform.Translate(move);  
+					S.HandInst.transform.Translate(move);  
 					return;
 				}
 			}
@@ -270,13 +252,13 @@ public class ClickControl : MonoBehaviour {
 					cardHasBeenClickedOn = false;
 				}
 				else if(Time.time - 0.22f > lastCardClick && !displayCardCanvas.CardDisplay && AllowInfoInput) { 
-					gameControlGUI.Display(cardScriptClickedOn);
+					S.GameControlGUIInst.Display(cardScriptClickedOn);
 					cardHasBeenClickedOn = false;
 				}
 				else if(Time.time - .03f > lastCardClick && AllowInfoInput) 
                 {
                     cardScriptClickedOn.cardUI.ShineAnimate();
-					gameControlGUI.DisplayDim();
+					S.GameControlGUIInst.DisplayDim();
                 }
 			}
 		}
@@ -287,7 +269,7 @@ public class ClickControl : MonoBehaviour {
 
 		if(Input.GetMouseButton(0)){
             
-			gameControlGUI.ShowDeck(false);
+			S.GameControlGUIInst.ShowDeck(false);
 
 			float dist = transform.position.z - Camera.main.transform.position.z;
 			var pos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, dist);
@@ -303,7 +285,7 @@ public class ClickControl : MonoBehaviour {
 							turnEndedAlready = true;
 							S.GameControlInst.ButtonSpritesLookClicked();
 							S.GameControlInst.DeselectCards();
-							gridBoss.DestroyAllTargetSquares();
+							S.GridControlInst.DestroyAllTargetSquares();
 	                        if (Tutorial.TutorialLevel != 0)
 	                        {
 								S.GameControlInst.StartNewTurn(false);
@@ -318,9 +300,9 @@ public class ClickControl : MonoBehaviour {
 					foreach(RaycastHit2D hit in hits) {
 						if(hit.collider.gameObject.name == "play end button" && AllowForfeitButtonInput) { 
 							if(S.GameControlInst.PlaysLeft == 1) {
-								gameControlGUI.SetTooltip("You can punch or play a card one more time this turn.");
+								S.GameControlGUIInst.SetTooltip("You can punch or play a card one more time this turn.");
 							} else {
-								gameControlGUI.SetTooltip("You can punch or play a card " + 
+								S.GameControlGUIInst.SetTooltip("You can punch or play a card " + 
 								                          S.GameControlInst.PlaysLeft.ToString() + 
 								                          " more times this turn.");
 							}
@@ -333,9 +315,9 @@ public class ClickControl : MonoBehaviour {
 					foreach(RaycastHit2D hit in hits) {
 						if(hit.collider.gameObject.name == "move end button" && AllowForfeitButtonInput) { 
 							if(S.GameControlInst.MovesLeft == 1) {
-								gameControlGUI.SetTooltip("You can move one more time this turn.");
+								S.GameControlGUIInst.SetTooltip("You can move one more time this turn.");
 							} else {
-								gameControlGUI.SetTooltip("You can move " + 
+								S.GameControlGUIInst.SetTooltip("You can move " + 
 								                          S.GameControlInst.MovesLeft.ToString() + 
 								                          " more times this turn.");
 							}
@@ -349,7 +331,7 @@ public class ClickControl : MonoBehaviour {
 					}
 					foreach(RaycastHit2D hit in hits) {
 						if(hit.collider.gameObject.name == "Deck" && AllowInfoInput) { 
-							gameControlGUI.ShowDeck(true);
+							S.GameControlGUIInst.ShowDeck(true);
 							return;
 						}
 					}
@@ -367,7 +349,7 @@ public class ClickControl : MonoBehaviour {
 					foreach(RaycastHit2D hit in hits) {
 						//AllowInfoInput
 						if(hit.collider.gameObject.name == "Discard pile marker" && AllowInfoInput) {
-							gameControlGUI.FlipDiscard();
+							S.GameControlGUIInst.FlipDiscard();
 							return;
 						}
 					}
@@ -384,22 +366,22 @@ public class ClickControl : MonoBehaviour {
 			    clickPosition.y < -GridControl.GridSize - .5f)) {
 				if(GridCursorControl.GridCursorIsActive) {
 					GridCursorControl.ClickedOffScreen = true;
-					gridCursorControl.UnpresentCursor();
+					S.GridCursorControlInst.UnpresentCursor();
 				}
 				return;
 			}
 
 			foreach(RaycastHit2D hit in hits){
 				if(hit.collider.gameObject.tag == "Target square" && AllowSquareTargetInput){
-					gridCursorControl.PresentCursor(GridCursorControl.CursorActions.TargetSquare);
-					gridCursorControl.SetCurrentCursorTarget(hit.collider.gameObject);
+					S.GridCursorControlInst.PresentCursor(GridCursorControl.CursorActions.TargetSquare);
+					S.GridCursorControlInst.SetCurrentCursorTarget(hit.collider.gameObject);
 					return;
 				}
 			}
 
 			S.GameControlInst.DeselectCards();
 
-			gridBoss.DestroyAllTargetSquares();
+			S.GridControlInst.DestroyAllTargetSquares();
 			
 			foreach(RaycastHit2D hit in hits){
 				if(hit.collider.gameObject.tag == "Enemy"){
@@ -411,8 +393,8 @@ public class ClickControl : MonoBehaviour {
 					}
 					if(adjCheck(hit.collider.gameObject.transform.position) != "none" 
 					   && S.GameControlInst.PlaysLeft > 0 && AllowNewPlayInput){
-						gridCursorControl.PresentCursor(GridCursorControl.CursorActions.Punch);
-						gridCursorControl.SetCurrentCursorTarget(hit.collider.gameObject);
+						S.GridCursorControlInst.PresentCursor(GridCursorControl.CursorActions.Punch);
+						S.GridCursorControlInst.SetCurrentCursorTarget(hit.collider.gameObject);
 						// Even though this should return and end the Update method, it still needs to
 							// try to show a tooltip
 						tryToShowInfo();
@@ -443,12 +425,12 @@ public class ClickControl : MonoBehaviour {
                         Obstacle hitObstacle = hit.collider.gameObject.GetComponent<Obstacle>();
                         if (hitObstacle.Walkable)
                         {
-							gridCursorControl.PresentCursor(GridCursorControl.CursorActions.Move);
-							gridCursorControl.SetCurrentCursorTarget(hit.collider.gameObject);
+							S.GridCursorControlInst.PresentCursor(GridCursorControl.CursorActions.Move);
+							S.GridCursorControlInst.SetCurrentCursorTarget(hit.collider.gameObject);
 						}
                         else {
-							gridCursorControl.PresentCursor(GridCursorControl.CursorActions.Poke);
-							gridCursorControl.SetCurrentCursorTarget(hit.collider.gameObject);
+							S.GridCursorControlInst.PresentCursor(GridCursorControl.CursorActions.Poke);
+							S.GridCursorControlInst.SetCurrentCursorTarget(hit.collider.gameObject);
 						}
                     	return;
 					}
@@ -463,7 +445,7 @@ public class ClickControl : MonoBehaviour {
             {
 				if(hit.collider.gameObject.name == "stairs" && AllowMoveInput) {
 					if(adjCheck(hit.collider.gameObject.transform.position) != "none") {
-						gridCursorControl.PresentCursor(GridCursorControl.CursorActions.StairMove);
+						S.GridCursorControlInst.PresentCursor(GridCursorControl.CursorActions.StairMove);
 					}
 					return;
 				}
@@ -471,11 +453,11 @@ public class ClickControl : MonoBehaviour {
 			foreach(RaycastHit2D hit in hits) {
 				if(hit.collider.gameObject.tag == "Gameboard") {
 					if(adjCheck(clickPosition) != "none" && AllowMoveInput) {
-						gridCursorControl.PresentCursor(GridCursorControl.CursorActions.Move);
-						gridCursorControl.SetMoveDirection(adjCheck(clickPosition));
+						S.GridCursorControlInst.PresentCursor(GridCursorControl.CursorActions.Move);
+						S.GridCursorControlInst.SetMoveDirection(adjCheck(clickPosition));
 					}
 					else if (AllowInfoInput) {
-						gridCursorControl.PresentCursor(GridCursorControl.CursorActions.None);
+						S.GridCursorControlInst.PresentCursor(GridCursorControl.CursorActions.None);
 					}
 				}
 			}
@@ -487,17 +469,17 @@ public class ClickControl : MonoBehaviour {
 	void tryToShowInfo() {
 		if((Time.time - .15f) > lastCursorSetTime) {
 			if(willShowEnemyInfo) {
-				gridCursorControl.ShowInfo(GridCursorControl.CursorInfoTypes.EnemyInfo, infoTarget);
+				S.GridCursorControlInst.ShowInfo(GridCursorControl.CursorInfoTypes.EnemyInfo, infoTarget);
 				willShowEnemyInfo = false;
 				willShowPlayerInfo = false;
 				willShowObstacleInfo = false;
 			} else if (willShowPlayerInfo) {
-				gridCursorControl.ShowInfo(GridCursorControl.CursorInfoTypes.PlayerInfo, infoTarget);
+				S.GridCursorControlInst.ShowInfo(GridCursorControl.CursorInfoTypes.PlayerInfo, infoTarget);
 				willShowEnemyInfo = false;
 				willShowPlayerInfo = false;
 				willShowObstacleInfo = false;
 			} else if (willShowObstacleInfo) {
-				gridCursorControl.ShowInfo(GridCursorControl.CursorInfoTypes.ObstacleInfo, infoTarget);
+				S.GridCursorControlInst.ShowInfo(GridCursorControl.CursorInfoTypes.ObstacleInfo, infoTarget);
 				willShowEnemyInfo = false;
 				willShowPlayerInfo = false;
 				willShowObstacleInfo = false;
@@ -509,7 +491,7 @@ public class ClickControl : MonoBehaviour {
     {
 		if( draggingGameboard | GridCursorControl.ClickedOffScreen ) return;
         dragOrigin = Input.mousePosition;
-		gameControlGUI.Dim (false);
+		S.GameControlGUIInst.Dim (false);
         draggingGameboard = true;
         Vector3 worldPointVector = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         arrows.transform.position = new Vector3(worldPointVector.x, worldPointVector.y, 0);
@@ -518,7 +500,7 @@ public class ClickControl : MonoBehaviour {
 
 	void handDrag() {
 		draggingHand = true;
-		gameControlGUI.Dim(false);
+		S.GameControlGUIInst.Dim(false);
 		Cursor.SetCursor(SideArrows, Vector2.zero, CursorMode.Auto);
 		cardHasBeenClickedOn = false;
 	}

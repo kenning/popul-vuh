@@ -3,7 +3,7 @@ using System.Collections;
 
 public class DeckAnimate : MonoBehaviour {
 
-	GameControlGUI gameControlGUI;
+	GameControlGUI S.GameControlGUIInst;
 
 	SpriteRenderer sprite;
     public Sprite NORMALSPRITE;
@@ -21,9 +21,6 @@ public class DeckAnimate : MonoBehaviour {
 		cardUnderDeck = GameObject.Find ("Card under deck");
 		originalPosition = transform.localPosition;
 		sprite = gameObject.GetComponent<SpriteRenderer>();
-
-		GameObject tempGO = GameObject.FindGameObjectWithTag ("GameController");
-		gameControlGUI = tempGO.GetComponent<GameControlGUI> ();
 	}
 
 	public void Update() {
@@ -49,7 +46,7 @@ public class DeckAnimate : MonoBehaviour {
 				cardUnderDeck.transform.localPosition = Vector3.zero;
 
                 S.GameControlInst.gameObject.GetComponent<ShopControlGUI>().TurnOnNormalGUI();
-				gameControlGUI.SetTooltip("");
+				S.GameControlGUIInst.SetTooltip("");
 
 				//VVV actually really important part. this is where the new level starts!
 				if(SaveDataControl.UnlockedGods.Count == 7) S.GameControlInst.ReturnToGodChoiceMenu ();

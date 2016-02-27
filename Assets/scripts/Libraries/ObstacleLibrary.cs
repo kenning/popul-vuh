@@ -21,7 +21,6 @@ public class ObstacleLibrary : MonoBehaviour {
 
         string tooltip;
 
-        GridControl gridControl = gameObject.GetComponent<GridControl>();
         if (levelType == LevelTypes.Rocks | levelType == LevelTypes.FewRocks) {
             tooltip = "A sturdy rock. Won't break, even if you punch it.";
 
@@ -34,7 +33,7 @@ public class ObstacleLibrary : MonoBehaviour {
 			{
 				numberOfRocks = 20;
 			}
-            GridControl.PossibleSpawnPoints = gridControl.EmptyPathSpots();
+            GridControl.PossibleSpawnPoints = S.GridControlInst.EmptyPathSpots();
             for (int i = 0; i < numberOfRocks; i++)
             {
                 LoadObstacle("Rock", tooltip);

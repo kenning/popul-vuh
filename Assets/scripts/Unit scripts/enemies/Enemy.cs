@@ -14,10 +14,10 @@ public class Enemy : MonoBehaviour {
 	public string Name = "";
 	public string SpritePath;
 	
-	public ShopControl shopControl;
-	public GridControl gridControl;
-	public GameControlGUI gameControlGUI;
-//	public EnemyLibrary enemyLibrary;
+	public ShopControl S.ShopControlInst;
+	public GridControl S.GridControlInst;
+	public GameControlGUI S.GameControlGUIInst;
+//	public EnemyLibrary S.EnemyLibraryInst;
 	
 	public List<GridUnit> EnemyUnits;
 	
@@ -59,9 +59,6 @@ public class Enemy : MonoBehaviour {
 		thisGU = gameObject.GetComponent<GridUnit> ();
 		playerGU = GameObject.FindGameObjectWithTag ("Player").GetComponent<GridUnit> ();
 		playerScript = GameObject.FindGameObjectWithTag ("Player").GetComponent<Player> ();
-		shopControl = S.GameControlInst.gameObject.GetComponent<ShopControl>();
-		gridControl = S.GameControlInst.gameObject.GetComponent<GridControl>();
-		gameControlGUI = S.GameControlInst.gameObject.GetComponent<GameControlGUI>();
 		unitSFX = gameObject.GetComponent<UnitSFX>();
 
 		Name = enemyLC.Name;
@@ -167,7 +164,7 @@ public class Enemy : MonoBehaviour {
 		else if (CurrentPlays > 0) 
 		{
 			//this method has MakeMove() in it already, so it doesn't need to have it in here like the attack if statement above.
-			string directionAttempt = gridControl.ReturnNextMove(this, true);
+			string directionAttempt = S.GridControlInst.ReturnNextMove(this, true);
 			if(IsOpenToMove(directionAttempt)) 
 			{
 			    MakeMove();
@@ -175,7 +172,7 @@ public class Enemy : MonoBehaviour {
 			}
 			else 
 			{
-				directionAttempt = gridControl.ReturnNextMove(this, false);
+				directionAttempt = S.GridControlInst.ReturnNextMove(this, false);
                 if (IsOpenToMove(directionAttempt))
                 {
                     thisGU.GridMove(directionAttempt);
@@ -304,7 +301,7 @@ public class Enemy : MonoBehaviour {
 			SelectableCards[randomNumber].Discard();
 		}
 
-		gameControlGUI.AnimateCardsToCorrectPositionInSeconds (.3f);
+		S.GameControlGUIInst.AnimateCardsToCorrectPositionInSeconds (.3f);
 	}
 
 	public virtual void SetSickBleeding () {
@@ -326,10 +323,10 @@ public class Enemy : MonoBehaviour {
 	public void TakeDamage(int damage, bool Override) {
 		
 		for(int i = 0; i < damage; i++) {
-			shopControl.GoalCheck ("Deal X damage in one turn");
+			S.ShopControlInst.GoalCheck ("Deal X damage in one turn");
 		}
-		shopControl.GoalCheck ("Don't deal damage or move X turns in a row");
-		shopControl.GoalCheck ("Don't deal damage X turns in a row");
+		S.ShopControlInst.GoalCheck ("Don't deal damage or move X turns in a row");
+		S.ShopControlInst.GoalCheck ("Don't deal damage X turns in a row");
 		EventControl.EventCheck ("Enemy Damage");
 		
 		CurrentHealth = CurrentHealth - damage;
@@ -348,8 +345,8 @@ public class Enemy : MonoBehaviour {
 	void Die () {
 		unitSFX.PlayDieSFX();
 
-		shopControl.GoalCheck ("Kill X enemies in one turn");
-		shopControl.GoalCheck ("Kill enemies X turns in a row");
+		S.ShopControlInst.GoalCheck ("Kill X enemies in one turn");
+		S.ShopControlInst.GoalCheck ("Kill enemies X turns in a row");
 		EventControl.EventCheck ("Enemy Death");
 
 		GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
@@ -421,19 +418,19 @@ public class Enemy : MonoBehaviour {
 	{
 		switch(DebugChoice) {
 		case DebugType.EmptySquares:
-			List<Point> emptySquares = gridControl.FindEmptySpots (true);
+			List<Point> emptySquares = S.GridControlInst.FindEmptySpots (true);
 			for(int i = 0; i < emptySquares.Count; i++) {
-				gridControl.MoveTheSquareHere(emptySquares[i].x, emptySquares[i].y, false);
+				S.GridControlInst.MoveTheSquareHere(emptySquares[i].x, emptySquares[i].y, false);
 			}
 			break;
 		case DebugType.Path:
-			List<int[]> emptySquareCoordinates = gridControl.FastestPath(this, true);
+			List<int[]> emptySquareCoordinates = S.GridControlInst.FastestPath(this, true);
 
             try
             {
                 for (int i = 0; i < emptySquareCoordinates.Count; i++)
                 {
-                    gridControl.MoveTheSquareHere(emptySquareCoordinates[i][0], emptySquareCoordinates[i][1], false);
+                    S.GridControlInst.MoveTheSquareHere(emptySquareCoordinates[i][0], emptySquareCoordinates[i][1], false);
                 }
             }
             catch (System.NullReferenceException)
@@ -450,7 +447,7 @@ public class Enemy : MonoBehaviour {
 		case DebugType.AttackSquares:
 			List<int[]> attackSquares = PossibleAttackSquares ();
 			for(int i = 0; i < attackSquares.Count; i++) {
-				gridControl.MoveTheSquareHere(attackSquares[i][0], attackSquares[i][1], false);
+				S.GridControlInst.MoveTheSquareHere(attackSquares[i][0], attackSquares[i][1], false);
 			}
 			break;
 		}

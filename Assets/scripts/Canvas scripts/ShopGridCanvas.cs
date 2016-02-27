@@ -7,8 +7,6 @@ public class ShopGridCanvas : MonoBehaviour {
 
 	bool initialized = false;
 
-	ShopAndGoalParentCanvas shopAndGoalParentCanvas;
-	ShopControlGUI shopControlGUI;
 	List<LibraryCard> libraryCards;
 	
 	//This is a list of the card scripts in the grid

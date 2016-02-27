@@ -18,3 +18,5 @@ click on the player: info about the player
 click on an enemy: info about the enemy
 
 click on a card with targetsquares: unselect it
+
+set useGUILayout = false; on almost everything

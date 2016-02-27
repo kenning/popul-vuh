@@ -14,8 +14,8 @@ public class Goulash : Card {
 	public override void Play () {
 		S.GameControlInst.CardsToTarget = 1;
 
-		gameControlGUI.ForceDim();
-		gameControlGUI.SetTooltip("Pick a card to discard.");
+		S.GameControlGUIInst.ForceDim();
+		S.GameControlGUIInst.SetTooltip("Pick a card to discard.");
 
 		base.Play ();
 	}

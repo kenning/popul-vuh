@@ -18,8 +18,6 @@ public class CardUI : MonoBehaviour {
     AnimatingType currentAnimatingType;
 
 	Card card;
-	GUIStyleLibrary styleLibrary;
-	ShopControlGUI shopControlGUI;
 
 	//Animation variables
 	GameObject discardPileObj;
@@ -323,12 +321,9 @@ public class CardUI : MonoBehaviour {
 	}
 
     /// A very long and boring initialize method
-	public void Initialize (GameObject gameController, bool alreadyDiscarded) {
+	public void Initialize (bool alreadyDiscarded) {
         //TODO do i need alreadyDiscarded here?
 		card = gameObject.GetComponent<Card> ();
-		
-		shopControlGUI = gameController.GetComponent<ShopControlGUI> ();
-		styleLibrary = gameController.GetComponent<GUIStyleLibrary> ();
 		
 		PlayButton = GameObject.Find("play end button").GetComponent<ButtonAnimate>();
 		meshrenderers = GetComponentsInChildren<MeshRenderer>();
@@ -368,16 +363,16 @@ public class CardUI : MonoBehaviour {
 				switch (card.ThisRarity)
 				{
 				case Card.Rarity.Gold:
-					render.sprite = shopControlGUI.Gold;
+					render.sprite = S.ShopControlGUIInst.Gold;
 					break;
 				case Card.Rarity.Silver:
-					render.sprite = shopControlGUI.Silver;
+					render.sprite = S.ShopControlGUIInst.Silver;
 					break;
 				case Card.Rarity.Bronze:
-					render.sprite = shopControlGUI.Bronze;
+					render.sprite = S.ShopControlGUIInst.Bronze;
 					break;
 				case Card.Rarity.Paper:
-					render.sprite = shopControlGUI.Paper;
+					render.sprite = S.ShopControlGUIInst.Paper;
 					break;
 				}
 			}
@@ -385,7 +380,7 @@ public class CardUI : MonoBehaviour {
 			{
 				int godnum = ShopControl.AllGods.IndexOf(card.God);
 				
-				render.sprite = shopControlGUI.SpriteGodIcons[godnum];
+				render.sprite = S.ShopControlGUIInst.SpriteGodIcons[godnum];
 			}
 			else if (render.gameObject.name == "shine animation")
 			{
@@ -425,7 +420,7 @@ public class CardUI : MonoBehaviour {
 				int godnum = 3;
 				godnum = ShopControl.AllGods.IndexOf(card.God);
 				
-				render.sprite = shopControlGUI.GodSmallCards[godnum];
+				render.sprite = S.ShopControlGUIInst.GodSmallCards[godnum];
 			}
 		}
 		foreach (CardText cardText in cardTexts) cardText.Initialize(101 - card.HandIndex() * 2);

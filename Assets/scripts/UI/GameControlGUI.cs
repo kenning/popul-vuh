@@ -3,10 +3,6 @@ using System.Collections;
 
 public class GameControlGUI : MonoBehaviour {
     
-	ShopControlGUI shopControlGUI;
-
-	DisplayCardCanvas displayCardCanvas;
-
 	bool showingDeck;
 	
 	bool displayDim = false;
@@ -21,12 +17,10 @@ public class GameControlGUI : MonoBehaviour {
 	Vector3 originalDiscardPlacement = new Vector3(3f, 2f, 0);
 	Vector3 displayDiscardPlacement = new Vector3(3f, 6.5f, 0);
 
-	GUIStyleLibrary styleLibrary;
+	DisplayCardCanvas displayCardCanvas;
 
 	void Start() {
 		useGUILayout = false;
-		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
-		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
 		dimmer = GameObject.Find ("Dimmer").GetComponent<DimAnimate>();
 		displayCardCanvas = GameObject.FindGameObjectWithTag("displaycard").GetComponent<DisplayCardCanvas>();
 		MeshRenderer deckText = GameObject.Find("Deck count").GetComponent<MeshRenderer>();
@@ -49,7 +43,7 @@ public class GameControlGUI : MonoBehaviour {
 		
 		if (tooltip != "") {
 			GUI.Box(new Rect(Screen.width*.02f, Screen.height*.68f, Screen.width*.8f, Screen.height*.08f), 
-			        tooltip, styleLibrary.GameControlGUIStyles.TooltipBox);
+			        tooltip, S.GUIStyleLibraryInst.GameControlGUIStyles.TooltipBox);
 		}
 	}
 

@@ -13,9 +13,9 @@ public class BurntCoffee : Card {
 	public override void Play () {
 		S.GameControlInst.CardsToTarget = 1;
 
-		gameControlGUI.SetTooltip("Pick a card to burn.");
+		S.GameControlGUIInst.SetTooltip("Pick a card to burn.");
 		
-		gameControlGUI.ForceDim ();
+		S.GameControlGUIInst.ForceDim ();
 
 		base.Play ();
 	}

@@ -14,10 +14,8 @@ public class MainMenu : MonoBehaviour {
 	static int NextUnlockLevel = 0;
 	static string UnlockedText = "";
 
-	MenuControl menuControl;
-	static ClickControl clickControl;
-	GUIStyleLibrary styleLibrary;
-	static ShopControlGUI shopControlGUI;
+	static ClickControl S.ClickControlInst;
+	static ShopControlGUI S.ShopControlGUIInst;
 
 	public static string errorText = "";
 
@@ -27,21 +25,17 @@ public class MainMenu : MonoBehaviour {
 
 	void Start() {
 		useGUILayout = false;
-		menuControl = gameObject.GetComponent<MenuControl> ();
-		clickControl = gameObject.GetComponent<ClickControl> ();
-		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
-		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
 	}
 
     //Brings up the "you died" menu, which is here in MainMenu.
 	public static void Die() {
-        GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().alive = false;
+    GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().alive = false;
 
 		MainMenuUp = false;
 		DiedMenuUp = true;
-		clickControl.DisallowEveryInput ();
-		clickControl.AllowInfoInput = true;
-		clickControl.AllowInputUmbrella = true;
+		S.ClickControlInst.DisallowEveryInput ();
+		S.ClickControlInst.AllowInfoInput = true;
+		S.ClickControlInst.AllowInputUmbrella = true;
 		MainMenu.InGame = false;
 
 		GameObject.Find ("Dimmer").GetComponent<DimAnimate>().ForceDim();
@@ -75,7 +69,7 @@ public class MainMenu : MonoBehaviour {
         MainMenu.MainMenuUp = true;
         MainMenu.InGame = false;
         DiedMenuUp = false;
-//        shopControlGUI.TurnOffAllShopGUI();
+//        S.ShopControlGUIInst.TurnOffAllShopGUI();
         UnlockedText = "";
         UnlockCheck();
 
@@ -115,20 +109,20 @@ public class MainMenu : MonoBehaviour {
 
         #region Main Menu
         if (MainMenuUp) {
-			GUI.Box(new Rect(0, 0, Screen.width, Screen.height), "", styleLibrary.MainStyles.BlackBackground);
+			GUI.Box(new Rect(0, 0, Screen.width, Screen.height), "", S.GUIStyleLibraryInst.MainStyles.BlackBackground);
 
 			//Title
             GUI.Box(new Rect(Screen.width * .1f, Screen.height * .05f, Screen.width * .8f, Screen.height * .15f), 
-			        "Popul Vuh", styleLibrary.MainStyles.Title);
+			        "Popul Vuh", S.GUIStyleLibraryInst.MainStyles.Title);
 
 			//Button 1: Start new game
             if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .25f, Screen.width * .6f, Screen.height * .1f), 
-			               "Start new game", styleLibrary.MainStyles.Button)) {
+			               "Start new game", S.GUIStyleLibraryInst.MainStyles.Button)) {
                 
-				menuControl.TurnOffMenus();
+				S.MenuControlInst.TurnOffMenus();
 
                 if (SaveDataControl.UnlockedGods.Count == 7) {
-					menuControl.TurnOnMenu(MenuControl.MenuType.GodChoiceMenu);
+					S.MenuControlInst.TurnOnMenu(MenuControl.MenuType.GodChoiceMenu);
 				} else if (StateSavingControl.StateWasSaved()) {
 					StateSavingControl.Load();
 				} else {
@@ -138,40 +132,40 @@ public class MainMenu : MonoBehaviour {
 
 			//Button 2: Tutorial
 			if(GUI.Button(new Rect(Screen.width*.2f, Screen.height*.4f, Screen.width*.6f, Screen.height*.1f), 
-			              "Tutorial", styleLibrary.MainStyles.Button)) {
-				menuControl.TurnOnMenu(MenuControl.MenuType.Tutorial);
+			              "Tutorial", S.GUIStyleLibraryInst.MainStyles.Button)) {
+				S.MenuControlInst.TurnOnMenu(MenuControl.MenuType.Tutorial);
 				S.GameControlInst.BeginGame();
 			}
 			if (!SaveDataControl.FinishedTutorial)
 			{
 				GUI.Box(new Rect(Screen.width * .25f, Screen.height * .475f, Screen.width * .5f, Screen.height * .05f), 
-				        "Learn to play here!", styleLibrary.MainStyles.NewCardsAvailablePopup);
+				        "Learn to play here!", S.GUIStyleLibraryInst.MainStyles.NewCardsAvailablePopup);
 			}
 
 			//Button 3: Customize Deck
 			if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .55f, Screen.width * .6f, Screen.height * .1f), 
-			               "Customize Deck", styleLibrary.MainStyles.Button))
+			               "Customize Deck", S.GUIStyleLibraryInst.MainStyles.Button))
             {
                 SaveDataControl.NewCardsAvailable = false;
-				menuControl.TurnOnMenu(MenuControl.MenuType.CustomizeMenu);
+				S.MenuControlInst.TurnOnMenu(MenuControl.MenuType.CustomizeMenu);
             }
 				//Subheading for Customize Deck
 			if (SaveDataControl.NewCardsAvailable)
 			{
 				GUI.Box(new Rect(Screen.width * .25f, Screen.height * .625f, Screen.width * .5f, Screen.height * .05f), 
-				        "New cards available!", styleLibrary.MainStyles.NewCardsAvailablePopup);
+				        "New cards available!", S.GUIStyleLibraryInst.MainStyles.NewCardsAvailablePopup);
 			}
 
 			//Button 4: Encyclopedia
 			if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .7f, Screen.width * .6f, Screen.height * .1f),
-			               "Encyclopedia", styleLibrary.MainStyles.Button))
+			               "Encyclopedia", S.GUIStyleLibraryInst.MainStyles.Button))
 			{
-				menuControl.TurnOnMenu(MenuControl.MenuType.EncyclopediaMenu);
+				S.MenuControlInst.TurnOnMenu(MenuControl.MenuType.EncyclopediaMenu);
 			}
 
 			//Button 5: Reset data
 			if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .85f, Screen.width * .6f, Screen.height * .1f), 
-			               "Reset unlocked data", styleLibrary.MainStyles.Button))
+			               "Reset unlocked data", S.GUIStyleLibraryInst.MainStyles.Button))
 			{
 				DeleteDataMenuUp = true;
 				MainMenuUp = false;
@@ -180,15 +174,15 @@ public class MainMenu : MonoBehaviour {
 			//Left Sidebar
 			GUIContent CardsUnlocked = new GUIContent("You have unlocked \n" + SaveDataControl.UnlockedCards.Count + "/" + CardLibrary.Lib.Count + "\ncards");
             GUI.Box(new Rect(Screen.width * .025f, Screen.height * .3f, Screen.width * .15f, Screen.height * .6f), 
-			        CardsUnlocked, styleLibrary.MainStyles.Sidebar);
+			        CardsUnlocked, S.GUIStyleLibraryInst.MainStyles.Sidebar);
 
 			//Right Sidebar
             GUI.BeginGroup(new Rect(Screen.width * .825f, Screen.height * .3f, Screen.width * .15f, Screen.height * .6f));
-			GUI.Box(new Rect(0, Screen.height * .0f, Screen.width * .15f, Screen.height * .2f), "Next God to unlock:", styleLibrary.MainStyles.Sidebar);
+			GUI.Box(new Rect(0, Screen.height * .0f, Screen.width * .15f, Screen.height * .2f), "Next God to unlock:", S.GUIStyleLibraryInst.MainStyles.Sidebar);
             GUI.Box(new Rect(0, Screen.height * .2f, Screen.width * .15f, Screen.height * .2f), new GUIContent("\n" + NextGodToUnlock.ToString(),
-			        shopControlGUI.GodFullTextures[ShopControl.AllGods.IndexOf(NextGodToUnlock)]), styleLibrary.MainStyles.Sidebar);
+			        S.ShopControlGUIInst.GodFullTextures[ShopControl.AllGods.IndexOf(NextGodToUnlock)]), S.GUIStyleLibraryInst.MainStyles.Sidebar);
             GUI.Box(new Rect(0, Screen.height * .4f, Screen.width * .15f, Screen.height * .2f),
-			        NextGodToUnlock.ToString() + " will be unlocked when you reach level " + NextUnlockLevel.ToString(), styleLibrary.MainStyles.Sidebar);
+			        NextGodToUnlock.ToString() + " will be unlocked when you reach level " + NextUnlockLevel.ToString(), S.GUIStyleLibraryInst.MainStyles.Sidebar);
             GUI.EndGroup();
 
         }
@@ -197,12 +191,12 @@ public class MainMenu : MonoBehaviour {
         #region Delete Data Menu
         if (DeleteDataMenuUp)
         {
-			GUI.Box(new Rect(0, 0, Screen.width, Screen.height), "", styleLibrary.MainStyles.BlackBackground);
+			GUI.Box(new Rect(0, 0, Screen.width, Screen.height), "", S.GUIStyleLibraryInst.MainStyles.BlackBackground);
 			
 			GUI.Box(new Rect(Screen.width * .2f, Screen.height * .1f, Screen.width * .6f, Screen.height * .4f), 
-			        "Are you sure?", styleLibrary.MainStyles.NeutralButton);
+			        "Are you sure?", S.GUIStyleLibraryInst.MainStyles.NeutralButton);
             if (GUI.Button(new Rect(Screen.width * .6f, Screen.height * .8f, Screen.width * .3f, Screen.height * .15f), 
-			               "Yes!", styleLibrary.MainStyles.Button))
+			               "Yes!", S.GUIStyleLibraryInst.MainStyles.Button))
             {
                 MainMenuUp = true;
                 DeleteDataMenuUp = false;
@@ -211,7 +205,7 @@ public class MainMenu : MonoBehaviour {
 				StateSavingControl.DeleteState();
             }
             if (GUI.Button(new Rect(Screen.width * .1f, Screen.height * .8f, Screen.width * .3f, Screen.height * .15f), 
-			               "Back", styleLibrary.MainStyles.Button))
+			               "Back", S.GUIStyleLibraryInst.MainStyles.Button))
             {
                 DeleteDataMenuUp = false;
                 SaveDataControl.Save();
@@ -224,7 +218,7 @@ public class MainMenu : MonoBehaviour {
         #region Died Menu
         if (DiedMenuUp)
         {
-			GUIStyle YouDiedStyle = new GUIStyle(styleLibrary.MainStyles.NeutralButton);
+			GUIStyle YouDiedStyle = new GUIStyle(S.GUIStyleLibraryInst.MainStyles.NeutralButton);
 			YouDiedStyle.fontSize = 40;
             GUI.Box(new Rect(Screen.width * .1f, Screen.height * .2f, Screen.width * .8f, Screen.height * .3f), 
 			        "You died!", YouDiedStyle);
@@ -232,10 +226,10 @@ public class MainMenu : MonoBehaviour {
             {
                 GUI.Box(new Rect(Screen.width * .1f, Screen.height * .55f, Screen.width * .8f, Screen.height * .15f), 
 				        "Got to level " + GameControl.Level.ToString() + "\n" + UnlockedText, 
-				        styleLibrary.MainStyles.NeutralButton);
+				        S.GUIStyleLibraryInst.MainStyles.NeutralButton);
             }
             if (GUI.Button(new Rect(Screen.width * .1f, Screen.height * .75f, Screen.width * .8f, Screen.height * .15f), 
-			               "Return to main menu!", styleLibrary.MainStyles.Button))
+			               "Return to main menu!", S.GUIStyleLibraryInst.MainStyles.Button))
             {
                 CleanUpGameboard();
             }

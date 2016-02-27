@@ -8,8 +8,6 @@ public class Player : MonoBehaviour {
 	public int currentHealth = 3;
 	int punchDamage = 1;
 	public int StunnedForXTurns = 0;
-	ShopControl shopControl;
-	GridControl gridControl;
 	public Sprite[] HPBars;
 	public SpriteRenderer HPBARRENDERER;
 	UnitSFX unitSFX;
@@ -17,14 +15,8 @@ public class Player : MonoBehaviour {
 	public bool alive = true;
 	public GridUnit playerGU;
 
-	MenuControl menuControl;
-	
 	void Start () {
 		useGUILayout = false;
-		GameObject gameController = GameObject.FindGameObjectWithTag ("GameController");
-		shopControl = gameController.GetComponent<ShopControl>();
-		gridControl = gameController.GetComponent<GridControl>();
-		menuControl = gameController.GetComponent<MenuControl> ();
 		playerGU = gameObject.GetComponent<GridUnit>();
 		unitSFX = gameObject.GetComponent<UnitSFX>();
 		ResetLife ();
@@ -33,7 +25,7 @@ public class Player : MonoBehaviour {
 	public void Punch(GameObject enemy) {
     //animation aspect. must happen first
         GridUnit enemyGU = enemy.GetComponent<GridUnit>();
-        gridControl.MakeSquares(GridControl.TargetTypes.diamond, 0, 0, enemyGU.xPosition, enemyGU.yPosition, false);
+        S.GridControlInst.MakeSquares(GridControl.TargetTypes.diamond, 0, 0, enemyGU.xPosition, enemyGU.yPosition, false);
         playerGU.PokeTowards(playerGU.AdjacentPosition(enemyGU));
 
         enemy.GetComponent<Enemy> ().GetPunched (punchDamage);
@@ -41,7 +33,7 @@ public class Player : MonoBehaviour {
 
     //triggers
 		EventControl.EventCheck ("Punch");
-		shopControl.GoalCheck ("Punch X times");
+		S.ShopControlInst.GoalCheck ("Punch X times");
 		if (Tutorial.TutorialLevel != 0)
 			S.GameControlInst.gameObject.GetComponent<Tutorial>().TutorialTrigger(3);
 
@@ -71,7 +63,7 @@ public class Player : MonoBehaviour {
 			SuccessfulArmors[randomNumber].ArmorPlay
 				();
 			SuccessfulArmors[randomNumber].ArmorHasBeenUsed = true;
-			shopControl.GoalCheck ("Protect against X attacks");
+			S.ShopControlInst.GoalCheck ("Protect against X attacks");
 			return;
 		}
 
@@ -81,7 +73,7 @@ public class Player : MonoBehaviour {
 
 		if (currentHealth <1) {
 			unitSFX.PlayDieSFX();
-			menuControl.Die();
+			S.MenuControlInst.Die();
 		}
 	}
 
@@ -112,11 +104,11 @@ public class Player : MonoBehaviour {
 
 			thisGU.GridMove(direction);
 			S.GameControlInst.AddMoves(-1);
-			shopControl.GoalCheck("Move X times in one turn");
-			shopControl.GoalCheck("Don't move X turns in a row");
-			shopControl.GoalCheck("Don't deal damage or move X turns in a row");
-			shopControl.GoalCheck("Don't move X turns in a row");
-			gridControl.DestroyAllTargetSquares();
+			S.ShopControlInst.GoalCheck("Move X times in one turn");
+			S.ShopControlInst.GoalCheck("Don't move X turns in a row");
+			S.ShopControlInst.GoalCheck("Don't deal damage or move X turns in a row");
+			S.ShopControlInst.GoalCheck("Don't move X turns in a row");
+			S.GridControlInst.DestroyAllTargetSquares();
 
 			if (Tutorial.TutorialLevel != 0)
 			{

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class UnlockMenu : MonoBehaviour {
 
 	public static bool UnlockMenuUp = false;
-	ShopControl shopControl;
 
 	int selectedGodTab;
 
@@ -14,7 +13,7 @@ public class UnlockMenu : MonoBehaviour {
 	void Awake() {
 		useGUILayout = false;
 //		GameObject S.GameControlInst.er = GameObject.FindGameObjectWithTag ("GameController");
-//		shopControl = S.GameControlInst.er.GetComponent<ShopControl>();
+//		S.ShopControlInst = S.GameControlInst.er.GetComponent<ShopControl>();
 	}
 
 	public void ShowMenu() {
@@ -29,7 +28,7 @@ public class UnlockMenu : MonoBehaviour {
 //
 //		GUI.depth = 1;
 //	
-//		GUI.Box(new Rect(0, 0, Screen.width, Screen.height), "", styleLibrary.MainStyles.BlackBackground);
+//		GUI.Box(new Rect(0, 0, Screen.width, Screen.height), "", S.GUIStyleLibraryInst.MainStyles.BlackBackground);
 //	
 //		GUI.depth = 0;
 //
@@ -71,7 +70,7 @@ public class UnlockMenu : MonoBehaviour {
 //					}
 //				}
 //				GUI.Box(new Rect(0, Screen.height*.1f*i, Screen.width*.7f, Screen.height*.025f), ShopControl.GodDescriptions[i]);
-//				GUI.Box(new Rect(Screen.width*.7f, Screen.height*.1f*(i), Screen.width*.1f, Screen.height*.1f), shopControl.GodIcons[i], GUIStyle.none);
+//				GUI.Box(new Rect(Screen.width*.7f, Screen.height*.1f*(i), Screen.width*.1f, Screen.height*.1f), S.ShopControlInst.GodIcons[i], GUIStyle.none);
 //			}
 //			GUI.EndGroup();
 //

@@ -14,8 +14,8 @@ public class BookOfMatches : Card {
 
 		S.GameControlInst.CardsToTarget = 1;
 
-		gameControlGUI.ForceDim ();
-		gameControlGUI.SetTooltip("Pick a card to burn.");
+		S.GameControlGUIInst.ForceDim ();
+		S.GameControlGUIInst.SetTooltip("Pick a card to burn.");
 		
 		base.Play ();
 	}

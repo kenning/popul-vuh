@@ -17,8 +17,8 @@ public class Shuriken : Card {
 	public override void Play () {
 		S.GameControlInst.CardsToTarget = 1;
 
-		gameControlGUI.ForceDim();
-		gameControlGUI.SetTooltip("Pick a card to discard.");
+		S.GameControlGUIInst.ForceDim();
+		S.GameControlGUIInst.SetTooltip("Pick a card to discard.");
 	}
 	
 	public override void AfterCardTargetingCallback() {
@@ -42,12 +42,12 @@ public class Shuriken : Card {
 		if (discardRarity == Rarity.Platinum)
 			x = 5;
 
-		gridControl.EnterTargetingMode(GridControl.TargetTypes.diamond, 1, x);
+		S.GridControlInst.EnterTargetingMode(GridControl.TargetTypes.diamond, 1, x);
 
 		//these must be done manually because after targeting a card, you must finish the card action by attacking.
-		clickControl.DisallowEveryInput ();
-		clickControl.AllowInfoInput = true;
-		clickControl.AllowSquareTargetInput = true;
+		S.ClickControlInst.DisallowEveryInput ();
+		S.ClickControlInst.AllowInfoInput = true;
+		S.ClickControlInst.AllowSquareTargetInput = true;
 		S.GameControlInst.TargetSquareCallback = this;
 
 		QControl.AddToQ (this, QControl.QMethodType.FreeSpecial);

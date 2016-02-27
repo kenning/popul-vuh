@@ -12,20 +12,9 @@ public class Card : MonoBehaviour {
 	public bool Selected;
 	public bool Peeked;
 
-	public GridControl gridControl;
-	public ShopControl shopControl;
-	public ClickControl clickControl;
-	public OptionControl optionControl;
-	public EventGUI eventGUIControl;
-	public GameControlGUI gameControlGUI;
-	public ShopControlGUI shopControlGUI;
-	public GUIStyleLibrary styleLibrary;
-
 	public CardUI cardUI;
 	public CardSFX cardSFX;
 
-	public CardLibrary library;
-	public GameObject hand;
 	public GameObject playerObj;
 
 	public int CardsToTarget = 0;
@@ -76,19 +65,8 @@ public class Card : MonoBehaviour {
 	public virtual void Initialize(bool alreadyDiscarded) {
         useGUILayout = false;
 
-		GameObject gameController = GameObject.FindGameObjectWithTag("GameController");
-		gridControl = gameController.GetComponent<GridControl>();
-		shopControl = gameController.GetComponent<ShopControl>();
-		clickControl = gameController.GetComponent<ClickControl>();
-		optionControl = gameController.GetComponent<OptionControl>();
-		library =  gameController.GetComponent<CardLibrary>();
-		gameControlGUI = gameController.GetComponent<GameControlGUI> ();
-		shopControlGUI = gameController.GetComponent<ShopControlGUI> ();
-		eventGUIControl = gameController.GetComponent<EventGUI> ();
-		styleLibrary = gameController.GetComponent<GUIStyleLibrary> ();
 		cardUI = gameObject.GetComponent<CardUI> ();
 		cardSFX = gameObject.GetComponent<CardSFX> ();
-		hand = GameObject.Find("Hand");
 		playerObj = GameObject.FindGameObjectWithTag("Player");
 
 		// Initialize card variables
@@ -131,8 +109,6 @@ public class Card : MonoBehaviour {
 			break;
 		}
 
-		cardUI.Initialize (gameController, alreadyDiscarded);
-
 		cardSFX.PlayDrawCardSFX();
     }
 
@@ -142,8 +118,8 @@ public class Card : MonoBehaviour {
 
 	public void Select() {
 		S.GameControlInst.DeselectCards();
-		gridControl.DestroyAllTargetSquares();
-		gameControlGUI.Dim(false);
+		S.GridControlInst.DestroyAllTargetSquares();
+		S.GameControlGUIInst.Dim(false);
 
 		if(S.GameControlInst.PlaysLeft > 0) { 
 			if(gameObject != null) {
@@ -199,8 +175,8 @@ public class Card : MonoBehaviour {
 		Deselect();
 		ForcingDiscardOfThis = false;
 
-		shopControl.GoalCheck("Discard pile has X cards in it");
-		shopControl.GoalCheck("Discard pile has X cards in a row with the same God");
+		S.ShopControlInst.GoalCheck("Discard pile has X cards in it");
+		S.ShopControlInst.GoalCheck("Discard pile has X cards in a row with the same God");
 	}
 
 	public virtual void Tuck() {
@@ -213,7 +189,7 @@ public class Card : MonoBehaviour {
 		
 		cardUI.TuckAnimate ();
 
-		clickControl.DisallowEveryInput();
+		S.ClickControlInst.DisallowEveryInput();
 		Invoke("FinishTuck", .25f);
 	}
 
@@ -223,11 +199,11 @@ public class Card : MonoBehaviour {
 		S.GameControlInst.Deck.Add(tempString);
 		Destroy(gameObject);
 
-		clickControl.AllowEveryInput();
+		S.ClickControlInst.AllowEveryInput();
 	}
 
 	public virtual void Burn() {
-		clickControl.DisallowEveryInput();
+		S.ClickControlInst.DisallowEveryInput();
 		if(Selected) Deselect();
 		S.GameControlInst.Hand.Remove(gameObject);
 
@@ -253,9 +229,9 @@ public class Card : MonoBehaviour {
 	
 	public virtual void Click() {
 
-		gameControlGUI.Dim(false);
+		S.GameControlGUIInst.Dim(false);
 
-		gameControlGUI.SetTooltip("");
+		S.GameControlGUIInst.SetTooltip("");
 
 		if(Discarded) {
 			return;
@@ -273,7 +249,7 @@ public class Card : MonoBehaviour {
 			//Extreme corner case, this prevents Target Card cards from being played without valid targets
 			if(CardAction == CardActionTypes.TargetCard && ((CardsToTargetWillBeDiscarded && S.GameControlInst.Discard.Count < 1) | 
 															(!CardsToTargetWillBeDiscarded && S.GameControlInst.Hand.Count < 2)    ) ) {
-				gameControlGUI.SetTooltip("You can't play this card right now, because it can't target a card.");
+				S.GameControlGUIInst.SetTooltip("You can't play this card right now, because it can't target a card.");
 				return;
 			}
 
@@ -291,7 +267,7 @@ public class Card : MonoBehaviour {
 			S.GameControlInst.AddPlays(-1);
 		}
 
-		clickControl.DisallowEveryInput();
+		S.ClickControlInst.DisallowEveryInput();
 
 		switch(CardAction) {
 		case CardActionTypes.Armor:
@@ -300,7 +276,7 @@ public class Card : MonoBehaviour {
 		case CardActionTypes.NoTarget:
 			Play();
 			DiscardOrBurnIfNotInQ();
-			clickControl.AllowInputUmbrella = false;
+			S.ClickControlInst.AllowInputUmbrella = false;
 			CheckQ();
 			break;
 		case CardActionTypes.NoTargetNoInput:
@@ -310,31 +286,31 @@ public class Card : MonoBehaviour {
 		case CardActionTypes.NoTargetGridSquare:
 			Play();
 			DiscardOrBurnIfNotInQ();
-			clickControl.AllowInputUmbrella = false;
-			gridControl.MakeSquares(aoeTargetType, aoeMinRange, aoeMaxRange, false);
+			S.ClickControlInst.AllowInputUmbrella = false;
+			S.GridControlInst.MakeSquares(aoeTargetType, aoeMinRange, aoeMaxRange, false);
 			CheckQ();
 			break;
 		case CardActionTypes.TargetGridSquare:
 			EnterTargetingMode();
-			clickControl.AllowEveryInput();
+			S.ClickControlInst.AllowEveryInput();
 			break;
 		case CardActionTypes.TargetCard:
 			if((CardsToTargetWillBePeeked && S.GameControlInst.PeekedCards.Count < CardsToTarget) |
 			   (CardsToTargetWillBeDiscarded && S.GameControlInst.Discard.Count < CardsToTarget) |
 			   (!CardsToTargetWillBeDiscarded && S.GameControlInst.Hand.Count < CardsToTarget)) {
-				gameControlGUI.SetTooltip("Not enough cards to target!");
+				S.GameControlGUIInst.SetTooltip("Not enough cards to target!");
 				DiscardOrBurnIfNotInQ();
 				return;
 			}
 
-			clickControl.AllowInputUmbrella = false;
+			S.ClickControlInst.AllowInputUmbrella = false;
 
 			// Reallows input after discard or burn
-			clickControl.Invoke("ChangeUmbrellaInputAllowToTrue", .53f);
+			S.ClickControlInst.Invoke("ChangeUmbrellaInputAllowToTrue", .53f);
 
-			clickControl.DisallowEveryInput();
-			clickControl.AllowCardTargetInput = true;
-			clickControl.AllowInfoInput = true;
+			S.ClickControlInst.DisallowEveryInput();
+			S.ClickControlInst.AllowCardTargetInput = true;
+			S.ClickControlInst.AllowInfoInput = true;
 
 			if(CardsToTargetWillBeDiscarded) 
 				S.GameControlInst.CardsToTargetAreDiscarded = true;
@@ -355,8 +331,8 @@ public class Card : MonoBehaviour {
 		case CardActionTypes.Options:
 			Play();
 			DiscardOrBurnIfNotInQ();
-			clickControl.DisallowEveryInput();
-			gameControlGUI.Dim();
+			S.ClickControlInst.DisallowEveryInput();
+			S.GameControlGUIInst.Dim();
 			break;
 		default:
 			Debug.Log("Bug!");
@@ -366,28 +342,28 @@ public class Card : MonoBehaviour {
 
 	public void EnterTargetingMode() {
 		Select();
-		gridControl.EnterTargetingMode(rangeTargetType, minRange, maxRange);
+		S.GridControlInst.EnterTargetingMode(rangeTargetType, minRange, maxRange);
 		S.GameControlInst.TargetSquareCallback = this;
-		gameControlGUI.SetTooltip("Please select a square.");
+		S.GameControlGUIInst.SetTooltip("Please select a square.");
 		
-		clickControl.AllowInputUmbrella = true;
-		clickControl.AllowSquareTargetInput = true;
-		clickControl.AllowInfoInput = true;
+		S.ClickControlInst.AllowInputUmbrella = true;
+		S.ClickControlInst.AllowSquareTargetInput = true;
+		S.ClickControlInst.AllowInfoInput = true;
 	}
 
 	public virtual void Play() {
 		cardSFX.PlayPlayCardSFX();
 
-		shopControl.GoalCheck("Play X cards in one turn");
+		S.ShopControlInst.GoalCheck("Play X cards in one turn");
 		
 		if(ThisRarity == Rarity.Paper) {
-			shopControl.GoalCheck("Play X paper cards in one turn");
+			S.ShopControlInst.GoalCheck("Play X paper cards in one turn");
 		}
 		
-		shopControl.GoalCheck("Play less than X cards total");
-		shopControl.GoalCheck("Don't play a card X turns in a row");
+		S.ShopControlInst.GoalCheck("Play less than X cards total");
+		S.ShopControlInst.GoalCheck("Don't play a card X turns in a row");
 
-		gameControlGUI.AnimateCardsToCorrectPositionInSeconds (.3f);
+		S.GameControlGUIInst.AnimateCardsToCorrectPositionInSeconds (.3f);
 	}
 
 	public virtual void ArmorPlay() {
@@ -431,23 +407,23 @@ public class Card : MonoBehaviour {
 	public virtual void AfterCardTargetingCallback() {
 		S.GameControlInst.TargetedCards = new List<GameObject>();
 		S.GameControlInst.CardsToTarget = 0;
-		gameControlGUI.UnlockDim ();
-		gameControlGUI.Dim(false);
+		S.GameControlGUIInst.UnlockDim ();
+		S.GameControlGUIInst.Dim(false);
 
-		gameControlGUI.AnimateCardsToCorrectPosition ();
+		S.GameControlGUIInst.AnimateCardsToCorrectPosition ();
 
 		CheckQ();
 	}
 
 	//GiveOptions method. First you Play(), which sends options to OptionControl, then you pick an option, then it calls this method
 	public virtual void OptionsCalledThis(bool ResponseIsYes) {
-		optionControl.TurnOffOptions();
-		clickControl.AllowEveryInput();
+		S.OptionControlInst.TurnOffOptions();
+		S.ClickControlInst.AllowEveryInput();
 		CheckQ();
 	}
 	public virtual void OptionsCalledThis(int Choice) {
-		optionControl.TurnOffOptions();
-		clickControl.AllowEveryInput();
+		S.OptionControlInst.TurnOffOptions();
+		S.ClickControlInst.AllowEveryInput();
 		CheckQ();
 	}
 
@@ -459,13 +435,13 @@ public class Card : MonoBehaviour {
 			
 			S.GameControlInst.AddPlays(-1);
 
-			clickControl.DisallowEveryInput();
+			S.ClickControlInst.DisallowEveryInput();
 		}
 
-		gridControl.DestroyAllTargetSquares();
+		S.GridControlInst.DestroyAllTargetSquares();
 	
 		FindAndAffectUnits(x, y);
-		gridControl.MakeSquares(aoeTargetType, aoeMinRange, aoeMaxRange, x, y, false);
+		S.GridControlInst.MakeSquares(aoeTargetType, aoeMinRange, aoeMaxRange, x, y, false);
 
 		CheckQ();
 	}
@@ -475,26 +451,26 @@ public class Card : MonoBehaviour {
 
 	public void FindAndAffectUnits(int clickedX, int clickedY){
 
-		gridControl.FindAllGridUnits();
+		S.GridControlInst.FindAllGridUnits();
 			
-		for(int i = gridControl.gridUnits.Count-1; i > -1; i--) {
+		for(int i = S.GridControlInst.gridUnits.Count-1; i > -1; i--) {
 			if(aoeTargetType == GridControl.TargetTypes.diamond) {
-				int distance =(Mathf.Abs(clickedX - gridControl.gridUnits[i].xPosition) + Mathf.Abs(clickedY - gridControl.gridUnits[i].yPosition));
+				int distance =(Mathf.Abs(clickedX - S.GridControlInst.gridUnits[i].xPosition) + Mathf.Abs(clickedY - S.GridControlInst.gridUnits[i].yPosition));
 				if(distance >= aoeMinRange && distance <= aoeMaxRange){
-					Affect(gridControl.gridUnits[i]);
+					Affect(S.GridControlInst.gridUnits[i]);
 				}
 			}
 			else if(aoeTargetType == GridControl.TargetTypes.none) {
-				if(clickedX == gridControl.gridUnits[i].xPosition && clickedY == gridControl.gridUnits[i].yPosition) {
-					Affect(gridControl.gridUnits[i]);
+				if(clickedX == S.GridControlInst.gridUnits[i].xPosition && clickedY == S.GridControlInst.gridUnits[i].yPosition) {
+					Affect(S.GridControlInst.gridUnits[i]);
 				}
 			}
 			else if(aoeTargetType == GridControl.TargetTypes.square) {
-				int xDifference = Mathf.Abs(clickedX - gridControl.gridUnits[i].xPosition);
-				int yDifference = Mathf.Abs(clickedY - gridControl.gridUnits[i].yPosition);
+				int xDifference = Mathf.Abs(clickedX - S.GridControlInst.gridUnits[i].xPosition);
+				int yDifference = Mathf.Abs(clickedY - S.GridControlInst.gridUnits[i].yPosition);
 				if(xDifference >= aoeMinRange && xDifference <= aoeMaxRange && 
 				   yDifference >= aoeMinRange && yDifference <= aoeMaxRange) {
-					Affect(gridControl.gridUnits[i]);
+					Affect(S.GridControlInst.gridUnits[i]);
 				}
 			}
 			else 

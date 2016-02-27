@@ -4,15 +4,9 @@ using System.Collections.Generic;
 
 public class ShopControlGUI : MonoBehaviour {
 
-	ShopControl shopControl;
-	ClickControl clickControl;
-	GameControlGUI gameControlGUI;
-	GUIStyleLibrary styleLibrary;
-
 	public bool IgnoreClicking;
 
 	public GoalCanvas[] GOALCANVASES;
-	ShopAndGoalParentCanvas shopAndGoalParentCanvas;	
 
 	public Sprite[] GodFullSprites;
 	public Texture2D[] GodFullTextures;
@@ -47,13 +41,6 @@ public class ShopControlGUI : MonoBehaviour {
 	
 	void Start () {
 		useGUILayout = false;
-		shopControl = gameObject.GetComponent<ShopControl> ();
-		clickControl = gameObject.GetComponent<ClickControl> ();
-		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
-		gameControlGUI = gameObject.GetComponent<GameControlGUI> ();
-
-		shopAndGoalParentCanvas = GameObject.FindGameObjectWithTag ("canvas").
-			GetComponentInChildren<ShopAndGoalParentCanvas> ();
 	}
 
 	public void NewLevelNewGoals (int numberOfGods, Goal[] goals) {
@@ -63,12 +50,12 @@ public class ShopControlGUI : MonoBehaviour {
 
 		TurnOnExpoGUI ();
 		
-		shopAndGoalParentCanvas.NewLevelNewGoals (goals);
+		S.ShopAndGoalParentCanvasInst.NewLevelNewGoals (goals);
 	}
 	
 	#region Setting canvas displaying info
 	public void UpdateGoalInfos() {
-		shopAndGoalParentCanvas.UpdateGoalInfos (Goals); 
+		S.ShopAndGoalParentCanvasInst.UpdateGoalInfos (Goals); 
 	}
 	#endregion
 
@@ -78,7 +65,7 @@ public class ShopControlGUI : MonoBehaviour {
 
 		IgnoreClicking = true;
 		
-		shopAndGoalParentCanvas.TurnOnExpoGUI ();
+		S.ShopAndGoalParentCanvasInst.TurnOnExpoGUI ();
 	}
 
 	public void TurnOnNormalGUI () {
@@ -86,25 +73,25 @@ public class ShopControlGUI : MonoBehaviour {
 
 		UpdateGoalInfos ();
 
-//		shopAndGoalParentCanvas.TurnOnNormalGUI ();
+//		S.ShopAndGoalParentCanvasInst.TurnOnNormalGUI ();
 	}
 
 	public void TurnOnShopGUI() {
-		for (int i = 0; i < shopControl.Goals.Length; i++) {
-			if(SaveDataControl.CheckForHighScores(shopControl.Goals[i])) {
+		for (int i = 0; i < S.ShopControlInst.Goals.Length; i++) {
+			if(SaveDataControl.CheckForHighScores(S.ShopControlInst.Goals[i])) {
 				highScoreNotification[i] = true;
 			}
 		}
 
 		IgnoreClicking = true;
 
-		shopAndGoalParentCanvas.SetUpShopRows (Goals, highScoreNotification);
+		S.ShopAndGoalParentCanvasInst.SetUpShopRows (Goals, highScoreNotification);
 
 		StateSavingControl.TurnShopModeOn();
 		Debug.Log("huh?");
 		StateSavingControl.Save();
 
-		shopAndGoalParentCanvas.TurnOnShopGUI ();
+		S.ShopAndGoalParentCanvasInst.TurnOnShopGUI ();
 	}
 
 	/// <summary>
@@ -113,15 +100,15 @@ public class ShopControlGUI : MonoBehaviour {
 	/// </summary>
 	public void TurnOffAllShopGUI () {
 		IgnoreClicking = false;
-		shopAndGoalParentCanvas.TurnOffNormalGUI ();
-		shopAndGoalParentCanvas.TurnOffShopGUI ();
-		shopAndGoalParentCanvas.TurnOffExpoGUI ();
+		S.ShopAndGoalParentCanvasInst.TurnOffNormalGUI ();
+		S.ShopAndGoalParentCanvasInst.TurnOffShopGUI ();
+		S.ShopAndGoalParentCanvasInst.TurnOffExpoGUI ();
 	}
 	#endregion
 
 	#region Utilities
 	public void UnclickGoals () {
-		shopAndGoalParentCanvas.UnclickGoals ();
+		S.ShopAndGoalParentCanvasInst.UnclickGoals ();
 	}
 	#endregion
 }
