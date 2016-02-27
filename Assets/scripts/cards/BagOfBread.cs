@@ -13,8 +13,8 @@ public class BagOfBread : Card {
 	}
 	
 	public override void Play () {
-		gameControl.Draw ();
-		gameControl.Draw ();
+		S.GameControlInst.Draw ();
+		S.GameControlInst.Draw ();
 
 		base.Play ();
 	}

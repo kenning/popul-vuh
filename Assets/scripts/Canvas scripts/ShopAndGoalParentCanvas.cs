@@ -22,7 +22,6 @@ public class ShopAndGoalParentCanvas : MonoBehaviour {
 
 	Text dollarsText;
 
-	GameControl gameControl;
 	GameControlGUI gameControlGUI;
 	ShopControl shopControl;
 	ShopControlGUI shopControlGUI;
@@ -30,7 +29,6 @@ public class ShopAndGoalParentCanvas : MonoBehaviour {
 
 	void Start () {
 		GameObject tempGO = GameObject.FindGameObjectWithTag ("GameController");
-		gameControl = tempGO.GetComponent<GameControl> ();
 		gameControlGUI = tempGO.GetComponent<GameControlGUI> ();
 		shopControl = tempGO.GetComponent<ShopControl> ();
 		shopControlGUI = tempGO.GetComponent<ShopControlGUI> ();
@@ -146,7 +144,7 @@ public class ShopAndGoalParentCanvas : MonoBehaviour {
 
 	public void FinishShopping () {
 		EXPOBACKGROUND.SetActive(false);
-		gameControl.CollectAnimate();
+		S.GameControlInst.CollectAnimate();
 		gameControlGUI.SetTooltip("Shuffling together your deck and discard...");
 
 		shopControlGUI.TurnOffAllShopGUI ();
@@ -170,7 +168,7 @@ public class ShopAndGoalParentCanvas : MonoBehaviour {
 	}
 
 	public void UpdateDollars () {
-		dollarsText.text = "$" + gameControl.Dollars.ToString();
+		dollarsText.text = "$" + S.GameControlInst.Dollars.ToString();
 	}
 	#endregion
 }

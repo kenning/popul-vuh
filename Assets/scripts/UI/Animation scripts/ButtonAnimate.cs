@@ -11,15 +11,12 @@ public class ButtonAnimate : MonoBehaviour {
     public Sprite PAWSPRITE;
     public Sprite PAWEMPTYSPRITE;
     public GameControl.SickTypes ThisSickType;
-    GameControl gameControl;
-
     public bool Transformed = false;
 
 	SpriteRenderer render;
 
 	void Awake() {
 		render = GetComponent<SpriteRenderer> ();
-        gameControl = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControl>();
 	}
 
 	public void ErrorAnimation () {
@@ -36,9 +33,9 @@ public class ButtonAnimate : MonoBehaviour {
     {
         if (Transformed) return false;
         
-        if (ThisSickType == GameControl.SickTypes.Bleeding && gameControl.BleedingTurns > 0) return true;
-        if (ThisSickType == GameControl.SickTypes.Swollen && gameControl.SwollenTurns > 0) return true;
-        if (ThisSickType == GameControl.SickTypes.Hunger && gameControl.SwollenTurns > 0) return true;
+        if (ThisSickType == GameControl.SickTypes.Bleeding && S.GameControlInst.BleedingTurns > 0) return true;
+        if (ThisSickType == GameControl.SickTypes.Swollen && S.GameControlInst.SwollenTurns > 0) return true;
+        if (ThisSickType == GameControl.SickTypes.Hunger && S.GameControlInst.SwollenTurns > 0) return true;
 
         return false;
     }
@@ -52,8 +49,8 @@ public class ButtonAnimate : MonoBehaviour {
 	}
 
 	public void SetSprite () {
-        bool Empty = gameControl.PlaysLeft < 1;
-        if (gameObject.name == "move end button") Empty = gameControl.MovesLeft < 1;
+        bool Empty = S.GameControlInst.PlaysLeft < 1;
+        if (gameObject.name == "move end button") Empty = S.GameControlInst.MovesLeft < 1;
         SetSprite(Empty);
 	}
     public void SetSprite(bool Empty) { SetSprite(Empty, sickCheck()); }

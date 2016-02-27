@@ -18,7 +18,6 @@ public class CardUI : MonoBehaviour {
     AnimatingType currentAnimatingType;
 
 	Card card;
-	GameControl gameControl;
 	GUIStyleLibrary styleLibrary;
 	ShopControlGUI shopControlGUI;
 
@@ -63,7 +62,7 @@ public class CardUI : MonoBehaviour {
 	//////////////////////////////////////
 
 	public void DrawAnimate(int position) {
-		gameObject.transform.parent = gameControl.handObj.transform;
+		gameObject.transform.parent = S.GameControlInst.handObj.transform;
 		gameObject.transform.localPosition = new Vector3(-2.7f, .5f, 0);
 		
 		currentAnimatingType = AnimatingType.drawanimating;
@@ -103,7 +102,7 @@ public class CardUI : MonoBehaviour {
 
 	public void ShuffleMoveAnimate(Transform Deck) {
 		DeckTransform = Deck;
-		transform.parent = gameControl.handObj.transform;
+		transform.parent = S.GameControlInst.handObj.transform;
 		AnimationStartTime = Time.time;
 		currentAnimatingType = AnimatingType.shuffleanimating;
 	}
@@ -120,7 +119,7 @@ public class CardUI : MonoBehaviour {
 		currentAnimatingType = AnimatingType.none;
 		if(ActuallyDiscarding) {
 
-			int index = gameControl.Discard.IndexOf(gameObject);
+			int index = S.GameControlInst.Discard.IndexOf(gameObject);
 			
 			transform.parent = discardPileObj.transform;
 			transform.localPosition = new Vector3(0,(index+1) * -.5f, 0);
@@ -169,7 +168,7 @@ public class CardUI : MonoBehaviour {
            !card.Discarded && 
 		   !card.ForcingDiscardOfThis) {
 			
-			int i = gameControl.Hand.IndexOf(gameObject);
+			int i = S.GameControlInst.Hand.IndexOf(gameObject);
 			if(card != null) MoveAnimate(i); 
 		}
 
@@ -328,7 +327,6 @@ public class CardUI : MonoBehaviour {
         //TODO do i need alreadyDiscarded here?
 		card = gameObject.GetComponent<Card> ();
 		
-		gameControl = gameController.GetComponent<GameControl> ();
 		shopControlGUI = gameController.GetComponent<ShopControlGUI> ();
 		styleLibrary = gameController.GetComponent<GUIStyleLibrary> ();
 		

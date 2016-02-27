@@ -3,7 +3,6 @@ using System.Collections;
 
 public class DeckAnimate : MonoBehaviour {
 
-	GameControl gameControl;
 	GameControlGUI gameControlGUI;
 
 	SpriteRenderer sprite;
@@ -24,7 +23,6 @@ public class DeckAnimate : MonoBehaviour {
 		sprite = gameObject.GetComponent<SpriteRenderer>();
 
 		GameObject tempGO = GameObject.FindGameObjectWithTag ("GameController");
-		gameControl = tempGO.GetComponent<GameControl> ();
 		gameControlGUI = tempGO.GetComponent<GameControlGUI> ();
 	}
 
@@ -50,12 +48,12 @@ public class DeckAnimate : MonoBehaviour {
 				cardUnderDeck.transform.parent = gameObject.transform;
 				cardUnderDeck.transform.localPosition = Vector3.zero;
 
-                gameControl.gameObject.GetComponent<ShopControlGUI>().TurnOnNormalGUI();
+                S.GameControlInst.gameObject.GetComponent<ShopControlGUI>().TurnOnNormalGUI();
 				gameControlGUI.SetTooltip("");
 
 				//VVV actually really important part. this is where the new level starts!
-				if(SaveDataControl.UnlockedGods.Count == 7) gameControl.ReturnToGodChoiceMenu ();
-				else gameControl.StartNewLevel();
+				if(SaveDataControl.UnlockedGods.Count == 7) S.GameControlInst.ReturnToGodChoiceMenu ();
+				else S.GameControlInst.StartNewLevel();
 				return;
 			}
 			else {
@@ -76,7 +74,7 @@ public class DeckAnimate : MonoBehaviour {
 		}
 	}
 	void Shuffle () {
-		gameControl.ShuffleInHandAndDiscard();
+		S.GameControlInst.ShuffleInHandAndDiscard();
 
 		EndPosition = new Vector2(0, 4f);
 		ShuffleAnimating = true;
@@ -124,6 +122,6 @@ public class DeckAnimate : MonoBehaviour {
 
     bool hungerCheck()
     {
-        return (gameControl.HungerTurns > 0);
+        return (S.GameControlInst.HungerTurns > 0);
     }
 }

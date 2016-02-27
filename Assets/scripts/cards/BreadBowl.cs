@@ -13,9 +13,9 @@ public class BreadBowl : Card {
 	
 	public override void Play () {
 
-		gameControl.Peek (3, this);
+		S.GameControlInst.Peek (3, this);
 
-		gameControl.CardsToTarget = 1;
+		S.GameControlInst.CardsToTarget = 1;
 		gameControlGUI.ForceDim ();
 		gameControlGUI.SetTooltip("Pick a card to put in your hand.");
 		
@@ -24,9 +24,9 @@ public class BreadBowl : Card {
 	
 	public override void AfterCardTargetingCallback() {
 
-		foreach(GameObject tempGO in gameControl.TargetedCards){
+		foreach(GameObject tempGO in S.GameControlInst.TargetedCards){
 			Card tempCard = tempGO.GetComponent<Card>();
-			gameControl.DrawIntoHand(tempCard, false);
+			S.GameControlInst.DrawIntoHand(tempCard, false);
 		}
 		
 		Invoke ("OrganizeCards", .3f);

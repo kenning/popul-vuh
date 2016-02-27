@@ -3,7 +3,6 @@ using System.Collections;
 
 public class GameControlGUI : MonoBehaviour {
     
-	GameControl gameControl;
 	ShopControlGUI shopControlGUI;
 
 	DisplayCardCanvas displayCardCanvas;
@@ -26,7 +25,6 @@ public class GameControlGUI : MonoBehaviour {
 
 	void Start() {
 		useGUILayout = false;
-		gameControl = gameObject.GetComponent<GameControl> ();
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
 		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
 		dimmer = GameObject.Find ("Dimmer").GetComponent<DimAnimate>();
@@ -64,7 +62,7 @@ public class GameControlGUI : MonoBehaviour {
 		displayCardCanvas.Undisplay();
 		CardDisplay = false;
 		//this vvv might be a bad condition to base whether or not to turn off the dimmer on. it works for now though.
-		if(gameControl.CardsToTarget == 0) {
+		if(S.GameControlInst.CardsToTarget == 0) {
 			Dim(false);
 		}
 		if(cardObjFromDeck != null) {
@@ -113,15 +111,15 @@ public class GameControlGUI : MonoBehaviour {
 	}
 
 	public void MoveHandPositionWhenOutOfPlace() {
-		if (gameControl.Hand.Count < 5) {
-			gameControl.handObj.transform.localPosition = new Vector3(-.7f, 0, 0);
+		if (S.GameControlInst.Hand.Count < 5) {
+			S.GameControlInst.handObj.transform.localPosition = new Vector3(-.7f, 0, 0);
 
 			return;
 		}
-		if ((gameControl.handObj.transform.localPosition.x <= ((gameControl.Hand.Count) * -1.55f) + 5.35f)) {
+		if ((S.GameControlInst.handObj.transform.localPosition.x <= ((S.GameControlInst.Hand.Count) * -1.55f) + 5.35f)) {
 			//this is for after the exact position has gotten nailed down, purpose is to lock it to the edge. 
 			//the key numbers are: 3.95 one line above and .75 six lines above.
-			gameControl.handObj.transform.localPosition = new Vector3 (((gameControl.Hand.Count) * -1.55f) + 5.3f, 0, 0);
+			S.GameControlInst.handObj.transform.localPosition = new Vector3 (((S.GameControlInst.Hand.Count) * -1.55f) + 5.3f, 0, 0);
 			return;
 		}
 		return;
@@ -139,16 +137,16 @@ public class GameControlGUI : MonoBehaviour {
 		if(!showingDiscard) {
 			discard.transform.localPosition = displayDiscardPlacement;
 			
-			for(int i = 0; i < gameControl.Discard.Count; i++) {
-				CardUI tempcardui = gameControl.Discard[i].GetComponent<CardUI>();
+			for(int i = 0; i < S.GameControlInst.Discard.Count; i++) {
+				CardUI tempcardui = S.GameControlInst.Discard[i].GetComponent<CardUI>();
 				tempcardui.MoveAnimateWhileDiscarded(i, false);
 			}
 		}
 		else {
 			discard.transform.localPosition = originalDiscardPlacement;			
 			
-            for(int i = 0; i < gameControl.Discard.Count; i++) {
-				CardUI tempcardui = gameControl.Discard[i].GetComponent<CardUI>();
+            for(int i = 0; i < S.GameControlInst.Discard.Count; i++) {
+				CardUI tempcardui = S.GameControlInst.Discard[i].GetComponent<CardUI>();
 				tempcardui.MoveAnimateWhileDiscarded(i, true);
 			}
 		}

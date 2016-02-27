@@ -11,12 +11,12 @@ public class ClothShoes : Card {
 	}
 	
 	public override void Play () {
-		gameControl.AddMoves (2);
+		S.GameControlInst.AddMoves (2);
 
         if (Tutorial.TutorialLevel != 0)
         {
             Tutorial.PlayedACardLevel7 = true;
-            gameControl.gameObject.GetComponent<Tutorial>().TutorialMessage = "That's one of Ikka's cards. It lets you move two more times in a turn. Great for running away, I guess.";
+            S.GameControlInst.gameObject.GetComponent<Tutorial>().TutorialMessage = "That's one of Ikka's cards. It lets you move two more times in a turn. Great for running away, I guess.";
         }
 
 		base.Play ();

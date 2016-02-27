@@ -12,7 +12,7 @@ public class Cheese : Card {
 	
 	public override void Play () {
 
-		gameControl.CardsToTarget = 1;
+		S.GameControlInst.CardsToTarget = 1;
 
 		gameControlGUI.Dim();
 		gameControlGUI.SetTooltip("Pick a card to burn.");
@@ -22,20 +22,20 @@ public class Cheese : Card {
 	
 	public override void AfterCardTargetingCallback() {
 
-		foreach(GameObject tempGO in gameControl.TargetedCards){
+		foreach(GameObject tempGO in S.GameControlInst.TargetedCards){
 			Card tempCard = tempGO.GetComponent<Card>();
 			tempCard.Burn();
 		}
 
-		gameControl.Deck.Add ("Cheese");
+		S.GameControlInst.Deck.Add ("Cheese");
 		
 		base.AfterCardTargetingCallback ();
 	}
 
 	public override void Burn ()
 	{
-		gameControl.Draw ();
-        gameControl.AddPlays(1);
+		S.GameControlInst.Draw ();
+        S.GameControlInst.AddPlays(1);
 
 		base.Burn ();
 	}

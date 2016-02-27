@@ -21,7 +21,7 @@ public class SpymasterStyle : Card {
 	
 	public override void EventCall(string s) {
 		if(s == "Enemy Damage") {
-			gameControl.Draw();
+			S.GameControlInst.Draw();
 
             eventGUIControl.AddGUIString("Draw 1!");
 		}		

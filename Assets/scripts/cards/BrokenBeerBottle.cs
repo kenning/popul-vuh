@@ -15,6 +15,6 @@ public class BrokenBeerBottle : Card {
 	}
 
 	public override void Tuck() {
-		cardUI.MoveAnimate (gameControl.Hand.Count);
+		cardUI.MoveAnimate (S.GameControlInst.Hand.Count);
 	}
 }

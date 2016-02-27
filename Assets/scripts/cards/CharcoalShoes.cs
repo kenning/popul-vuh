@@ -11,7 +11,7 @@ public class CharcoalShoes : Card {
 	}
 	
 	public override void Play () {
-		gameControl.CardsToTarget = 1;
+		S.GameControlInst.CardsToTarget = 1;
 
 		gameControlGUI.SetTooltip("Pick a card to burn.");
 		
@@ -21,12 +21,12 @@ public class CharcoalShoes : Card {
 	}
 	
 	public override void AfterCardTargetingCallback() {
-		foreach(GameObject tempGO in gameControl.TargetedCards){
+		foreach(GameObject tempGO in S.GameControlInst.TargetedCards){
 			Card tempCard = tempGO.GetComponent<Card>();
 			tempCard.Burn();
 		}
 		
-		gameControl.AddMoves (1);
+		S.GameControlInst.AddMoves (1);
 
 //		ReallowEveryInputAfterDiscardOrBurn ();
 

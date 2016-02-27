@@ -15,15 +15,15 @@ public class ChocolateSurpriseEgg : Card {
 	
 	public override void Play () {
 
-		gameControl.Draw ();
-		gameControl.AddPlays (1);
-		gameControl.AddDollars (1);
+		S.GameControlInst.Draw ();
+		S.GameControlInst.AddPlays (1);
+		S.GameControlInst.AddDollars (1);
 
 		base.Play ();
 	}
 
 	public override void Burn () {
-		gameControl.Deck.Add ("Phoenix Fireball");
+		S.GameControlInst.Deck.Add ("Phoenix Fireball");
 
 		base.Burn ();
 	}

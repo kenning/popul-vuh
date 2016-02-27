@@ -12,15 +12,15 @@ public class BirthdayCake : Card {
 
 	public override void Play ()
 	{
-		gameControl.Draw ();
-		gameControl.Draw ();
-		gameControl.Draw ();
+		S.GameControlInst.Draw ();
+		S.GameControlInst.Draw ();
+		S.GameControlInst.Draw ();
 
 		base.Play ();
 	}
 
 	public override void Burn() {
-		gameControl.AddDollars (10);
+		S.GameControlInst.AddDollars (10);
 		base.Burn ();
 	}
 }

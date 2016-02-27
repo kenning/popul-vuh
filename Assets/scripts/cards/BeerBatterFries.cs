@@ -13,11 +13,11 @@ public class BeerBatterFries : Card {
 
 	public override void Play () {
 
-		gameControl.AddPlays (1);
-		gameControl.Draw ();
+		S.GameControlInst.AddPlays (1);
+		S.GameControlInst.Draw ();
 
-		gameControl.CardsToTarget = 1;
-		gameControl.CardsToTargetAreDiscarded = true;
+		S.GameControlInst.CardsToTarget = 1;
+		S.GameControlInst.CardsToTargetAreDiscarded = true;
 
 		gameControlGUI.ForceDim ();
 		gameControlGUI.SetTooltip("Please select a discarded card to tuck back into your deck.");
@@ -26,7 +26,7 @@ public class BeerBatterFries : Card {
 	}
 	
 	public override void AfterCardTargetingCallback() {
-		foreach(GameObject tempGO in gameControl.TargetedCards){
+		foreach(GameObject tempGO in S.GameControlInst.TargetedCards){
 			tempGO.GetComponent<Card>().Tuck();
 		}
 		

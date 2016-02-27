@@ -11,11 +11,11 @@ public class Soda : Card {
 	}
 	
 	public override void Play () {
-		if(gameControl.Hand.Count < 2) {
+		if(S.GameControlInst.Hand.Count < 2) {
 			Tooltip = "You need a card to discard!";
 			return;
 		}
-		gameControl.CardsToTarget = 1;
+		S.GameControlInst.CardsToTarget = 1;
 
 		gameControlGUI.ForceDim();
 		gameControlGUI.SetTooltip("Pick a card to discard.");
@@ -24,14 +24,14 @@ public class Soda : Card {
 	}
 	
 	public override void AfterCardTargetingCallback() {
-		foreach(GameObject tempGO in gameControl.TargetedCards){
+		foreach(GameObject tempGO in S.GameControlInst.TargetedCards){
 			Card tempCard = tempGO.GetComponent<Card>();
 			tempCard.Discard();
 		}
 
-		gameControl.Draw ();
-		gameControl.AddPlays (1);
-		gameControl.AddMoves (1);
+		S.GameControlInst.Draw ();
+		S.GameControlInst.AddPlays (1);
+		S.GameControlInst.AddMoves (1);
 
 		base.AfterCardTargetingCallback ();
 	}

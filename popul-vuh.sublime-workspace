@@ -180,10 +180,15 @@
 		"/Users/nick/Documents/popul-vuh",
 		"/Users/nick/Documents/popul-vuh/Assets",
 		"/Users/nick/Documents/popul-vuh/Assets/not in game assets",
-		"/Users/nick/Documents/popul-vuh/Assets/Resources"
+		"/Users/nick/Documents/popul-vuh/Assets/Resources",
+		"/Users/nick/Documents/popul-vuh/Assets/scripts",
+		"/Users/nick/Documents/popul-vuh/Assets/scripts/Control scripts"
 	],
 	"file_history":
 	[
+		"/Users/nick/Documents/popul-vuh/Assets/scripts/Control scripts/ClickControl.cs",
+		"/Users/nick/Documents/popul-vuh/Assets/scripts/Control scripts/GameControl.cs",
+		"/Users/nick/Documents/popul-vuh/Assets/scripts/Control scripts/EventControl.cs",
 		"/Users/nick/Documents/popul-vuh/Assets/not in game assets/todo popul vuh",
 		"/Users/nick/Documents/tomato-tosser/client/css/foundation.min.css",
 		"/Users/nick/Documents/tomato-tosser/gruntfile.js",
@@ -308,10 +313,7 @@
 		"/Users/nick/Documents/tomato-tosser/package.json",
 		"/Users/nick/Documents/nickmc.co/portfolio/package 2.json",
 		"/Users/nick/documents/tomato-tosser/db/DatabaseManager.js",
-		"/Users/nick/documents/tomato-tosser/db/questions.js",
-		"/Users/nick/documents/tomato-tosser/client/components/ReviewView.jsx",
-		"/Users/nick/documents/tomato-tosser/client/components/LobbyView.jsx",
-		"/Users/nick/documents/tomato-tosser/client/components/TitleView.jsx"
+		"/Users/nick/documents/tomato-tosser/db/questions.js"
 	],
 	"find":
 	{
@@ -322,6 +324,7 @@
 		"height": 93.0,
 		"where_history":
 		[
+			"/Users/nick/Documents/popul-vuh/Assets/scripts",
 			"/Users/nick/Documents/hard-mode-polymer-tt-frontend/app",
 			"/Users/nick/Documents/hard-mode-polymer-tt-frontend",
 			"/Users/nick/Documents/tomato-tosser",
@@ -344,6 +347,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"static",
 			"ajax",
 			"aja",
 			"ajax-",
@@ -470,8 +474,7 @@
 			"decorateWithGameData",
 			"hostteamuserobjects",
 			"userobjects",
-			"props.",
-			"url"
+			"props."
 		],
 		"highlight": true,
 		"in_selection": false,

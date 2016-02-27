@@ -13,8 +13,8 @@ public class FencingStance : Card {
 	
 	public override void Play () {
 
-		gameControl.AddMoves (2);
-		gameControl.AddPlays (1);
+		S.GameControlInst.AddMoves (2);
+		S.GameControlInst.AddPlays (1);
 		AddToTriggerList();
 
 		base.Play ();
@@ -22,7 +22,7 @@ public class FencingStance : Card {
 	
 	public override void EventCall(string s) {
 		if(s == "Punch") {
-			gameControl.AddMoves(2);
+			S.GameControlInst.AddMoves(2);
 			eventGUIControl.AddGUIString("Move +2!");
 		}
 	}

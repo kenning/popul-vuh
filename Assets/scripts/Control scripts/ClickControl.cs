@@ -5,7 +5,6 @@ using UnityEngine.EventSystems;
 
 public class ClickControl : MonoBehaviour {
 	//Game control scripts
-	GameControl gameControl;
 	GridControl gridBoss;
 	ShopControl shopControl;
 	GameObject handObj;
@@ -71,7 +70,6 @@ public class ClickControl : MonoBehaviour {
 	
 	void Start(){
 		GameObject tempGO = GameObject.FindGameObjectWithTag ("GameController");
-		gameControl = tempGO.GetComponent<GameControl> ();
 		handObj = GameObject.Find ("Hand");
 		gridBoss = tempGO.GetComponent<GridControl>();
 		shopControl = tempGO.GetComponent<ShopControl> ();
@@ -192,7 +190,7 @@ public class ClickControl : MonoBehaviour {
 
 		if(draggingHand && AllowInfoInput){
 			if(Input.GetMouseButton(0)){
-				if(gameControl.Hand.Count < 4) { 
+				if(S.GameControlInst.Hand.Count < 4) { 
 					handObj.transform.localPosition = new Vector3(((3) * -1.48f) + 3.7f, 0, 0);
 					return;
 				}
@@ -204,10 +202,10 @@ public class ClickControl : MonoBehaviour {
 					handObj.transform.localPosition = new Vector3(-.73f, 0, 0f);
 					return;
 				}
-				else if((handObj.transform.localPosition.x <= ((gameControl.Hand.Count) * -1.55f) + 5.35f) &&  pos.x < 0) {
+				else if((handObj.transform.localPosition.x <= ((S.GameControlInst.Hand.Count) * -1.55f) + 5.35f) &&  pos.x < 0) {
 					//this is for after the exact position has gotten nailed down, purpose is to lock it to the edge. 
 					//the key numbers are: 3.95 one line above and .75 six lines above.
-					handObj.transform.localPosition = new Vector3(((gameControl.Hand.Count) * -1.55f) + 5.3f, 0, 0);
+					handObj.transform.localPosition = new Vector3(((S.GameControlInst.Hand.Count) * -1.55f) + 5.3f, 0, 0);
 				} else {
 					Vector3 move = new Vector3(pos.x, 0, 0);
 					handObj.transform.Translate(move);  
@@ -227,29 +225,29 @@ public class ClickControl : MonoBehaviour {
 
 		if(cardHasBeenClickedOn && cardScriptClickedOn != null && !draggingHand && !draggingDiscard){
 			if(!Input.GetMouseButton(0)){
-				if(gameControl.CardsToTarget != 0 
+				if(S.GameControlInst.CardsToTarget != 0 
 				   && AllowCardTargetInput 
-				   && (cardScriptClickedOn.Peeked == gameControl.CardsToTargetArePeeked)
-				   && (gameControl.CardsToTargetAreDiscarded == cardScriptClickedOn.Discarded)) {
-					if(gameControl.TargetedCards.Contains(cardScriptClickedOn.gameObject))
+				   && (cardScriptClickedOn.Peeked == S.GameControlInst.CardsToTargetArePeeked)
+				   && (S.GameControlInst.CardsToTargetAreDiscarded == cardScriptClickedOn.Discarded)) {
+					if(S.GameControlInst.TargetedCards.Contains(cardScriptClickedOn.gameObject))
 					{
 						cardScriptClickedOn.Untarget();
-						gameControl.TargetedCards.Remove(cardScriptClickedOn.gameObject);
+						S.GameControlInst.TargetedCards.Remove(cardScriptClickedOn.gameObject);
 						cardHasBeenClickedOn = false;
 					}
-					else if(cardScriptClickedOn != gameControl.TargetCardCallback) 
+					else if(cardScriptClickedOn != S.GameControlInst.TargetCardCallback) 
 					{
 						cardScriptClickedOn.Target();
-						gameControl.TargetedCards.Add(cardScriptClickedOn.gameObject);
-						if(gameControl.TargetedCards.Count == gameControl.CardsToTarget) 
-							gameControl.TargetCardCallback.AfterCardTargetingCallback();
+						S.GameControlInst.TargetedCards.Add(cardScriptClickedOn.gameObject);
+						if(S.GameControlInst.TargetedCards.Count == S.GameControlInst.CardsToTarget) 
+							S.GameControlInst.TargetCardCallback.AfterCardTargetingCallback();
 						cardHasBeenClickedOn = false;
 					}
 				}
 				else if (!cardScriptClickedOn.Discarded 
-				         && gameControl.PlaysLeft > 0 
+				         && S.GameControlInst.PlaysLeft > 0 
 				         && AllowNewPlayInput 
-				         && gameControl.CardsToTarget == 0) {
+				         && S.GameControlInst.CardsToTarget == 0) {
 					cardScriptClickedOn.Click ();
 					cardHasBeenClickedOn = false;
 				}
@@ -303,30 +301,30 @@ public class ClickControl : MonoBehaviour {
 							if(turnEndedAlready) 
 								return;
 							turnEndedAlready = true;
-							gameControl.ButtonSpritesLookClicked();
-							gameControl.DeselectCards();
+							S.GameControlInst.ButtonSpritesLookClicked();
+							S.GameControlInst.DeselectCards();
 							gridBoss.DestroyAllTargetSquares();
 	                        if (Tutorial.TutorialLevel != 0)
 	                        {
-								gameControl.StartNewTurn(false);
+								S.GameControlInst.StartNewTurn(false);
 	                        }
 	                        else
 	                        {
-	                            gameControl.EnemyTurn(true);
+	                            S.GameControlInst.EnemyTurn(true);
 	                        }
 							return;
 						}
 					}
 					foreach(RaycastHit2D hit in hits) {
 						if(hit.collider.gameObject.name == "play end button" && AllowForfeitButtonInput) { 
-							if(gameControl.PlaysLeft == 1) {
+							if(S.GameControlInst.PlaysLeft == 1) {
 								gameControlGUI.SetTooltip("You can punch or play a card one more time this turn.");
 							} else {
 								gameControlGUI.SetTooltip("You can punch or play a card " + 
-								                          gameControl.PlaysLeft.ToString() + 
+								                          S.GameControlInst.PlaysLeft.ToString() + 
 								                          " more times this turn.");
 							}
-							foreach(GameObject card in gameControl.Hand) {
+							foreach(GameObject card in S.GameControlInst.Hand) {
 								card.GetComponent<CardUI>().ShineAnimate();
 							}
 							return;
@@ -334,11 +332,11 @@ public class ClickControl : MonoBehaviour {
 					}
 					foreach(RaycastHit2D hit in hits) {
 						if(hit.collider.gameObject.name == "move end button" && AllowForfeitButtonInput) { 
-							if(gameControl.MovesLeft == 1) {
+							if(S.GameControlInst.MovesLeft == 1) {
 								gameControlGUI.SetTooltip("You can move one more time this turn.");
 							} else {
 								gameControlGUI.SetTooltip("You can move " + 
-								                          gameControl.MovesLeft.ToString() + 
+								                          S.GameControlInst.MovesLeft.ToString() + 
 								                          " more times this turn.");
 							}
 							return;
@@ -399,7 +397,7 @@ public class ClickControl : MonoBehaviour {
 				}
 			}
 
-			gameControl.DeselectCards();
+			S.GameControlInst.DeselectCards();
 
 			gridBoss.DestroyAllTargetSquares();
 			
@@ -412,7 +410,7 @@ public class ClickControl : MonoBehaviour {
 						infoTarget = hit.collider.gameObject;
 					}
 					if(adjCheck(hit.collider.gameObject.transform.position) != "none" 
-					   && gameControl.PlaysLeft > 0 && AllowNewPlayInput){
+					   && S.GameControlInst.PlaysLeft > 0 && AllowNewPlayInput){
 						gridCursorControl.PresentCursor(GridCursorControl.CursorActions.Punch);
 						gridCursorControl.SetCurrentCursorTarget(hit.collider.gameObject);
 						// Even though this should return and end the Update method, it still needs to
@@ -437,7 +435,7 @@ public class ClickControl : MonoBehaviour {
                 {
 
 					GridUnit obstacleGU = hit.collider.gameObject.GetComponent<GridUnit>();
-					GridUnit playerGU = gameControl.playerObj.GetComponent<GridUnit>();
+					GridUnit playerGU = S.GameControlInst.playerObj.GetComponent<GridUnit>();
 					
 					
                     if (obstacleGU.IsAdjacent(playerGU))

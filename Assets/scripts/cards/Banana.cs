@@ -13,7 +13,7 @@ public class Banana : Card {
 	}
 	
 	public override void Play () {
-		gameControl.Draw ();
+		S.GameControlInst.Draw ();
 
 		base.Play ();
 	}

@@ -6,7 +6,6 @@ public class EventControl : MonoBehaviour {
 
 	static bool initialized = false;
 	static List<Card> TriggerList;
-	static GameControl gameControl = null;
 	//keyword == "Enemy Death"
 	//keyword == "Punch"
 	//keyword == "Burn"
@@ -14,7 +13,6 @@ public class EventControl : MonoBehaviour {
 	static void Initialize() {
 		if (initialized) return;
 		initialized = true;
-		gameControl = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControl>();
 	}
 
 	public static void NewLevelReset () {
@@ -61,7 +59,7 @@ public class EventControl : MonoBehaviour {
 
 	public static void LoadTriggerListState(List<string> stringList) {
         foreach (string s in stringList) {
-        	foreach (GameObject tempGO in gameControl.Discard) {
+        	foreach (GameObject tempGO in S.GameControlInst.Discard) {
 				Debug.Log("I should eventually test if these event things actually persist because i'll never run into this in the wild");
 				Debug.Log("Also this is pretty shitty but if the event trigger list is [SpymasterStyle, SpymasterStyle] it will trigger" + 
 					"the first card twice instead of triggering each individually. Who cares though seriously");

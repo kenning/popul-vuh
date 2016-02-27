@@ -12,9 +12,9 @@ public class DesperatePrayer : Card {
 	
 	public override void Play () {
 
-		if (gameControl.Dollars == 0)
-						gameControl.AddDollars (5);
-		else gameControl.AddDollars(1);
+		if (S.GameControlInst.Dollars == 0)
+						S.GameControlInst.AddDollars (5);
+		else S.GameControlInst.AddDollars(1);
 
 		base.Play ();
 	}

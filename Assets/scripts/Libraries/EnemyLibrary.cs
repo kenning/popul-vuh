@@ -7,10 +7,7 @@ public class EnemyLibrary : MonoBehaviour {
 
 	public static Dictionary<string, EnemyLibraryCard> Lib;
 	public List<List<int>> challengeRatingsForEachLevel = new List<List<int>>();
-    GameControl gameControl;
-
 	void Start() {
-        gameControl = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControl>();
 		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 1 }); //3
 		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 2 }); //4
 		challengeRatingsForEachLevel.Add(new List<int> { 1, 2, 2 }); //5
@@ -38,7 +35,7 @@ public class EnemyLibrary : MonoBehaviour {
 		tempGO.GetComponent<GridUnit>().xPosition = xPosition;
 		tempGO.GetComponent<GridUnit>().yPosition = yPosition;
 		tempGO.transform.position = new Vector3(xPosition, yPosition, 0);
-        gameControl.EnemyObjs.Add(tempGO);
+        S.GameControlInst.EnemyObjs.Add(tempGO);
 
 		EnemyLibraryCard EnemyLC = Lib[EnemyName];
 

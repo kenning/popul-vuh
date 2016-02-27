@@ -12,7 +12,7 @@ public class BookOfMatches : Card {
 	
 	public override void Play () {
 
-		gameControl.CardsToTarget = 1;
+		S.GameControlInst.CardsToTarget = 1;
 
 		gameControlGUI.ForceDim ();
 		gameControlGUI.SetTooltip("Pick a card to burn.");
@@ -21,7 +21,7 @@ public class BookOfMatches : Card {
 	}
 	
 	public override void AfterCardTargetingCallback() {
-		foreach(GameObject tempGO in gameControl.TargetedCards){
+		foreach(GameObject tempGO in S.GameControlInst.TargetedCards){
 			Card tempCard = tempGO.GetComponent<Card>();
 			tempCard.Burn();
 		}

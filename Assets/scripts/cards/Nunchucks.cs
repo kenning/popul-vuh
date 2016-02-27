@@ -16,10 +16,10 @@ public class Nunchucks : Card {
 
 	public override void TargetSquareCalledThis (int x, int y) {
 
-		for(int i = 0; i < gameControl.Hand.Count; i++) {
-			Card card = gameControl.Hand[i].GetComponent<Card>();
+		for(int i = 0; i < S.GameControlInst.Hand.Count; i++) {
+			Card card = S.GameControlInst.Hand[i].GetComponent<Card>();
 			if(card.CardName == "Nunchucks") {
-				gameControl.AddPlays(1);
+				S.GameControlInst.AddPlays(1);
 				break;
 			}
 		}

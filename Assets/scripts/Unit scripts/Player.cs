@@ -8,7 +8,6 @@ public class Player : MonoBehaviour {
 	public int currentHealth = 3;
 	int punchDamage = 1;
 	public int StunnedForXTurns = 0;
-	GameControl gameControl;
 	ShopControl shopControl;
 	GridControl gridControl;
 	public Sprite[] HPBars;
@@ -23,7 +22,6 @@ public class Player : MonoBehaviour {
 	void Start () {
 		useGUILayout = false;
 		GameObject gameController = GameObject.FindGameObjectWithTag ("GameController");
-		gameControl = gameController.GetComponent<GameControl> ();
 		shopControl = gameController.GetComponent<ShopControl>();
 		gridControl = gameController.GetComponent<GridControl>();
 		menuControl = gameController.GetComponent<MenuControl> ();
@@ -39,13 +37,13 @@ public class Player : MonoBehaviour {
         playerGU.PokeTowards(playerGU.AdjacentPosition(enemyGU));
 
         enemy.GetComponent<Enemy> ().GetPunched (punchDamage);
-		gameControl.AddPlays(-1);
+		S.GameControlInst.AddPlays(-1);
 
     //triggers
 		EventControl.EventCheck ("Punch");
 		shopControl.GoalCheck ("Punch X times");
 		if (Tutorial.TutorialLevel != 0)
-			gameControl.gameObject.GetComponent<Tutorial>().TutorialTrigger(3);
+			S.GameControlInst.gameObject.GetComponent<Tutorial>().TutorialTrigger(3);
 
 		QControl.CheckQ ();
 	}
@@ -55,8 +53,8 @@ public class Player : MonoBehaviour {
 		List<Card> Armors = new List<Card> ();
 		List<Card> SuccessfulArmors = new List<Card> ();
 
-		for(int i = 0; i < gameControl.Hand.Count; i++) {
-			Card tempCard = gameControl.Hand[i].GetComponent<Card>();
+		for(int i = 0; i < S.GameControlInst.Hand.Count; i++) {
+			Card tempCard = S.GameControlInst.Hand[i].GetComponent<Card>();
 			if(tempCard.CardAction == Card.CardActionTypes.Armor | tempCard.ArmorWithSecondaryAbility) 
 				Armors.Add(tempCard);
 		}
@@ -95,10 +93,10 @@ public class Player : MonoBehaviour {
 
 	internal void MoveClick(string direction)
 	{
-		bool canMove = gameControl.MovesLeft > 0;
+		bool canMove = S.GameControlInst.MovesLeft > 0;
 		if (GameControl.MovesArePlays)
 		{
-			canMove = gameControl.PlaysLeft > 0;
+			canMove = S.GameControlInst.PlaysLeft > 0;
 		}
 
 		if (canMove)
@@ -113,7 +111,7 @@ public class Player : MonoBehaviour {
 			}
 
 			thisGU.GridMove(direction);
-			gameControl.AddMoves(-1);
+			S.GameControlInst.AddMoves(-1);
 			shopControl.GoalCheck("Move X times in one turn");
 			shopControl.GoalCheck("Don't move X turns in a row");
 			shopControl.GoalCheck("Don't deal damage or move X turns in a row");
@@ -122,7 +120,7 @@ public class Player : MonoBehaviour {
 
 			if (Tutorial.TutorialLevel != 0)
 			{
-				gameControl.gameObject.GetComponent<Tutorial>().TutorialTrigger(2);
+				S.GameControlInst.gameObject.GetComponent<Tutorial>().TutorialTrigger(2);
 			}
 
 			StateSavingControl.Save();

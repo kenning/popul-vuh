@@ -41,7 +41,6 @@ public class Enemy : MonoBehaviour {
 	public GridUnit thisGU;
 	public GridUnit playerGU;
 	public Player playerScript;
-	public GameControl gameControl;
 	
 	public bool attackAnimating;
 	public float attackAnimStartTime;
@@ -60,10 +59,9 @@ public class Enemy : MonoBehaviour {
 		thisGU = gameObject.GetComponent<GridUnit> ();
 		playerGU = GameObject.FindGameObjectWithTag ("Player").GetComponent<GridUnit> ();
 		playerScript = GameObject.FindGameObjectWithTag ("Player").GetComponent<Player> ();
-		gameControl = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameControl>();
-		shopControl = gameControl.gameObject.GetComponent<ShopControl>();
-		gridControl = gameControl.gameObject.GetComponent<GridControl>();
-		gameControlGUI = gameControl.gameObject.GetComponent<GameControlGUI>();
+		shopControl = S.GameControlInst.gameObject.GetComponent<ShopControl>();
+		gridControl = S.GameControlInst.gameObject.GetComponent<GridControl>();
+		gameControlGUI = S.GameControlInst.gameObject.GetComponent<GameControlGUI>();
 		unitSFX = gameObject.GetComponent<UnitSFX>();
 
 		Name = enemyLC.Name;
@@ -289,12 +287,12 @@ public class Enemy : MonoBehaviour {
 	}
 	
 	public virtual void ForceDiscard () {
-		if(gameControl.Hand.Count == 0) 
+		if(S.GameControlInst.Hand.Count == 0) 
 			return;
 
 		List<Card> SelectableCards = new List<Card> ();
-		for (int i = 0; i < gameControl.Hand.Count; i++) {
-			Card tempCard = gameControl.Hand[i].GetComponent<Card>();
+		for (int i = 0; i < S.GameControlInst.Hand.Count; i++) {
+			Card tempCard = S.GameControlInst.Hand[i].GetComponent<Card>();
 //			if(!tempCard.DrawAnimating) {
 				SelectableCards.Add (tempCard);
 //			}
@@ -310,13 +308,13 @@ public class Enemy : MonoBehaviour {
 	}
 
 	public virtual void SetSickBleeding () {
-		gameControl.SetSick (GameControl.SickTypes.Bleeding, 2);
+		S.GameControlInst.SetSick (GameControl.SickTypes.Bleeding, 2);
 	}
 	public virtual void SetSickSwollen () {
-		gameControl.SetSick (GameControl.SickTypes.Swollen, 2);
+		S.GameControlInst.SetSick (GameControl.SickTypes.Swollen, 2);
 	}
 	public virtual void SetSickHunger () {
-		gameControl.SetSick (GameControl.SickTypes.Hunger, 2);
+		S.GameControlInst.SetSick (GameControl.SickTypes.Hunger, 2);
 	}
 #endregion
 
@@ -355,7 +353,7 @@ public class Enemy : MonoBehaviour {
 		EventControl.EventCheck ("Enemy Death");
 
 		GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-		if (enemies.Length == 1 && Tutorial.TutorialLevel == 0) gameControl.Invoke("LevelIsDone", .4f);
+		if (enemies.Length == 1 && Tutorial.TutorialLevel == 0) S.GameControlInst.Invoke("LevelIsDone", .4f);
 
         // moves this gridunit way out of the way so other enemies can walk around it 
 		// (faster than going through all lists of grid units and removing it from them all)
@@ -363,7 +361,7 @@ public class Enemy : MonoBehaviour {
         thisGU.yPosition = 100;
 
 		SaveDataControl.AddEnemyToDefeated (Name);
-        gameControl.EnemyObjs.Remove(gameObject);
+        S.GameControlInst.EnemyObjs.Remove(gameObject);
 		Destroy(gameObject);
 	}
 #endregion

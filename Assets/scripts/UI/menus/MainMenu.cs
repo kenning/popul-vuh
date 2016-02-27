@@ -16,7 +16,6 @@ public class MainMenu : MonoBehaviour {
 
 	MenuControl menuControl;
 	static ClickControl clickControl;
-	GameControl gameControl;
 	GUIStyleLibrary styleLibrary;
 	static ShopControlGUI shopControlGUI;
 
@@ -29,7 +28,6 @@ public class MainMenu : MonoBehaviour {
 	void Start() {
 		useGUILayout = false;
 		menuControl = gameObject.GetComponent<MenuControl> ();
-		gameControl = gameObject.GetComponent<GameControl> ();
 		clickControl = gameObject.GetComponent<ClickControl> ();
 		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
@@ -48,8 +46,8 @@ public class MainMenu : MonoBehaviour {
 
 		GameObject.Find ("Dimmer").GetComponent<DimAnimate>().ForceDim();
 
-//        GameControl gameControl = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControl>();
-//        gameControl.TransformPlayer(false);
+//        S.GameControlInst.= GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControl>();
+//        S.GameControlInst.TransformPlayer(false);
 
         if (GameControl.Level >= NextUnlockLevel)
         {
@@ -81,8 +79,7 @@ public class MainMenu : MonoBehaviour {
         UnlockedText = "";
         UnlockCheck();
 
-        GameControl gameControl = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControl>();
-        gameControl.DeleteAllCards();
+        S.GameControlInst.DeleteAllCards();
 
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (GameObject GO in enemies)
@@ -135,7 +132,7 @@ public class MainMenu : MonoBehaviour {
 				} else if (StateSavingControl.StateWasSaved()) {
 					StateSavingControl.Load();
 				} else {
-					gameControl.BeginGame();
+					S.GameControlInst.BeginGame();
                 }
             }
 
@@ -143,7 +140,7 @@ public class MainMenu : MonoBehaviour {
 			if(GUI.Button(new Rect(Screen.width*.2f, Screen.height*.4f, Screen.width*.6f, Screen.height*.1f), 
 			              "Tutorial", styleLibrary.MainStyles.Button)) {
 				menuControl.TurnOnMenu(MenuControl.MenuType.Tutorial);
-				gameControl.BeginGame();
+				S.GameControlInst.BeginGame();
 			}
 			if (!SaveDataControl.FinishedTutorial)
 			{

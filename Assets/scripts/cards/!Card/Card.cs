@@ -12,7 +12,6 @@ public class Card : MonoBehaviour {
 	public bool Selected;
 	public bool Peeked;
 
-	public GameControl gameControl;
 	public GridControl gridControl;
 	public ShopControl shopControl;
 	public ClickControl clickControl;
@@ -78,7 +77,6 @@ public class Card : MonoBehaviour {
         useGUILayout = false;
 
 		GameObject gameController = GameObject.FindGameObjectWithTag("GameController");
-		gameControl = gameController.GetComponent<GameControl>();
 		gridControl = gameController.GetComponent<GridControl>();
 		shopControl = gameController.GetComponent<ShopControl>();
 		clickControl = gameController.GetComponent<ClickControl>();
@@ -114,7 +112,7 @@ public class Card : MonoBehaviour {
 		God = ThisLibraryCard.God;
 
         if (!alreadyDiscarded) {
-    		gameControl.Hand.Add(gameObject);        
+    		S.GameControlInst.Hand.Add(gameObject);        
         }
 
 		switch (ThisRarity)
@@ -143,11 +141,11 @@ public class Card : MonoBehaviour {
 	//////////////////////////////////////
 
 	public void Select() {
-		gameControl.DeselectCards();
+		S.GameControlInst.DeselectCards();
 		gridControl.DestroyAllTargetSquares();
 		gameControlGUI.Dim(false);
 
-		if(gameControl.PlaysLeft > 0) { 
+		if(S.GameControlInst.PlaysLeft > 0) { 
 			if(gameObject != null) {
 				cardUI.TargetAnimate();
 				Selected = true;
@@ -182,8 +180,8 @@ public class Card : MonoBehaviour {
 		}
 		bool actuallyDiscarding = DiscardWhenPlayed | ForcingDiscardOfThis;
 		if(actuallyDiscarding) {
-			gameControl.Hand.Remove(gameObject);
-			gameControl.Discard.Add(gameObject);
+			S.GameControlInst.Hand.Remove(gameObject);
+			S.GameControlInst.Discard.Add(gameObject);
             Discarded = true;
 			StateSavingControl.Save();
 		}
@@ -193,7 +191,7 @@ public class Card : MonoBehaviour {
 
 	public void InvisibleDiscard() {
 		Discarded = true;
-		gameControl.Discard.Add(gameObject);
+		S.GameControlInst.Discard.Add(gameObject);
 		cardUI.FinishDiscardAnimate (true);
 	}
 
@@ -206,12 +204,12 @@ public class Card : MonoBehaviour {
 	}
 
 	public virtual void Tuck() {
-		if(gameControl.Hand.Contains(gameObject)) 
-			gameControl.Hand.Remove(gameObject);
-		if (gameControl.Discard.Contains (gameObject)) 
-			gameControl.Discard.Remove(gameObject);
-		if(gameControl.PeekedCards.Contains(gameObject)) 
-			gameControl.PeekedCards.Remove(gameObject);
+		if(S.GameControlInst.Hand.Contains(gameObject)) 
+			S.GameControlInst.Hand.Remove(gameObject);
+		if (S.GameControlInst.Discard.Contains (gameObject)) 
+			S.GameControlInst.Discard.Remove(gameObject);
+		if(S.GameControlInst.PeekedCards.Contains(gameObject)) 
+			S.GameControlInst.PeekedCards.Remove(gameObject);
 		
 		cardUI.TuckAnimate ();
 
@@ -222,7 +220,7 @@ public class Card : MonoBehaviour {
 	public void FinishTuck(){
 		string tempString = CardName;
 		tempString.Replace("\n", " ");
-		gameControl.Deck.Add(tempString);
+		S.GameControlInst.Deck.Add(tempString);
 		Destroy(gameObject);
 
 		clickControl.AllowEveryInput();
@@ -231,7 +229,7 @@ public class Card : MonoBehaviour {
 	public virtual void Burn() {
 		clickControl.DisallowEveryInput();
 		if(Selected) Deselect();
-		gameControl.Hand.Remove(gameObject);
+		S.GameControlInst.Hand.Remove(gameObject);
 
 		cardUI.BurnAnimate ();
 
@@ -273,8 +271,8 @@ public class Card : MonoBehaviour {
 				return;
 			}
 			//Extreme corner case, this prevents Target Card cards from being played without valid targets
-			if(CardAction == CardActionTypes.TargetCard && ((CardsToTargetWillBeDiscarded && gameControl.Discard.Count < 1) | 
-															(!CardsToTargetWillBeDiscarded && gameControl.Hand.Count < 2)    ) ) {
+			if(CardAction == CardActionTypes.TargetCard && ((CardsToTargetWillBeDiscarded && S.GameControlInst.Discard.Count < 1) | 
+															(!CardsToTargetWillBeDiscarded && S.GameControlInst.Hand.Count < 2)    ) ) {
 				gameControlGUI.SetTooltip("You can't play this card right now, because it can't target a card.");
 				return;
 			}
@@ -290,7 +288,7 @@ public class Card : MonoBehaviour {
 	//has multiple steps so it runs CheckQ() at the end instead of halfway through.
 	public virtual void Activate(bool FreePlay) {
 		if(!FreePlay && CardAction != CardActionTypes.TargetGridSquare) {
-			gameControl.AddPlays(-1);
+			S.GameControlInst.AddPlays(-1);
 		}
 
 		clickControl.DisallowEveryInput();
@@ -321,9 +319,9 @@ public class Card : MonoBehaviour {
 			clickControl.AllowEveryInput();
 			break;
 		case CardActionTypes.TargetCard:
-			if((CardsToTargetWillBePeeked && gameControl.PeekedCards.Count < CardsToTarget) |
-			   (CardsToTargetWillBeDiscarded && gameControl.Discard.Count < CardsToTarget) |
-			   (!CardsToTargetWillBeDiscarded && gameControl.Hand.Count < CardsToTarget)) {
+			if((CardsToTargetWillBePeeked && S.GameControlInst.PeekedCards.Count < CardsToTarget) |
+			   (CardsToTargetWillBeDiscarded && S.GameControlInst.Discard.Count < CardsToTarget) |
+			   (!CardsToTargetWillBeDiscarded && S.GameControlInst.Hand.Count < CardsToTarget)) {
 				gameControlGUI.SetTooltip("Not enough cards to target!");
 				DiscardOrBurnIfNotInQ();
 				return;
@@ -339,16 +337,16 @@ public class Card : MonoBehaviour {
 			clickControl.AllowInfoInput = true;
 
 			if(CardsToTargetWillBeDiscarded) 
-				gameControl.CardsToTargetAreDiscarded = true;
+				S.GameControlInst.CardsToTargetAreDiscarded = true;
 			else 
-				gameControl.CardsToTargetAreDiscarded = false;
+				S.GameControlInst.CardsToTargetAreDiscarded = false;
 
 			if(CardsToTargetWillBePeeked) 
-				gameControl.CardsToTargetArePeeked = true;
+				S.GameControlInst.CardsToTargetArePeeked = true;
 			else
-				gameControl.CardsToTargetArePeeked = false;
+				S.GameControlInst.CardsToTargetArePeeked = false;
 
-			gameControl.TargetCardCallback = this;
+			S.GameControlInst.TargetCardCallback = this;
 			
 			Play();
 			DiscardOrBurnIfNotInQ();
@@ -369,7 +367,7 @@ public class Card : MonoBehaviour {
 	public void EnterTargetingMode() {
 		Select();
 		gridControl.EnterTargetingMode(rangeTargetType, minRange, maxRange);
-		gameControl.TargetSquareCallback = this;
+		S.GameControlInst.TargetSquareCallback = this;
 		gameControlGUI.SetTooltip("Please select a square.");
 		
 		clickControl.AllowInputUmbrella = true;
@@ -431,8 +429,8 @@ public class Card : MonoBehaviour {
 	}
 
 	public virtual void AfterCardTargetingCallback() {
-		gameControl.TargetedCards = new List<GameObject>();
-		gameControl.CardsToTarget = 0;
+		S.GameControlInst.TargetedCards = new List<GameObject>();
+		S.GameControlInst.CardsToTarget = 0;
 		gameControlGUI.UnlockDim ();
 		gameControlGUI.Dim(false);
 
@@ -459,7 +457,7 @@ public class Card : MonoBehaviour {
 		if(!FreeTargetSquare) {
 			DiscardOrBurnIfNotInQ();
 			
-			gameControl.AddPlays(-1);
+			S.GameControlInst.AddPlays(-1);
 
 			clickControl.DisallowEveryInput();
 		}
@@ -532,11 +530,8 @@ public class Card : MonoBehaviour {
 	}
 
 	public int HandIndex() {
-		if(gameControl == null) {
-			gameControl = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControl>();
-		}
-		for(int i = 0; i < gameControl.Hand.Count; i++) {
-			if(gameControl.Hand[i] == gameObject) {
+		for(int i = 0; i < S.GameControlInst.Hand.Count; i++) {
+			if(S.GameControlInst.Hand[i] == gameObject) {
 				return i;
 			}
 		}

@@ -17,7 +17,7 @@ public class Pinata : Card {
 
 		gameControlGUI.SetTooltip ("");
 
-		gameControl.Peek(2, this);
+		S.GameControlInst.Peek(2, this);
 
 		base.Play ();
 	}
@@ -25,23 +25,23 @@ public class Pinata : Card {
 	public override void PeekCallback () {
 		string TooltipMessage = "";
 
-		foreach(GameObject go in gameControl.PeekedCards) {
+		foreach(GameObject go in S.GameControlInst.PeekedCards) {
 			Card card = go.GetComponent<Card>();
 			if(card.ThisRarity == Rarity.Bronze) {
-				gameControl.Draw();
-				gameControl.Draw();
+				S.GameControlInst.Draw();
+				S.GameControlInst.Draw();
 				TooltipMessage += "+2 cards! ";
 			}
 			else if(card.ThisRarity == Rarity.Silver) {
-				gameControl.AddPlays(2);
+				S.GameControlInst.AddPlays(2);
 				TooltipMessage += "+2 plays! ";
 			}
 			else if(card.ThisRarity == Rarity.Gold) {
-				gameControl.AddDollars(2);
+				S.GameControlInst.AddDollars(2);
 				TooltipMessage += "+2$! ";
 			}
 			else if(card.ThisRarity == Rarity.Paper) {
-				gameControl.AddDollars(1);
+				S.GameControlInst.AddDollars(1);
 				TooltipMessage += "+1$! ";
 			}
 			TooltipMessage += "\n";
@@ -53,8 +53,8 @@ public class Pinata : Card {
 
 	void PinataMethod () {
 		gameControlGUI.ForceDim();
-		for(int i = gameControl.PeekedCards.Count-1; i > -1; i++) {
-			gameControl.PeekedCards[i].GetComponent<Card>().Tuck();
+		for(int i = S.GameControlInst.PeekedCards.Count-1; i > -1; i++) {
+			S.GameControlInst.PeekedCards[i].GetComponent<Card>().Tuck();
 		}
 		gameControlGUI.SetTooltip("");
 

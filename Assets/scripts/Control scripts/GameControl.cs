@@ -11,7 +11,6 @@ public class GameControl : MonoBehaviour
 
 	ClickControl clickControl;
 	ShopControl shopControl;
-	EventGUI eventGUIgameControl;
 	GridControl gridControl;
 	GameControlGUI gameControlGUI;
 	MenuControl menuControl;
@@ -66,7 +65,6 @@ public class GameControl : MonoBehaviour
 	public GUISkin gooeyskin;
 	#endregion
 
-
 	void Awake(){
 
 		if (Application.platform == RuntimePlatform.IPhonePlayer) {
@@ -90,7 +88,7 @@ public class GameControl : MonoBehaviour
 		playerObj = GameObject.FindGameObjectWithTag ("Player");
 		shopControl = gameObject.GetComponent<ShopControl> ();
 		player = GameObject.FindGameObjectWithTag ("Player").GetComponent<Player> ();
-		gooeyskin = (GUISkin)Resources.Load ("GUISkins/gameControl guiskin");
+		gooeyskin = (GUISkin)Resources.Load ("GUISkins/S.GameControlInst.guiskin");
 
 		menuControl = gameObject.GetComponent<MenuControl> ();
 		library = gameObject.GetComponent<CardLibrary> ();

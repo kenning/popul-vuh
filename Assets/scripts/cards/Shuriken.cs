@@ -15,7 +15,7 @@ public class Shuriken : Card {
 	}
 	
 	public override void Play () {
-		gameControl.CardsToTarget = 1;
+		S.GameControlInst.CardsToTarget = 1;
 
 		gameControlGUI.ForceDim();
 		gameControlGUI.SetTooltip("Pick a card to discard.");
@@ -25,7 +25,7 @@ public class Shuriken : Card {
 
 		Card.Rarity discardRarity = Rarity.Paper;
 
-		foreach(GameObject tempGO in gameControl.TargetedCards){
+		foreach(GameObject tempGO in S.GameControlInst.TargetedCards){
 			Card c = tempGO.GetComponent<Card>();
 			discardRarity = c.ThisRarity;
 			c.Discard();
@@ -48,7 +48,7 @@ public class Shuriken : Card {
 		clickControl.DisallowEveryInput ();
 		clickControl.AllowInfoInput = true;
 		clickControl.AllowSquareTargetInput = true;
-		gameControl.TargetSquareCallback = this;
+		S.GameControlInst.TargetSquareCallback = this;
 
 		QControl.AddToQ (this, QControl.QMethodType.FreeSpecial);
 

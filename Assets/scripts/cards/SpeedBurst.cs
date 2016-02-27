@@ -12,8 +12,8 @@ public class SpeedBurst : Card {
 	
 	public override void Play ()
 	{
-		gameControl.AddMoves (3);
-		gameControl.AddPlays (1);
+		S.GameControlInst.AddMoves (3);
+		S.GameControlInst.AddPlays (1);
 		
 		base.Play ();
 	}

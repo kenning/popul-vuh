@@ -12,7 +12,7 @@ public class BookOfHistory : Card {
 	}
 
 	public override void Play () {
-		gameControl.CardsToTarget = 1;
+		S.GameControlInst.CardsToTarget = 1;
 
 		gameControlGUI.ForceDim ();
 		gameControlGUI.SetTooltip("Pick a card to be played twice.");
@@ -22,7 +22,7 @@ public class BookOfHistory : Card {
 	}
 
 	public override void AfterCardTargetingCallback() {
-		foreach(GameObject tempGO in gameControl.TargetedCards){
+		foreach(GameObject tempGO in S.GameControlInst.TargetedCards){
 			Card tempCard = tempGO.GetComponent<Card>();
 
 //			if(tempCard.CardAction == CardActionTypes.TargetCard) {

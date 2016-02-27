@@ -11,11 +11,11 @@ public class CornDog : Card {
 	}
 
 	public override void Play () {
-		gameControl.Draw ();
-		gameControl.Draw ();
-		gameControl.AddPlays (1);
+		S.GameControlInst.Draw ();
+		S.GameControlInst.Draw ();
+		S.GameControlInst.AddPlays (1);
 
-		gameControl.CardsToTarget = 2;
+		S.GameControlInst.CardsToTarget = 2;
 
 		gameControlGUI.ForceDim();
 		gameControlGUI.SetTooltip("Pick two cards to discard.");
@@ -24,7 +24,7 @@ public class CornDog : Card {
 	}
 
 	public override void AfterCardTargetingCallback() {
-		foreach(GameObject tempGO in gameControl.TargetedCards){
+		foreach(GameObject tempGO in S.GameControlInst.TargetedCards){
 			Card tempCard = tempGO.GetComponent<Card>();
 			tempCard.Discard();
 		}

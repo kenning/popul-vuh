@@ -11,9 +11,9 @@ public class WellDoneSteak : Card {
 	}
 	
 	public override void Play () {
-		gameControl.CardsToTarget = 1;
+		S.GameControlInst.CardsToTarget = 1;
 
-		gameControl.TargetSquareCallback = this;
+		S.GameControlInst.TargetSquareCallback = this;
 		
 		gameControlGUI.SetTooltip("Please select a card to burn.");
 		
@@ -23,14 +23,14 @@ public class WellDoneSteak : Card {
 	}
 	
 	public override void AfterCardTargetingCallback() {
-		foreach(GameObject tempGO in gameControl.TargetedCards){
+		foreach(GameObject tempGO in S.GameControlInst.TargetedCards){
 			Card tempCard = tempGO.GetComponent<Card>();
 			tempCard.Burn();
 		}
 		
-		gameControl.Draw ();
-		gameControl.Draw ();
-		gameControl.AddPlays (1);
+		S.GameControlInst.Draw ();
+		S.GameControlInst.Draw ();
+		S.GameControlInst.AddPlays (1);
 
 		base.AfterCardTargetingCallback ();
 	}

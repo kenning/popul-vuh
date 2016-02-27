@@ -7,7 +7,6 @@ public class GodChoiceMenu : MonoBehaviour {
 	// There is something bugged in this menu, and it makes the game unplayable if you have unlocked all gods.
 
 	public bool[] GodChoiceSelection = new bool[7];
-	GameControl gameControl;
 	ShopControl shopControl;
 	ShopControlGUI shopControlGUI;
 	MenuControl menuControl;
@@ -16,7 +15,6 @@ public class GodChoiceMenu : MonoBehaviour {
 
 	void Start() {
 		useGUILayout = false;
-		gameControl = gameObject.GetComponent<GameControl> ();
 		shopControl = gameObject.GetComponent<ShopControl> ();
 		shopControlGUI = gameObject.GetComponent<ShopControlGUI> ();
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();
@@ -26,9 +24,9 @@ public class GodChoiceMenu : MonoBehaviour {
 
 	void startGameOrGoToNextLevel() {
 		if (!MainMenu.InGame) {
-			gameControl.BeginGame ();
+			S.GameControlInst.BeginGame ();
 		} else {
-			gameControl.StartNewLevel ();
+			S.GameControlInst.StartNewLevel ();
 		}
 	}
 

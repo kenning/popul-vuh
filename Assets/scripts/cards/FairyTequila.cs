@@ -12,7 +12,7 @@ public class FairyTequila : Card {
 	}
 	
 	public override void Play () {
-		gameControl.CardsToTarget = 1;
+		S.GameControlInst.CardsToTarget = 1;
 
 		gameControlGUI.ForceDim();
 		gameControlGUI.SetTooltip("Please select a discarded card to return to your hand.");
@@ -22,8 +22,8 @@ public class FairyTequila : Card {
 	
 	public override void AfterCardTargetingCallback() {
 
-		foreach(GameObject tempGO in gameControl.TargetedCards){
-			gameControl.Return(tempGO);
+		foreach(GameObject tempGO in S.GameControlInst.TargetedCards){
+			S.GameControlInst.Return(tempGO);
 		}
 		
 //		ReallowEveryInputAfterDiscardOrBurn();

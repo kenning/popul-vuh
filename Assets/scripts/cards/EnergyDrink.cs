@@ -11,8 +11,8 @@ public class EnergyDrink : Card {
 	}
 	
 	public override void Play () {
-		gameControl.AddPlays (3);
-		gameControl.Draw ();
+		S.GameControlInst.AddPlays (3);
+		S.GameControlInst.Draw ();
 
 		base.Play ();
 	}

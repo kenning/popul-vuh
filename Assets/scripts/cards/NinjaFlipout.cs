@@ -13,7 +13,7 @@ public class NinjaFlipout : Card {
 	public override void Play ()
 	{
 		int range = -1;
-		for (var i = gameControl.Hand.IndexOf(gameObject); i < gameControl.Hand.Count; i++) {
+		for (var i = S.GameControlInst.Hand.IndexOf(gameObject); i < S.GameControlInst.Hand.Count; i++) {
 			range++;
 			if(range == 3) break;
 		}

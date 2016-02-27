@@ -8,8 +8,6 @@ public class ShopGridCardCanvas : MonoBehaviour {
 
 	bool initialized = false;
 
-	GameControl gameControl;
-
 	ShopControlGUI shopControlGUI;
 
 	ShopGridCanvas shopGridCanvas;
@@ -50,7 +48,6 @@ public class ShopGridCardCanvas : MonoBehaviour {
 
 		GameObject gamecontroller = GameObject.FindGameObjectWithTag("GameController");
 		shopControlGUI = gamecontroller.GetComponent<ShopControlGUI>();
-		gameControl = gamecontroller.GetComponent<GameControl>();
 		shopGridCanvas = gameObject.transform.parent.parent.GetComponent<ShopGridCanvas>();
 		shopControl = gamecontroller.GetComponent<ShopControl>();
 
@@ -203,10 +200,10 @@ public class ShopGridCardCanvas : MonoBehaviour {
 		costBarDescription.gameObject.transform.parent.gameObject.SetActive(false);
 		boughtThisCardDialog.gameObject.SetActive(true);
 
-		if (gameControl.Dollars >= thisCard.Cost) {
+		if (S.GameControlInst.Dollars >= thisCard.Cost) {
 			string tempString = thisCard.CardName.ToString ();
-			gameControl.Deck.Add (tempString);
-			gameControl.AddDollars (-thisCard.Cost);
+			S.GameControlInst.Deck.Add (tempString);
+			S.GameControlInst.AddDollars (-thisCard.Cost);
 
 			if (SaveDataControl.TryToUnlockCard (thisCard)) {
 				boughtThisCardText.text = ("Added " + thisCard.God.ToString () + 

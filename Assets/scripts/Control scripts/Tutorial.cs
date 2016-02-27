@@ -6,7 +6,8 @@ public class Tutorial : MonoBehaviour {
 
     //progress variables. tutorial level goes from 1-6.
 	public static int TutorialLevel = 0;
-
+    
+    GameControlGUI gameControlGUI;
 	MenuControl menuControl;
 
     public string TutorialMessage = "";
@@ -32,8 +33,6 @@ public class Tutorial : MonoBehaviour {
 	GUIStyleLibrary styleLibrary;
 
     ClickControl clickControl;
-    GameControl gameControl;
-	GameControlGUI gameControlGUI;
 
     public static bool PlayedACardLevel7 = false;
 
@@ -47,7 +46,6 @@ public class Tutorial : MonoBehaviour {
     public void Initialize()
     {
         clickControl = gameObject.GetComponent<ClickControl>();
-        gameControl = gameObject.GetComponent<GameControl>();
     }
 
     public void OnGUI()
@@ -194,16 +192,16 @@ public class Tutorial : MonoBehaviour {
             gameObject.GetComponent<GridControl>().CancelInvoke();
 
 			gameControlGUI.Dim(false);
-			gameControl.DeleteAllCards();
-			List<string> deck = gameControl.Deck;
+			S.GameControlInst.DeleteAllCards();
+			List<string> deck = S.GameControlInst.Deck;
             deck.Add("Wooden Pike");
             deck.Add("Wooden Pike");
             deck.Add("Iron Macana");
             deck.Add("Iron Macana");
 			GameObject.Find("Hand").transform.localPosition = new Vector3(-0.7f, 0, 0);
             int count = deck.Count;
-            for (int i = 0; i < count; i++) { gameControl.Draw(); }
-            gameControl.AddPlays(1);
+            for (int i = 0; i < count; i++) { S.GameControlInst.Draw(); }
+            S.GameControlInst.AddPlays(1);
 
             clickControl.DisallowEveryInput();
             clickControl.AllowNewPlayInput = true;
@@ -225,9 +223,9 @@ public class Tutorial : MonoBehaviour {
 				Destroy(en);
 			}
 			
-			gameControl.DeleteAllCards();
+			S.GameControlInst.DeleteAllCards();
 			
-			List<string> deck = gameControl.Deck;
+			List<string> deck = S.GameControlInst.Deck;
             deck.Add("Apple");
             deck.Add("Coffee");
             deck.Add("Cloth Shoes");
@@ -235,10 +233,10 @@ public class Tutorial : MonoBehaviour {
             int count = deck.Count;
 			// this is ugly but it works
 			GameObject.Find("Hand").transform.localPosition = new Vector3(-0.7f, 0, 0);
-            for (int i = 0; i < count; i++) { gameControl.Draw(); }
+            for (int i = 0; i < count; i++) { S.GameControlInst.Draw(); }
             deck.Add("Quick Prayer");
 
-            gameControl.AddPlays(4);
+            S.GameControlInst.AddPlays(4);
 
             clickControl.DisallowEveryInput();
             clickControl.AllowNewPlayInput = true;

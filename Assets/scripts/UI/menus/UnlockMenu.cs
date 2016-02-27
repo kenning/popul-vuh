@@ -13,8 +13,8 @@ public class UnlockMenu : MonoBehaviour {
 
 	void Awake() {
 		useGUILayout = false;
-//		GameObject gameController = GameObject.FindGameObjectWithTag ("GameController");
-//		shopControl = gameController.GetComponent<ShopControl>();
+//		GameObject S.GameControlInst.er = GameObject.FindGameObjectWithTag ("GameController");
+//		shopControl = S.GameControlInst.er.GetComponent<ShopControl>();
 	}
 
 	public void ShowMenu() {

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class ShopControl : MonoBehaviour {
 
-	GameControl gameControl;
 	ClickControl clickControl;
 	ShopControlGUI shopControlGUI;
 
@@ -38,7 +37,6 @@ public class ShopControl : MonoBehaviour {
 	
 
     public void Initialize () {
-		gameControl = gameObject.GetComponent<GameControl>();
 		clickControl =  gameObject.GetComponent<ClickControl>();
 		library =  gameObject.GetComponent<CardLibrary>();
 		goalLibrary = gameObject.GetComponent<GoalLibrary> ();
@@ -92,13 +90,13 @@ public class ShopControl : MonoBehaviour {
 		int[] finalScores = FinalScores ();
 		for(int i = 0; i < Goals.Length; i++) {
 
-			if(finalScores[i] == 1) gameControl.AddDollars(1);
+			if(finalScores[i] == 1) S.GameControlInst.AddDollars(1);
 			if(finalScores[i] >= 2) CardsToBuyFrom[i].Add(library.PullCardFromPack(Goals[i].God, Card.Rarity.Silver));
-			if(finalScores[i] == 2) gameControl.AddDollars(2);
+			if(finalScores[i] == 2) S.GameControlInst.AddDollars(2);
 			if(finalScores[i] >= 3) CardsToBuyFrom[i].Add(library.PullCardFromPack(Goals[i].God, Card.Rarity.Gold));
-			if(finalScores[i] == 3) gameControl.AddDollars(3);
+			if(finalScores[i] == 3) S.GameControlInst.AddDollars(3);
 			if(finalScores[i] >= 4) CardsToBuyFrom[i].Add(library.PullCardFromPack(Goals[i].God, Card.Rarity.Gold));
-			if(finalScores[i] == 4) gameControl.AddDollars(5);
+			if(finalScores[i] == 4) S.GameControlInst.AddDollars(5);
 		}
 
 		TurnOnShopGUI();

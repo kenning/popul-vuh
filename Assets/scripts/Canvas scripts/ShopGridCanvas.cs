@@ -9,7 +9,6 @@ public class ShopGridCanvas : MonoBehaviour {
 
 	ShopAndGoalParentCanvas shopAndGoalParentCanvas;
 	ShopControlGUI shopControlGUI;
-	GameControl gameControl;
 	List<LibraryCard> libraryCards;
 	
 	//This is a list of the card scripts in the grid

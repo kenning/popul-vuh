@@ -12,7 +12,7 @@ public class DeepPrayer : Card {
 	
 	public override void Play ()
 	{
-		gameControl.AddDollars (2);
+		S.GameControlInst.AddDollars (2);
 
 		base.Play ();
 	}

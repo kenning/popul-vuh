@@ -12,8 +12,8 @@ public class TigerStance : Card {
 	
 	public override void Play () {
 
-		gameControl.AddMoves (1);
-		gameControl.AddPlays (1);
+		S.GameControlInst.AddMoves (1);
+		S.GameControlInst.AddPlays (1);
 		AddToTriggerList();
 
 		base.Play ();
@@ -21,8 +21,8 @@ public class TigerStance : Card {
 	
 	public override void EventCall(string s) {
 		if(s == "Enemy Death") {
-			gameControl.AddMoves(1);
-			gameControl.AddPlays(1);
+			S.GameControlInst.AddMoves(1);
+			S.GameControlInst.AddPlays(1);
 
 			eventGUIControl.AddGUIString("Move +1! Play +1!");
 		}		

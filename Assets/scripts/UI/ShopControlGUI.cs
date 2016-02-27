@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class ShopControlGUI : MonoBehaviour {
 
 	ShopControl shopControl;
-	GameControl gameControl;
 	ClickControl clickControl;
 	GameControlGUI gameControlGUI;
 	GUIStyleLibrary styleLibrary;
@@ -48,7 +47,6 @@ public class ShopControlGUI : MonoBehaviour {
 	
 	void Start () {
 		useGUILayout = false;
-		gameControl = gameObject.GetComponent<GameControl> ();
 		shopControl = gameObject.GetComponent<ShopControl> ();
 		clickControl = gameObject.GetComponent<ClickControl> ();
 		styleLibrary = gameObject.GetComponent<GUIStyleLibrary> ();

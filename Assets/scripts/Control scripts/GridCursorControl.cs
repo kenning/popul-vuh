@@ -3,10 +3,9 @@ using System.Collections;
 
 public class GridCursorControl : MonoBehaviour {
 
-	GameControl gameControl;
-	GridControl gridControl;
 	ShopControl shopControl;
 	ClickControl clickControl;
+    GridControl gridControl;
 	GridCursorControlGUI gridCursorControlGUI;
 	GameControlGUI gameControlGUI;
 	public static bool cursorActionSet = false;
@@ -27,7 +26,6 @@ public class GridCursorControl : MonoBehaviour {
 	string moveDirection = null;
 
 	void Start() {
-		gameControl = gameObject.GetComponent<GameControl> ();
 		gridControl = gameObject.GetComponent<GridControl> ();
 		shopControl = gameObject.GetComponent<ShopControl> ();
 		clickControl = gameObject.GetComponent<ClickControl> ();
@@ -101,8 +99,8 @@ public class GridCursorControl : MonoBehaviour {
 	public void ReleaseCursor() {
 		switch (currentCursorAction) {
 		case CursorActions.StairMove:
-			if(gameControl.MovesLeft > 0){
-				gameControl.AddMoves(-1);
+			if(S.GameControlInst.MovesLeft > 0){
+				S.GameControlInst.AddMoves(-1);
 				shopControl.GoalCheck("Move X times in one turn");
 				shopControl.GoalCheck("Don't move X turns in a row");
 				shopControl.GoalCheck("Don't deal damage or move X turns in a row");
@@ -138,15 +136,15 @@ public class GridCursorControl : MonoBehaviour {
 			{
 				if(square.XCoor == 0 && square.YCoor == -2) 
 				{
-					gameControl.gameObject.GetComponent<Tutorial>().TutorialTrigger(5);
+					S.GameControlInst.gameObject.GetComponent<Tutorial>().TutorialTrigger(5);
 				}
 				else 
 				{
-					gameControl.gameObject.GetComponent<Tutorial>().TutorialMessage = "Just tap the enemy. Kill it!";
+					S.GameControlInst.gameObject.GetComponent<Tutorial>().TutorialMessage = "Just tap the enemy. Kill it!";
 					return;
 				}
 			}
-			gameControl.TargetSquareCallback.TargetSquareCalledThis(square.XCoor, square.YCoor);
+			S.GameControlInst.TargetSquareCallback.TargetSquareCalledThis(square.XCoor, square.YCoor);
 			break;
 		case CursorActions.None:
 			break;

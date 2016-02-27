@@ -12,7 +12,7 @@ public class Goulash : Card {
 	}
 	
 	public override void Play () {
-		gameControl.CardsToTarget = 1;
+		S.GameControlInst.CardsToTarget = 1;
 
 		gameControlGUI.ForceDim();
 		gameControlGUI.SetTooltip("Pick a card to discard.");
@@ -21,17 +21,17 @@ public class Goulash : Card {
 	}
 	
 	public override void AfterCardTargetingCallback() {
-		foreach(GameObject tempGO in gameControl.TargetedCards){
+		foreach(GameObject tempGO in S.GameControlInst.TargetedCards){
 			Card tempCard = tempGO.GetComponent<Card>();
 			if(tempCard.ThisRarity == Rarity.Paper) {
-				gameControl.Draw();
-				gameControl.Draw();
-				gameControl.Draw();
-				gameControl.AddPlays(1);
+				S.GameControlInst.Draw();
+				S.GameControlInst.Draw();
+				S.GameControlInst.Draw();
+				S.GameControlInst.AddPlays(1);
 			}
 			else {
-				gameControl.Draw();
-				gameControl.AddPlays(3);
+				S.GameControlInst.Draw();
+				S.GameControlInst.AddPlays(3);
 			}
 			tempCard.Discard();
 		}

@@ -11,9 +11,9 @@ public class Donut : Card {
 	}
 	
 	public override void Play () {
-		gameControl.Draw ();
+		S.GameControlInst.Draw ();
 
-		gameControl.CardsToTarget = 1;
+		S.GameControlInst.CardsToTarget = 1;
 
 		gameControlGUI.ForceDim();
 		gameControlGUI.SetTooltip("Pick a card to discard.");
@@ -24,13 +24,13 @@ public class Donut : Card {
 	}
 	
 	public override void AfterCardTargetingCallback() {
-		foreach(GameObject tempGO in gameControl.TargetedCards){
+		foreach(GameObject tempGO in S.GameControlInst.TargetedCards){
 			Card tempCard = tempGO.GetComponent<Card>();
 			tempCard.Discard();
 		}
 		
-		gameControl.AddPlays (1);
-		gameControl.AddMoves (2);
+		S.GameControlInst.AddPlays (1);
+		S.GameControlInst.AddMoves (2);
 		
 		base.AfterCardTargetingCallback ();
 	}
