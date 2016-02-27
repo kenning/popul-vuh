@@ -9,3 +9,12 @@ Need to fix the amateurish GameObject.FindGameObjectByTag("GameController") shit
 
 when you buy cards, canvas $ doesn't update
 
+
+
+/// New ui
+click on the board: start moving the camera around. no icon or anything. 
+
+click on the player: info about the player
+click on an enemy: info about the enemy
+
+click on a card with targetsquares: unselect it
