@@ -148,7 +148,6 @@ public class Enemy : MonoBehaviour {
 
 	public virtual void TakeTurn()
 	{
-        Debug.Log("taking turn!");
 		if(StunnedForXTurns != 0) 
         {
             Debug.Log("stunned");

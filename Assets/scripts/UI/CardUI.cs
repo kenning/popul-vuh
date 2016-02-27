@@ -3,6 +3,20 @@ using System.Collections;
 
 public class CardUI : MonoBehaviour {
 
+    Vector3 normalLocalScale = new Vector3(.82f, .85f, .8f);
+
+    public enum AnimatingType 
+    {
+        none,
+        drawanimating,
+        discardanimating,
+        burnanimating,
+        shuffleanimating,
+        otheranimating
+    };
+    
+    AnimatingType currentAnimatingType;
+
 	Card card;
 	GameControl gameControl;
 	GUIStyleLibrary styleLibrary;
@@ -11,21 +25,15 @@ public class CardUI : MonoBehaviour {
 	//Animation variables
 	GameObject discardPileObj;
 
-	bool Animating = false;
-	bool DrawAnimating = false;
-	bool DiscardAnimating = false;
-	bool BurnAnimating = false; 
-	bool ShuffleAnimating = false;
 	Transform DeckTransform;
 	GameObject CardBackObject;
 //	Sprite CardBackSprite;
-	float DrawStartTime;
-	float MoveUpStartTime;
+	float AnimationStartTime;
+	float DiscardMoveUpStartTime;
 	Vector3 StartPosition;
 	Vector3 HighestPoint;
 	bool BehindPlayBoard = false;
-	Vector3 DrawEndPosition;
-	Vector3 DiscardEndPosition;
+	Vector3 AnimationEndPosition;
 	ButtonAnimate PlayButton;
 	SpriteRenderer[] SRenderers;
 	MeshRenderer[] meshrenderers;
@@ -42,42 +50,24 @@ public class CardUI : MonoBehaviour {
 	int FontVariableMaxMiniRulesLength = 15;
 	int DisplayFontVariableRulesSizeRatio = 3;
 	int SmallCardFontVariableRulesSizeRatio = 10;
+    float drawAnimationLength = .48f;
 
 	void Start() {
 		useGUILayout = false;
+        // Not sure about this...
+        gameObject.transform.localScale = normalLocalScale;
 	}
 
 	//////////////////////////////////////
-	/// Universal card methods: animation components
+	/// Animation start methods (+ finishdiscardanimate)
 	//////////////////////////////////////
-
-	public void TargetAnimate() {
-		transform.Translate(new Vector3(0f, .25f, 0f));
-	}
-
-	public void UntargetAnimate() {
-		transform.Translate(new Vector3(0f, -.25f, 0f));
-	}
-
-	public void ShineAnimate()
-	{
-		ShineAnim.Animate();
-	}
-	
-	public void GlowAnimate(bool turnOn)
-	{
-		if(Glow.enabled != turnOn) Glow.enabled = turnOn;
-	}
-
-	public void ErrorAnimate() {
-		PlayButton.ErrorAnimation();
-	}
 
 	public void DrawAnimate(int position) {
 		gameObject.transform.parent = gameControl.handObj.transform;
 		gameObject.transform.localPosition = new Vector3(-2.7f, .5f, 0);
 		
-		DrawAnimating = true;
+		currentAnimatingType = AnimatingType.drawanimating;
+        
 		CardBackObject =(GameObject)GameObject.Instantiate(Resources.Load("prefabs/Drawn card prefab"));
 		CardBackObject.transform.parent = gameObject.transform;
 		CardBackObject.transform.localPosition = new Vector3(0, 0, 0);
@@ -90,108 +80,64 @@ public class CardUI : MonoBehaviour {
 	}
 	
 	public void MoveAnimate(int position) {
-		
-		int index = card.HandIndex();
-		
-		foreach(MeshRenderer meshrenderer in meshrenderers){
-			meshrenderer.sortingLayerName = "Card";
-			meshrenderer.sortingOrder = 101-index*2;
-		}
-		
-		foreach(SpriteRenderer SRenderer in SRenderers) {
-			if(SRenderer.gameObject.name == "rarity" | 
-			   SRenderer.gameObject.name == "god icon" | 
-			   SRenderer.gameObject.name == "picture" | 
-			   SRenderer.gameObject.name == "aoe icon" | 
-			   SRenderer.gameObject.name == "range icon" ) {
-				SRenderer.sortingOrder = 101-index*2;
-			}
-			//this catches the card background VVV
-			else if (SRenderer.gameObject.name == "glow" | SRenderer.gameObject.name == "shine animation")
-			{
-				//it's already at sorting order 3000. don't do anything
-			}
-			else {
-				SRenderer.sortingOrder = 100-index*2;
-			}
-		}
-		DrawEndPosition = new Vector3((position)*1.55f - 1f, .1f, 0);
-		Animating = true;
-		DrawStartTime = Time.time;
+		reorder(card.HandIndex(), false);
+   
+		transform.localScale = normalLocalScale;
+   
+		AnimationEndPosition = new Vector3((position)*1.55f - 1f, .1f, 0);
+		if (currentAnimatingType != AnimatingType.drawanimating) {
+            currentAnimatingType = AnimatingType.otheranimating;
+        } 
+		AnimationStartTime = Time.time;
 	}
 
 	public void MoveAnimateWhileDiscarded(int position, bool expand ) {
 		if(expand) {
-			DrawEndPosition = new Vector3(0f,(position) * -.2f + -.5f, 0);
+			AnimationEndPosition = new Vector3(0f,(position) * -.2f + -.5f, 0);
 		} else {
-			DrawEndPosition = new Vector3(0f,(position) * -.5f + -.5f, 0);
+			AnimationEndPosition = new Vector3(0f,(position) * -.5f + -.5f, 0);
 		}
-		Animating = true;
-		DrawStartTime = Time.time;
+		currentAnimatingType = AnimatingType.otheranimating;
+		AnimationStartTime = Time.time;
 	}
 
 	public void ShuffleMoveAnimate(Transform Deck) {
 		DeckTransform = Deck;
 		transform.parent = gameControl.handObj.transform;
-		DrawStartTime = Time.time;
-		ShuffleAnimating = true;
+		AnimationStartTime = Time.time;
+		currentAnimatingType = AnimatingType.shuffleanimating;
 	}
 
 	public void DiscardAnimate() {
-		MoveUpStartTime = Time.time;
-		DiscardAnimating = true;
+		DiscardMoveUpStartTime = Time.time;
+		currentAnimatingType = AnimatingType.discardanimating;
 		StartPosition = transform.localPosition;
 		HighestPoint = StartPosition;
 		HighestPoint.y = StartPosition.y + 2f;
 	}
 
 	public void FinishDiscardAnimate(bool ActuallyDiscarding) {
-		DiscardAnimating = false;
+		currentAnimatingType = AnimatingType.none;
 		if(ActuallyDiscarding) {
-            Debug.Log("actually discarding, finishing the animation");
-			Animating = false;
-			BurnAnimating = false;
-			DrawAnimating = false;
-			ShuffleAnimating = false;
-			
+
 			int index = gameControl.Discard.IndexOf(gameObject);
 			
 			transform.parent = discardPileObj.transform;
-			transform.localPosition = new Vector3(0,(index+1) * -.2f, 0);
-			
-			SpriteRenderer[] SRenderers = gameObject.GetComponentsInChildren<SpriteRenderer>();
-			foreach(SpriteRenderer SRenderer in SRenderers) {
-				if(SRenderer.gameObject.name == "rarity" | 
-				   SRenderer.gameObject.name == "glow" | 
-				   SRenderer.gameObject.name == "god icon" | 
-				   SRenderer.gameObject.name == "picture" |
-				   SRenderer.gameObject.name == "aoe icon" | 
-				   SRenderer.gameObject.name == "range icon" ) {
-					SRenderer.sortingLayerName = "Discard and deck";
-					SRenderer.sortingOrder = 101+index*2;
-				}
-				else {
-					SRenderer.sortingLayerName = "Discard and deck";
-					SRenderer.sortingOrder = 100+index*2;
-				}
-			}
-			MeshRenderer[] meshes = gameObject.GetComponentsInChildren<MeshRenderer>();
-			foreach(MeshRenderer mesh in meshes) {
-				mesh.sortingLayerName = "Discard and deck";
-				mesh.sortingOrder = 101+index*2;
-			}
+			transform.localPosition = new Vector3(0,(index+1) * -.5f, 0);
+
+            reorder(index, true);			
 		}
 	}
 
 	public void TuckAnimate() {
-		DrawEndPosition = new Vector3(-2.7f, 3f, 0);
-		Animating = true;
-		DrawStartTime = Time.time;
+		AnimationEndPosition = new Vector3(-2.7f, 3f, 0);
+		currentAnimatingType = AnimatingType.otheranimating;
+		AnimationStartTime = Time.time;
 	}
 
 	public void BurnAnimate() {
-		DrawStartTime = Time.time;
-		BurnAnimating = true;
+		AnimationStartTime = Time.time;
+	    currentAnimatingType = AnimatingType.burnanimating;
 	}
 
 	public void PeekAnimate(int position, int maxPositions) {
@@ -219,10 +165,8 @@ public class CardUI : MonoBehaviour {
 	}
 
 	public void TryToMoveAnimate () {
-		if(!card.Discarded && 
-		   !BurnAnimating && 
-		   !card.Peeked && 
-		   !DiscardAnimating && 
+		if(currentAnimatingType == AnimatingType.none && 
+           !card.Discarded && 
 		   !card.ForcingDiscardOfThis) {
 			
 			int i = gameControl.Hand.IndexOf(gameObject);
@@ -231,10 +175,155 @@ public class CardUI : MonoBehaviour {
 
 	}
 		
+    //////////////////////////////////////
+	/// Update
 	//////////////////////////////////////
-	/// delete this header later and move initialize to the top
-	//////////////////////////////////////
+	public virtual void Update() {
+		if(currentAnimatingType == AnimatingType.shuffleanimating) {
+			if(Time.time > AnimationStartTime + .48f) {
+                currentAnimatingType = AnimatingType.none;
+				
+				gameObject.GetComponent<SpriteRenderer>().enabled = false;
+				return;
+			}
+			else {
+				float time = Time.time - AnimationStartTime;
+				transform.position = Vector3.Lerp(transform.position, DeckTransform.position, time);
+			}
+		}
+		else if(currentAnimatingType == AnimatingType.discardanimating) {
+			// Card is moving upwards
+			if(DiscardMoveUpStartTime + .25f > Time.time) {
+				float time =((Time.time-DiscardMoveUpStartTime));
+				transform.localPosition = Vector3.Lerp(transform.localPosition, HighestPoint, time*4);
+				return;
+			}
+			// Card switches to moving downwards
+			else if(( DiscardMoveUpStartTime + .5f > Time.time ) &&(Time.time > DiscardMoveUpStartTime + .25f)) {  
+				if(!BehindPlayBoard &&(card.DiscardWhenPlayed | card.ForcingDiscardOfThis)){ 
+					SpriteRenderer[] spriterenderererers = GetComponentsInChildren<SpriteRenderer>();
+					foreach(SpriteRenderer sr in spriterenderererers) {
+						sr.sortingLayerName = "Field background";
+						if (sr.gameObject.name != "rarity" 
+						    && sr.gameObject.name != "glow" 
+						    && sr.gameObject.name != "god icon" 
+						    && sr.gameObject.name != "picture" 
+						    && sr.gameObject.name != "aoe icon"  
+						    && sr.gameObject.name != "range icon" )
+						{
+							sr.sortingOrder = 0;
+						}
+						else
+						{
+							sr.sortingOrder = 1;
+						}
+					}
+					MeshRenderer[] meshrenderers = GetComponentsInChildren<MeshRenderer>();
+					foreach(MeshRenderer meshrenderer in meshrenderers){
+						meshrenderer.sortingLayerName = "Field background";
+						meshrenderer.sortingOrder = 1;
+					}
+					
+					BehindPlayBoard = true;
+					StartPosition = new Vector3(StartPosition.x, StartPosition.y, StartPosition.z);
+					return;
+				}
+				float time =((Time.time-DiscardMoveUpStartTime - .25f));
+				transform.localPosition = Vector3.Lerp(transform.localPosition, StartPosition, time*4);
+				return;
+			}
+			else if( Time.time > DiscardMoveUpStartTime + .5f ) {
+				FinishDiscardAnimate(card.DiscardWhenPlayed | card.ForcingDiscardOfThis);
+                card.FinishDiscard();
+			}
+		} else if(currentAnimatingType == AnimatingType.drawanimating) {
+			if(CardBackObject != null) {
+                // Card distorts towards x scale of zero ("turns around" to become less visible to camera)
+				gameObject.transform.localScale = Vector3.Lerp(new Vector3(gameObject.transform.localScale.x, .85f, 1f), new Vector3(0, .85f, 1f), Time.time-AnimationStartTime);
+				
+				if(Time.time >= AnimationStartTime + (drawAnimationLength/2)) {
+                    // Halfway through the animation, the back of the card gets destroyed as the card "flips around"
+					Destroy(CardBackObject);
+				}
+			}
+			else {
+                // Card distorts back to the full x scale ("turns back to face camera")
+				gameObject.transform.localScale = Vector3.Lerp(gameObject.transform.localScale, normalLocalScale, Time.time-AnimationStartTime);
+			}
+			
+			if(Time.time > AnimationStartTime + drawAnimationLength) {
+				//this ends the animation
+				currentAnimatingType = AnimatingType.none;
+				//transform.localScale = normalLocalScale;
+				
+				transform.localPosition = AnimationEndPosition;
+				return;
+			}
+			else {
+				float time = Time.time - AnimationStartTime;
+				
+				transform.localPosition = Vector3.Lerp(transform.localPosition, AnimationEndPosition, time);
+			}
+		}
+		else if(currentAnimatingType == AnimatingType.burnanimating) {
+			float fade = Time.time - AnimationStartTime;
+			foreach(SpriteRenderer SRenderer in SRenderers) {
+				SRenderer.color = new Color(1f, 1f, 1f, 1-fade*2);
+			}
+			if(AnimationStartTime + .5f < Time.time) {
+				card.DestroyThisGameObject();
+			}
+		}
+		else if(currentAnimatingType == AnimatingType.otheranimating) {
+			
+			if(Time.time > AnimationStartTime + .48f) {
+				//this ends the animation
+				currentAnimatingType = AnimatingType.none;
+				transform.localPosition = AnimationEndPosition;
+				if(!card.Discarded) {
+					transform.localScale = normalLocalScale;
+				}
+				
+				return;
+			}
+			else if(Time.time > AnimationStartTime + .25f) {
+				//midpoint of animation
+				float time = Time.time - AnimationStartTime;
+				transform.localPosition = Vector3.Lerp(transform.localPosition, AnimationEndPosition, time);
+			}
+			else {
+				float time = Time.time - AnimationStartTime;
+				transform.localPosition = Vector3.Lerp(transform.localPosition, AnimationEndPosition, time);
+			}
+		}
+	}
 
+    ///////////////////////////////
+    /// Delegation utilities
+    ///////////////////////////////
+    
+	public void TargetAnimate() {
+		transform.Translate(new Vector3(0f, .25f, 0f));
+	}
+
+	public void UntargetAnimate() {
+		transform.Translate(new Vector3(0f, -.25f, 0f));
+	}
+
+	public void ShineAnimate() {
+		ShineAnim.Animate();
+	}
+	
+	public void GlowAnimate(bool turnOn)
+	{
+		if(Glow.enabled != turnOn) Glow.enabled = turnOn;
+	}
+
+	public void ErrorAnimate() {
+		PlayButton.ErrorAnimation();
+	}
+
+    /// A very long and boring initialize method
 	public void Initialize (GameObject gameController, bool alreadyDiscarded) {
         //TODO do i need alreadyDiscarded here?
 		card = gameObject.GetComponent<Card> ();
@@ -363,133 +452,37 @@ public class CardUI : MonoBehaviour {
 		}
 
 	}
+    
+    void reorder (int index, bool discarding) {
+        
+        if (discarding) index = -index;
+        
+		foreach(MeshRenderer meshrenderer in meshrenderers){
+            if (discarding) meshrenderer.sortingLayerName = "Discard and deck";
+            else meshrenderer.sortingLayerName = "Card";            
+            
+			meshrenderer.sortingOrder = 101-index*2;
+		}
+		
+		foreach(SpriteRenderer SRenderer in SRenderers) {
+            if (discarding) SRenderer.sortingLayerName = "Discard and deck";
+            else SRenderer.sortingLayerName = "Card";            
 
-	
-	//////////////////////////////////////
-	/// Update: just for animations
-	//////////////////////////////////////
-	
-	public virtual void Update() {
-		if(ShuffleAnimating) {
-			if(Time.time > DrawStartTime + .48f) {
-				Animating = false;
-				DrawAnimating = false;	
-				ShuffleAnimating = false;
-				
-				gameObject.GetComponent<SpriteRenderer>().enabled = false;
-				return;
+			if(SRenderer.gameObject.name == "rarity" | 
+			   SRenderer.gameObject.name == "god icon" | 
+			   SRenderer.gameObject.name == "picture" | 
+			   SRenderer.gameObject.name == "aoe icon" | 
+			   SRenderer.gameObject.name == "range icon" ) {
+				SRenderer.sortingOrder = 101-index*2;
+			}
+			//this catches the card background VVV
+			else if (SRenderer.gameObject.name == "glow" | SRenderer.gameObject.name == "shine animation")
+			{
+				//it's already at sorting order 3000. don't do anything
 			}
 			else {
-				float time = Time.time - DrawStartTime;
-				transform.position = Vector3.Lerp(transform.position, DeckTransform.position, time);
+				SRenderer.sortingOrder = 100-index*2;
 			}
 		}
-		else if(DiscardAnimating) {
-			// Card is moving upwards
-			if(MoveUpStartTime + .25f > Time.time) {
-				float time =((Time.time-MoveUpStartTime));
-				transform.localPosition = Vector3.Lerp(transform.localPosition, HighestPoint, time*4);
-				return;
-			}
-			// Card switches to moving downwards
-			else if(( MoveUpStartTime + .5f > Time.time ) &&(Time.time > MoveUpStartTime + .25f)) {  
-				if(!BehindPlayBoard &&(card.DiscardWhenPlayed | card.ForcingDiscardOfThis)){ 
-					SpriteRenderer[] spriterenderererers = GetComponentsInChildren<SpriteRenderer>();
-					foreach(SpriteRenderer sr in spriterenderererers) {
-						sr.sortingLayerName = "Field background";
-						if (sr.gameObject.name != "rarity" 
-						    && sr.gameObject.name != "glow" 
-						    && sr.gameObject.name != "god icon" 
-						    && sr.gameObject.name != "picture" 
-						    && sr.gameObject.name != "aoe icon"  
-						    && sr.gameObject.name != "range icon" )
-						{
-							sr.sortingOrder = 0;
-						}
-						else
-						{
-							sr.sortingOrder = 1;
-						}
-					}
-					MeshRenderer[] meshrenderers = GetComponentsInChildren<MeshRenderer>();
-					foreach(MeshRenderer meshrenderer in meshrenderers){
-						meshrenderer.sortingLayerName = "Field background";
-						meshrenderer.sortingOrder = 1;
-					}
-					
-					BehindPlayBoard = true;
-					StartPosition = new Vector3(StartPosition.x, StartPosition.y, StartPosition.z);
-					return;
-				}
-				float time =((Time.time-MoveUpStartTime - .25f));
-				transform.localPosition = Vector3.Lerp(transform.localPosition, StartPosition, time*4);
-				return;
-			}
-			else if( Time.time > MoveUpStartTime + .5f ) {
-				card.FinishDiscard();
-				return;
-			}
-		}
-		else if(DrawAnimating) {
-			if(CardBackObject != null) {
-				gameObject.transform.localScale = Vector3.Lerp(new Vector3(gameObject.transform.localScale.x, .85f, 1f), new Vector3(0, .85f, 1f), Time.time-DrawStartTime);
-				
-				if(Time.time >= DrawStartTime + .25f) {
-					Destroy(CardBackObject);
-				}
-			}
-			else {
-				gameObject.transform.localScale = Vector3.Lerp(gameObject.transform.localScale, new Vector3(.82f, .85f, .8f), Time.time-DrawStartTime);
-			}
-			
-			if(Time.time > DrawStartTime + .48f) {
-				//this ends the animation
-				Animating = false;
-				DrawAnimating = false;	
-				transform.localScale = new Vector3(.82f, .85f, .8f);
-				
-				transform.localPosition = DrawEndPosition;
-				return;
-			}
-			else {
-				float time = Time.time - DrawStartTime;
-				
-				transform.localPosition = Vector3.Lerp(transform.localPosition, DrawEndPosition, time);
-			}
-		}
-		else if(BurnAnimating) {
-			float fade = Time.time - DrawStartTime;
-			foreach(SpriteRenderer SRenderer in SRenderers) {
-				SRenderer.color = new Color(1f, 1f, 1f, 1-fade*2);
-			}
-			if(DrawStartTime + .5f < Time.time) {
-				card.DestroyThisGameObject();
-			}
-		}
-		else if(Animating) {
-			
-			if(Time.time > DrawStartTime + .48f) {
-				//this ends the animation
-				Animating = false;
-				DrawAnimating = false;	
-				ShuffleAnimating = false;
-				transform.localPosition = DrawEndPosition;
-				if(!card.Discarded) {
-					transform.localScale = new Vector3(.82f, .85f, 0);
-				}
-				
-				return;
-			}
-			else if(Time.time > DrawStartTime + .25f) {
-				//midpoint of animation
-				float time = Time.time - DrawStartTime;
-				transform.localPosition = Vector3.Lerp(transform.localPosition, DrawEndPosition, time);
-			}
-			else {
-				float time = Time.time - DrawStartTime;
-				transform.localPosition = Vector3.Lerp(transform.localPosition, DrawEndPosition, time);
-			}
-		}
-	}
-
+    }
 }

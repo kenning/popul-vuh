@@ -75,6 +75,7 @@ public class Card : MonoBehaviour {
 
     public virtual void Initialize() {Initialize(false);}
 	public virtual void Initialize(bool alreadyDiscarded) {
+        useGUILayout = false;
 
 		GameObject gameController = GameObject.FindGameObjectWithTag("GameController");
 		gameControl = gameController.GetComponent<GameControl>();
@@ -183,6 +184,7 @@ public class Card : MonoBehaviour {
 		if(actuallyDiscarding) {
 			gameControl.Hand.Remove(gameObject);
 			gameControl.Discard.Add(gameObject);
+            Discarded = true;
 			StateSavingControl.Save();
 		}
 
@@ -198,9 +200,6 @@ public class Card : MonoBehaviour {
 	public void FinishDiscard() {
 		Deselect();
 		ForcingDiscardOfThis = false;
-
-		bool actuallyDiscarding = DiscardWhenPlayed | ForcingDiscardOfThis;
-		cardUI.FinishDiscardAnimate (actuallyDiscarding);
 
 		shopControl.GoalCheck("Discard pile has X cards in it");
 		shopControl.GoalCheck("Discard pile has X cards in a row with the same God");

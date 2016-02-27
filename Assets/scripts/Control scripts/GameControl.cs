@@ -413,7 +413,6 @@ public class GameControl : MonoBehaviour
 
     public void EnemyTurn() { EnemyTurn(false);  }
 	public void EnemyTurn(bool startingEnemyTurn) {
-        Debug.Log("EnemyTurn");
         if (!player.alive) return;
 
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
@@ -610,20 +609,8 @@ public class GameControl : MonoBehaviour
 	}
 
 	public void AnimateCardsToCorrectPosition() {
-		gameControlGUI.MoveHandPositionWhenOutOfPlace ();
-
-		GameObject[] allCards = GameObject.FindGameObjectsWithTag("Card");
-		if (allCards != null) {
-			foreach(GameObject cardObject in allCards) {
-				if(cardObject != null) {
-					Card currentCard = cardObject.GetComponent<Card>();
-					if(currentCard != null) {
-						currentCard.cardUI.TryToMoveAnimate();
-					}
-				}
-			}
-		}
-	}
+	   gameControlGUI.AnimateCardsToCorrectPosition();	
+    }
 //	public void AnimateCardsToCorrectPositionInSeconds(float seconds) {
 //		Invoke ("AnimateCardsToCorrectPosition", seconds);
 //	}

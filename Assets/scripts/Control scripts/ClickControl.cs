@@ -368,7 +368,7 @@ public class ClickControl : MonoBehaviour {
 
 					foreach(RaycastHit2D hit in hits) {
 						//AllowInfoInput
-						if(hit.collider.gameObject.name == "Discard pile" && AllowInfoInput) {
+						if(hit.collider.gameObject.name == "Discard pile marker" && AllowInfoInput) {
 							gameControlGUI.FlipDiscard();
 							return;
 						}

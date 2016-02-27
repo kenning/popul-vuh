@@ -141,11 +141,16 @@ public class GameControlGUI : MonoBehaviour {
 			
 			for(int i = 0; i < gameControl.Discard.Count; i++) {
 				CardUI tempcardui = gameControl.Discard[i].GetComponent<CardUI>();
-				tempcardui.MoveAnimateWhileDiscarded(i, true);
+				tempcardui.MoveAnimateWhileDiscarded(i, false);
 			}
 		}
 		else {
-			discard.transform.localPosition = originalDiscardPlacement;
+			discard.transform.localPosition = originalDiscardPlacement;			
+			
+            for(int i = 0; i < gameControl.Discard.Count; i++) {
+				CardUI tempcardui = gameControl.Discard[i].GetComponent<CardUI>();
+				tempcardui.MoveAnimateWhileDiscarded(i, true);
+			}
 		}
 		showingDiscard = !showingDiscard;
 	}
@@ -158,7 +163,7 @@ public class GameControlGUI : MonoBehaviour {
 			foreach(GameObject cardObject in allCards) {
 				if(cardObject != null) {
 					Card currentCard = cardObject.GetComponent<Card>();
-					if(currentCard != null) {
+					if(currentCard != null && !currentCard.Discarded) {
 						currentCard.cardUI.TryToMoveAnimate();
 					}
 				}
