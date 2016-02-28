@@ -13,25 +13,13 @@ public class ClickControl : MonoBehaviour {
 	List<GridUnit> UnitList;
 	GameObject playerObject;
 
-	//dragging variables
-	Vector3 dragOrigin;
-	public bool draggingGameboard = false;
-	public bool draggingHand = false;
-	bool draggingDiscard = false;
-	GameObject arrows;
-
-	//gameboard limits
-	float leftLimit = -1.6f;
-	float rightLimit = 1.6f;
-	float topLimit = -.6f;
-	float bottomLimit = -2f;
-
 	//gridcursorcontrol variables
 	public float lastCursorSetTime = 0;
 
 	//card clicking and display variables
 	public bool cardHasBeenClickedOn = false;
 	public Card cardScriptClickedOn;
+    Vector3 cardClickOrigin;
 	float lastCardClick = 0f;
 
 	//allow bools
@@ -58,7 +46,6 @@ public class ClickControl : MonoBehaviour {
 	// is different from normal. Pretty ugly i know
 	public bool undisplayCardOnClick = false;
 
-	Texture2D SideArrows;
     EventSystem eventSystem;
 	
 	void Start(){
@@ -67,9 +54,6 @@ public class ClickControl : MonoBehaviour {
 
 		playButton = GameObject.Find ("play end button").GetComponent<ButtonAnimate> ();
 
-		arrows =  GameObject.FindGameObjectWithTag("Camera Arrow");
-		SideArrows = (Texture2D)Resources.Load ("sprites/ui/side arrows");
-
 		displayCardCanvas = GameObject.FindGameObjectWithTag("displaycard").GetComponent<DisplayCardCanvas>(); 
         
         eventSystem = GameObject.FindGameObjectWithTag("eventsystem").GetComponent<EventSystem>();
@@ -77,8 +61,6 @@ public class ClickControl : MonoBehaviour {
 
 	void Update () {
 
-		// Resetting things
-		
 		if (Input.GetMouseButtonDown (0)) {
 			S.ShopControlInst.GoalCheck("Touch the screen no more than than X times");
 		}
@@ -87,6 +69,8 @@ public class ClickControl : MonoBehaviour {
 			GridCursorControl.ClickedOffScreen = false;
 		}
 
+		// Resetting things
+		
 		if(S.MenuControlInst.AnyMenuIsUp() | S.ShopControlGUIInst.IgnoreClicking | GridCursorControl.ClickedOffScreen) {
 			return;
 		}
@@ -98,25 +82,15 @@ public class ClickControl : MonoBehaviour {
             } 
         }
 
-		if(!AllowInputUmbrella) {
-			if(displayCardCanvas.CardDisplay) {
-				S.GameControlGUIInst.Undisplay();
-				cardHasBeenClickedOn = false;
-			}
-			if(draggingGameboard) {
-				draggingGameboard = false;
-				arrows.GetComponent<SpriteRenderer>().enabled = false;
-			}
-			if(draggingHand) {
-				draggingHand = false;
-				Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
-			}
+		if(!AllowInputUmbrella || !AllowInfoInput) {
+            S.DragControlInst.StopDragging();
 			return;
 		}
 		
-		if(displayCardCanvas.CardDisplay && !Input.GetMouseButton(0)) {
+		if(displayCardCanvas.CardDisplay && (!Input.GetMouseButton(0) || !AllowInputUmbrella || !AllowInfoInput)) {
 			S.GameControlGUIInst.Undisplay();
 			cardHasBeenClickedOn = false;
+            return;
 		}
 
 		// This replaces the clickblocker system. Prevents clicking on stuff under canvas elements
@@ -129,85 +103,18 @@ public class ClickControl : MonoBehaviour {
 				S.GridCursorControlInst.ReleaseCursor();
 				return;
 			} else if(Time.time > lastCursorSetTime + 1.0f) {
-				GameBoardDrag();	
+				S.DragControlInst.GameBoardDrag();	
 				S.GridCursorControlInst.UnpresentCursor();
 				return;
 			}
 		}
-		
-		//////////////////////////////////////
-		/// DRAGGING AND DISPLAY -- InfoInput
-		//////////////////////////////////////
 
-		if(draggingGameboard && AllowInfoInput){
-			if(Input.GetMouseButton(0)){
-				Vector3 pos = Camera.main.transform.position;
-				Vector3 move = Camera.main.ScreenToViewportPoint (Input.mousePosition - dragOrigin);
-				move = new Vector3(move.x * .5f, move.y * .5f, 0);
-				//stops at the end of the screen
-				if(pos.x < leftLimit && move.x < 0) {
-					move.x = 0;
-					pos.x = leftLimit -.05f;
-				}
-				if(pos.y < bottomLimit && move.y < 0) {
-					move.y = 0;
-					pos.y = bottomLimit-.05f;
-				}
-				if(pos.x > rightLimit && move.x > 0) {
-					move.x = 0;
-					pos.x = rightLimit + .05f;
-				}
-				if(pos.y > topLimit && move.y > 0) {
-					move.y = 0;
-					pos.y = topLimit + .05f;
-				}
-
-				Camera.main.transform.position = move + pos;
-				return;
-			}
-			else {
-				draggingGameboard = false;
-				arrows.GetComponent<SpriteRenderer>().enabled = false;
-			}
-			return;
-		}
-
-		if(draggingHand && AllowInfoInput){
-			if(Input.GetMouseButton(0)){
-				if(S.GameControlInst.Hand.Count < 4) { 
-					GameObject.Find("Hand").transform.localPosition = new Vector3(((3) * -1.48f) + 3.7f, 0, 0);
-					return;
-				}
-				Vector3 pos = Camera.main.ScreenToViewportPoint 
-					(Input.mousePosition - (cardScriptClickedOn.transform.position*10) - dragOrigin);
-				Debug.Log(pos.x);
-
-				if(GameObject.Find("Hand").transform.localPosition.x >= -.75f && pos.x > 0) {
-					GameObject.Find("Hand").transform.localPosition = new Vector3(-.73f, 0, 0f);
-					return;
-				}
-				else if((GameObject.Find("Hand").transform.localPosition.x <= ((S.GameControlInst.Hand.Count) * -1.55f) + 5.35f) &&  pos.x < 0) {
-					//this is for after the exact position has gotten nailed down, purpose is to lock it to the edge. 
-					//the key numbers are: 3.95 one line above and .75 six lines above.
-					GameObject.Find("Hand").transform.localPosition = new Vector3(((S.GameControlInst.Hand.Count) * -1.55f) + 5.3f, 0, 0);
-				} else {
-					Vector3 move = new Vector3(pos.x, 0, 0);
-					GameObject.Find("Hand").transform.Translate(move);  
-					return;
-				}
-			}
-			else {
-				draggingHand = false;
-				Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
-			}
-			return;
-		}
 
 		//////////////////////////////////////
 		/// CARDCLICKS
 		//////////////////////////////////////
 
-		if(cardHasBeenClickedOn && cardScriptClickedOn != null && !draggingHand && !draggingDiscard){
+		if(cardHasBeenClickedOn && cardScriptClickedOn != null && !S.DragControlInst.DraggingHand){
 			if(!Input.GetMouseButton(0)){
 				if(S.GameControlInst.CardsToTarget != 0 
 				   && AllowCardTargetInput 
@@ -243,14 +150,14 @@ public class ClickControl : MonoBehaviour {
 			}
 			else {
 
-				if(Mathf.Abs(Input.mousePosition.x - dragOrigin.x) > .2f 
+				if(Mathf.Abs(Input.mousePosition.x - cardClickOrigin.x) > .2f 
 				   && !cardScriptClickedOn.Discarded && AllowInfoInput) {
-					handDrag();
+					S.DragControlInst.HandDrag(cardScriptClickedOn, cardClickOrigin);
+            		cardHasBeenClickedOn = false;
 					return;
 				}
-				else if(Mathf.Abs(Input.mousePosition.y - dragOrigin.y) > .2f 
+				else if(Mathf.Abs(Input.mousePosition.y - cardClickOrigin.y) > .2f 
 				        && cardScriptClickedOn.Discarded && AllowInfoInput) {
-					draggingDiscard = true;
 					cardHasBeenClickedOn = false;
 				}
 				else if(Time.time - 0.22f > lastCardClick && !displayCardCanvas.CardDisplay && AllowInfoInput) { 
@@ -489,31 +396,16 @@ public class ClickControl : MonoBehaviour {
 		}
 	}
 	
-	public void GameBoardDrag()
-    {
-		if( draggingGameboard | GridCursorControl.ClickedOffScreen ) return;
-        dragOrigin = Input.mousePosition;
-		S.GameControlGUIInst.Dim (false);
-        draggingGameboard = true;
-        Vector3 worldPointVector = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        arrows.transform.position = new Vector3(worldPointVector.x, worldPointVector.y, 0);
-        arrows.GetComponent<SpriteRenderer>().enabled = true;
-    }
 
-	void handDrag() {
-		draggingHand = true;
-		S.GameControlGUIInst.Dim(false);
-		Cursor.SetCursor(SideArrows, Vector2.zero, CursorMode.Auto);
-		cardHasBeenClickedOn = false;
-	}
-	
+
+
 	void clickOnCard(GameObject tempGO) {
 		cardScriptClickedOn = tempGO.GetComponent<Card>();
 		cardHasBeenClickedOn = true;
 		cardScriptClickedOn.cardUI.GlowAnimate(true);
 		
 		lastCardClick = Time.time;
-		dragOrigin = Input.mousePosition;
+		cardClickOrigin = Input.mousePosition;
 	}
 
 	//returns true and moves Player if you clicked on a square adjacent to Player

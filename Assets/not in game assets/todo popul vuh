@@ -7,7 +7,9 @@ dragging hand should subtract the position of the card you selected so it stops 
 
 when you buy cards, canvas $ doesn't update
 
-regression: cards don't reorder when you play them (?) and they don't reorder when you get hit by the little mole guy that makes you discard (?) and they don't reorder when you draw a new card (this is definitely true)
+regression: cards don't reorder when you play them (?) or they don't reorder when you get hit by the little mole guy that makes you discard (?) or they don't reorder when you draw a new card mid turn (this is definitely true)
+
+make customize menu dragging not shitty as hell
 
 
 
