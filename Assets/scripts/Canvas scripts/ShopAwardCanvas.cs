@@ -9,8 +9,6 @@ public class ShopAwardCanvas : MonoBehaviour {
 	Image background;
 	Text description;
 
-    ShopAndGoalParentCanvas SHOPANDGOALPARENTCANVAS;
-
 	void Initialize () {
 		if(initialized) return;
 		initialized = true;
@@ -63,7 +61,7 @@ public class ShopAwardCanvas : MonoBehaviour {
 
 		description.text = grade;
 		Debug.Log(gradeQuality);
-		background.sprite = SHOPANDGOALPARENTCANVAS.GRADEBACKGROUNDS[gradeQuality];
+		background.sprite = S.ShopAndGoalParentCanvasInst.GRADEBACKGROUNDS[gradeQuality];
 	}
 
 	public void TurnOff() {

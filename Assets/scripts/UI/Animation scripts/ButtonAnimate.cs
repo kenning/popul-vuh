@@ -15,7 +15,7 @@ public class ButtonAnimate : MonoBehaviour {
 
 	SpriteRenderer render;
 
-	void Awake() {
+	void Start() {
 		render = GetComponent<SpriteRenderer> ();
 	}
 

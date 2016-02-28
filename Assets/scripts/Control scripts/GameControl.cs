@@ -81,10 +81,6 @@ public class GameControl : MonoBehaviour
 		player = GameObject.FindGameObjectWithTag ("Player").GetComponent<Player> ();
 		gooeyskin = (GUISkin)Resources.Load ("GUISkins/S.GameControlInst.guiskin");
 
-		S.CardLibraryInst.Startup ();
-		S.EnemyLibraryInst.Startup();
-		S.ShopControlInst.Initialize ();
-
 		SaveDataControl.Load ();
 		StateSavingControl.Initialize (this, player);
 
@@ -94,6 +90,12 @@ public class GameControl : MonoBehaviour
 
 		MainMenu.UnlockCheck();
 	}
+    
+    void Start() {
+        S.CardLibraryInst.Startup ();
+		S.EnemyLibraryInst.Startup();
+		S.ShopControlInst.Initialize ();
+    }
 
 	/// <summary>
 	/// Initializes game elements. Called from a main menu button.

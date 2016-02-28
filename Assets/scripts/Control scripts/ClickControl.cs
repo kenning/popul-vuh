@@ -59,7 +59,7 @@ public class ClickControl : MonoBehaviour {
 	public bool undisplayCardOnClick = false;
 
 	Texture2D SideArrows;
-    EventSystem eventSystem = GameObject.FindGameObjectWithTag("eventsystem").GetComponent<EventSystem>();
+    EventSystem eventSystem;
 	
 	void Start(){
 		playerObject = GameObject.FindGameObjectWithTag ("Player");
@@ -71,6 +71,8 @@ public class ClickControl : MonoBehaviour {
 		SideArrows = (Texture2D)Resources.Load ("sprites/ui/side arrows");
 
 		displayCardCanvas = GameObject.FindGameObjectWithTag("displaycard").GetComponent<DisplayCardCanvas>(); 
+        
+        eventSystem = GameObject.FindGameObjectWithTag("eventsystem").GetComponent<EventSystem>();
 	}
 
 	void Update () {

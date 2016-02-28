@@ -5,9 +5,11 @@ make a way to display credits
 
 dragging hand should subtract the position of the card you selected so it stops dragging if you only move it over a bit
 
-Need to fix the amateurish GameObject.FindGameObjectByTag("GameController") shit
-
 when you buy cards, canvas $ doesn't update
+
+regression: cards don't reorder when you play them (?) and they don't reorder when you get hit by the little mole guy that makes you discard (?) and they don't reorder when you draw a new card (this is definitely true)
+
+
 
 
 

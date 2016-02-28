@@ -109,6 +109,8 @@ public class Card : MonoBehaviour {
 			break;
 		}
 
+		cardUI.Initialize (alreadyDiscarded);
+
 		cardSFX.PlayDrawCardSFX();
     }
 

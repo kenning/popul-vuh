@@ -56,7 +56,6 @@ public class GridCursorControl : MonoBehaviour {
 		// Set them off camera so they get retriggered
 		currentCursorXPosition = 500;
 		currentCursorYPosition = 500;
-		S.GridCursorControlInst.UnpresentCursor ();
 //		S.GameControlGUIInst.SetTooltip ("");
 	}
 

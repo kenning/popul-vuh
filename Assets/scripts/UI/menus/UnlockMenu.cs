@@ -10,10 +10,8 @@ public class UnlockMenu : MonoBehaviour {
 
 	public GUISkin UNLOCKMENUGUISKIN;
 
-	void Awake() {
+	void Start() {
 		useGUILayout = false;
-//		GameObject S.GameControlInst.er = GameObject.FindGameObjectWithTag ("GameController");
-//		S.ShopControlInst = S.GameControlInst.er.GetComponent<ShopControl>();
 	}
 
 	public void ShowMenu() {
