@@ -59,10 +59,6 @@ public class GameControl : MonoBehaviour
 	#endregion
 
 	void Awake(){
-        S.initialize(GameObject.FindGameObjectWithTag ("GameController"),
-                    GameObject.FindGameObjectWithTag("goalandshopparent"),
-                    GameObject.FindGameObjectWithTag("shopgrid"));
-
 		if (Application.platform == RuntimePlatform.IPhonePlayer) {
 			Debug.Log("on iphone");
 //			System.Environment.SetEnvironmentVariable("MONO_REFLECTION_SERIALIZER", "yes");

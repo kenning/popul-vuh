@@ -173,24 +173,24 @@ public class ClickControl : MonoBehaviour {
 		if(draggingHand && AllowInfoInput){
 			if(Input.GetMouseButton(0)){
 				if(S.GameControlInst.Hand.Count < 4) { 
-					S.HandInst.transform.localPosition = new Vector3(((3) * -1.48f) + 3.7f, 0, 0);
+					GameObject.Find("Hand").transform.localPosition = new Vector3(((3) * -1.48f) + 3.7f, 0, 0);
 					return;
 				}
 				Vector3 pos = Camera.main.ScreenToViewportPoint 
 					(Input.mousePosition - (cardScriptClickedOn.transform.position*10) - dragOrigin);
 				Debug.Log(pos.x);
 
-				if(S.HandInst.transform.localPosition.x >= -.75f && pos.x > 0) {
-					S.HandInst.transform.localPosition = new Vector3(-.73f, 0, 0f);
+				if(GameObject.Find("Hand").transform.localPosition.x >= -.75f && pos.x > 0) {
+					GameObject.Find("Hand").transform.localPosition = new Vector3(-.73f, 0, 0f);
 					return;
 				}
-				else if((S.HandInst.transform.localPosition.x <= ((S.GameControlInst.Hand.Count) * -1.55f) + 5.35f) &&  pos.x < 0) {
+				else if((GameObject.Find("Hand").transform.localPosition.x <= ((S.GameControlInst.Hand.Count) * -1.55f) + 5.35f) &&  pos.x < 0) {
 					//this is for after the exact position has gotten nailed down, purpose is to lock it to the edge. 
 					//the key numbers are: 3.95 one line above and .75 six lines above.
-					S.HandInst.transform.localPosition = new Vector3(((S.GameControlInst.Hand.Count) * -1.55f) + 5.3f, 0, 0);
+					GameObject.Find("Hand").transform.localPosition = new Vector3(((S.GameControlInst.Hand.Count) * -1.55f) + 5.3f, 0, 0);
 				} else {
 					Vector3 move = new Vector3(pos.x, 0, 0);
-					S.HandInst.transform.Translate(move);  
+					GameObject.Find("Hand").transform.Translate(move);  
 					return;
 				}
 			}

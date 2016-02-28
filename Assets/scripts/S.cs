@@ -3,7 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 
 /// Singletons!
-public static class S {
+public class S : MonoBehaviour {
+    
+    public GameObject gc;
+    public GameObject goalandshopparent;
+    public GameObject shopgrid;
+    
   static bool initialized = false;
 
   static GameControl gameControlInstance;
@@ -27,7 +32,6 @@ public static class S {
   static ShopGridCanvas shopGridCanvasInstance;
   static MenuControl menuControlInstance;
   static Tutorial tutorialInstance;
-  static GameObject handInstance;
   public static GameControl GameControlInst {
       get {
           if (!initialized) initialize();
@@ -154,40 +158,37 @@ public static class S {
           return shopGridCanvasInstance;
       }
   }
-  public static GameObject HandInst {
-      get {
-          if (!initialized) initialize();
-          return handInstance;
-      }
-  }
   static void initialize() {
-  		GameObject tempGO = GameObject.FindGameObjectWithTag ("GameController");
-		gameControlInstance = tempGO.GetComponent<GameControl> ();
-		gameControlGUIInstance = tempGO.GetComponent<GameControlGUI> ();
-		shopControlInstance = tempGO.GetComponent<ShopControl> ();
-		shopControlGUIInstance = tempGO.GetComponent<ShopControlGUI> ();
-		clickControlInstance = tempGO.GetComponent<ClickControl> ();
-        gridControlInstance = tempGO.GetComponent<GridControl>();
-        optionControlInstance = tempGO.GetComponent<OptionControl>();
-        eventGUIInstance = tempGO.GetComponent<EventGUI>();
-        enemyLibraryInstance = tempGO.GetComponent<EnemyLibrary>();
-        cardLibraryInstance = tempGO.GetComponent<CardLibrary>();
-        goalLibraryInstance = tempGO.GetComponent<GoalLibrary>();
-        guiStyleLibraryInstance = tempGO.GetComponent<GUIStyleLibrary>();
-        mainMenuInstance = tempGO.GetComponent<MainMenu>();
-        encyclopediaMenuInstance = tempGO.GetComponent<EncyclopediaMenu>();
-        godChoiceMenuInstance = tempGO.GetComponent<GodChoiceMenu>();
-        customizeMenuInstance = tempGO.GetComponent<CustomizeMenu>();
-        gridCursorControlInstance = tempGO.GetComponent<GridCursorControl>();
-        menuControlInstance = tempGO.GetComponent<MenuControl>();
-        tutorialInstance = tempGO.GetComponent<Tutorial>();
+        initialized = true;
+
+  }
+  
+  void Awake() {
+		gameControlInstance = gc.GetComponent<GameControl> ();
+		gameControlGUIInstance = gc.GetComponent<GameControlGUI> ();
+		shopControlInstance = gc.GetComponent<ShopControl> ();
+		shopControlGUIInstance = gc.GetComponent<ShopControlGUI> ();
+		clickControlInstance = gc.GetComponent<ClickControl> ();
+        gridControlInstance = gc.GetComponent<GridControl>();
+        optionControlInstance = gc.GetComponent<OptionControl>();
+        eventGUIInstance = gc.GetComponent<EventGUI>();
+        enemyLibraryInstance = gc.GetComponent<EnemyLibrary>();
+        cardLibraryInstance = gc.GetComponent<CardLibrary>();
+        goalLibraryInstance = gc.GetComponent<GoalLibrary>();
+        guiStyleLibraryInstance = gc.GetComponent<GUIStyleLibrary>();
+        mainMenuInstance = gc.GetComponent<MainMenu>();
+        encyclopediaMenuInstance = gc.GetComponent<EncyclopediaMenu>();
+        godChoiceMenuInstance = gc.GetComponent<GodChoiceMenu>();
+        customizeMenuInstance = gc.GetComponent<CustomizeMenu>();
+        gridCursorControlInstance = gc.GetComponent<GridCursorControl>();
+        menuControlInstance = gc.GetComponent<MenuControl>();
+        tutorialInstance = gc.GetComponent<Tutorial>();
 
         shopAndGoalParentCanvasInstance = 
-            GameObject.FindGameObjectWithTag("goalandshopparent")
+            goalandshopparent
             .GetComponent<ShopAndGoalParentCanvas>();
         shopGridCanvasInstance = 
-            GameObject.FindGameObjectWithTag("shopgrid")
+            shopgrid
             .GetComponent<ShopGridCanvas>();
-        handInstance = GameObject.Find("Hand");
   }
 }
