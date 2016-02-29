@@ -5,6 +5,7 @@ public class DragControl : MonoBehaviour {
     public bool DraggingGameboard = false;
     public bool DraggingHand = false;
 	Vector3 dragOrigin;
+    Vector3 cameraOrigin;
 	GameObject arrows;
 	Texture2D SideArrows;
 	//gameboard limits
@@ -19,12 +20,11 @@ public class DragControl : MonoBehaviour {
     }
 	public void GameBoardDrag()
     {
-		if( S.DragControlInst.DraggingGameboard | GridCursorControl.ClickedOffScreen ) return;
-        dragOrigin = Input.mousePosition;
+        dragOrigin = Camera.main.ScreenToViewportPoint(Input.mousePosition);
 		S.GameControlGUIInst.Dim (false);
         S.DragControlInst.DraggingGameboard = true;
-        Vector3 worldPointVector = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        arrows.transform.position = new Vector3(worldPointVector.x, worldPointVector.y, 0);
+        cameraOrigin = Camera.main.transform.position;
+        Vector3 arrowsOrigin = Camera.main.ScreenToViewportPoint(Input.mousePosition);
         arrows.GetComponent<SpriteRenderer>().enabled = true;
     }
 	public void HandDrag(Card clickedCard, Vector3 clickOrigin) {
@@ -41,40 +41,7 @@ public class DragControl : MonoBehaviour {
     }
     
     void Update() {
-        if(DraggingGameboard){
-			if(Input.GetMouseButton(0)){
-				Vector3 pos = Camera.main.transform.position;
-				Vector3 move = Camera.main.ScreenToViewportPoint (Input.mousePosition - dragOrigin);
-				move = new Vector3(move.x * .5f, move.y * .5f, 0);
-				//stops at the end of the screen
-				if(pos.x < leftLimit && move.x < 0) {
-					move.x = 0;
-					pos.x = leftLimit -.05f;
-				}
-				if(pos.y < bottomLimit && move.y < 0) {
-					move.y = 0;
-					pos.y = bottomLimit-.05f;
-				}
-				if(pos.x > rightLimit && move.x > 0) {
-					move.x = 0;
-					pos.x = rightLimit + .05f;
-				}
-				if(pos.y > topLimit && move.y > 0) {
-					move.y = 0;
-					pos.y = topLimit + .05f;
-				}
-
-				Camera.main.transform.position = move + pos;
-				return;
-			}
-			else {
-				S.DragControlInst.DraggingGameboard = false;
-				arrows.GetComponent<SpriteRenderer>().enabled = false;
-			}
-			return;
-		}
-
-		if(DraggingHand){
+        if(DraggingHand){
 			if(Input.GetMouseButton(0)){
 				if(S.GameControlInst.Hand.Count < 4) { 
 					GameObject.Find("Hand").transform.localPosition = new Vector3(((3) * -1.48f) + 3.7f, 0, 0);
@@ -97,10 +64,58 @@ public class DragControl : MonoBehaviour {
 					GameObject.Find("Hand").transform.Translate(move);  
 					return;
 				}
-			}
-			else {
+			} else {
 				S.DragControlInst.DraggingHand = false;
 				Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+			}
+			return;
+		} else if (DraggingGameboard){
+			if(Input.GetMouseButton(0)){
+                arrows.transform.position = Input.mousePosition;
+				Vector3 pos = Camera.main.transform.position;
+				Vector3 move = Camera.main.ScreenToViewportPoint (Input.mousePosition);
+				// stops at the end of the screen
+                float multiplierx = 8.5f;
+                float multipliery = 15f;
+				if(pos.x < leftLimit && move.x > 0) {
+					multiplierx = 0;
+					Camera.main.transform.position = new Vector3(
+                        leftLimit -.05f,
+                        Camera.main.transform.position.y,
+                        0
+                    );
+				}
+				if(pos.y < bottomLimit && move.y > 0) {
+					multipliery = 0;
+					Camera.main.transform.position = new Vector3(
+                        Camera.main.transform.position.x,
+                        topLimit + .05f,
+                        0
+                    );
+				}
+				if(pos.x > rightLimit && move.x < 0) {
+					multiplierx = 0;
+					Camera.main.transform.position = new Vector3(
+                        rightLimit + .05f,
+                        Camera.main.transform.position.y,
+                        0
+                    );
+				}
+				if(pos.y > topLimit && (dragOrigin.y - move.y) < 0) {
+					multipliery = 0;
+					Camera.main.transform.position = new Vector3(
+                        Camera.main.transform.position.x,
+                        bottomLimit - .05f,
+                        0
+                    );
+				}
+				Camera.main.transform.position = cameraOrigin + 
+                    new Vector3((dragOrigin.x - move.x) * multiplierx, 
+                                (dragOrigin.y - move.y) * multipliery, 0);
+				return;
+			} else {
+				S.DragControlInst.DraggingGameboard = false;
+				arrows.GetComponent<SpriteRenderer>().enabled = false;
 			}
 			return;
 		}
