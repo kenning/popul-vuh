@@ -5,9 +5,10 @@ using System.Collections.Generic;
 /// Singletons!
 public class S : MonoBehaviour {
     
-    public GameObject gc;
-    public GameObject goalandshopparent;
-    public GameObject shopgrid;
+  public GameObject gc;
+  public GameObject goalandshopparent;
+  public GameObject shopgrid;
+  public GameObject gridcursorcontrolgui;
     
   static bool initialized = false;
 
@@ -17,6 +18,7 @@ public class S : MonoBehaviour {
   static ShopControlGUI shopControlGUIInstance;
   static ClickControl clickControlInstance;
   static GridControl gridControlInstance;
+  static GridCursorControlGUI gridCursorControlGUIInstance;
   static OptionControl optionControlInstance;
   static DragControl dragControlInstance;
   static EventGUI eventGUIInstance;
@@ -133,6 +135,11 @@ public class S : MonoBehaviour {
           return gridCursorControlInstance;
       }
   }
+  public static GridCursorControlGUI GridCursorControlGUIInst {
+      get {
+          return gridCursorControlGUIInstance;
+      }
+  }
   public static ShopAndGoalParentCanvas ShopAndGoalParentCanvasInst {
       get {
           return shopAndGoalParentCanvasInstance;
@@ -167,11 +174,11 @@ public class S : MonoBehaviour {
         menuControlInstance = gc.GetComponent<MenuControl>();
         tutorialInstance = gc.GetComponent<Tutorial>();
 
-        shopAndGoalParentCanvasInstance = 
-            goalandshopparent
-            .GetComponent<ShopAndGoalParentCanvas>();
-        shopGridCanvasInstance = 
-            shopgrid
-            .GetComponent<ShopGridCanvas>();
+        shopAndGoalParentCanvasInstance = goalandshopparent
+                                          .GetComponent<ShopAndGoalParentCanvas>();
+        shopGridCanvasInstance = shopgrid
+                                 .GetComponent<ShopGridCanvas>();
+        gridCursorControlGUIInstance = gridcursorcontrolgui
+                                       .GetComponent<GridCursorControlGUI>();
   }
 }

@@ -45,6 +45,8 @@ public class ClickControl : MonoBehaviour {
 	// This gets set when the shop menu is up so that the behavior for undisplaying a card
 	// is different from normal. Pretty ugly i know
 	public bool undisplayCardOnClick = false;
+    float currentCursorXPosition = 0;
+    float currentCursorYPosition = 0;
 
     EventSystem eventSystem;
 	
@@ -100,15 +102,15 @@ public class ClickControl : MonoBehaviour {
 
 		if (GridCursorControl.cursorActionSet) {
 			if(!Input.GetMouseButton(0)) {
-				S.GridCursorControlInst.ReleaseCursor();
-				return;
-			} else if(Time.time > lastCursorSetTime + 1.0f) {
-				S.DragControlInst.GameBoardDrag();	
-				S.GridCursorControlInst.UnpresentCursor();
-				return;
+                if(Time.time > lastCursorSetTime + 1.0f) {
+                    // S.GridCursorControlInst.ShowInfo();
+				    return;
+                } else {
+                    S.GridCursorControlInst.ReleaseCursor();
+                    return;
+                }
 			}
 		}
-
 
 		//////////////////////////////////////
 		/// CARDCLICKS
@@ -176,9 +178,13 @@ public class ClickControl : MonoBehaviour {
 		/// NEW CLICKS
 		//////////////////////////////////////
 
-		if(Input.GetMouseButton(0)){
+		if(Input.GetMouseButtonDown(0)){
             
-			S.GameControlGUIInst.ShowDeck(false);
+            Vector3 newClickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            currentCursorXPosition = newClickPosition.x;
+            currentCursorYPosition = newClickPosition.y;
+
+			// S.GameControlGUIInst.ShowDeck(false);
 
 			float dist = transform.position.z - Camera.main.transform.position.z;
 			var pos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, dist);
@@ -186,6 +192,8 @@ public class ClickControl : MonoBehaviour {
 			RaycastHit2D[] hits = Physics2D.RaycastAll (pos, Vector2.zero);
 
 			if(Input.GetMouseButtonDown(0)) {
+                registerClick();
+                
 				if(hits != null ){
 					foreach(RaycastHit2D hit in hits) {
 						if(hit.collider.gameObject.name == "end turn button" && AllowForfeitButtonInput) {
@@ -233,17 +241,17 @@ public class ClickControl : MonoBehaviour {
 							return;
 						}
 					}
-					foreach(RaycastHit2D hit in hits) {
-						if(hit.collider.gameObject.tag == "click blocker" ) { 
-							return;
-						}
-					}
-					foreach(RaycastHit2D hit in hits) {
-						if(hit.collider.gameObject.name == "Deck" && AllowInfoInput) { 
-							S.GameControlGUIInst.ShowDeck(true);
-							return;
-						}
-					}
+					// foreach(RaycastHit2D hit in hits) {
+					// 	if(hit.collider.gameObject.tag == "click blocker" ) { 
+					// 		return;
+					// 	}
+					// }
+					// foreach(RaycastHit2D hit in hits) {
+					// 	if(hit.collider.gameObject.name == "Deck" && AllowInfoInput) { 
+					// 		S.GameControlGUIInst.ShowDeck(true);
+					// 		return;
+					// 	}
+					// }
 					foreach(RaycastHit2D hit in hits){
 						if(hit.collider.gameObject.tag == "Card") {
 							clickOnCard(hit.collider.gameObject);
@@ -266,6 +274,8 @@ public class ClickControl : MonoBehaviour {
 			}
 
 			if(cardHasBeenClickedOn) return;
+            // if(S.DragControlInst.DraggingHand) return;
+            // if(S.DragControlInst.DraggingGameboard) return;
 
 			Vector3 clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
@@ -304,9 +314,6 @@ public class ClickControl : MonoBehaviour {
 					   && S.GameControlInst.PlaysLeft > 0 && AllowNewPlayInput){
 						S.GridCursorControlInst.PresentCursor(GridCursorControl.CursorActions.Punch);
 						S.GridCursorControlInst.SetCurrentCursorTarget(hit.collider.gameObject);
-						// Even though this should return and end the Update method, it still needs to
-							// try to show a tooltip
-						tryToShowInfo();
 						return;
 					}
 				}
@@ -370,34 +377,16 @@ public class ClickControl : MonoBehaviour {
 					}
 				}
 			}
-
-			tryToShowInfo();
 		}
+        
+        if (Input.GetMouseButton(0) && 
+            CursorHasMovedCheck() && 
+            !S.DragControlInst.DraggingGameboard) {
+            S.DragControlInst.GameBoardDrag();        
+            S.GridCursorControlInst.UnpresentCursor();
+        }
+        
 	}
-
-	void tryToShowInfo() {
-		if((Time.time - .15f) > lastCursorSetTime) {
-			if(willShowEnemyInfo) {
-				S.GridCursorControlInst.ShowInfo(GridCursorControl.CursorInfoTypes.EnemyInfo, infoTarget);
-				willShowEnemyInfo = false;
-				willShowPlayerInfo = false;
-				willShowObstacleInfo = false;
-			} else if (willShowPlayerInfo) {
-				S.GridCursorControlInst.ShowInfo(GridCursorControl.CursorInfoTypes.PlayerInfo, infoTarget);
-				willShowEnemyInfo = false;
-				willShowPlayerInfo = false;
-				willShowObstacleInfo = false;
-			} else if (willShowObstacleInfo) {
-				S.GridCursorControlInst.ShowInfo(GridCursorControl.CursorInfoTypes.ObstacleInfo, infoTarget);
-				willShowEnemyInfo = false;
-				willShowPlayerInfo = false;
-				willShowObstacleInfo = false;
-			}
-		}
-	}
-	
-
-
 
 	void clickOnCard(GameObject tempGO) {
 		cardScriptClickedOn = tempGO.GetComponent<Card>();
@@ -458,4 +447,24 @@ public class ClickControl : MonoBehaviour {
 	public void ChangeUmbrellaInputAllowToTrue() {
 		AllowInputUmbrella = true;
 	}
+    
+    bool CursorHasMovedCheck() {
+        Vector3 clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if(clickPosition.x > 0) clickPosition.x += .5f;
+        if(clickPosition.y > 0) clickPosition.y += .5f;
+        if(clickPosition.x < 0) clickPosition.x -= .5f;
+        if(clickPosition.y < 0) clickPosition.y -= .5f;
+        return ((int)clickPosition.x != currentCursorXPosition | 
+            (int)clickPosition.y != currentCursorYPosition); 
+    }
+    
+    void registerClick() {
+        Vector3 clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if(clickPosition.x > 0) clickPosition.x += .5f;
+        if(clickPosition.y > 0) clickPosition.y += .5f;
+        if(clickPosition.x < 0) clickPosition.x -= .5f;
+        if(clickPosition.y < 0) clickPosition.y -= .5f;
+        currentCursorXPosition = (int)clickPosition.x;
+        currentCursorYPosition = (int)clickPosition.y;
+    }
 }

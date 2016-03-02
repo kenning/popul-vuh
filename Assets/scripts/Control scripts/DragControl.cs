@@ -32,6 +32,7 @@ public class DragControl : MonoBehaviour {
 		S.DragControlInst.DraggingHand = true;
 		S.GameControlGUIInst.Dim(false);
 		Cursor.SetCursor(SideArrows, Vector2.zero, CursorMode.Auto);
+        S.GridCursorControlInst.UnpresentCursor();
 	}
     public void StopDragging() {
         DraggingGameboard = false;
@@ -71,47 +72,36 @@ public class DragControl : MonoBehaviour {
 			return;
 		} else if (DraggingGameboard){
 			if(Input.GetMouseButton(0)){
-                arrows.transform.position = Input.mousePosition;
-				Vector3 pos = Camera.main.transform.position;
+                // arrows.transform.position = Input.mousePosition;
+				Vector3 currentCameraPos = Camera.main.transform.position;
 				Vector3 move = Camera.main.ScreenToViewportPoint (Input.mousePosition);
 				// stops at the end of the screen
+                float finalx = 0;
+                float finaly = 0;
+                float buffer = 0.5f;
+
                 float multiplierx = 8.5f;
                 float multipliery = 15f;
-				if(pos.x < leftLimit && move.x > 0) {
-					multiplierx = 0;
-					Camera.main.transform.position = new Vector3(
-                        leftLimit -.05f,
-                        Camera.main.transform.position.y,
-                        0
-                    );
-				}
-				if(pos.y < bottomLimit && move.y > 0) {
-					multipliery = 0;
-					Camera.main.transform.position = new Vector3(
-                        Camera.main.transform.position.x,
-                        topLimit + .05f,
-                        0
-                    );
-				}
-				if(pos.x > rightLimit && move.x < 0) {
-					multiplierx = 0;
-					Camera.main.transform.position = new Vector3(
-                        rightLimit + .05f,
-                        Camera.main.transform.position.y,
-                        0
-                    );
-				}
-				if(pos.y > topLimit && (dragOrigin.y - move.y) < 0) {
-					multipliery = 0;
-					Camera.main.transform.position = new Vector3(
-                        Camera.main.transform.position.x,
-                        bottomLimit - .05f,
-                        0
-                    );
-				}
-				Camera.main.transform.position = cameraOrigin + 
-                    new Vector3((dragOrigin.x - move.x) * multiplierx, 
-                                (dragOrigin.y - move.y) * multipliery, 0);
+                float movex = dragOrigin.x - move.x;
+                float movey = dragOrigin.y - move.y;
+                
+                if (currentCameraPos.x < leftLimit + buffer && movex < 0) {
+                    finalx = leftLimit;
+                } else if (currentCameraPos.x > rightLimit - buffer && movex > 0) {
+                    finalx = rightLimit;
+                } else {
+                    finalx = cameraOrigin.x + movex * multiplierx;
+                }
+
+                if (currentCameraPos.y < leftLimit + buffer && movey < 0) {
+                    finaly = leftLimit;
+                } else if (currentCameraPos.y > rightLimit - buffer && movey > 0) {
+                    finaly = rightLimit;
+                } else {
+                    finaly = cameraOrigin.y + movey * multipliery;
+                }
+                
+                Camera.main.transform.position = new Vector3(finalx, finaly, -1); 
 				return;
 			} else {
 				S.DragControlInst.DraggingGameboard = false;
