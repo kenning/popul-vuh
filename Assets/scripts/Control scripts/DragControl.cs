@@ -73,35 +73,47 @@ public class DragControl : MonoBehaviour {
 		} else if (DraggingGameboard){
 			if(Input.GetMouseButton(0)){
                 // arrows.transform.position = Input.mousePosition;
-				Vector3 currentCameraPos = Camera.main.transform.position;
+				Vector3 camPos = Camera.main.transform.position;
 				Vector3 move = Camera.main.ScreenToViewportPoint (Input.mousePosition);
 				// stops at the end of the screen
                 float finalx = 0;
                 float finaly = 0;
-                float buffer = 0.5f;
+                float buffer = 0.2f;
 
                 float multiplierx = 8.5f;
                 float multipliery = 15f;
                 float movex = dragOrigin.x - move.x;
                 float movey = dragOrigin.y - move.y;
                 
-                if (currentCameraPos.x < leftLimit + buffer && movex < 0) {
+                /// camera position is zero
+                /// dragorigin is 5
+                /// move.x is 6
+                ///
+                
+                /// so basically the velocity (movex) should be constantly added to the camera position directly, unless the camera goes beyond the 
+                Debug.Log("dragOrigin.x = " + dragOrigin.x + 
+                    ", \n move.x = " + movex); 
+                
+                if (camPos.x < leftLimit + buffer && movex < 0) {
                     finalx = leftLimit;
-                } else if (currentCameraPos.x > rightLimit - buffer && movex > 0) {
-                    finalx = rightLimit;
+                } else if (camPos.x > rightLimit - buffer && movex > 0) {
+                    finalx = rightLimit;                    
                 } else {
-                    finalx = cameraOrigin.x + movex * multiplierx;
-                }
-
-                if (currentCameraPos.y < leftLimit + buffer && movey < 0) {
-                    finaly = leftLimit;
-                } else if (currentCameraPos.y > rightLimit - buffer && movey > 0) {
-                    finaly = rightLimit;
-                } else {
-                    finaly = cameraOrigin.y + movey * multipliery;
+                    finalx = camPos.x + movex * multiplierx;
                 }
                 
-                Camera.main.transform.position = new Vector3(finalx, finaly, -1); 
+                if (camPos.y < bottomLimit + buffer && movey < 0) {
+                    finaly = bottomLimit;
+                } else if (camPos.y > topLimit - buffer && movey > 0) {
+                    finaly = topLimit;                    
+                } else {
+                    finaly = camPos.y + movey * multipliery;
+                }
+
+                Camera.main.transform.position = new Vector3(finalx, finaly, -1);
+
+                dragOrigin = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+                
 				return;
 			} else {
 				S.DragControlInst.DraggingGameboard = false;
