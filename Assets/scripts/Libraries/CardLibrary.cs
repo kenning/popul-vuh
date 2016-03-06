@@ -660,7 +660,7 @@ public class CardLibrary : MonoBehaviour {
 		}
 
 		int randomNumber = Random.Range (0, tempList.Count-1);
-		
+		Debug.Log("templist index is " + randomNumber);
 		return tempList[randomNumber];
 	}
 }

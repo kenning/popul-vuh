@@ -64,9 +64,9 @@ public class ShopAndGoalParentCanvas : MonoBehaviour {
 		
 		UpdateGoalInfos (goals);
 	}
-	public void SetUpShopRows (Goal[] goals, bool[] highScoreNotifications) {
-		for(int i = 0; i < goals.Length; i++) {
-			SHOPAWARDS[i].SetGradeInfo(goals[i], highScoreNotifications[i]);
+	public void SetUpShopRows () {
+		for(int i = 0; i < S.ShopControlInst.Goals.Length; i++) {
+			SHOPAWARDS[i].SetGradeInfo(S.ShopControlInst.Goals[i], S.ShopControlGUIInst.highScoreNotification[i]);
 		}
 		for(int i = 0; i < 3; i++) {
 			for (int j = 0; j < S.ShopControlInst.CardsToBuyFrom[i].Count; j++) {

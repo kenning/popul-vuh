@@ -127,9 +127,7 @@ public class DeckAnimate : MonoBehaviour {
         gameObject.GetComponent<SpriteRenderer>().enabled = false;
     }
     public void DisplayFullDeck() {
-        anotherCardUnderDeck.GetComponent<SpriteRenderer>().enabled = true;
-        cardUnderDeck.GetComponent<SpriteRenderer>().enabled = true;
-        gameObject.GetComponent<SpriteRenderer>().enabled = true;
+        
     }
 
     bool hungerCheck()

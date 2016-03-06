@@ -4,11 +4,6 @@ using System.Collections.Generic;
 
 public class ShopControl : MonoBehaviour {
 
-	ClickControl S.ClickControlInst;
-	ShopControlGUI S.ShopControlGUIInst;
-
-	CardLibrary library;
-
 	public Goal[] Goals;
 
 	public List<LibraryCard>[] CardsToBuyFrom;
@@ -86,11 +81,11 @@ public class ShopControl : MonoBehaviour {
 		for(int i = 0; i < Goals.Length; i++) {
             Debug.Log("pulling a card for " + Goals[i].God + " with the final score  " + finalScores[i]);
 			if(finalScores[i] == 1) S.GameControlInst.AddDollars(1);
-			if(finalScores[i] >= 2) CardsToBuyFrom[i].Add(library.PullCardFromPack(Goals[i].God, Card.Rarity.Silver));
+			if(finalScores[i] >= 2) CardsToBuyFrom[i].Add(S.CardLibraryInst.PullCardFromPack(Goals[i].God, Card.Rarity.Silver));
 			if(finalScores[i] == 2) S.GameControlInst.AddDollars(2);
-			if(finalScores[i] >= 3) CardsToBuyFrom[i].Add(library.PullCardFromPack(Goals[i].God, Card.Rarity.Gold));
+			if(finalScores[i] >= 3) CardsToBuyFrom[i].Add(S.CardLibraryInst.PullCardFromPack(Goals[i].God, Card.Rarity.Gold));
 			if(finalScores[i] == 3) S.GameControlInst.AddDollars(3);
-			if(finalScores[i] >= 4) CardsToBuyFrom[i].Add(library.PullCardFromPack(Goals[i].God, Card.Rarity.Gold));
+			if(finalScores[i] >= 4) CardsToBuyFrom[i].Add(S.CardLibraryInst.PullCardFromPack(Goals[i].God, Card.Rarity.Gold));
 			if(finalScores[i] == 4) S.GameControlInst.AddDollars(5);
 		}
 
@@ -141,7 +136,7 @@ public class ShopControl : MonoBehaviour {
 	}
 
 	public void BoughtCardFromGod(int godNumber) {
-		if(godNumber > 6) Debug.LogError("whaaaa??????");
+		if(godNumber > 6) Debug.LogError("whaaaa??????" + godNumber);
 		if(shopCardRarityLevelsByGod[godNumber] < 2) {
 			shopCardRarityLevelsByGod[godNumber]++; 
 		}

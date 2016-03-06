@@ -46,7 +46,6 @@ public class ShopControlGUI : MonoBehaviour {
 	public void NewLevelNewGoals (int numberOfGods, Goal[] goals) {
 		Goals = goals;
 		GoalDisplay = new bool[numberOfGods];
-		highScoreNotification = new bool[numberOfGods];
 
 		TurnOnExpoGUI ();
 		
@@ -77,6 +76,8 @@ public class ShopControlGUI : MonoBehaviour {
 	}
 
 	public void TurnOnShopGUI() {
+		highScoreNotification = new bool[S.ShopControlInst.Goals.Length];
+
 		for (int i = 0; i < S.ShopControlInst.Goals.Length; i++) {
 			if(SaveDataControl.CheckForHighScores(S.ShopControlInst.Goals[i])) {
 				highScoreNotification[i] = true;
@@ -85,10 +86,9 @@ public class ShopControlGUI : MonoBehaviour {
 
 		IgnoreClicking = true;
 
-		S.ShopAndGoalParentCanvasInst.SetUpShopRows (Goals, highScoreNotification);
+		S.ShopAndGoalParentCanvasInst.SetUpShopRows ();
 
 		StateSavingControl.TurnShopModeOn();
-		Debug.Log("huh?");
 		StateSavingControl.Save();
 
 		S.ShopAndGoalParentCanvasInst.TurnOnShopGUI ();

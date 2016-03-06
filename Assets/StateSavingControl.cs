@@ -126,11 +126,8 @@ public class StateSavingControl : MonoBehaviour {
 				shopControl.CardsToBuyFrom[0] = loaded.ShopCardList1;
 				shopControl.CardsToBuyFrom[1] = loaded.ShopCardList2;
 				shopControl.CardsToBuyFrom[2] = loaded.ShopCardList3;
-                
-                gameControl.BleedingTurns = loaded.BleedingTurns;
-                gameControl.SwollenTurns = loaded.SwollenTurns;
-                gameControl.HungerTurns = loaded.HungerTurns;
-                EventControl.LoadTriggerListState(loaded.TriggerList);
+                S.GameControlGUIInst.ForceDim ();
+                S.ShopControlInst.ProduceCards ();
 			} else {
 				for (int i = 0; i < loaded.Enemies.Count; i++) {
 					Enemy newEnemy = enemyLibrary.LoadEnemy(loaded.Enemies[i], 
@@ -142,6 +139,11 @@ public class StateSavingControl : MonoBehaviour {
 
                 gridControl.EnemiesFindGridUnits();                
                 shopControlGUI.NewLevelNewGoals(loaded.Goals.Length, loaded.Goals);                
+                
+                gameControl.BleedingTurns = loaded.BleedingTurns;
+                gameControl.SwollenTurns = loaded.SwollenTurns;
+                gameControl.HungerTurns = loaded.HungerTurns;
+                EventControl.LoadTriggerListState(loaded.TriggerList);
 			}
 
 			player.transform.position = new Vector3(loaded.PlayerPosition[0], loaded.PlayerPosition[1], 1);

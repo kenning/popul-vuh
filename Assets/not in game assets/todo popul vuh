@@ -3,8 +3,6 @@ ugh... finishing a goal exactly as the level ends doesn't make it show up in the
 
 make a way to display credits
 
-dragging hand should subtract the position of the card you selected so it stops dragging if you only move it over a bit
-
 when you buy cards, canvas $ doesn't update
 
 regression: cards don't reorder when you play them (?) or they don't reorder when you get hit by the little mole guy that makes you discard (?) or they don't reorder when you draw a new card mid turn (this is definitely true)
@@ -17,6 +15,11 @@ deck shrinks when low on cards and disappears when out of cards
 
 reimplement sick squares
 
+Create a "this has never happened before" dialog for the first time that you:
+    - finish a level and get cards
+    - get hit with each of the 3 types of sickness
+It should have a unique message and dialog box option ("Got it!", "Oh no!")
+Should save to your save file
 
 
 
