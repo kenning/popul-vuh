@@ -9,6 +9,7 @@ public class S : MonoBehaviour {
   public GameObject goalandshopparent;
   public GameObject shopgrid;
   public GameObject gridcursorcontrolgui;
+  public GameObject deck;
     
   static bool initialized = false;
 
@@ -131,6 +132,7 @@ public class S : MonoBehaviour {
         gridCursorControlInstance = gc.GetComponent<GridCursorControl>();
         menuControlInstance = gc.GetComponent<MenuControl>();
         tutorialInstance = gc.GetComponent<Tutorial>();
+        deckAnimateInstance = deck.GetComponent<DeckAnimate>();
 
         shopAndGoalParentCanvasInstance = goalandshopparent
                                           .GetComponent<ShopAndGoalParentCanvas>();

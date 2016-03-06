@@ -148,6 +148,7 @@ public class GameControlGUI : MonoBehaviour {
 	}
 
 	public void AnimateCardsToCorrectPosition() {
+        Debug.Log("Rearranging cards!");
 		MoveHandPositionWhenOutOfPlace ();
 		
 		GameObject[] allCards = GameObject.FindGameObjectsWithTag("Card");

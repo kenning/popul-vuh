@@ -110,13 +110,15 @@ public class StateSavingControl : MonoBehaviour {
 				Card card = gameControl.Create(lc.CardName);
 				gameControl.DrawIntoHand(card, true);
 			}
-
+            
 			foreach (LibraryCard lc in loaded.CardsInDiscard) {
 				Card card = gameControl.Create(lc.CardName, true);
 				card.InvisibleDiscard();
 			}
 
 			gameControl.Deck = loaded.CardsInDeck;
+
+            S.GameControlInst.CheckDeckCount();
 
 			shopControl.Goals = loaded.Goals;
 				

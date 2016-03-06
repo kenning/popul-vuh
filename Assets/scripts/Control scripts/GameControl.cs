@@ -206,6 +206,7 @@ public class GameControl : MonoBehaviour
 	}
 	public void DrawIntoHand(Card card, bool invisibleDraw) {
 		card.cardUI.DrawAnimate (Hand.Count-1);	
+        CheckDeckCount();
 		
 		if(!invisibleDraw) { 
 			S.ShopControlInst.GoalCheck("Draw X cards in one turn");
@@ -600,6 +601,7 @@ public class GameControl : MonoBehaviour
 
 	public void CheckDeckCount() {
 		deckText.text = Deck.Count.ToString ();
+        S.DeckAnimateInst.DisplayDeckSize(Deck.Count);
 	}
 
 	public void DeleteAllCards()

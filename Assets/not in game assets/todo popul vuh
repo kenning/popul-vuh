@@ -1,6 +1,4 @@
 todo
-ugh... finishing a goal exactly as the level ends doesn't make it show up in the shop as completed. tooltip also needs to disappear
-
 make a way to display credits
 
 when you buy cards, canvas $ doesn't update
@@ -63,5 +61,4 @@ enemy emotions:
 
 /// Buglist
 
-Game crashed trying to pull a silver card from kinich, but he has silver cards...
-http://puu.sh/nwVeU/3ed4e9c845.png
+ugh... finishing a goal exactly as the level ends doesn't make it show up in the shop as completed. tooltip also needs to disappear

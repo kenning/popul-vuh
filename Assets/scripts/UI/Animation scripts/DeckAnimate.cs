@@ -71,6 +71,9 @@ public class DeckAnimate : MonoBehaviour {
 		}
 	}
 	void Shuffle () {
+        // Makes deck sprites all reappear
+        DisplayDeckSize(6);
+        
 		S.GameControlInst.ShuffleInHandAndDiscard();
 
 		EndPosition = new Vector2(0, 4f);
@@ -94,7 +97,12 @@ public class DeckAnimate : MonoBehaviour {
 			Invoke ("errorAnimateOn", .25f);
 			Invoke ("errorAnimateOff", .3f);
 			Invoke ("errorAnimateOn", .35f);
-			Invoke ("errorAnimateBoolOff", .36f);
+            
+            // If cards left in the deck, reset the deck sprite to off
+            if (S.GameControlInst.Deck.Count < 1) {
+        		Invoke ("errorAnimateOff", .4f);            
+            }
+    		Invoke ("errorAnimateBoolOff", .4f);            
 		}
 	}
 	void errorAnimateOn () {
@@ -117,17 +125,11 @@ public class DeckAnimate : MonoBehaviour {
             sprite.sprite = NORMALSPRITE;
     }
     
-    public void DisplayFewCardsInDeck() {
-        anotherCardUnderDeck.GetComponent<SpriteRenderer>().enabled = false;
-        cardUnderDeck.GetComponent<SpriteRenderer>().enabled = false;
-    }
-    public void DisplayZeroCardsInDeck() {
-        anotherCardUnderDeck.GetComponent<SpriteRenderer>().enabled = false;
-        cardUnderDeck.GetComponent<SpriteRenderer>().enabled = false;
-        gameObject.GetComponent<SpriteRenderer>().enabled = false;
-    }
-    public void DisplayFullDeck() {
-        
+    public void DisplayDeckSize(int decksize) {
+        Debug.Log(decksize);
+        anotherCardUnderDeck.GetComponent<SpriteRenderer>().enabled = (decksize > 5);
+        cardUnderDeck.GetComponent<SpriteRenderer>().enabled = decksize > 3;
+        gameObject.GetComponent<SpriteRenderer>().enabled = decksize > 0;
     }
 
     bool hungerCheck()

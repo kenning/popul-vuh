@@ -59,10 +59,10 @@ public class DragControl : MonoBehaviour {
 					handObj.transform.localPosition = new Vector3(-.75f, 0, 0f);
 					return;
 				}
-				else if((handObj.transform.localPosition.x <= ((S.GameControlInst.Hand.Count) * -1.55f) + 5.35f) &&  pos.x < 0) {
+				else if((handObj.transform.localPosition.x <= ((S.GameControlInst.Hand.Count) * -1.45f) + 5.4f) &&  pos.x < 0) {
 					//this is for after the exact position has gotten nailed down, purpose is to lock it to the edge. 
 					//the key numbers are: 3.95 one line above and .75 six lines above.
-					handObj.transform.localPosition = new Vector3(((S.GameControlInst.Hand.Count) * -1.55f) + 5.3f, 0, 0);
+					handObj.transform.localPosition = new Vector3(((S.GameControlInst.Hand.Count) * -1.47f) + 5.4f, 0, 0);
 				} else {
 					handObj.transform.Translate(new Vector3(pos.x * multiplierx, 0, 0));
                     dragOrigin = Camera.main.ScreenToViewportPoint(Input.mousePosition);

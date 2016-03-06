@@ -28,7 +28,7 @@ public static class QControl {
 		if(CardQ.Count == 0) {
 			S.ClickControlInst.AllowEveryInput();
 			Debug.Log("Checked Q and allowed every input! This is where card effects terminate and EndTurnCheck() is called.");
-			S.GameControlGUIInst.AnimateCardsToCorrectPositionInSeconds(.05f);
+			S.GameControlGUIInst.AnimateCardsToCorrectPositionInSeconds(.15f);
 			S.GameControlInst.CheckDeckCount();
 
 			// Checks if the turn is over, and if it is, takes the enemy's turn. 
