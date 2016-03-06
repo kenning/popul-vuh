@@ -20,6 +20,7 @@ New features
 
 Bugs
     when you buy cards, canvas $ doesn't update
+    playing a targetsquares card doesn't activate the Q
     ugh... finishing a goal exactly as the level ends doesn't make it show up in the shop as completed. tooltip also needs to disappear
     there seems to be a subtle bug in clickcontrol layering where you are trying to drag your hand but it drags the board
 

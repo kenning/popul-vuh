@@ -13,23 +13,22 @@ public class GridCursorControl : MonoBehaviour {
 	public enum CursorInfoTypes {EnemyInfo, PlayerInfo, ObstacleInfo};
 
 	CursorActions currentCursorAction = CursorActions.None;
-    CursorInfoTypes currentCursorInfoType;
 	GameObject currentCursorTarget = null;
-	GameObject cursorInfoTarget = null;
 	int currentCursorXPosition = 0;
 	int currentCursorYPosition = 0;
 	Obstacle walkableObstacleToWalkInto = null;
 	string moveDirection = null;
-
+    Enemy flashingEnemy;
 	void Start() {
 		playerObject = GameObject.FindGameObjectWithTag ("Player");
 	}
+    
 
 	/// <summary>
 	/// Main method 1; sets the cursor action
 	/// </summary>
 	/// <param name="action">Action.</param>
-	public void PresentCursor(CursorActions action) {
+	public void PresentCursor(CursorActions action, GameObject target = null) {
 		GridCursorControl.GridCursorIsActive = true;
 		Vector3 clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		if(clickPosition.x > 0) clickPosition.x += .5f;
@@ -40,7 +39,7 @@ public class GridCursorControl : MonoBehaviour {
 		    action != currentCursorAction |
 			(int)(clickPosition.x) != currentCursorXPosition |
 			(int)(clickPosition.y) != currentCursorYPosition) {
-			ResetInfoTarget ();
+            currentCursorTarget = target;
 			S.ClickControlInst.lastCursorSetTime = Time.time;
 			cursorActionSet = true;
 			currentCursorXPosition = (int)clickPosition.x;
@@ -57,7 +56,7 @@ public class GridCursorControl : MonoBehaviour {
 		// Set them off camera so they get retriggered
 		currentCursorXPosition = 500;
 		currentCursorYPosition = 500;
-		S.GameControlGUIInst.SetTooltip ("");
+		cursorActionSet = false;
 	}
 
 	/// <summary>
@@ -88,6 +87,9 @@ public class GridCursorControl : MonoBehaviour {
 	/// </summary>
 	public void ReleaseCursor() {
 		switch (currentCursorAction) {
+        case CursorActions.Info: 
+            ShowInfo();
+            break;
 		case CursorActions.StairMove:
 			if(S.GameControlInst.MovesLeft > 0){
 				S.GameControlInst.AddMoves(-1);
@@ -142,33 +144,39 @@ public class GridCursorControl : MonoBehaviour {
 			Debug.Log("shouldn't be showing info! bug!");
 			break;
 		}
-
-		UnpresentCursor();
-
-		cursorActionSet = false;
+        
+        UnpresentCursor();
 	}
 
-	public void ShowInfo() {
-        switch (currentCursorInfoType) {
-        case CursorInfoTypes.EnemyInfo:
+	void ShowInfo() {
+        if (currentCursorTarget == null) {
+            Debug.Log("Cursor target is null!");
+            return;
+        }
+
+        Enemy tempEnemy = currentCursorTarget.GetComponent<Enemy> ();
+        if (tempEnemy != null) {
             GridUnit tempGU = currentCursorTarget.GetComponent<GridUnit> ();
-            Enemy tempEnemy = currentCursorTarget.GetComponent<Enemy> ();
             S.GameControlGUIInst.SetTooltip (tempEnemy.Tooltip);
-            S.GridControlInst.MakeSquares (tempEnemy.AttackTargetType, tempEnemy.AttackMinRange, 
-                                    tempEnemy.AttackMaxRange, tempGU.xPosition, tempGU.yPosition, false);
-            break;
-        case CursorInfoTypes.ObstacleInfo:
-            Obstacle hitObstacle = currentCursorTarget.GetComponent<Obstacle> ();
-            hitObstacle.ShowTooltip ();
-            break;
-        case CursorInfoTypes.PlayerInfo:
+            flashingEnemy = tempEnemy;
+            InvokeRepeating("showEnemySquares", 0, .75f);
+        }
+        
+        Obstacle hitObstacle = currentCursorTarget.GetComponent<Obstacle> ();
+        if (hitObstacle != null) {
+            hitObstacle.ShowTooltip ();            
+        }
+        
+        Player player = currentCursorTarget.GetComponent<Player>();
+        if (player != null) {
             S.GameControlGUIInst.SetTooltip ("That's you! You're Xbalanque, one of the twin sons of Hunapu.");
             S.GridControlInst.MakeSquares (GridControl.TargetTypes.diamond, 1, 1, false);
-            break;
         }
 	}
-
-	public void ResetInfoTarget() {
-		cursorInfoTarget = null;
-	}
+    
+    void showEnemySquares() {
+        GridUnit tempGU = flashingEnemy.GetComponent<GridUnit>();
+        S.GridControlInst.MakeSquares (flashingEnemy.AttackTargetType, flashingEnemy.AttackMinRange, 
+                                    flashingEnemy.AttackMaxRange, tempGU.xPosition, tempGU.yPosition, false);
+    }
 }

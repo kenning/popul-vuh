@@ -16,7 +16,7 @@ public class CardLibrary : MonoBehaviour {
 			StartingItems.Add(SaveDataControl.StartingDeckCards[i]);
 		}
         for(int i = 0; i < 10; i++) {
-            StartingItems.Add(CardLibrary.Lib["Apple"]);
+            StartingItems.Add(CardLibrary.Lib["Book Of History"]);
         }
 
 //		LibraryCard[] allCards = Lib.Values.ToArray();

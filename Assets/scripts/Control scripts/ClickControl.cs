@@ -34,9 +34,6 @@ public class ClickControl : MonoBehaviour {
 	// Info will be displayed after cursor is set 
 		// These bools track what info will be displayed so that after the 'none' cursor is set,
 		// the proper call of ShowInfo will be sent to GridCursorControl.
-	bool willShowPlayerInfo = false;
-	bool willShowEnemyInfo = false;
-	bool willShowObstacleInfo = false;
 	GameObject infoTarget;
 	
 	//i'm impatient and want to end the damn turn already bool
@@ -101,13 +98,8 @@ public class ClickControl : MonoBehaviour {
 
 		if (GridCursorControl.cursorActionSet) {
 			if(!Input.GetMouseButton(0)) {
-                if(Time.time > lastCursorSetTime + 1.0f) {
-                    // S.GridCursorControlInst.ShowInfo();
-				    return;
-                } else {
-                    S.GridCursorControlInst.ReleaseCursor();
-                    return;
-                }
+                S.GridCursorControlInst.ReleaseCursor();
+                return;
 			}
 		}
 
@@ -186,13 +178,16 @@ public class ClickControl : MonoBehaviour {
 		//////////////////////////////////////
 
 		if(Input.GetMouseButtonDown(0)){
+            S.GameControlGUIInst.SetTooltip ("");
             
+            // Cancels flashing animation of info'd enemy
+            S.GridCursorControlInst.CancelInvoke(); 
+            
+			// S.GameControlGUIInst.ShowDeck(false);
+
             Vector3 newClickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             currentCursorXPosition = newClickPosition.x;
             currentCursorYPosition = newClickPosition.y;
-
-			// S.GameControlGUIInst.ShowDeck(false);
-            
 
 			float dist = transform.position.z - Camera.main.transform.position.z;
 			var pos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, dist);
@@ -201,7 +196,6 @@ public class ClickControl : MonoBehaviour {
 
 			if(Input.GetMouseButtonDown(0)) {
                 registerClick();
-        Debug.Log(2);
                 
 				if(hits != null ){
 					foreach(RaycastHit2D hit in hits) {
@@ -283,7 +277,6 @@ public class ClickControl : MonoBehaviour {
 			}
 
 			if(cardHasBeenClickedOn) {
-                Debug.Log("wow is this it?");
                 return;
             }
             // if(S.DragControlInst.DraggingHand) return;
@@ -317,9 +310,6 @@ public class ClickControl : MonoBehaviour {
 			foreach(RaycastHit2D hit in hits){
 				if(hit.collider.gameObject.tag == "Enemy"){
 					if(AllowInfoInput) {
-						willShowEnemyInfo = true;
-						willShowPlayerInfo = false;
-						willShowObstacleInfo = false;
 						infoTarget = hit.collider.gameObject;
 					}
 					if(adjCheck(hit.collider.gameObject.transform.position) != "none" 
@@ -333,15 +323,11 @@ public class ClickControl : MonoBehaviour {
 
 			foreach(RaycastHit2D hit in hits){
 				if(hit.collider.gameObject.tag == "Player" && AllowInfoInput){
-					willShowEnemyInfo = false;
-					willShowPlayerInfo = true;
-					willShowObstacleInfo = false;
 					infoTarget = hit.collider.gameObject;
 				}
 			}
             foreach (RaycastHit2D hit in hits)
             {
-        Debug.Log(3);
                 if (hit.collider.gameObject.tag == "obstacle")
                 {
 
@@ -364,15 +350,11 @@ public class ClickControl : MonoBehaviour {
                     	return;
 					}
 
-					willShowEnemyInfo = false;
-					willShowPlayerInfo = false;
-					willShowObstacleInfo = true;
 					infoTarget = hit.collider.gameObject;
                 }
             }
             foreach (RaycastHit2D hit in hits)
             {
-        Debug.Log(4);
 				if(hit.collider.gameObject.name == "stairs" && AllowMoveInput) {
 					if(adjCheck(hit.collider.gameObject.transform.position) != "none") {
 						S.GridCursorControlInst.PresentCursor(GridCursorControl.CursorActions.StairMove);
@@ -402,6 +384,14 @@ public class ClickControl : MonoBehaviour {
             S.GridCursorControlInst.UnpresentCursor();
         }
         
+        if (Input.GetMouseButton(0) && 
+            !S.DragControlInst.DraggingGameboard && 
+            !S.DragControlInst.DraggingHand &&
+            Tutorial.TutorialLevel == 0 &&
+            Time.time > lastCursorSetTime + .5f) {
+           S.GridCursorControlInst.PresentCursor(GridCursorControl.CursorActions.Info, infoTarget); 
+
+        }
 	}
 
 	void clickOnCard(GameObject tempGO) {
