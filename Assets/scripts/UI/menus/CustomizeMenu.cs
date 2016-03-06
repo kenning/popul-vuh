@@ -24,7 +24,7 @@ public class CustomizeMenu : MonoBehaviour {
 		
 		GUI.depth = 0;
 
-		GUI.BeginGroup (new Rect (Screen.width * .1f, Screen.height * .05f, Screen.width * .85f, Screen.height * .9f));
+		GUI.BeginGroup (new Rect (Screen.width * .1f, Screen.height * .05f, Screen.width * .9f, Screen.height * .9f));
 
 		if(allCards.Length == 0) {
 			FindCards();
@@ -38,8 +38,10 @@ public class CustomizeMenu : MonoBehaviour {
 			}
 		}
 		
-		scrollPos = GUI.BeginScrollView(new Rect(0, Screen.height*.1f, Screen.width*.85f, Screen.height*.47f), scrollPos, 
-		                                new Rect(0, Screen.height*.1f, Screen.width*.8f, Screen.height*.1f*longestLength));
+        GUI.skin.verticalScrollbar.fixedWidth = Screen.width*.1f;
+        
+		scrollPos = GUI.BeginScrollView(new Rect(0, Screen.height*.1f, Screen.width*.9f, Screen.height*.47f), scrollPos, 
+		                                new Rect(0, Screen.height*.1f, Screen.width*.795f, Screen.height*.1f*longestLength));
 		for(int i = 0; i < ShopControl.AllGods.Count; i++) {
 
 			for(int j = 0; j < allCards[i].Count; j++) {

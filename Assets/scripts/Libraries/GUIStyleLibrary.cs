@@ -151,6 +151,7 @@ public class GUIStyleLibrary : MonoBehaviour {
 			CardNameStyle = SizeDecorator(skin.customStyles[6]);
 			CardTextStyle = SizeDecorator(skin.customStyles[7]);
 			InstructionInfoBox = SizeDecorator(skin.customStyles[4]);
+            skin.verticalScrollbar.fixedWidth = Screen.width*.1f;
 		}
 	}
 	

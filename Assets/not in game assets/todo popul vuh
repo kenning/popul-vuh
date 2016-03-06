@@ -1,64 +1,51 @@
-todo
-make a way to display credits
+Optimization
+    set useGUILayout = false; on almost everything
 
-when you buy cards, canvas $ doesn't update
+Regressions
+    ShowInfo
+        click on the player: info about the player
+        click on an enemy: info about the enemy
+        click on a card with targetsquares: unselect it
 
-regression: cards don't reorder when you play them (?) or they don't reorder when you get hit by the little mole guy that makes you discard (?) or they don't reorder when you draw a new card mid turn (this is definitely true)
+New features
+    make customize menu dragging not shitty as hell
+    make a way to display credits
+    reimplement sick squares, maybe have a nagual wizard that makes them
+    Create a "this has never happened before" dialog for the first time that you:
+        - finish a level and get cards
+        - get hit with each of the 3 types of sickness
+    It should have a unique message and dialog box option ("Got it!", "Oh no!")
+    Should save to your save file
 
-make customize menu dragging not shitty as hell
+Bugs
+    when you buy cards, canvas $ doesn't update
+    ugh... finishing a goal exactly as the level ends doesn't make it show up in the shop as completed. tooltip also needs to disappear
+    there seems to be a subtle bug in clickcontrol layering where you are trying to drag your hand but it drags the board
 
-set useGUILayout = false; on almost everything
-
-deck shrinks when low on cards and disappears when out of cards
-
-reimplement sick squares
-
-Create a "this has never happened before" dialog for the first time that you:
-    - finish a level and get cards
-    - get hit with each of the 3 types of sickness
-It should have a unique message and dialog box option ("Got it!", "Oh no!")
-Should save to your save file
-
-
-
-/// New ui
-click on the player: info about the player
-click on an enemy: info about the enemy
-
-click on a card with targetsquares: unselect it
-
-
-Need an animation controller for the main character:
-    - makes a queue of animations when you play a card, and when done it calls
-      whatever the "card finished playing" method is on Card
-
-/// new sprites!
-P1
-weapon attacks: 
-    - pike
-    - macana
-    - bow (?) + arrow
-    - magic ball
-        - explosions on squares that are affected
-    - need to add in extra time for stuff that takes longer than normal to animate
-eating / drinking animations
-non-eating / drinking action animations
-death explosion for main character and enemies
-    
-P2
-visible armor:
-    - shield
-    - shirt
-    - redo main character sprite to not look shitty and to also fit these armors
-    - display armor and discard it when you get hit
-    - have a funny state when you have 5 shields or whatever    
-    
-enemy emotions:
-    - attacking
-    - getting hit
-    
-
-
-/// Buglist
-
-ugh... finishing a goal exactly as the level ends doesn't make it show up in the shop as completed. tooltip also needs to disappear
+New sprites / animations
+    /// new sprites!
+    P1
+    Need an animation controller for the main character:
+        - makes a queue of animations when you play a card, and when done it calls
+        whatever the "card finished playing" method is on Card
+    weapon attacks: 
+        - pike
+        - macana
+        - bow (?) + arrow
+        - magic ball
+            - explosions on squares that are affected
+        - need to add in extra time for stuff that takes longer than normal to animate
+    eating / drinking animations
+    non-eating / drinking action animations
+    death explosion for main character and enemies
+        
+    P2
+    visible armor:
+        - shield
+        - shirt
+        - redo main character sprite to not look shitty and to also fit these armors
+        - display armor and discard it when you get hit
+        - have a funny state when you have 5 shields or whatever
+    enemy emotions:
+        - attacking
+        - getting hit
