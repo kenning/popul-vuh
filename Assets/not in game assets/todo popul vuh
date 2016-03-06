@@ -11,16 +11,54 @@ regression: cards don't reorder when you play them (?) or they don't reorder whe
 
 make customize menu dragging not shitty as hell
 
+set useGUILayout = false; on almost everything
+
+deck shrinks when low on cards and disappears when out of cards
+
+reimplement sick squares
 
 
 
 
 /// New ui
-click on the board: start moving the camera around. no icon or anything. 
-
 click on the player: info about the player
 click on an enemy: info about the enemy
 
 click on a card with targetsquares: unselect it
 
-set useGUILayout = false; on almost everything
+
+Need an animation controller for the main character:
+    - makes a queue of animations when you play a card, and when done it calls
+      whatever the "card finished playing" method is on Card
+
+/// new sprites!
+P1
+weapon attacks: 
+    - pike
+    - macana
+    - bow (?) + arrow
+    - magic ball
+        - explosions on squares that are affected
+    - need to add in extra time for stuff that takes longer than normal to animate
+eating / drinking animations
+non-eating / drinking action animations
+death explosion for main character and enemies
+    
+P2
+visible armor:
+    - shield
+    - shirt
+    - redo main character sprite to not look shitty and to also fit these armors
+    - display armor and discard it when you get hit
+    - have a funny state when you have 5 shields or whatever    
+    
+enemy emotions:
+    - attacking
+    - getting hit
+    
+
+
+/// Buglist
+
+Game crashed trying to pull a silver card from kinich, but he has silver cards...
+http://puu.sh/nwVeU/3ed4e9c845.png

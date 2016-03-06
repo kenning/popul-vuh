@@ -6,38 +6,43 @@ public class DragControl : MonoBehaviour {
     public bool DraggingHand = false;
 	Vector3 dragOrigin;
     Vector3 cameraOrigin;
-	GameObject arrows;
+    GameObject handObj;
 	Texture2D SideArrows;
+	Texture2D CompassArrows;
 	//gameboard limits
 	float leftLimit = -1.6f;
 	float rightLimit = 1.6f;
 	float topLimit = -.6f;
 	float bottomLimit = -2f;
     Card cardScriptClickedOn;
+    float multiplierx = 8.5f;
+    float multipliery = 15f;
     void Start() {
-        arrows =  GameObject.FindGameObjectWithTag("Camera Arrow");
 		SideArrows = (Texture2D)Resources.Load ("sprites/ui/side arrows");
+		CompassArrows = (Texture2D)Resources.Load ("sprites/ui/arrows");
+        handObj = GameObject.Find("Hand");
     }
-	public void GameBoardDrag()
-    {
+	public void GameBoardDrag() {
         dragOrigin = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+
 		S.GameControlGUIInst.Dim (false);
         S.DragControlInst.DraggingGameboard = true;
         cameraOrigin = Camera.main.transform.position;
-        Vector3 arrowsOrigin = Camera.main.ScreenToViewportPoint(Input.mousePosition);
-        arrows.GetComponent<SpriteRenderer>().enabled = true;
+        Debug.Log("calling gameboard drag");
+        Cursor.SetCursor(CompassArrows, new Vector2(CompassArrows.width/2, CompassArrows.height/2), CursorMode.Auto);
     }
 	public void HandDrag(Card clickedCard, Vector3 clickOrigin) {
+        dragOrigin = Camera.main.ScreenToViewportPoint(Input.mousePosition);
         cardScriptClickedOn = clickedCard;
 		S.DragControlInst.DraggingHand = true;
 		S.GameControlGUIInst.Dim(false);
-		Cursor.SetCursor(SideArrows, Vector2.zero, CursorMode.Auto);
+        // this should really be set to false already...
+		Cursor.SetCursor(SideArrows, new Vector2(SideArrows.width/2, SideArrows.height/2), CursorMode.Auto);
         S.GridCursorControlInst.UnpresentCursor();
 	}
     public void StopDragging() {
         DraggingGameboard = false;
         DraggingHand = false;
-        arrows.GetComponent<SpriteRenderer>().enabled = false;
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
     
@@ -45,24 +50,22 @@ public class DragControl : MonoBehaviour {
         if(DraggingHand){
 			if(Input.GetMouseButton(0)){
 				if(S.GameControlInst.Hand.Count < 4) { 
-					GameObject.Find("Hand").transform.localPosition = new Vector3(((3) * -1.48f) + 3.7f, 0, 0);
+					handObj.transform.localPosition = new Vector3(((3) * -1.48f) + 3.7f, 0, 0);
 					return;
 				}
-				Vector3 pos = Camera.main.ScreenToViewportPoint 
-					(Input.mousePosition - (cardScriptClickedOn.transform.position*10) - dragOrigin);
-				Debug.Log(pos.x);
+				Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition)  - dragOrigin;
 
-				if(GameObject.Find("Hand").transform.localPosition.x >= -.75f && pos.x > 0) {
-					GameObject.Find("Hand").transform.localPosition = new Vector3(-.73f, 0, 0f);
+				if(handObj.transform.localPosition.x >= -.75f && pos.x > 0) {
+					handObj.transform.localPosition = new Vector3(-.75f, 0, 0f);
 					return;
 				}
-				else if((GameObject.Find("Hand").transform.localPosition.x <= ((S.GameControlInst.Hand.Count) * -1.55f) + 5.35f) &&  pos.x < 0) {
+				else if((handObj.transform.localPosition.x <= ((S.GameControlInst.Hand.Count) * -1.55f) + 5.35f) &&  pos.x < 0) {
 					//this is for after the exact position has gotten nailed down, purpose is to lock it to the edge. 
 					//the key numbers are: 3.95 one line above and .75 six lines above.
-					GameObject.Find("Hand").transform.localPosition = new Vector3(((S.GameControlInst.Hand.Count) * -1.55f) + 5.3f, 0, 0);
+					handObj.transform.localPosition = new Vector3(((S.GameControlInst.Hand.Count) * -1.55f) + 5.3f, 0, 0);
 				} else {
-					Vector3 move = new Vector3(pos.x, 0, 0);
-					GameObject.Find("Hand").transform.Translate(move);  
+					handObj.transform.Translate(new Vector3(pos.x * multiplierx, 0, 0));
+                    dragOrigin = Camera.main.ScreenToViewportPoint(Input.mousePosition);
 					return;
 				}
 			} else {
@@ -72,7 +75,6 @@ public class DragControl : MonoBehaviour {
 			return;
 		} else if (DraggingGameboard){
 			if(Input.GetMouseButton(0)){
-                // arrows.transform.position = Input.mousePosition;
 				Vector3 camPos = Camera.main.transform.position;
 				Vector3 move = Camera.main.ScreenToViewportPoint (Input.mousePosition);
 				// stops at the end of the screen
@@ -80,19 +82,8 @@ public class DragControl : MonoBehaviour {
                 float finaly = 0;
                 float buffer = 0.2f;
 
-                float multiplierx = 8.5f;
-                float multipliery = 15f;
                 float movex = dragOrigin.x - move.x;
                 float movey = dragOrigin.y - move.y;
-                
-                /// camera position is zero
-                /// dragorigin is 5
-                /// move.x is 6
-                ///
-                
-                /// so basically the velocity (movex) should be constantly added to the camera position directly, unless the camera goes beyond the 
-                Debug.Log("dragOrigin.x = " + dragOrigin.x + 
-                    ", \n move.x = " + movex); 
                 
                 if (camPos.x < leftLimit + buffer && movex < 0) {
                     finalx = leftLimit;
@@ -116,8 +107,7 @@ public class DragControl : MonoBehaviour {
                 
 				return;
 			} else {
-				S.DragControlInst.DraggingGameboard = false;
-				arrows.GetComponent<SpriteRenderer>().enabled = false;
+				StopDragging();
 			}
 			return;
 		}

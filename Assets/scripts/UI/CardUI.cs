@@ -165,7 +165,7 @@ public class CardUI : MonoBehaviour {
 		if(currentAnimatingType == AnimatingType.none && 
            !card.Discarded && 
 		   !card.ForcingDiscardOfThis) {
-			
+			Debug.Log("trying to moveanimate: " + this.name);
 			int i = S.GameControlInst.Hand.IndexOf(gameObject);
 			if(card != null) MoveAnimate(i); 
 		}

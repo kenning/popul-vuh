@@ -35,120 +35,78 @@ public class S : MonoBehaviour {
   static ShopGridCanvas shopGridCanvasInstance;
   static MenuControl menuControlInstance;
   static Tutorial tutorialInstance;
+  static DeckAnimate deckAnimateInstance;
   public static GameControl GameControlInst {
-      get {
-          return gameControlInstance;
-      }
+      get { return gameControlInstance; }
   }
   public static GameControlGUI GameControlGUIInst {
-      get {
-          return gameControlGUIInstance;
-      }
+      get { return gameControlGUIInstance; }
   }
   public static ShopControl ShopControlInst {
-      get {
-          return shopControlInstance;
-      }
+      get { return shopControlInstance; }
   }
   public static ShopControlGUI ShopControlGUIInst {
-      get {
-          return shopControlGUIInstance;
-      }
+      get { return shopControlGUIInstance; }
   }
   public static ClickControl ClickControlInst {
-      get {
-          return clickControlInstance;
-      }
+      get { return clickControlInstance; }
   }
   public static GridControl GridControlInst {
-      get {
-          return gridControlInstance;
-      }
+      get { return gridControlInstance; }
   }
   public static OptionControl OptionControlInst {
-      get {
-          return optionControlInstance;
-      }
+      get { return optionControlInstance; }
   }
   public static DragControl DragControlInst {
-      get {
-          return dragControlInstance;
-      }
+      get { return dragControlInstance; }
   }
   public static EventGUI EventGUIInst {
-      get {
-          return eventGUIInstance;
-      }
+      get { return eventGUIInstance; }
   }
   public static CardLibrary CardLibraryInst {
-      get {
-          return cardLibraryInstance;
-      }
+      get { return cardLibraryInstance; }
   }
   public static EnemyLibrary EnemyLibraryInst {
-      get {
-          return enemyLibraryInstance;
-      }
+      get { return enemyLibraryInstance; }
   }
   public static GUIStyleLibrary GUIStyleLibraryInst {
-      get {
-          return guiStyleLibraryInstance;
-      }
+      get { return guiStyleLibraryInstance; }
   }
   public static GoalLibrary GoalLibraryInst {
-      get {
-          return goalLibraryInstance;
-      }
+      get { return goalLibraryInstance; }
   }
   public static MenuControl MenuControlInst {
-      get {
-          return menuControlInstance;
-      }
+      get { return menuControlInstance; }
   }
   public static MainMenu MainMenuInst {
-      get {
-          return mainMenuInstance;
-      }
+      get { return mainMenuInstance; }
   }
   public static EncyclopediaMenu EncyclopediaMenuInst {
-      get {
-          return encyclopediaMenuInstance;
-      }
+      get { return encyclopediaMenuInstance; }
   }
   public static GodChoiceMenu GodChoiceMenuInst {
-      get {
-          return godChoiceMenuInstance;
-      }
+      get { return godChoiceMenuInstance; }
   }
   public static CustomizeMenu CustomizeMenuInst {
-      get {
-          return customizeMenuInstance;
-      }
+      get { return customizeMenuInstance; }
   }
   public static Tutorial TutorialInst {
-      get {
-          return tutorialInstance;
-      }
+      get { return tutorialInstance; }
   }
   public static GridCursorControl GridCursorControlInst {
-      get {
-          return gridCursorControlInstance;
-      }
+      get { return gridCursorControlInstance; }
   }
   public static GridCursorControlGUI GridCursorControlGUIInst {
-      get {
-          return gridCursorControlGUIInstance;
-      }
+      get { return gridCursorControlGUIInstance; }
   }
   public static ShopAndGoalParentCanvas ShopAndGoalParentCanvasInst {
-      get {
-          return shopAndGoalParentCanvasInstance;
-      }
+      get { return shopAndGoalParentCanvasInstance; }
   }
   public static ShopGridCanvas ShopGridCanvasInst {
-      get {
-          return shopGridCanvasInstance;
-      }
+      get { return shopGridCanvasInstance; }
+  }
+  public static DeckAnimate DeckAnimateInst {
+      get {return deckAnimateInstance;}
   }
 
   

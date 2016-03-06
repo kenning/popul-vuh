@@ -84,7 +84,7 @@ public class ShopControl : MonoBehaviour {
 
 		int[] finalScores = FinalScores ();
 		for(int i = 0; i < Goals.Length; i++) {
-
+            Debug.Log("pulling a card for " + Goals[i].God + " with the final score  " + finalScores[i]);
 			if(finalScores[i] == 1) S.GameControlInst.AddDollars(1);
 			if(finalScores[i] >= 2) CardsToBuyFrom[i].Add(library.PullCardFromPack(Goals[i].God, Card.Rarity.Silver));
 			if(finalScores[i] == 2) S.GameControlInst.AddDollars(2);

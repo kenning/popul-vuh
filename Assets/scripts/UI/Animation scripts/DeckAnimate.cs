@@ -3,8 +3,6 @@ using System.Collections;
 
 public class DeckAnimate : MonoBehaviour {
 
-	GameControlGUI S.GameControlGUIInst;
-
 	SpriteRenderer sprite;
     public Sprite NORMALSPRITE;
     public Sprite SICKSPRITE;
@@ -16,9 +14,11 @@ public class DeckAnimate : MonoBehaviour {
 	Vector3 EndPosition;
 	Vector3 originalPosition;
 	GameObject cardUnderDeck;
+	GameObject anotherCardUnderDeck;
 
 	public void Start () {
 		cardUnderDeck = GameObject.Find ("Card under deck");
+		anotherCardUnderDeck = GameObject.Find ("another card under deck");
 		originalPosition = transform.localPosition;
 		sprite = gameObject.GetComponent<SpriteRenderer>();
 	}
@@ -115,6 +115,21 @@ public class DeckAnimate : MonoBehaviour {
             sprite.sprite = SICKSPRITE;
         else 
             sprite.sprite = NORMALSPRITE;
+    }
+    
+    public void DisplayFewCardsInDeck() {
+        anotherCardUnderDeck.GetComponent<SpriteRenderer>().enabled = false;
+        cardUnderDeck.GetComponent<SpriteRenderer>().enabled = false;
+    }
+    public void DisplayZeroCardsInDeck() {
+        anotherCardUnderDeck.GetComponent<SpriteRenderer>().enabled = false;
+        cardUnderDeck.GetComponent<SpriteRenderer>().enabled = false;
+        gameObject.GetComponent<SpriteRenderer>().enabled = false;
+    }
+    public void DisplayFullDeck() {
+        anotherCardUnderDeck.GetComponent<SpriteRenderer>().enabled = true;
+        cardUnderDeck.GetComponent<SpriteRenderer>().enabled = true;
+        gameObject.GetComponent<SpriteRenderer>().enabled = true;
     }
 
     bool hungerCheck()

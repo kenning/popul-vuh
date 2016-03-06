@@ -73,10 +73,14 @@ public class ClickControl : MonoBehaviour {
 
 		// Resetting things
 		
-		if(S.MenuControlInst.AnyMenuIsUp() | S.ShopControlGUIInst.IgnoreClicking | GridCursorControl.ClickedOffScreen) {
+		if( S.MenuControlInst.AnyMenuIsUp() | 
+            S.ShopControlGUIInst.IgnoreClicking | 
+            GridCursorControl.ClickedOffScreen | 
+            !AllowInputUmbrella | 
+            !AllowInfoInput) {
 			return;
 		}
-
+		
         if(cardScriptClickedOn != null) {
             if (!Input.GetMouseButton(0))
             {
@@ -84,11 +88,6 @@ public class ClickControl : MonoBehaviour {
             } 
         }
 
-		if(!AllowInputUmbrella || !AllowInfoInput) {
-            S.DragControlInst.StopDragging();
-			return;
-		}
-		
 		if(displayCardCanvas.CardDisplay && (!Input.GetMouseButton(0) || !AllowInputUmbrella || !AllowInfoInput)) {
 			S.GameControlGUIInst.Undisplay();
 			cardHasBeenClickedOn = false;
@@ -381,7 +380,8 @@ public class ClickControl : MonoBehaviour {
         
         if (Input.GetMouseButton(0) && 
             CursorHasMovedCheck() && 
-            !S.DragControlInst.DraggingGameboard) {
+            !S.DragControlInst.DraggingGameboard && 
+            !S.DragControlInst.DraggingHand) {
             S.DragControlInst.GameBoardDrag();        
             S.GridCursorControlInst.UnpresentCursor();
         }
