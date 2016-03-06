@@ -66,6 +66,7 @@ public class ClickControl : MonoBehaviour {
 		if (Input.GetMouseButtonDown (0)) {
 			S.ShopControlInst.GoalCheck("Touch the screen no more than than X times");
 		}
+        
 
 		if (!Input.GetMouseButton (0) && GridCursorControl.ClickedOffScreen) {
 			GridCursorControl.ClickedOffScreen = false;
@@ -76,8 +77,7 @@ public class ClickControl : MonoBehaviour {
 		if( S.MenuControlInst.AnyMenuIsUp() | 
             S.ShopControlGUIInst.IgnoreClicking | 
             GridCursorControl.ClickedOffScreen | 
-            !AllowInputUmbrella | 
-            !AllowInfoInput) {
+            !AllowInputUmbrella ) {
 			return;
 		}
 		
@@ -150,9 +150,12 @@ public class ClickControl : MonoBehaviour {
 				cardHasBeenClickedOn = false;
 			}
 			else {
+                    Debug.Log("Can get here");
 
 				if(Mathf.Abs(Input.mousePosition.x - cardClickOrigin.x) > .2f 
-				   && !cardScriptClickedOn.Discarded && AllowInfoInput) {
+				   && !cardScriptClickedOn.Discarded && 
+                   (AllowInfoInput && Tutorial.TutorialLevel == 0 | Tutorial.TutorialLevel == 7)) {
+                    Debug.Log("Can't get here");
 					S.DragControlInst.HandDrag(cardScriptClickedOn, cardClickOrigin);
             		cardHasBeenClickedOn = false;
 					return;
@@ -161,11 +164,16 @@ public class ClickControl : MonoBehaviour {
 				        && cardScriptClickedOn.Discarded && AllowInfoInput) {
 					cardHasBeenClickedOn = false;
 				}
-				else if(Time.time - 0.22f > lastCardClick && !displayCardCanvas.CardDisplay && AllowInfoInput) { 
+				else if(Time.time - 0.22f > lastCardClick && 
+                    !displayCardCanvas.CardDisplay && 
+                    AllowInfoInput && Tutorial.TutorialLevel == 0) {
+                    Debug.Log("Displaying"); 
 					S.GameControlGUIInst.Display(cardScriptClickedOn);
 					cardHasBeenClickedOn = false;
 				}
-				else if(Time.time - .03f > lastCardClick && AllowInfoInput) 
+				else if(Time.time - .03f > lastCardClick && 
+                    AllowInfoInput &&
+                    Tutorial.TutorialLevel == 0) 
                 {
                     cardScriptClickedOn.cardUI.ShineAnimate();
 					S.GameControlGUIInst.DisplayDim();
@@ -184,6 +192,7 @@ public class ClickControl : MonoBehaviour {
             currentCursorYPosition = newClickPosition.y;
 
 			// S.GameControlGUIInst.ShowDeck(false);
+            
 
 			float dist = transform.position.z - Camera.main.transform.position.z;
 			var pos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, dist);
@@ -192,6 +201,7 @@ public class ClickControl : MonoBehaviour {
 
 			if(Input.GetMouseButtonDown(0)) {
                 registerClick();
+        Debug.Log(2);
                 
 				if(hits != null ){
 					foreach(RaycastHit2D hit in hits) {
@@ -272,7 +282,10 @@ public class ClickControl : MonoBehaviour {
 				}
 			}
 
-			if(cardHasBeenClickedOn) return;
+			if(cardHasBeenClickedOn) {
+                Debug.Log("wow is this it?");
+                return;
+            }
             // if(S.DragControlInst.DraggingHand) return;
             // if(S.DragControlInst.DraggingGameboard) return;
 
@@ -328,6 +341,7 @@ public class ClickControl : MonoBehaviour {
 			}
             foreach (RaycastHit2D hit in hits)
             {
+        Debug.Log(3);
                 if (hit.collider.gameObject.tag == "obstacle")
                 {
 
@@ -358,6 +372,7 @@ public class ClickControl : MonoBehaviour {
             }
             foreach (RaycastHit2D hit in hits)
             {
+        Debug.Log(4);
 				if(hit.collider.gameObject.name == "stairs" && AllowMoveInput) {
 					if(adjCheck(hit.collider.gameObject.transform.position) != "none") {
 						S.GridCursorControlInst.PresentCursor(GridCursorControl.CursorActions.StairMove);
@@ -381,7 +396,8 @@ public class ClickControl : MonoBehaviour {
         if (Input.GetMouseButton(0) && 
             CursorHasMovedCheck() && 
             !S.DragControlInst.DraggingGameboard && 
-            !S.DragControlInst.DraggingHand) {
+            !S.DragControlInst.DraggingHand &&
+            Tutorial.TutorialLevel == 0) {
             S.DragControlInst.GameBoardDrag();        
             S.GridCursorControlInst.UnpresentCursor();
         }
@@ -466,5 +482,10 @@ public class ClickControl : MonoBehaviour {
         if(clickPosition.y < 0) clickPosition.y -= .5f;
         currentCursorXPosition = (int)clickPosition.x;
         currentCursorYPosition = (int)clickPosition.y;
+    }
+    
+    public void CardHasntBeenClickedOn() {
+        cardHasBeenClickedOn = false;
+        cardScriptClickedOn = null;
     }
 }

@@ -20,14 +20,17 @@ public class EncyclopediaMenu : MonoBehaviour {
 	string[] TabStrings = new string[] {"Gods", "Goals", "Cards", "Enemies"};
 	
 	void OnGUI() {
+        GUI.skin.verticalScrollbar = S.GUIStyleLibraryInst.MainStyles.Scrollbar;
+        GUI.skin.verticalScrollbarThumb = S.GUIStyleLibraryInst.MainStyles.Scrollbarthumb;
+
 		GUI.depth = 1;
 		
 		GUI.Box(new Rect(0, 0, Screen.width, Screen.height), "", S.GUIStyleLibraryInst.MainStyles.BlackBackground);
 
 		GUI.depth = 0;
 
-		GUI.BeginGroup(new Rect(Screen.width*.1f, Screen.height*.051f, Screen.width*.8f, Screen.height*.91f), "");
-
+		GUI.BeginGroup(new Rect(Screen.width*.1f, Screen.height*.051f, Screen.width*.9f, Screen.height*.91f), "");
+        
 		if(GUI.Button(new Rect(0, Screen.height*.81f, Screen.width*.8f, Screen.height*.1f), 
 		              "Go back", S.GUIStyleLibraryInst.EncyclopediaStyles.BackButton)) {
 			S.MenuControlInst.TurnOnMenu(MenuControl.MenuType.MainMenu);
@@ -59,7 +62,8 @@ public class EncyclopediaMenu : MonoBehaviour {
 		}
 		else if(Tabs[2] | Tabs[1] | Tabs[0]) {
 				//God tabs
-			for(int i = 0; i < ShopControl.AllGods.Count; i++) {
+                // AllGods.Count - 2 to not show pantheon
+			for(int i = 0; i < ShopControl.AllGods.Count-2; i++) {
 				GUIStyle godIconStyle = S.GUIStyleLibraryInst.EncyclopediaStyles.TabOff;
 				if(SelectedGod == i) godIconStyle = S.GUIStyleLibraryInst.EncyclopediaStyles.TabOn;
 				if(GUI.Button(new Rect(Screen.width*.8f/7*i, Screen.height*.1f, Screen.width*.8f/7, Screen.height*.09f), 
@@ -108,8 +112,8 @@ public class EncyclopediaMenu : MonoBehaviour {
 				}
 
 				scrollPos = GUI.BeginScrollView(new Rect(Screen.width*.6f, Screen.height*.2f, Screen.width*.4f, Screen.height*.59f), scrollPos, 
-				                new Rect(Screen.width*.6f, Screen.height*.2f, Screen.width*.2f, Screen.height*(.1f*shownGoals.Count)));
-//		NoneStyleWordWrap.fontSize = 
+				                new Rect(Screen.width*.6f, Screen.height*.2f, Screen.width*.4f, Screen.height*(.1f*shownGoals.Count)),
+                                S.GUIStyleLibraryInst.MainStyles.Scrollbar, GUIStyle.none);
 				for(int i = 0; i < shownGoals.Count; i++) {
 					GUIStyle goalStyle = new GUIStyle(S.GUIStyleLibraryInst.EncyclopediaStyles.TabOff);
 					if(selectedGoal == i) goalStyle = new GUIStyle(S.GUIStyleLibraryInst.EncyclopediaStyles.TabOn);
@@ -153,8 +157,10 @@ public class EncyclopediaMenu : MonoBehaviour {
 					FindCards();
 				}
 				
-				scrollPos = GUI.BeginScrollView(new Rect(Screen.width*.6f, Screen.height*.2f, Screen.width*.2f, Screen.height*.6f), scrollPos, 
-				                                new Rect(Screen.width*.6f, Screen.height*.2f, Screen.width*.15f, Screen.height*.1f*shownCards.Count));
+                // NOTE: .27 was where the fat scrollbar was put in. the old version was .2? i think?
+				scrollPos = GUI.BeginScrollView(new Rect(Screen.width*.6f, Screen.height*.2f, Screen.width*.27f, Screen.height*.6f), scrollPos, 
+				                                new Rect(Screen.width*.6f, Screen.height*.2f, Screen.width*.15f, Screen.height*.1f*shownCards.Count),
+                                                GUIStyle.none, S.GUIStyleLibraryInst.MainStyles.Scrollbar);
 				for(int i = 0; i < shownCards.Count; i++) {
 					if(UnlockedCardNames.Contains(shownCards[i].CardName)) {
 
@@ -214,9 +220,8 @@ public class EncyclopediaMenu : MonoBehaviour {
 			}
 		}
 		else if (Tabs[3]) {
-//			scrollPos = GUI.BeginScrollView(new Rect(Screen.width*.6f, Screen.height*.2f, Screen.width*.4f, Screen.height*.6f), scrollPos, 
-//			                                new Rect(Screen.width*.6f, Screen.height*.2f, Screen.width*.2f, Screen.height*.1f*shownGoals.Count));
-			scrollPos = GUI.BeginScrollView(new Rect(0, Screen.height*.11f, Screen.width*.8f, Screen.height*.68f), scrollPos, 
+            // NOTE: .87 is the spot where the fat scrollbar was added in. Old version was .8
+			scrollPos = GUI.BeginScrollView(new Rect(0, Screen.height*.11f, Screen.width*.87f, Screen.height*.68f), scrollPos, 
 			                                new Rect(0, Screen.height*.11f, Screen.width*.6f, Screen.height*.15f*allEnemies.Count));
 			for(int i = 0; i < allEnemies.Count; i++) {
 				if(SaveDataControl.DefeatedEnemies.Contains(allEnemies[i].Name)) {					

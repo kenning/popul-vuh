@@ -59,7 +59,8 @@ public class GUIStyleLibrary : MonoBehaviour {
 		public GUIStyle Sidebar;
 		public GUIStyle DiedAndGotToLevel;
 		public GUIStyle NeutralButton;
-		
+		public GUIStyle Scrollbar;
+        public GUIStyle Scrollbarthumb;
 		public MainMenuStyleLibrary (GUISkin skin) {
 			BlackBackground = SizeDecorator(skin.box);
 			Title = SizeDecorator(skin.customStyles [0]);
@@ -68,6 +69,11 @@ public class GUIStyleLibrary : MonoBehaviour {
 			Sidebar = SizeDecorator(skin.customStyles [4]);
 			DiedAndGotToLevel = SizeDecorator(skin.customStyles[12]);
 			NeutralButton = SizeDecorator(skin.customStyles[12]);
+            Scrollbar = skin.verticalScrollbar;
+            Scrollbarthumb = skin.verticalScrollbarThumb;
+
+            Scrollbar.fixedWidth = Screen.width*.1f;
+            Scrollbarthumb.fixedWidth = Screen.width*.1f;
 		}
 	}
 	
@@ -151,7 +157,6 @@ public class GUIStyleLibrary : MonoBehaviour {
 			CardNameStyle = SizeDecorator(skin.customStyles[6]);
 			CardTextStyle = SizeDecorator(skin.customStyles[7]);
 			InstructionInfoBox = SizeDecorator(skin.customStyles[4]);
-            skin.verticalScrollbar.fixedWidth = Screen.width*.1f;
 		}
 	}
 	

@@ -38,8 +38,6 @@ public class CustomizeMenu : MonoBehaviour {
 			}
 		}
 		
-        GUI.skin.verticalScrollbar.fixedWidth = Screen.width*.1f;
-        
 		scrollPos = GUI.BeginScrollView(new Rect(0, Screen.height*.1f, Screen.width*.9f, Screen.height*.47f), scrollPos, 
 		                                new Rect(0, Screen.height*.1f, Screen.width*.795f, Screen.height*.1f*longestLength));
 		for(int i = 0; i < ShopControl.AllGods.Count; i++) {

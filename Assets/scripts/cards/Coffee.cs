@@ -15,8 +15,8 @@ public class Coffee : Card {
 
         if (Tutorial.TutorialLevel != 0)
         {
-            Tutorial.PlayedACardLevel7 = true;
-            S.GameControlInst.gameObject.GetComponent<Tutorial>().TutorialMessage = "Coffee is actually pretty useful, because it lets you use two of my cards in a turn. Or any other two cards.";
+            Tutorial.PlayedACardLevel6 = true;
+            S.GameControlInst.gameObject.GetComponent<Tutorial>().TutorialMessage = "kojpnlm ikholjmngp epfgjiomklhn nmoegpkijlfh";
         }
 
 		base.Play ();

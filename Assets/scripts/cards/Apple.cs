@@ -17,8 +17,8 @@ public class Apple : Card {
 
         if (Tutorial.TutorialLevel != 0)
         {
-            Tutorial.PlayedACardLevel7 = true;
-            S.GameControlInst.gameObject.GetComponent<Tutorial>().TutorialMessage = "That's Chac's card, Apple. It draws you two cards and lets you play another card.";
+            Tutorial.PlayedACardLevel6 = true;
+            S.GameControlInst.gameObject.GetComponent<Tutorial>().TutorialMessage = "fnjlhmpogik onhpmklefijg lpkmonj kpnliomj";
         }
 
 		base.Play ();

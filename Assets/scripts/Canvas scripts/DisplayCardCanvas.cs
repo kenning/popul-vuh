@@ -108,8 +108,6 @@ public class DisplayCardCanvas : MonoBehaviour {
 	}
 
 	public void Display (Card card) {
-		if (Tutorial.TutorialLevel != 0) return;
-
 		initialize();
 
 		undimAfter = true;

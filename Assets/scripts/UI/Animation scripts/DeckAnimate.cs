@@ -126,7 +126,6 @@ public class DeckAnimate : MonoBehaviour {
     }
     
     public void DisplayDeckSize(int decksize) {
-        Debug.Log(decksize);
         anotherCardUnderDeck.GetComponent<SpriteRenderer>().enabled = (decksize > 5);
         cardUnderDeck.GetComponent<SpriteRenderer>().enabled = decksize > 3;
         gameObject.GetComponent<SpriteRenderer>().enabled = decksize > 0;

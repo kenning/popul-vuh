@@ -14,7 +14,7 @@ public class WoodenPike : Card {
     {
         if (Tutorial.TutorialLevel != 0)
         {
-            S.GameControlInst.gameObject.GetComponent<Tutorial>().TutorialMessage = "Now that it's selected, click on the square with the enemy.";
+            S.GameControlInst.gameObject.GetComponent<Tutorial>().TutorialMessage = "inlmjpkgoh opjmnilk lkopjmn";
         }
 
         base.Activate(freeMove);
@@ -22,5 +22,7 @@ public class WoodenPike : Card {
 
 	public override void Affect (GridUnit targetedUnit) {
 		BasicDamageEffect (targetedUnit, 1);
+        
+        Tutorial.PlayedACardLevel5 = true;
 	}
 }

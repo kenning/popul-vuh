@@ -15,8 +15,8 @@ public class ClothShoes : Card {
 
         if (Tutorial.TutorialLevel != 0)
         {
-            Tutorial.PlayedACardLevel7 = true;
-            S.GameControlInst.gameObject.GetComponent<Tutorial>().TutorialMessage = "That's one of Ikka's cards. It lets you move two more times in a turn. Great for running away, I guess.";
+            Tutorial.PlayedACardLevel6 = true;
+            S.GameControlInst.gameObject.GetComponent<Tutorial>().TutorialMessage = "oilkhjpnm lkjhogemnifp kpnlfhjgiom ghojinmlfpk loipnmjk";
         }
 
 		base.Play ();

@@ -13,6 +13,7 @@ public class S : MonoBehaviour {
     
   static bool initialized = false;
 
+  static Player playerInstance;
   static GameControl gameControlInstance;
   static GameControlGUI gameControlGUIInstance;
   static ShopControl shopControlInstance;
@@ -37,6 +38,9 @@ public class S : MonoBehaviour {
   static MenuControl menuControlInstance;
   static Tutorial tutorialInstance;
   static DeckAnimate deckAnimateInstance;
+  public static Player PlayerInst {
+      get { return playerInstance; }
+  }
   public static GameControl GameControlInst {
       get { return gameControlInstance; }
   }
@@ -112,6 +116,8 @@ public class S : MonoBehaviour {
 
   
   void Awake() {
+        playerInstance = GameObject.Find("Player").GetComponent<Player>();
+        
 		gameControlInstance = gc.GetComponent<GameControl> ();
 		gameControlGUIInstance = gc.GetComponent<GameControlGUI> ();
 		shopControlInstance = gc.GetComponent<ShopControl> ();

@@ -9,16 +9,16 @@ public class Tutorial : MonoBehaviour {
     
     public string TutorialMessage = "";
     string[] TutorialStartMessages = new string[] {
-        "Hi, I'm Buluc Chabtan, the God of sacrifice and war.\n\n" + 
-			"I'm here to teach you how to defend yourself in Xibalba, the world underneath yours.",  //level 1
-        "You can move by clicking on a spot next to you. You can move one square a turn.", //level 2
-        "Not bad. You can punch by clicking on an enemy next to you. Doing it spends your action for that turn.", //level 3
-        "You killed it! Nice job, that's all I need you to do to finish a level.", //level 4
-        "This time, your enemy is a bit further away from you. First select the pike card.", //level 5
-        "Nice job! Now your hand has some boring cards from other Gods. Just tap any card twice.", //level 6
-        "If you need to know what a card does, try holding your finger down to preview the full card. " + 
-			"\n\nThat should be enough to get you started. I'll be watching over you, " + 
-        	"and if you do well enough, other Gods will lend you their power too. Good luck." //Level 7
+        "piecmklnhdgojf gjlnipokjlehfgmindpkohm pnmolijhk onmgfljpionhkmejklp",  //level 1
+        "agjlpbekfchoindm okjlehfgmindp gfljpionhkme", //level 2
+        "gfljpionhkme afhnecjlkbmgdpoi glnhofjeikpm", //level 3
+        "ingmfhlopkj ojnmigphlk", //level 4
+        "nglhojipkm jnhiplkomg ", //level 5
+        "blajpeohgifndcmk hmnlopijk iojkmlnp dojbfghcepknlmi", //level 6
+        "ingmfhlopkj ojnmigphlk okjlehfgmindp", //level 7
+        "mpnokjl omljnpk hlikjmpno mpkjlon mhkgceldpon egmndfoip" + 
+			"\n\njkoelpicnmdfbhg hejdcoimnlfgbpk mglidnojkfhecpokphifnmgjl " + 
+        	" pnlgkocjefmhid koijplhnm" //Level 8
     };
 
     //Inserted from within Unity
@@ -27,7 +27,8 @@ public class Tutorial : MonoBehaviour {
 
     public Texture2D BLACKBOX;
 
-    public static bool PlayedACardLevel7 = false;
+    public static bool PlayedACardLevel6 = false;
+    public static bool PlayedACardLevel5 = false;
 
 	void Start() {
 		useGUILayout = false;
@@ -35,7 +36,7 @@ public class Tutorial : MonoBehaviour {
 
     public void OnGUI()
     {
-        if (TutorialLevel == 1 | TutorialLevel == 7)
+        if (TutorialLevel == 1 | TutorialLevel == 8)
         {
             GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), BLACKBOX);
             GUI.DrawTexture(new Rect(Screen.width * .4f, Screen.height * .2f, Screen.width * .55f, Screen.height * .6f), 
@@ -67,18 +68,28 @@ public class Tutorial : MonoBehaviour {
             {
 				GUIStyle OKStyle = new GUIStyle(S.GUIStyleLibraryInst.TutorialStyles.NextLevelButton);
 				OKStyle.fontSize = S.GUIStyleLibraryInst.TutorialStyles.DoneFontSize;
-                if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .55f, Screen.width * .6f, Screen.height * .075f), 
-				               "OK", OKStyle))
+                if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .55f, Screen.width * .6f, Screen.height * .125f), 
+				               "I know how to move and attack enemies", OKStyle))
                 {
                     continueTutorial();
                 }
             }
-            if ((TutorialLevel == 6 && PlayedACardLevel7))
+            if ((TutorialLevel == 6 && PlayedACardLevel5))
             {
 				GUIStyle DoneStyle = new GUIStyle(S.GUIStyleLibraryInst.TutorialStyles.NextLevelButton);
 				DoneStyle.fontSize = S.GUIStyleLibraryInst.TutorialStyles.DoneFontSize;
                 if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .55f, Screen.width * .6f, Screen.height * .075f), 
-				               "I'm done with the tutorial", S.GUIStyleLibraryInst.TutorialStyles.NextLevelButton))
+				               "I know how to play weapon cards", S.GUIStyleLibraryInst.TutorialStyles.NextLevelButton))
+                {
+                    continueTutorial();
+                }
+            }
+            if ((TutorialLevel == 7 && PlayedACardLevel6))
+            {
+				GUIStyle DoneStyle = new GUIStyle(S.GUIStyleLibraryInst.TutorialStyles.NextLevelButton);
+				DoneStyle.fontSize = S.GUIStyleLibraryInst.TutorialStyles.DoneFontSize;
+                if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .55f, Screen.width * .6f, Screen.height * .075f), 
+				               "I know how to play other cards", S.GUIStyleLibraryInst.TutorialStyles.NextLevelButton))
                 {
                     continueTutorial();
                 }
@@ -86,7 +97,7 @@ public class Tutorial : MonoBehaviour {
         }
 
         #region always on buttons
-        if (TutorialLevel != 1 && TutorialLevel != 7) {
+        if (TutorialLevel != 1 && TutorialLevel != 8) {
 	        GUI.Box(new Rect(Screen.width * .6f, 0, Screen.width * .4f, Screen.height * .035f), 
 			        "Tutorial level " + TutorialLevel.ToString(), S.GUIStyleLibraryInst.TutorialStyles.InfoBox);
 	        if (GUI.Button(new Rect(Screen.width * .05f, Screen.height * .235f, Screen.width * .4f, Screen.height * .06f), 
@@ -123,6 +134,8 @@ public class Tutorial : MonoBehaviour {
         SaveDataControl.FinishedTutorial = true;
         SaveDataControl.Save();
         
+        S.ClickControlInst.CardHasntBeenClickedOn();
+        
         gameObject.GetComponent<GridControl>().CancelInvoke();
     }
 
@@ -142,6 +155,9 @@ public class Tutorial : MonoBehaviour {
 
         if (TutorialLevel == 2)
         {
+            S.GameControlInst.SetMoves(1);
+            S.GameControlInst.SetPlays(1);
+
             S.ClickControlInst.DisallowEveryInput();
             S.ClickControlInst.AllowMoveInput = true;
             S.ClickControlInst.AllowInputUmbrella = true;
@@ -200,8 +216,9 @@ public class Tutorial : MonoBehaviour {
 
             gameObject.GetComponent<EnemyLibrary>().LoadEnemy("pa", p.xPosition, p.yPosition - 2);
         }
-        if (TutorialLevel == 6)
-        {
+        if (TutorialLevel == 6) {
+			S.GameControlGUIInst.Dim();            
+            S.ClickControlInst.DisallowEveryInput();
 			GameObject en = GameObject.FindGameObjectWithTag("Enemy");
 			if (en != null)
 			{
@@ -209,17 +226,20 @@ public class Tutorial : MonoBehaviour {
 			}
 			
 			S.GameControlInst.DeleteAllCards();
-			
+        }
+        if (TutorialLevel == 7)
+        {
 			List<string> deck = S.GameControlInst.Deck;
             deck.Add("Apple");
             deck.Add("Coffee");
             deck.Add("Cloth Shoes");
             deck.Add("Quick Prayer");
+            
             int count = deck.Count;
-			// this is ugly but it works
-			GameObject.Find("Hand").transform.localPosition = new Vector3(-0.7f, 0, 0);
             for (int i = 0; i < count; i++) { S.GameControlInst.Draw(); }
             deck.Add("Quick Prayer");
+            deck.Add("Coffee");
+            S.GameControlInst.CheckDeckCount();
 
             S.GameControlInst.AddPlays(4);
 
@@ -227,6 +247,8 @@ public class Tutorial : MonoBehaviour {
             S.ClickControlInst.AllowNewPlayInput = true;
             S.ClickControlInst.AllowInfoInput = true;
             S.ClickControlInst.AllowInputUmbrella = true;
+
+			S.GameControlGUIInst.Dim(false);
         }
     }
 

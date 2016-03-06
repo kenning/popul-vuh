@@ -41,7 +41,7 @@ public class StateSavingControl : MonoBehaviour {
 	public static void Save() {
 		ES2.Delete("PVState");
 
-		if (!MainMenu.InGame) return;
+		if (!MainMenu.InGame | Tutorial.TutorialLevel != 0) return;
 
 		SavedState ss = new SavedState ();
 		ss.ObstacleLevelType 	= ObstacleLibrary.CurrentLevelType;
