@@ -16,7 +16,8 @@ public class Coffee : Card {
         if (Tutorial.TutorialLevel != 0)
         {
             Tutorial.PlayedACardLevel6 = true;
-            S.GameControlInst.gameObject.GetComponent<Tutorial>().TutorialMessage = "kojpnlm ikholjmngp epfgjiomklhn nmoegpkijlfh";
+            S.TutorialInst.TurnOffArrows();
+            S.GameControlInst.gameObject.GetComponent<Tutorial>().TutorialMessage = "kojpnlm nmopkijlfh";
         }
 
 		base.Play ();

@@ -192,11 +192,12 @@ public class GUIStyleLibrary : MonoBehaviour {
 		
 		public TutorialStyleLibrary (GUISkin skin) {
 			DoneFontSize = SizeIntDecorator(18);
-			FirstDialogueFontSize = SizeIntDecorator(18);
+			FirstDialogueFontSize = SizeIntDecorator(35);
 			DialogueBox = SizeDecorator(skin.customStyles[3]);
 			StartButton = SizeDecorator(skin.button);
 			InfoBox = SizeDecorator(skin.customStyles[4]);
 			NextLevelButton = SizeDecorator(skin.customStyles[1]);
+            NextLevelButton.fontSize = SizeIntDecorator(14); 
 		}
 	}
 	

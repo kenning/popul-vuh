@@ -16,7 +16,8 @@ public class ClothShoes : Card {
         if (Tutorial.TutorialLevel != 0)
         {
             Tutorial.PlayedACardLevel6 = true;
-            S.GameControlInst.gameObject.GetComponent<Tutorial>().TutorialMessage = "oilkhjpnm lkjhogemnifp kpnlfhjgiom ghojinmlfpk loipnmjk";
+            S.TutorialInst.TurnOffArrows();
+            S.GameControlInst.gameObject.GetComponent<Tutorial>().TutorialMessage = "ghojinmpk loipnmjk";
         }
 
 		base.Play ();

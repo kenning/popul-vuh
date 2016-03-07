@@ -18,7 +18,8 @@ public class Apple : Card {
         if (Tutorial.TutorialLevel != 0)
         {
             Tutorial.PlayedACardLevel6 = true;
-            S.GameControlInst.gameObject.GetComponent<Tutorial>().TutorialMessage = "fnjlhmpogik onhpmklefijg lpkmonj kpnliomj";
+            S.TutorialInst.TurnOffArrows();
+            S.GameControlInst.gameObject.GetComponent<Tutorial>().TutorialMessage = "fjg onj kpnliomj";
         }
 
 		base.Play ();

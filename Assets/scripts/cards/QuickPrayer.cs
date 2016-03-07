@@ -17,7 +17,8 @@ public class QuickPrayer : Card {
         if (Tutorial.TutorialLevel != 0)
         {
             Tutorial.PlayedACardLevel6 = true;
-            S.GameControlInst.gameObject.GetComponent<Tutorial>().TutorialMessage = "jmlknpo mlijnpko oplejifmkghncd kojpnlm";
+            S.TutorialInst.TurnOffArrows();
+            S.GameControlInst.gameObject.GetComponent<Tutorial>().TutorialMessage = "jmlknpo ojpnlm";
         }
 
 		base.Play ();

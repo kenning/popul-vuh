@@ -326,7 +326,7 @@ public class GridControl : MonoBehaviour {
     }
     public void TutorialPunchIllustration()
     {
-        MakeSquares(GridControl.TargetTypes.square, 0, 0, player.xPosition, player.yPosition - 1, false);
+        MakeSquares(GridControl.TargetTypes.square, 0, 0, player.xPosition + 1, player.yPosition, false);
     }
     #endregion
 

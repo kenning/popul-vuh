@@ -2,21 +2,16 @@ Optimization
     set useGUILayout = false; on almost everything
 
 Regressions
-    ShowInfo
-        click on the player: info about the player
-        click on an enemy: info about the enemy
-        click on a card with targetsquares: unselect it
 
 New features
-    make customize menu dragging not shitty as hell
     make a way to display credits
     reimplement sick squares, maybe have a nagual wizard that makes them
     Create a "this has never happened before" dialog for the first time that you:
         - finish a level and get cards
         - get hit with each of the 3 types of sickness
-    It should have a unique message and dialog box option ("Got it!", "Oh no!")
-    Should save to your save file
-    whole tutorial is in mayan lol
+        It should have a unique message and dialog box option ("Got it!", "Oh no!")
+        Should save to your save file
+    tutorial arrows
 
 Bugs
     when you buy cards, canvas $ doesn't update

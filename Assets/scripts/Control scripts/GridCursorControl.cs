@@ -132,7 +132,7 @@ public class GridCursorControl : MonoBehaviour {
 				}
 				else 
 				{
-					S.GameControlInst.gameObject.GetComponent<Tutorial>().TutorialMessage = "Just tap the enemy. Kill it!";
+					S.GameControlInst.gameObject.GetComponent<Tutorial>().TutorialMessage = "iolksdcbelp";
 					return;
 				}
 			}

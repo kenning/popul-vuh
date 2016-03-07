@@ -14,9 +14,11 @@ public class WoodenPike : Card {
     {
         if (Tutorial.TutorialLevel != 0)
         {
-            S.GameControlInst.gameObject.GetComponent<Tutorial>().TutorialMessage = "inlmjpkgoh opjmnilk lkopjmn";
+            S.GameControlInst.gameObject.GetComponent<Tutorial>().TutorialMessage = "inlmjph opjmnilk lkopjmn";
+            S.TutorialInst.TurnOffArrows();
+            S.TutorialInst.MakeArrowInSpot(0, -2);
         }
-
+        
         base.Activate(freeMove);
     }
 
@@ -24,5 +26,6 @@ public class WoodenPike : Card {
 		BasicDamageEffect (targetedUnit, 1);
         
         Tutorial.PlayedACardLevel5 = true;
+        S.TutorialInst.TurnOffArrows();
 	}
 }

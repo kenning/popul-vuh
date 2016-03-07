@@ -9,16 +9,14 @@ public class Tutorial : MonoBehaviour {
     
     public string TutorialMessage = "";
     string[] TutorialStartMessages = new string[] {
-        "piecmklnhdgojf gjlnipokjlehfgmindpkohm pnmolijhk onmgfljpionhkmejklp",  //level 1
-        "agjlpbekfchoindm okjlehfgmindp gfljpionhkme", //level 2
-        "gfljpionhkme afhnecjlkbmgdpoi glnhofjeikpm", //level 3
-        "ingmfhlopkj ojnmigphlk", //level 4
-        "nglhojipkm jnhiplkomg ", //level 5
-        "blajpeohgifndcmk hmnlopijk iojkmlnp dojbfghcepknlmi", //level 6
-        "ingmfhlopkj ojnmigphlk okjlehfgmindp", //level 7
-        "mpnokjl omljnpk hlikjmpno mpkjlon mhkgceldpon egmndfoip" + 
-			"\n\njkoelpicnmdfbhg hejdcoimnlfgbpk mglidnojkfhecpokphifnmgjl " + 
-        	" pnlgkocjefmhid koijplhnm" //Level 8
+        "gjlnipokjlehfgmindpkohm",  //level 1
+        "agjlpbe gfonhkme", //level 2
+        "afhnecjlkbmgdpoi nhofjei", //level 3
+        "ingmfhlo ojnmig", //level 4
+        "ngljipk jnhipkg ", //level 5
+        "hmnlopijk iojkm", //level 6
+        "ingmfhlj o ehgmindp", //level 7
+        "mp gceldpon jlkb ehgmindp\n\njkolfnmgjl" //Level 8
     };
 
     //Inserted from within Unity
@@ -29,9 +27,11 @@ public class Tutorial : MonoBehaviour {
 
     public static bool PlayedACardLevel6 = false;
     public static bool PlayedACardLevel5 = false;
-
+    GameObject hand;
+    List<GameObject> arrowList = new List<GameObject>();
 	void Start() {
 		useGUILayout = false;
+        hand = GameObject.Find("Hand");
 	}
 
     public void OnGUI()
@@ -45,8 +45,9 @@ public class Tutorial : MonoBehaviour {
 			if(TutorialLevel == 1) dialogueStyle.fontSize = S.GUIStyleLibraryInst.TutorialStyles.FirstDialogueFontSize;
             GUI.Box(new Rect(Screen.width*.05f, Screen.height*.25f, Screen.width*.58f, Screen.height*.5f), 
 			        TutorialStartMessages[TutorialLevel-1], dialogueStyle);
+            string message = (TutorialLevel == 1) ? "What?" : "Thanks?";
             if(GUI.Button(new Rect(Screen.width*.2f, Screen.height*.85f, Screen.width*.6f, Screen.height*.1f), 
-			              "OK", S.GUIStyleLibraryInst.TutorialStyles.StartButton))
+			              message, S.GUIStyleLibraryInst.TutorialStyles.StartButton))
             {
                 if(TutorialLevel == 1) 
                 { 
@@ -100,23 +101,16 @@ public class Tutorial : MonoBehaviour {
         if (TutorialLevel != 1 && TutorialLevel != 8) {
 	        GUI.Box(new Rect(Screen.width * .6f, 0, Screen.width * .4f, Screen.height * .035f), 
 			        "Tutorial level " + TutorialLevel.ToString(), S.GUIStyleLibraryInst.TutorialStyles.InfoBox);
-	        if (GUI.Button(new Rect(Screen.width * .05f, Screen.height * .235f, Screen.width * .4f, Screen.height * .06f), 
-			               "Skip this tutorial level", S.GUIStyleLibraryInst.TutorialStyles.NextLevelButton))
+	        if (GUI.Button(new Rect(Screen.width * .025f, Screen.height * .235f, Screen.width * .55f, Screen.height * .06f), 
+			               "Skip this part of the tutorial", S.GUIStyleLibraryInst.TutorialStyles.NextLevelButton))
 	        {
 	        	continueTutorial();
 	        }
-	        if (GUI.Button(new Rect(Screen.width * .55f, Screen.height * .235f, Screen.width * .4f, Screen.height * .06f), 
+	        if (GUI.Button(new Rect(Screen.width * .625f, Screen.height * .235f, Screen.width * .35f, Screen.height * .06f), 
 			               "Skip whole tutorial", S.GUIStyleLibraryInst.TutorialStyles.NextLevelButton))
 	        {
 	            endTutorial();
 	        }
-		}
-		if(TutorialLevel == 1) {
-			if (GUI.Button(new Rect(Screen.width * .3f, Screen.height * .1f, Screen.width * .4f, Screen.height * .08f), 
-			               "Skip tutorial", S.GUIStyleLibraryInst.TutorialStyles.NextLevelButton))
-			{
-				endTutorial();
-			}
 		}
         #endregion
 
@@ -153,8 +147,7 @@ public class Tutorial : MonoBehaviour {
     {
         TutorialMessage = TutorialStartMessages[TutorialLevel-1];
 
-        if (TutorialLevel == 2)
-        {
+        if (TutorialLevel == 2) {
             S.GameControlInst.SetMoves(1);
             S.GameControlInst.SetPlays(1);
 
@@ -163,21 +156,28 @@ public class Tutorial : MonoBehaviour {
             S.ClickControlInst.AllowInputUmbrella = true;
 
             gameObject.GetComponent<GridControl>().InvokeRepeating("TutorialMovementIllustration", .4f, 1.2f);
+            
+            MakeArrowInSpot(0, 1);
+            MakeArrowInSpot(0, -1);
+            MakeArrowInSpot(1, 0);
+            MakeArrowInSpot(-1, 0);
         }
-        if (TutorialLevel == 3)
-        {
+        if (TutorialLevel == 3) {
             gameObject.GetComponent<GridControl>().CancelInvoke();
+            TurnOffArrows();
 
             S.ClickControlInst.DisallowEveryInput();
             S.ClickControlInst.AllowNewPlayInput = true;
             S.ClickControlInst.AllowInputUmbrella = true;
 
             GridUnit p = GameObject.FindGameObjectWithTag("Player").GetComponent<GridUnit>();
-            gameObject.GetComponent<EnemyLibrary>().LoadEnemy("pa", p.xPosition, p.yPosition-1);
+            gameObject.GetComponent<EnemyLibrary>().LoadEnemy("pa", p.xPosition+1, p.yPosition);
+            MakeArrowInSpot(p.xPosition+1, p.yPosition);
             gameObject.GetComponent<GridControl>().InvokeRepeating("TutorialPunchIllustration", .4f, 1.2f);
         }
         if (TutorialLevel == 4)
         {
+            TurnOffArrows();
             gameObject.GetComponent<GridControl>().CancelInvoke();
 
             GameObject en = GameObject.FindGameObjectWithTag("Enemy");
@@ -197,8 +197,6 @@ public class Tutorial : MonoBehaviour {
 			List<string> deck = S.GameControlInst.Deck;
             deck.Add("Wooden Pike");
             deck.Add("Wooden Pike");
-            deck.Add("Iron Macana");
-            deck.Add("Iron Macana");
 			GameObject.Find("Hand").transform.localPosition = new Vector3(-0.7f, 0, 0);
             int count = deck.Count;
             for (int i = 0; i < count; i++) { S.GameControlInst.Draw(); }
@@ -215,6 +213,9 @@ public class Tutorial : MonoBehaviour {
             p.gameObject.transform.position = new Vector3(0, 0, 0);
 
             gameObject.GetComponent<EnemyLibrary>().LoadEnemy("pa", p.xPosition, p.yPosition - 2);
+            
+            MakeArrow();
+            MakeArrow();
         }
         if (TutorialLevel == 6) {
 			S.GameControlGUIInst.Dim();            
@@ -249,6 +250,12 @@ public class Tutorial : MonoBehaviour {
             S.ClickControlInst.AllowInputUmbrella = true;
 
 			S.GameControlGUIInst.Dim(false);
+            
+            MakeArrow();
+            Invoke("MakeArrow", .1f);            
+            Invoke("MakeArrow", .2f);            
+            Invoke("MakeArrow", .3f);            
+            Invoke("MakeArrow", .4f);            
         }
     }
 
@@ -260,4 +267,22 @@ public class Tutorial : MonoBehaviour {
         }
     }
     #endregion
+    
+    public void TurnOffArrows() {
+        foreach(GameObject arrow in arrowList) {
+            Destroy(arrow);
+        }
+        arrowList = new List<GameObject>();
+    }
+    
+    void MakeArrow() {
+        arrowList.Add((GameObject)GameObject.Instantiate(Resources.Load("prefabs/pointer arrows")));
+        arrowList[arrowList.Count-1].transform.parent = hand.transform;
+        arrowList[arrowList.Count-1].transform.position = new Vector3(-2.25f + (arrowList.Count-1)*1.85f, -4.5f, 4);
+    }
+    
+    public void MakeArrowInSpot(float x, float y) {
+        arrowList.Add((GameObject)GameObject.Instantiate(Resources.Load("prefabs/pointer arrows")));
+        arrowList[arrowList.Count-1].transform.position = new Vector3(x, y+.5f, 4);
+    }
 }
