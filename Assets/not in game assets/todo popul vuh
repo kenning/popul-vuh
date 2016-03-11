@@ -12,12 +12,15 @@ New features
         It should have a unique message and dialog box option ("Got it!", "Oh no!")
         Should save to your save file
     tutorial arrows
+    info mode should be like .2s or .15s
+    apple guidelines for stuff
 
 Bugs
     when you buy cards, canvas $ doesn't update
     playing a targetsquares card doesn't activate the Q
     ugh... finishing a goal exactly as the level ends doesn't make it show up in the shop as completed. tooltip also needs to disappear
     there seems to be a subtle bug in clickcontrol layering where you are trying to drag your hand but it drags the board
+    when you select a card, the enemy keeps flashing, that's bad i guess
 
 New sprites / animations
     /// new sprites!
