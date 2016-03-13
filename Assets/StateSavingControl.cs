@@ -44,6 +44,7 @@ public class StateSavingControl : MonoBehaviour {
 		if (!MainMenu.InGame | Tutorial.TutorialLevel != 0) return;
 
 		SavedState ss = new SavedState ();
+		ss.Level = GameControl.Level;
 		ss.ObstacleLevelType 	= ObstacleLibrary.CurrentLevelType;
 		ss.ObstacleXPositions 	= ObstacleXPositions;
 		ss.ObstacleYPositions 	= ObstacleYPositions;
@@ -96,9 +97,10 @@ public class StateSavingControl : MonoBehaviour {
 		if (ES2.Exists ("PVState")) {
 			SavedState loaded = ES2.Load<SavedState> ("PVState");
 
-			// Hoo boy it would be cool if starting the game and then setting a bunch of stuff just worked
-			gameControl.BeginGame(true);
+            GameControl.Level = loaded.Level;
 
+			gameControl.BeginGame(true);
+            
 			int[][] positions = new int[loaded.ObstacleXPositions.Count][];
 			for (int i = 0; i < loaded.ObstacleXPositions.Count; i++) {
 				positions[i] = new int[] {loaded.ObstacleXPositions[i], loaded.ObstacleYPositions[i]};
