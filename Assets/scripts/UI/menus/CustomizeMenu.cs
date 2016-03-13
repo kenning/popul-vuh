@@ -202,9 +202,11 @@ public class CustomizeMenu : MonoBehaviour {
 
 
 		GUI.EndGroup ();
-
+        
+        GUIStyle gobackstyle = new GUIStyle(S.GUIStyleLibraryInst.CustomizeStyles.CardToggleRemove);
+        gobackstyle.fontSize = 14;
 		if(GUI.Button(new Rect(Screen.width*.3f, Screen.height*.95f, Screen.width*.4f, Screen.height*.05f), 
-		              "Go back", S.GUIStyleLibraryInst.CustomizeStyles.CardToggleRemove)) {
+		              "Go back", gobackstyle)) {
 			SaveDataControl.Save();
 			selectedCard = new LibraryCard();
 			S.MenuControlInst.TurnOnMenu(MenuControl.MenuType.MainMenu);

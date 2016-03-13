@@ -43,9 +43,6 @@ public class GameControl : MonoBehaviour
 	//for complex cards which require you to click on a bunch of stuff
 	public Card TargetSquareCallback;
 	
-	//UI data
-	string tooltip = "";
-
 	//UI variables
 	TextMesh playsLeftText;
 	TextMesh movesLeftText;

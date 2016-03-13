@@ -3,13 +3,13 @@ using System.Collections;
 
 public class GameControlGUI : MonoBehaviour {
     
-	bool showingDeck;
+	// bool showingDeck;
 	
 	bool displayDim = false;
 	SpriteRenderer displayCardRenderer;
 	DimAnimate dimmer;
 	public bool CardDisplay = false;
-	GameObject cardObjFromDeck;
+	// GameObject cardObjFromDeck;
 
 	string tooltip = "";
 
@@ -37,9 +37,9 @@ public class GameControlGUI : MonoBehaviour {
 
 	void OnGUI () {
 		
-		if (showingDeck) {
+		// if (showingDeck) {
 			//TODO displaying cards from the deck
-		}
+		// }
 		
 		if (tooltip != "") {
 			GUI.Box(new Rect(Screen.width*.02f, Screen.height*.68f, Screen.width*.8f, Screen.height*.08f), 
@@ -59,10 +59,9 @@ public class GameControlGUI : MonoBehaviour {
 		if(S.GameControlInst.CardsToTarget == 0) {
 			Dim(false);
 		}
-		if(cardObjFromDeck != null) {
-			// TODO display cards from the deck. i dont think this ever worked?
-			Destroy(cardObjFromDeck);
-		}
+		// if(cardObjFromDeck != null) {
+			// Destroy(cardObjFromDeck);
+		// }
 	}
 
 	public void DisplayDim() {
@@ -101,7 +100,7 @@ public class GameControlGUI : MonoBehaviour {
 
 	public void ShowDeck(bool TurningOn) {
 		return;
-		showingDeck = TurningOn;
+		// showingDeck = TurningOn;
 	}
 
 	public void MoveHandPositionWhenOutOfPlace() {

@@ -55,6 +55,7 @@ public class GUIStyleLibrary : MonoBehaviour {
 		public GUIStyle BlackBackground;
 		public GUIStyle Title;
 		public GUIStyle Button;
+        public GUIStyle HighlitButton;
 		public GUIStyle NewCardsAvailablePopup;
 		public GUIStyle Sidebar;
 		public GUIStyle DiedAndGotToLevel;
@@ -65,6 +66,7 @@ public class GUIStyleLibrary : MonoBehaviour {
 			BlackBackground = SizeDecorator(skin.box);
 			Title = SizeDecorator(skin.customStyles [0]);
 			Button = SizeDecorator(skin.button);
+            HighlitButton = SizeDecorator(skin.customStyles[13]);
 			NewCardsAvailablePopup = SizeDecorator(skin.customStyles [9]);
 			Sidebar = SizeDecorator(skin.customStyles [4]);
 			DiedAndGotToLevel = SizeDecorator(skin.customStyles[12]);
@@ -104,7 +106,7 @@ public class GUIStyleLibrary : MonoBehaviour {
 			CardTextStyle = SizeDecorator(skin.customStyles[7]);
 			NoneStyleWordWrap = SizeDecorator(new GUIStyle (skin.customStyles[11]));
 			NoneStyleWordWrap.wordWrap = true;
-			NoneStyleWordWrap.fontSize = (10);
+			NoneStyleWordWrap.fontSize = SizeIntDecorator(10);
 			BigText = SizeDecorator(new GUIStyle(skin.customStyles[11]));
 			BigText.fontSize = 50;
 			GoalFontSize = SizeIntDecorator(10);

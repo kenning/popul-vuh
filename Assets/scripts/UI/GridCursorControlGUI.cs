@@ -29,7 +29,6 @@ public class GridCursorControlGUI : MonoBehaviour {
 	}
 
 	public void PresentCursor(GridCursorControl.CursorActions action, int x, int y) {
-        Debug.Log("presented with " + action);
 		transform.position = new Vector3 (x, y, 0);
 		cursorSpriteRenderer.enabled = true;
 		gridCursorBoxRenderer.enabled = true;

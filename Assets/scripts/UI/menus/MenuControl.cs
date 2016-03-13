@@ -10,7 +10,6 @@ public class MenuControl : MonoBehaviour {
 	bool EncyclopediaMenuIsOn = false;
 	bool GodChoiceMenuIsOn = false;
 	bool CustomizeMenuIsOn = false;
-	bool TutorialIsOn = false;
 
 	public void TurnOnMenu (MenuType menu) {
 		TurnOffMenus ();
@@ -35,7 +34,6 @@ public class MenuControl : MonoBehaviour {
 		} else if (menu == MenuType.Tutorial) {
 			S.TutorialInst.enabled = true;
 			Tutorial.TutorialLevel = 1;
-			TutorialIsOn = true;
 		} else {
 			Debug.LogError("An unknown menu type was passed.");
 		}
@@ -52,7 +50,6 @@ public class MenuControl : MonoBehaviour {
 		GodChoiceMenuIsOn = false;
 		CustomizeMenuIsOn = false;
 		MainMenuIsOn = false;
-		TutorialIsOn = false;
 	}
 
 	public void Die() {

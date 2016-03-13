@@ -63,6 +63,7 @@ public class EventControl : MonoBehaviour {
 				Debug.Log("I should eventually test if these event things actually persist because i'll never run into this in the wild");
 				Debug.Log("Also this is pretty shitty but if the event trigger list is [SpymasterStyle, SpymasterStyle] it will trigger" + 
 					"the first card twice instead of triggering each individually. Who cares though seriously");
+				Debug.Log(s);
 				if (stringList.Contains(tempGO.name)) {
 					TriggerList.Add(tempGO.GetComponent<Card>());					
 				}

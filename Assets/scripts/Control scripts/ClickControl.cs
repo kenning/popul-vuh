@@ -7,7 +7,6 @@ public class ClickControl : MonoBehaviour {
 	//Game control scripts
 	ButtonAnimate playButton;
 	DisplayCardCanvas displayCardCanvas;
-    Player player;
 
 	//units
 	List<GridUnit> UnitList;
@@ -49,7 +48,6 @@ public class ClickControl : MonoBehaviour {
 	
 	void Start(){
 		playerObject = GameObject.FindGameObjectWithTag ("Player");
-        player = playerObject.GetComponent<Player>();
 
 		playButton = GameObject.Find ("play end button").GetComponent<ButtonAnimate> ();
 
@@ -142,12 +140,9 @@ public class ClickControl : MonoBehaviour {
 				cardHasBeenClickedOn = false;
 			}
 			else {
-                    Debug.Log("Can get here");
-
 				if(Mathf.Abs(Input.mousePosition.x - cardClickOrigin.x) > .2f 
 				   && !cardScriptClickedOn.Discarded && 
                    (AllowInfoInput && Tutorial.TutorialLevel == 0 | Tutorial.TutorialLevel == 7)) {
-                    Debug.Log("Can't get here");
 					S.DragControlInst.HandDrag(cardScriptClickedOn, cardClickOrigin);
             		cardHasBeenClickedOn = false;
 					return;
@@ -159,7 +154,6 @@ public class ClickControl : MonoBehaviour {
 				else if(Time.time - 0.22f > lastCardClick && 
                     !displayCardCanvas.CardDisplay && 
                     AllowInfoInput && Tutorial.TutorialLevel == 0) {
-                    Debug.Log("Displaying"); 
 					S.GameControlGUIInst.Display(cardScriptClickedOn);
 					cardHasBeenClickedOn = false;
 				}

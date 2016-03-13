@@ -42,7 +42,7 @@ public class GridControl : MonoBehaviour {
         #region Load Obstacles
         ObstacleLibrary.LevelTypes obstacleLevelType = ObstacleLibrary.LevelTypes.Empty;
 
-        int rand = Random.Range(0, 10);
+        // int rand = Random.Range(0, 10);
 //        obstacleLevelType = ObstacleLibrary.AllLevelTypes[rand];
 		obstacleLevelType = ObstacleLibrary.LevelTypes.Rocks;
 

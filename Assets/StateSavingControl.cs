@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-/// Man i'm gonna write this lazily. Hopefully black magic will make it not horribly slow
-
 public class StateSavingControl : MonoBehaviour {
 
 	static GameControl gameControl;
@@ -13,7 +11,6 @@ public class StateSavingControl : MonoBehaviour {
     static ShopControlGUI shopControlGUI;
 	static ObstacleLibrary obstacleLibrary;
 	static EnemyLibrary enemyLibrary;
-    static ShopAndGoalParentCanvas shopAndGoalParentCanvas;
 	static Player player;
 	static List<int> ObstacleXPositions = new List<int>();
 	static List<int> ObstacleYPositions = new List<int>();
@@ -28,8 +25,6 @@ public class StateSavingControl : MonoBehaviour {
         shopControlGUI = gc.gameObject.GetComponent<ShopControlGUI>();
 		obstacleLibrary = gc.gameObject.GetComponent<ObstacleLibrary>();
 		enemyLibrary = gc.gameObject.GetComponent<EnemyLibrary>();
-        shopAndGoalParentCanvas = GameObject.FindGameObjectWithTag("goalandshopparent")
-                                  .GetComponent<ShopAndGoalParentCanvas>();
 		player = pl;
 	}
 		

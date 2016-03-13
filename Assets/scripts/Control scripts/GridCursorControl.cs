@@ -39,11 +39,14 @@ public class GridCursorControl : MonoBehaviour {
 		    action != currentCursorAction |
 			(int)(clickPosition.x) != currentCursorXPosition |
 			(int)(clickPosition.y) != currentCursorYPosition) {
+			currentCursorXPosition = (int)clickPosition.x;
+			currentCursorYPosition = (int)clickPosition.y;
+            if (Mathf.Abs(currentCursorXPosition) > 4 || Mathf.Abs(currentCursorYPosition) > 4) {
+                return; // Beyond the grid boundaries
+            }
             currentCursorTarget = target;
 			S.ClickControlInst.lastCursorSetTime = Time.time;
 			cursorActionSet = true;
-			currentCursorXPosition = (int)clickPosition.x;
-			currentCursorYPosition = (int)clickPosition.y;
 			currentCursorAction = action;
 			S.GridCursorControlGUIInst.PresentCursor (action, currentCursorXPosition, currentCursorYPosition);
 		}
@@ -156,7 +159,6 @@ public class GridCursorControl : MonoBehaviour {
 
         Enemy tempEnemy = currentCursorTarget.GetComponent<Enemy> ();
         if (tempEnemy != null) {
-            GridUnit tempGU = currentCursorTarget.GetComponent<GridUnit> ();
             S.GameControlGUIInst.SetTooltip (tempEnemy.Tooltip);
             flashingEnemy = tempEnemy;
             InvokeRepeating("showEnemySquares", 0, .75f);

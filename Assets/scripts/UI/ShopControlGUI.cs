@@ -27,14 +27,9 @@ public class ShopControlGUI : MonoBehaviour {
 	public Texture2D STOPLIGHTTEXTURE;
 
 	Goal[] Goals;
-	bool[] GoalDisplay;
 	public bool[] highScoreNotification;
 	
 	public float shopGUITime = 0f;
-	float cardWidth = Screen.width*.3f;
-	float cardHeight = Screen.height*.16f;
-
-	string AddedToCollText = "";
 
 	public Sprite BOUGHTSPRITEADDEDTOCOLLECTION;
 	public Sprite BOUGHTSPRITENORMAL;
@@ -45,7 +40,6 @@ public class ShopControlGUI : MonoBehaviour {
 
 	public void NewLevelNewGoals (int numberOfGods, Goal[] goals) {
 		Goals = goals;
-		GoalDisplay = new bool[numberOfGods];
 
 		TurnOnExpoGUI ();
 		

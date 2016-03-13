@@ -14,6 +14,7 @@ New features
     tutorial arrows
     info mode should be like .2s or .15s
     apple guidelines for stuff
+    when resuming a game, button should say 'resume game,' maybe be colored differently
 
 Bugs
     when you buy cards, canvas $ doesn't update
@@ -21,6 +22,7 @@ Bugs
     ugh... finishing a goal exactly as the level ends doesn't make it show up in the shop as completed. tooltip also needs to disappear
     there seems to be a subtle bug in clickcontrol layering where you are trying to drag your hand but it drags the board
     when you select a card, the enemy keeps flashing, that's bad i guess
+    goals don't reset when the level starts over? 'dont move x turns in a row,', 'dont deal damage or move x turns in a row'
 
 New sprites / animations
     /// new sprites!

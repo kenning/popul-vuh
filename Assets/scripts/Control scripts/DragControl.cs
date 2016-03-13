@@ -5,7 +5,6 @@ public class DragControl : MonoBehaviour {
     public bool DraggingGameboard = false;
     public bool DraggingHand = false;
 	Vector3 dragOrigin;
-    Vector3 cameraOrigin;
     GameObject handObj;
 	Texture2D SideArrows;
 	Texture2D CompassArrows;
@@ -14,7 +13,6 @@ public class DragControl : MonoBehaviour {
 	float rightLimit = 1.6f;
 	float topLimit = -.6f;
 	float bottomLimit = -2f;
-    Card cardScriptClickedOn;
     float multiplierx = 8.5f;
     float multipliery = 15f;
     void Start() {
@@ -27,13 +25,10 @@ public class DragControl : MonoBehaviour {
 
 		S.GameControlGUIInst.Dim (false);
         S.DragControlInst.DraggingGameboard = true;
-        cameraOrigin = Camera.main.transform.position;
-        Debug.Log("calling gameboard drag");
         Cursor.SetCursor(CompassArrows, new Vector2(CompassArrows.width/2, CompassArrows.height/2), CursorMode.Auto);
     }
 	public void HandDrag(Card clickedCard, Vector3 clickOrigin) {
         dragOrigin = Camera.main.ScreenToViewportPoint(Input.mousePosition);
-        cardScriptClickedOn = clickedCard;
 		S.DragControlInst.DraggingHand = true;
 		S.GameControlGUIInst.Dim(false);
         // this should really be set to false already...
@@ -49,7 +44,7 @@ public class DragControl : MonoBehaviour {
     void Update() {
         if(DraggingHand){
 			if(Input.GetMouseButton(0)){
-				if(S.GameControlInst.Hand.Count < 4) { 
+				if(S.GameControlInst.Hand.Count < 5) { 
 					handObj.transform.localPosition = new Vector3(((3) * -1.48f) + 3.7f, 0, 0);
 					return;
 				}
@@ -58,11 +53,9 @@ public class DragControl : MonoBehaviour {
 				if(handObj.transform.localPosition.x >= -.75f && pos.x > 0) {
 					handObj.transform.localPosition = new Vector3(-.75f, 0, 0f);
 					return;
-				}
-				else if((handObj.transform.localPosition.x <= ((S.GameControlInst.Hand.Count) * -1.45f) + 5.4f) &&  pos.x < 0) {
+				} else if((handObj.transform.localPosition.x <= ((S.GameControlInst.Hand.Count) * -1.6f) + 5.5f) &&  pos.x < 0) {
 					//this is for after the exact position has gotten nailed down, purpose is to lock it to the edge. 
-					//the key numbers are: 3.95 one line above and .75 six lines above.
-					handObj.transform.localPosition = new Vector3(((S.GameControlInst.Hand.Count) * -1.47f) + 5.4f, 0, 0);
+					handObj.transform.localPosition = new Vector3(((S.GameControlInst.Hand.Count) * -1.6f) + 5.4f, 0, 0);
 				} else {
 					handObj.transform.Translate(new Vector3(pos.x * multiplierx, 0, 0));
                     dragOrigin = Camera.main.ScreenToViewportPoint(Input.mousePosition);

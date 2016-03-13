@@ -11,8 +11,6 @@ public class S : MonoBehaviour {
   public GameObject gridcursorcontrolgui;
   public GameObject deck;
     
-  static bool initialized = false;
-
   static Player playerInstance;
   static GameControl gameControlInstance;
   static GameControlGUI gameControlGUIInstance;

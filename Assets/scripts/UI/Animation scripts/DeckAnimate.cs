@@ -72,7 +72,9 @@ public class DeckAnimate : MonoBehaviour {
 	}
 	void Shuffle () {
         // Makes deck sprites all reappear
+        CancelInvoke();
         DisplayDeckSize(6);
+        sprite.enabled = true;
         
 		S.GameControlInst.ShuffleInHandAndDiscard();
 

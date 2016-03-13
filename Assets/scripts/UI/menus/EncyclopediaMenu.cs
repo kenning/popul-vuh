@@ -152,7 +152,7 @@ public class EncyclopediaMenu : MonoBehaviour {
 						        S.GUIStyleLibraryInst.EncyclopediaStyles.NeutralButton);					}
 				}
 			}
-			else if(Tabs[2]) {
+			else if(Tabs[2]) { 
 				if(shownCards.Count == 0 && selectedCard != -1) {
 					FindCards();
 				}

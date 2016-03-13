@@ -40,9 +40,6 @@ public class MainMenu : MonoBehaviour {
 
 		GameObject.Find ("Dimmer").GetComponent<DimAnimate>().ForceDim();
 
-//        S.GameControlInst.= GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControl>();
-//        S.GameControlInst.TransformPlayer(false);
-
         if (GameControl.Level >= NextUnlockLevel)
         {
             for (int i = 0; i < UnlockLevels.Length; i++)
@@ -69,7 +66,6 @@ public class MainMenu : MonoBehaviour {
         MainMenu.MainMenuUp = true;
         MainMenu.InGame = false;
         DiedMenuUp = false;
-//        S.ShopControlGUIInst.TurnOffAllShopGUI();
         UnlockedText = "";
         UnlockCheck();
 
@@ -116,14 +112,19 @@ public class MainMenu : MonoBehaviour {
 			        "Popul Vuh", S.GUIStyleLibraryInst.MainStyles.Title);
 
 			//Button 1: Start new game
+            
+            string startGameText = StateSavingControl.StateWasSaved() ? "Resume game" : "Start new game" ;
+            GUIStyle startGameStyle = StateSavingControl.StateWasSaved() ? 
+                S.GUIStyleLibraryInst.MainStyles.HighlitButton : S.GUIStyleLibraryInst.MainStyles.Button;
             if (GUI.Button(new Rect(Screen.width * .2f, Screen.height * .25f, Screen.width * .6f, Screen.height * .1f), 
-			               "Start new game", S.GUIStyleLibraryInst.MainStyles.Button)) {
+			               startGameText, startGameStyle)) {
                 
 				S.MenuControlInst.TurnOffMenus();
 
-                if (SaveDataControl.UnlockedGods.Count == 7) {
-					S.MenuControlInst.TurnOnMenu(MenuControl.MenuType.GodChoiceMenu);
-				} else if (StateSavingControl.StateWasSaved()) {
+                // if (SaveDataControl.UnlockedGods.Count == 7) {
+				// 	S.MenuControlInst.TurnOnMenu(MenuControl.MenuType.GodChoiceMenu);
+				// } else 
+                if (StateSavingControl.StateWasSaved()) {
 					StateSavingControl.Load();
 				} else {
 					S.GameControlInst.BeginGame();
