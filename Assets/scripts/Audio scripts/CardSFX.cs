@@ -10,6 +10,10 @@ public class CardSFX : MonoBehaviour {
 
 	AudioSource audioSource;
 
+    void Start() {
+        useGUILayout = false;
+    }
+
 	void Initialize() {
 		if (initialized) return;
 		initialized = true;

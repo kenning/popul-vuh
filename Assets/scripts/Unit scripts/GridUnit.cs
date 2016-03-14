@@ -24,6 +24,7 @@ public class GridUnit : MonoBehaviour {
 	public void Start() {
 		xPosition = Mathf.RoundToInt (gameObject.transform.position.x);
 		yPosition = Mathf.RoundToInt (gameObject.transform.position.y);
+        useGUILayout = false;
 	}
 
 	public void GridMove(string direction) {

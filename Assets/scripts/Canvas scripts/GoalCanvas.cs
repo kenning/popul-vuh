@@ -17,6 +17,10 @@ public class GoalCanvas : MonoBehaviour {
 	Text clickedHighScore;
 	Text clickedScoreList;
 
+    void Start() {
+        useGUILayout = false;
+    }
+
 	void Initialize () {
 		if(initialized) return;
 		initialized = true;

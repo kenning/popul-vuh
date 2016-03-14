@@ -6,6 +6,10 @@ public class Obstacle : MonoBehaviour {
     protected string tooltip;
     public bool Walkable;
 
+    void Start() {
+        useGUILayout = false;
+    }
+    
 	public void SetTooltip(string tool) {
 		tooltip = tool;
 	}

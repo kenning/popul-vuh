@@ -7,6 +7,10 @@ public class GoalLibrary : MonoBehaviour {
 	public static List<Goal> allGoals;
 	public static List<Goal> unusedGoals;
 
+    void Start() {
+        useGUILayout = false;
+    }
+    
 	//VVV this is a utility used by GodChoiceMenu to see if you have selected enough gods to start the game.
 	public static int NumberOfGoalsPossible(bool[] bools) {
 		int x = 0;

@@ -29,6 +29,9 @@ public class ShopControl : MonoBehaviour {
 		"Card draw / Food"};
 	public static List<Gods> AllGods = new List<Gods> ();
 	
+    void Start() {
+        useGUILayout = false;
+    }
 
     public void Initialize () {
 		S.GoalLibraryInst.Startup ();

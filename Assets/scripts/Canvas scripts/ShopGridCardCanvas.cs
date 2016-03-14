@@ -32,7 +32,8 @@ public class ShopGridCardCanvas : MonoBehaviour {
 
 	public DisplayCardCanvas DISPLAYCARDCANVAS;
 
-	void Start() {
+    void Start() {
+        useGUILayout = false;
 		Initialize();
 	}
 

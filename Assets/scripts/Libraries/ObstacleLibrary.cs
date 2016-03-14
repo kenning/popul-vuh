@@ -12,6 +12,9 @@ public class ObstacleLibrary : MonoBehaviour {
 	public static LevelTypes CurrentLevelType;
     GameObject obstacleParent;
 
+    void Start() {
+        useGUILayout = false;
+    }
     //public method, called by gridcontrol
     public void LoadObstaclesIfExist(LevelTypes levelType)
     {

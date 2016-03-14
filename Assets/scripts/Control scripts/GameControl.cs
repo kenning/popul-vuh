@@ -89,6 +89,7 @@ public class GameControl : MonoBehaviour
 	}
     
     void Start() {
+        useGUILayout = false;
         S.CardLibraryInst.Startup ();
 		S.EnemyLibraryInst.Startup();
 		S.ShopControlInst.Initialize ();

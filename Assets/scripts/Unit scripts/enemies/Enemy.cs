@@ -54,6 +54,9 @@ public class Enemy : MonoBehaviour {
 
 	public enum MoveTarget { Adjacent, Diagonal, Cross, Square };
 
+    void Start() {
+        useGUILayout = false;
+    }
 	public virtual void Initialize(EnemyLibraryCard enemyLC) {
 		ThisEnemyLibraryCard = enemyLC;
 		thisGU = gameObject.GetComponent<GridUnit> ();

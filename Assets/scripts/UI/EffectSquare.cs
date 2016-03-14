@@ -9,6 +9,10 @@ public class EffectSquare : MonoBehaviour {
 	bool fadeOut;
 
 	SpriteRenderer sprite;
+    
+    void Start() {
+        useGUILayout = false;
+    }
 	
 	public void MoveToPointAndFadeOut(int x, int y){
 		creationTime = Time.time;

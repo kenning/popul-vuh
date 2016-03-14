@@ -8,6 +8,7 @@ public class EnemyLibrary : MonoBehaviour {
 	public static Dictionary<string, EnemyLibraryCard> Lib;
 	public List<List<int>> challengeRatingsForEachLevel = new List<List<int>>();
 	void Start() {
+        useGUILayout = false;
 		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 1 }); //3
 		challengeRatingsForEachLevel.Add(new List<int> { 1, 1, 2 }); //4
 		challengeRatingsForEachLevel.Add(new List<int> { 1, 2, 2 }); //5

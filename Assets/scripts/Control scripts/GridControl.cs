@@ -27,6 +27,7 @@ public class GridControl : MonoBehaviour {
     Queue<Point> pointsToVisit = new Queue<Point>();
 
     void Start(){
+        useGUILayout = false;
         FindAllGridUnits ();
         enemyL = gameObject.GetComponent<EnemyLibrary>();
         obstacleL = gameObject.GetComponent<ObstacleLibrary>();

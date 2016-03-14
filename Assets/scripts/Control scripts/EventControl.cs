@@ -10,6 +10,10 @@ public class EventControl : MonoBehaviour {
 	//keyword == "Punch"
 	//keyword == "Burn"
 
+    void Start() {
+        useGUILayout = false;
+    }
+    
 	static void Initialize() {
 		if (initialized) return;
 		initialized = true;

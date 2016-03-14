@@ -21,6 +21,7 @@ public class GUIStyleLibrary : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
+        useGUILayout = false;
 		MainStyles = new MainMenuStyleLibrary (MAINMENUGUISKIN);
 		EncyclopediaStyles = new EncyclopediaMenuStyleLibrary (MAINMENUGUISKIN);
 		GodChoiceStyles = new GodChoiceMenuStyleLibrary (MAINMENUGUISKIN);

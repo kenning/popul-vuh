@@ -24,6 +24,7 @@ public class ShopAndGoalParentCanvas : MonoBehaviour {
 
 	void Start () {
 		dollarsText = SHOPDOLLARCOUNTER.GetComponentInChildren<Text> ();
+        useGUILayout = false;
 	}
 
 	#region Initialization methods

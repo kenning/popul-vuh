@@ -21,6 +21,10 @@ public class CardLibrary : MonoBehaviour {
 //			StartingItems.Add(allCards[i]);
 //		}
 	}
+    
+    void Start() {
+        useGUILayout = false;
+    }
 
     //This method is called in GameControl.Awake() along with a lot of other stuff.
     //It's got all the cards in it.

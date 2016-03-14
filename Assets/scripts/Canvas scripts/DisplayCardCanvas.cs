@@ -21,6 +21,10 @@ public class DisplayCardCanvas : MonoBehaviour {
 
 	bool undimAfter;
 
+    void Start() {
+        useGUILayout = false;
+    }
+
 	void initialize() {
 		if(initialized) return;
 		initialized = true;

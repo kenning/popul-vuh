@@ -9,6 +9,10 @@ public class ShopAwardCanvas : MonoBehaviour {
 	Image background;
 	Text description;
 
+    void Start() {
+        useGUILayout = false;
+    }
+
 	void Initialize () {
 		if(initialized) return;
 		initialized = true;

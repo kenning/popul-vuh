@@ -6,6 +6,10 @@ public class CardText : MonoBehaviour {
     int initializePosition = 0;
     public void Initialize() { Initialize(initializePosition); }
 
+    void Start() {
+        useGUILayout = false;
+    }
+    
 	public void Initialize (int position) {
         if (initializePosition == 0) initializePosition = position;
         MeshRenderer mRend = gameObject.GetComponent<MeshRenderer>();

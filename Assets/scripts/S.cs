@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 /// Singletons!
 public class S : MonoBehaviour {
+  void Start() {
+      useGUILayout = false;
+  }
     
   public GameObject gc;
   public GameObject goalandshopparent;

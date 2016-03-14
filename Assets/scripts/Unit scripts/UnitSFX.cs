@@ -10,6 +10,10 @@ public class UnitSFX : MonoBehaviour {
 	AudioClip StepSFX;
 	AudioSource audioSource;
 
+    void Start() {
+        useGUILayout = false;
+    }
+    
 	void Initialize() {
 		if (initialized) return;
 		initialized = true;

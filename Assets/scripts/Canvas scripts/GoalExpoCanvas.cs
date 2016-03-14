@@ -13,6 +13,7 @@ public class GoalExpoCanvas : MonoBehaviour {
 
 	void Start() {
 		Initialize();
+        useGUILayout = false;
 	}
 
 	void Initialize() {

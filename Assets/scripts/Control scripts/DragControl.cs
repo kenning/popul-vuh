@@ -16,6 +16,7 @@ public class DragControl : MonoBehaviour {
     float multiplierx = 8.5f;
     float multipliery = 15f;
     void Start() {
+        useGUILayout = false;
 		SideArrows = (Texture2D)Resources.Load ("sprites/ui/side arrows");
 		CompassArrows = (Texture2D)Resources.Load ("sprites/ui/arrows");
         handObj = GameObject.Find("Hand");

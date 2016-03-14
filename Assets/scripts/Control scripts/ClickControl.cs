@@ -47,6 +47,7 @@ public class ClickControl : MonoBehaviour {
     EventSystem eventSystem;
 	
 	void Start(){
+        useGUILayout = false;
 		playerObject = GameObject.FindGameObjectWithTag ("Player");
 
 		playButton = GameObject.Find ("play end button").GetComponent<ButtonAnimate> ();

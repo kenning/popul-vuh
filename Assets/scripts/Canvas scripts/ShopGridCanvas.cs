@@ -20,6 +20,10 @@ public class ShopGridCanvas : MonoBehaviour {
 	public Sprite BOUGHTSPRITEADDEDTOCOLLECTION;
 	public Sprite BOUGHTSPRITENORMAL;
 
+    void Start() {
+        useGUILayout = false;
+    }
+
 	void Initialize() {
 		if (initialized) return;
 		initialized = true;

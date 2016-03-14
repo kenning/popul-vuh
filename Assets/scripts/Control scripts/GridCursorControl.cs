@@ -19,7 +19,9 @@ public class GridCursorControl : MonoBehaviour {
 	Obstacle walkableObstacleToWalkInto = null;
 	string moveDirection = null;
     Enemy flashingEnemy;
+    
 	void Start() {
+        useGUILayout = false;
 		playerObject = GameObject.FindGameObjectWithTag ("Player");
 	}
     
